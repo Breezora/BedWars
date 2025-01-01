@@ -1,0 +1,38 @@
+{
+  labelsSynonyms: {
+    bug: [
+      'error',
+      'need fix',
+      'not working',
+      'bug',
+      'issue',
+      'Error',
+      'Fehler',
+      'funktioniert nicht',
+      'Bug',
+      'Muss behoben werden',
+      'Sollte behoben werden'
+    ],
+    enhancement: [
+      'upgrade',
+      'Update',
+      "Verbessert",
+    ],
+    question: [
+      'help',
+      'how can i',
+      'Hilfe',
+      "Wie kann ich"
+    ]
+  },
+  labelsNotAllowed: [
+    'documentation',
+    'duplicate',
+    'invalid'
+  ],
+  defaultLabels: [
+    'triage'
+  ],
+  failoverLabels: ["need more information"],
+  ignoreComments: true
+}
