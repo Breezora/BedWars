@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    java
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
@@ -15,8 +15,20 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(23))
+tasks {
+    val javaVersion = 23
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+
+    compileJava {
+        options.release = javaVersion
+    }
+
+    compileTestJava {
+        options.release = javaVersion
+    }
 }
 
 bukkit {
