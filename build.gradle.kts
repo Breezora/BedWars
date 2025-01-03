@@ -15,10 +15,8 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 }
 
-tasks {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(23))
-    }
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(23))
 }
 
 bukkit {
