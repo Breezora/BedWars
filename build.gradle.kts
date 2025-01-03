@@ -16,7 +16,7 @@ dependencies {
 }
 
 tasks {
-    val javaVersion = 23
+    val javaVersion = 22
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(javaVersion))
