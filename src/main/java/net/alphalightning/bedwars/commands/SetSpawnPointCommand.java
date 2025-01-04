@@ -33,7 +33,7 @@ public class SetSpawnPointCommand extends BaseCommand {
                 JSONUtil.writeJsonToFile(filePath, jsonObject);
                 System.out.println("JSON-Datei wurde geschrieben.");
             } catch (IOException e) {
-                throw new Exception("Fehler beim Schreiben der JSON Datei");
+                e.printStackTrace();
             }
         }
     }
