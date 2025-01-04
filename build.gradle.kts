@@ -26,8 +26,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
 
     implementation("xyz.xenondevs.invui:invui:1.39")
-    implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT") // Replace PLATFORM with bukkit, paper, sponge, etc
-
+    implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 }
 
 tasks {
