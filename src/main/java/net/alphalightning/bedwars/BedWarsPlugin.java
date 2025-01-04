@@ -1,11 +1,12 @@
 package net.alphalightning.bedwars;
 
-import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.translation.TranslationRegistry;
-import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import co.aikar.commands.PaperCommandManager;
 import net.alphalightning.bedwars.commands.SetSpawnPointCommand;
+import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -34,6 +35,8 @@ public class BedWarsPlugin extends JavaPlugin {
     private void loadMessageRegistry() {
         translationRegistry.defaultLocale(Locale.GERMAN);
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMAN, UTF8ResourceBundleControl.get()), true);
+
+        GlobalTranslator.translator().addSource(translationRegistry);
     }
 
     public void registerCommands() {
