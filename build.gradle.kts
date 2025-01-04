@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases")
+    maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.breezora.net/intern") {
         name = "breezoraRepositoryIntern"
         credentials {
@@ -25,6 +26,8 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 
     implementation("xyz.xenondevs.invui:invui:1.39")
+    implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT") // Replace PLATFORM with bukkit, paper, sponge, etc
+
 }
 
 tasks {
@@ -32,21 +35,27 @@ tasks {
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(javaVersion))
-
     }
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release = javaVersion
+        options.forkOptions.executable = System.getProperty("java.home") + "/bin/javac"
     }
 
     shadowJar {
         val mapping = mapOf(
             "xyz.xenondevs.invui" to "invui",
+            "co.aikar.commands" to "acf",
+            "co.aikar.locales" to "locales"
         )
 
         val base = "$group.bedwars.libs"
         for ((pattern, name) in mapping) relocate(pattern, "$base.$name")
+    }
+
+    build {
+        dependsOn(shadowJar)
     }
 }
 
