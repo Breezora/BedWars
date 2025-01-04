@@ -11,7 +11,7 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     public void registerCommands() {
-        PaperCommandManager manager = new PaperCommandManager(new BedWarsPlugin());
+        PaperCommandManager manager = new PaperCommandManager(this);
 
         manager.registerCommand(new SetSpawnPointCommand());
     }
