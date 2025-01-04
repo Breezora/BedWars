@@ -19,7 +19,7 @@ public class SetSpawnPointCommand extends BaseCommand {
 
         if(sender instanceof Player p) {
             try {
-                String filePath = "lobbyconfig.json";
+                String filePath = "config/lobbyconfig.json";
 
                 // Neues JSON-Objekt erstellen
                 JsonObject jsonObject = new JsonObject();
@@ -28,6 +28,7 @@ public class SetSpawnPointCommand extends BaseCommand {
                 jsonObject.addProperty("z", p.getZ());
                 jsonObject.addProperty("pitch", p.getPitch());
                 jsonObject.addProperty("yaw", p.getYaw());
+                jsonObject.addProperty("world", p.getWorld().getName());
                 // In Datei schreiben
                 JSONUtil.writeJsonToFile(filePath, jsonObject);
                 System.out.println("JSON-Datei wurde geschrieben.");
