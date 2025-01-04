@@ -19,7 +19,7 @@ public class SetSpawnPointCommand extends BaseCommand {
 
         if(sender instanceof Player p) {
             try {
-                String filePath = "config/lobbyconfig.json";
+                String filePath = "plugins/BedWars/config/lobbyconfig.json";
 
                 // Neues JSON-Objekt erstellen
                 JsonObject jsonObject = new JsonObject();
