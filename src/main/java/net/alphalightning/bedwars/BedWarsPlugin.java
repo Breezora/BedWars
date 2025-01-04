@@ -4,6 +4,8 @@ import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
+import co.aikar.commands.PaperCommandManager;
+import net.alphalightning.bedwars.commands.SetSpawnPointCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -20,6 +22,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerCommands();
         getLogger().info("BedWars has been enabled");
     }
 
@@ -33,4 +36,8 @@ public class BedWarsPlugin extends JavaPlugin {
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMAN, UTF8ResourceBundleControl.get()), true);
     }
 
+    public void registerCommands() {
+        PaperCommandManager manager = new PaperCommandManager(this);
+        manager.registerCommand(new SetSpawnPointCommand());
+    }
 }
