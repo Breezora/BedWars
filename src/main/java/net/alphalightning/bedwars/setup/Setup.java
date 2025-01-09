@@ -15,9 +15,8 @@ public interface Setup {
     void saveConfiguration();
 
     static MapSetup.Builder mapBuilder(@NotNull ConfigurationType type) {
-        if(type == ConfigurationType.LOBBY) {
+        if (type == ConfigurationType.LOBBY) {
             return new LobbyMapSetupBuilder();
-
         }
         return new GameMapSetupBuilder();
     }
