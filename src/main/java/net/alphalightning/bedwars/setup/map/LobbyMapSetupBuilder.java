@@ -5,18 +5,30 @@ import org.jetbrains.annotations.NotNull;
 
 public final class LobbyMapSetupBuilder implements MapSetup.Builder {
 
+    private Player player;
+
+    // Start debug
+    private int stage;
+
+    public void stage(int stage) {
+        this.stage = stage;
+    }
+
+    // End debug
+
     @Override
     public MapSetup.Builder executor(Player player) {
-        return null;
+        this.player = player;
+        return this;
     }
 
     @Override
     public MapSetup.Builder name(String name) {
-        return null;
+        throw new UnsupportedOperationException("A lobby cannot have a more specific name");
     }
 
     @Override
     public @NotNull MapSetup build() {
-        return null;
+        return new LobbyMapSetup(player, stage);
     }
 }
