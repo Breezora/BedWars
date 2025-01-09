@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.map.jackson.Lobby;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
@@ -63,7 +62,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            plugin.jsonMapper().writeValue(file, new Lobby(spawn, hologram));
 
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + e.getMessage());
