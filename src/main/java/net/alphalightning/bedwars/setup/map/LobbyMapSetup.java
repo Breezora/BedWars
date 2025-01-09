@@ -1,7 +1,9 @@
 package net.alphalightning.bedwars.setup.map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
@@ -12,8 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public final class LobbyMapSetup implements MapSetup, Listener {
 
@@ -21,7 +23,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     private final BedWarsPlugin plugin;
     private final ComponentLogger logger;
-    private final File file;
 
     private Player player;
     private int stage;
@@ -33,7 +34,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         this.plugin = plugin;
         this.player = player;
         this.logger = plugin.getComponentLogger();
-        this.file = new File(plugin.getDataFolder().getPath() + "/config/" + FILE_NAME);
 
         startStage(0);
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -59,9 +59,8 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     @Override
     public void saveConfiguration() {
         try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+            ObjectMapper mapper = plugin.jsonMapper();
+            mapper.writeValue(plugin.getDataFolder().toPath().resolve(FILE_NAME).toFile(), new LobbyLocations(Map.of("spawn", spawn, "hologram", hologram)));
 
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + e.getMessage());
@@ -121,7 +120,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-       if (player != null && player.equals(event.getPlayer())) {
+        if (player != null && player.equals(event.getPlayer())) {
             cancel();
         }
     }
