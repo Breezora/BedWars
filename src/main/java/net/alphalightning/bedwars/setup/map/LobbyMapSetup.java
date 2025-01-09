@@ -71,7 +71,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     private void startStage(int stage) {
-        if (this.stage > stage) {
+        if (this.stage > stage && stage == -1) {
             throw new IllegalStateException("Could not start stage " + stage + ": The new stage must be at least the current stage (" + this.stage + ") or higher.");
         }
         this.stage = stage;
