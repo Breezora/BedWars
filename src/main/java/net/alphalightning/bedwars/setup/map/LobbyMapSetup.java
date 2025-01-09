@@ -111,7 +111,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (!this.player.equals(event.getPlayer()) || !((stage == 1) || (stage == 2))) {
+        if (player == null || !player.equals(event.getPlayer()) || !((stage == 1) || (stage == 2))) {
             return;
         }
 
@@ -123,7 +123,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (this.player.equals(event.getPlayer())) {
+       if (player != null && player.equals(event.getPlayer())) {
             cancel();
         }
     }
