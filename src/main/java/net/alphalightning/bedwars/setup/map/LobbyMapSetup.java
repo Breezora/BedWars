@@ -60,10 +60,12 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     public void saveConfiguration() {
         try {
             ObjectMapper mapper = plugin.jsonMapper();
-            mapper.writeValue(plugin.getDataFolder().toPath().resolve(FILE_NAME).toFile(), new LobbyLocations(Map.of("spawn", spawn, "hologram", hologram)));
 
-        } catch (IOException e) {
-            plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + e.getMessage());
+            Map<String, Location> locations = Map.of("spawn", spawn, "hologram", hologram);
+            mapper.writeValue(plugin.getDataFolder().toPath().resolve(FILE_NAME).toFile(), new LobbyLocations(locations));
+
+        } catch (IOException exception) {
+            plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
         }
     }
 

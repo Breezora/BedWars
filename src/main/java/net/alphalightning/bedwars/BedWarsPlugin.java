@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars;
 
 import co.aikar.commands.PaperCommandManager;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -24,7 +26,9 @@ public class BedWarsPlugin extends JavaPlugin {
     private final ObjectMapper mapper = JsonMapper.builder()
             .addModule(JacksonPaper.builder().build())
             .enable(SerializationFeature.INDENT_OUTPUT) // Pretty printing
-            .build();
+            .build()
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
 
     @Override
     public void onLoad() {
