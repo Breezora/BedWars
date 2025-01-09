@@ -57,8 +57,8 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     @Override
     public void saveConfiguration() {
         try {
-            Path configDirPath = plugin.getDataFolder().toPath().resolve("/config");
-            if (Files.exists(configDirPath)) {
+            Path configDirPath = plugin.getDataFolder().toPath().resolve("config");
+            if (!Files.exists(configDirPath)) {
                 Files.createDirectory(configDirPath);
             }
 
