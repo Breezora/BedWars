@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Deprecated(forRemoval = true)
 /**
  * Utility-Klasse für das Arbeiten mit JSON-Dateien.
  */
