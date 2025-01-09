@@ -29,6 +29,11 @@ public final class LobbyMapSetup implements MapSetup {
     }
 
     @Override
+    public void cancel() {
+
+    }
+
+    @Override
     public void saveConfiguration() {
 
     }

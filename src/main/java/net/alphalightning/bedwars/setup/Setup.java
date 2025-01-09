@@ -13,6 +13,8 @@ public interface Setup {
 
     void finish();
 
+    void cancel();
+
     void saveConfiguration();
 
     static MapSetup.Builder mapBuilder(@NotNull ConfigurationType type) {
