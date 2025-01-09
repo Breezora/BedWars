@@ -1,6 +1,5 @@
 package net.alphalightning.bedwars.setup.map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
@@ -14,6 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 public final class LobbyMapSetup implements MapSetup, Listener {
@@ -56,10 +57,13 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     @Override
     public void saveConfiguration() {
         try {
-            ObjectMapper mapper = plugin.jsonMapper();
+            Path configDirPath = plugin.getDataFolder().toPath().resolve("/config");
+            if (Files.exists(configDirPath)) {
+                Files.createDirectory(configDirPath);
+            }
 
             Map<String, Location> locations = Map.of("spawn", spawn, "hologram", hologram);
-            mapper.writeValue(plugin.getDataFolder().toPath().resolve("/config/", FILE_NAME).toFile(), new LobbyLocations(locations));
+            plugin.jsonMapper().writeValue(configDirPath.resolve(FILE_NAME).toFile(), new LobbyLocations(locations));
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
