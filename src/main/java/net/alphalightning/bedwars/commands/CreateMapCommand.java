@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import net.alphalightning.bedwars.setup.Setup;
 import org.bukkit.entity.Player;
@@ -11,9 +12,13 @@ import org.bukkit.entity.Player;
 @Description("Erstellt eine neue Map (Lobby/GameMap)")
 public class CreateMapCommand extends BaseCommand {
 
+    @Dependency
+    private BedWarsPlugin plugin;
+
     @Subcommand("lobby")
     public void onCreateLobby(Player player) {
         Setup.mapBuilder(ConfigurationType.LOBBY)
+                .plugin(plugin)
                 .executor(player)
                 .build().start();
     }
@@ -21,6 +26,7 @@ public class CreateMapCommand extends BaseCommand {
     @Subcommand("gamemap")
     public void onCreateGameMap(Player player, @Name("mapName") String mapName) {
         Setup.mapBuilder(ConfigurationType.MAP)
+                .plugin(plugin)
                 .executor(player)
                 .name(mapName)
                 .build().start();
