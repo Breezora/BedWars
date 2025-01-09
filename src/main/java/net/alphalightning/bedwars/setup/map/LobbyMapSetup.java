@@ -5,7 +5,6 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,7 +21,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     private static final String FILE_NAME = "lobby.json";
 
     private final BedWarsPlugin plugin;
-    private final ComponentLogger logger;
 
     private Player player;
     private int stage;
@@ -33,7 +31,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     public LobbyMapSetup(BedWarsPlugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-        this.logger = plugin.getComponentLogger();
 
         startStage(0);
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -82,7 +79,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
             case 3 -> player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
             default -> {
                 player.sendMessage(Component.translatable("lobbysetup.cancel"));
-                logger.warn(Component.translatable("lobbysetup.cancel"));
+                plugin.getComponentLogger().warn(Component.translatable("lobbysetup.cancel"));
             }
         }
     }
