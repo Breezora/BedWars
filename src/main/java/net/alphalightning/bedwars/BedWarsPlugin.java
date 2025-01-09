@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
 
-    private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars", "messages")));
+    private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
 
     @Override
     public void onLoad() {
