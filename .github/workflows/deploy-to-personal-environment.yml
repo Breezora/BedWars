@@ -54,8 +54,7 @@ jobs:
           panel-host: ${{ env.host_url }}
           api-key: ${{ env.api_key }}
           server-id: ${{ env.server_id }}
-#          source: build/libs/*-deploy.jar
-          source: build/libs/*.jar
+          source: build/libs/*-deploy.jar
           target: /plugins/
           restart: true
 

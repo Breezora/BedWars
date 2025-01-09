@@ -52,10 +52,10 @@ tasks {
         val base = "$group.bedwars.libs"
         for ((pattern, name) in mapping) relocate(pattern, "$base.$name")
 
-//        archiveFileName = "${project.name}-$version-deploy.jar"
-//        manifest {
-//            attributes["paperweight-mappings-namespace"] = "mojang"
-//        }
+        archiveFileName = "${project.name}-$version-deploy.jar"
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "mojang"
+        }
     }
 
 //    build {
