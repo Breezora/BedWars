@@ -94,7 +94,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (this.player.equals(player) || !event.isSneaking()) {
+        if (this.player == null || !this.player.equals(player) || !event.isSneaking()) {
             return;
         }
 
