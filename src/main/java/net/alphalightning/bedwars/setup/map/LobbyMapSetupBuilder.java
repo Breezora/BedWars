@@ -1,11 +1,19 @@
 package net.alphalightning.bedwars.setup.map;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public final class LobbyMapSetupBuilder implements MapSetup.Builder {
 
+    private BedWarsPlugin plugin;
     private Player player;
+
+    @Override
+    public MapSetup.Builder plugin(BedWarsPlugin plugin) {
+        this.plugin = plugin;
+        return this;
+    }
 
     @Override
     public MapSetup.Builder executor(Player player) {
@@ -20,6 +28,9 @@ public final class LobbyMapSetupBuilder implements MapSetup.Builder {
 
     @Override
     public @NotNull MapSetup build() {
-        return new LobbyMapSetup(player);
+        if (plugin == null) {
+            throw new IllegalStateException("The plugin cannot be null");
+        }
+        return new LobbyMapSetup(plugin, player);
     }
 }
