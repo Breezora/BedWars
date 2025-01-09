@@ -53,7 +53,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @Override
     public void cancel() {
-        startStage(-1);
+        startStage(4);
         player = null;
     }
 
@@ -71,7 +71,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     private void startStage(int stage) {
-        if (this.stage > stage && stage == -1) {
+        if (this.stage > stage) {
             throw new IllegalStateException("Could not start stage " + stage + ": The new stage must be at least the current stage (" + this.stage + ") or higher.");
         }
         this.stage = stage;
