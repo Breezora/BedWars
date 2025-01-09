@@ -13,7 +13,7 @@ public final class LobbyMapSetup implements MapSetup {
     public LobbyMapSetup(Player player, int stage) {
         this.player = player;
 
-        startStage(0);
+        startStage(stage);
     }
 
     @Override
