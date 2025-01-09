@@ -24,7 +24,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     private final ComponentLogger logger;
     private final File file;
 
-    private final Player player;
+    private Player player;
     private int stage;
 
     private Location spawn;
@@ -54,6 +54,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     @Override
     public void cancel() {
         startStage(-1);
+        player = null;
     }
 
     @Override
@@ -115,6 +116,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         }
 
         if (event.signedMessage().message().equalsIgnoreCase("cancel")) {
+            event.setCancelled(true);
             cancel();
         }
     }
