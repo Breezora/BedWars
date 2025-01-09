@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
 
-    private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars", "messages")));
+    private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
 
     @Override
     public void onLoad() {
@@ -34,7 +34,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
     private void loadMessageRegistry() {
         translationRegistry.defaultLocale(Locale.GERMAN);
-        translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMAN, UTF8ResourceBundleControl.get()), true);
+        translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
     }
