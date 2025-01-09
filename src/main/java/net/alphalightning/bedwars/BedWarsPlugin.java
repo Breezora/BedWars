@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars;
 
 import co.aikar.commands.PaperCommandManager;
-import net.alphalightning.bedwars.commands.CreateCommand;
 import net.alphalightning.bedwars.commands.SetSpawnPointCommand;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
@@ -43,6 +42,5 @@ public class BedWarsPlugin extends JavaPlugin {
     public void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SetSpawnPointCommand());
-        manager.registerCommand(new CreateCommand());
     }
 }

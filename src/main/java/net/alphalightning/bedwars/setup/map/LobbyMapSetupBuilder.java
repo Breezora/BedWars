@@ -7,15 +7,6 @@ public final class LobbyMapSetupBuilder implements MapSetup.Builder {
 
     private Player player;
 
-    // Start debug
-    private int stage;
-
-    public void stage(int stage) {
-        this.stage = stage;
-    }
-
-    // End debug
-
     @Override
     public MapSetup.Builder executor(Player player) {
         this.player = player;
@@ -29,6 +20,6 @@ public final class LobbyMapSetupBuilder implements MapSetup.Builder {
 
     @Override
     public @NotNull MapSetup build() {
-        return new LobbyMapSetup(player, stage);
+        return new LobbyMapSetup(player);
     }
 }
