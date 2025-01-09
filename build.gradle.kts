@@ -58,9 +58,9 @@ tasks {
         }
     }
 
-//    build {
-//        dependsOn(shadowJar)
-//    }
+    build {
+        dependsOn(shadowJar)
+    }
 }
 
 bukkitPluginYaml {
