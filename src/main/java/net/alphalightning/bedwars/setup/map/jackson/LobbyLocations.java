@@ -22,6 +22,6 @@ public class LobbyLocations {
     }
 
     public Location get(String name) {
-        return locations.computeIfAbsent(name, k -> new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        return locations.computeIfAbsent(name, _ -> new Location(Bukkit.getWorld("world"), 0, 0, 0));
     }
 }
