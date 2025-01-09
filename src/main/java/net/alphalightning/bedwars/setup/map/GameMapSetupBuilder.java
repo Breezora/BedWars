@@ -1,18 +1,12 @@
 package net.alphalightning.bedwars.setup.map;
 
-import net.alphalightning.bedwars.setup.ConfigurationType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-final class GameMapSetupBuilder implements MapSetup.Builder {
+public final class GameMapSetupBuilder implements MapSetup.Builder {
 
     @Override
     public MapSetup.Builder executor(Player player) {
-        return null;
-    }
-
-    @Override
-    public MapSetup.Builder type(ConfigurationType type) {
         return null;
     }
 
