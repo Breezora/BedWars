@@ -7,6 +7,7 @@ import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -98,11 +99,16 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (this.player == null || !this.player.equals(player) || !event.isSneaking()) {
+        if (this.player == null || !this.player.equals(player)) {
             return;
         }
 
         Location location = player.getLocation();
+
+        if (!player.isSneaking() || location.subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
+            return;
+        }
+
         if (stage == 1) {
             spawn = location;
             startStage(2);
