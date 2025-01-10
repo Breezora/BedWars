@@ -27,6 +27,7 @@ dependencies {
 
     implementation("xyz.xenondevs.invui:invui:1.39")
     implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT")
+    implementation("de.eldoria.jacksonbukkit:paper:1.2.0")
 }
 
 tasks {
@@ -46,7 +47,8 @@ tasks {
         val mapping = mapOf(
             "xyz.xenondevs.invui" to "invui",
             "co.aikar.commands" to "acf",
-            "co.aikar.locales" to "locales"
+            "co.aikar.locales" to "locales",
+            "de.eldoria.jacksonbukkit" to "jacksonbukkit"
         )
 
         val base = "$group.bedwars.libs"

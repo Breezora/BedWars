@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.GameMapSetupBuilder;
 import net.alphalightning.bedwars.setup.map.LobbyMapSetupBuilder;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -12,6 +13,8 @@ public interface Setup {
 
     void finish();
 
+    void cancel();
+
     void saveConfiguration();
 
     static MapSetup.Builder mapBuilder(@NotNull ConfigurationType type) {
@@ -22,6 +25,8 @@ public interface Setup {
     }
 
     interface Builder<T> {
+        T plugin(BedWarsPlugin plugin);
+
         T executor(Player player);
 
         T name(String name);
