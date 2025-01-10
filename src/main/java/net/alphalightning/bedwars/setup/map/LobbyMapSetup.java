@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.map;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
+import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -62,8 +63,11 @@ public final class LobbyMapSetup implements MapSetup, Listener {
                 Files.createDirectory(configDirPath);
             }
 
-            Map<String, Location> locations = Map.of("spawn", spawn, "hologram", hologram);
-            plugin.jsonMapper().writeValue(configDirPath.resolve(FILE_NAME).toFile(), new LobbyLocations(locations));
+            SimpleJacksonLocation spawnLocation = new SimpleJacksonLocation(spawn);
+            SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
+
+            Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
+            plugin.jsonMapper().writeValue(configDirPath.resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
