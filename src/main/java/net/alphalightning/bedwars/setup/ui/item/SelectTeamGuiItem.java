@@ -27,17 +27,8 @@ public class SelectTeamGuiItem extends AbstractItem {
         PersistentDataContainer container = owner.getPersistentDataContainer();
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
-        Component name = stage == 1 ?
-                Component.translatable("mapsetup.gui.overview.select-teams.name") :
-                Component.translatable("mapsetup.gui.overview.select-teams.name.locked");
-
         return new ItemBuilder(Material.RED_BED)
-                .setName(name)
-                .addLoreLines(
-                        Component.empty(),
-                        Component.translatable("mapsetup.gui.overview.select-teams.lore"),
-                        Component.empty()
-                );
+                .setName(Component.translatable("mapsetup.gui.overview.select-teams.name"));
     }
 
     @Override
