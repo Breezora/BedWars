@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
+import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import org.bukkit.entity.Player;
 
 /**
@@ -13,6 +14,7 @@ public class OpenGuiCommand extends BaseCommand {
 
     @Default
     public void onDefault(Player player) {
+        new GameMapConfigurationOverviewGui(player).showGui();
     }
 
 }
