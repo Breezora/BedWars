@@ -13,6 +13,8 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
+import java.util.Arrays;
+
 public class SelectTeamGuiItem extends AbstractItem {
 
     private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
@@ -28,7 +30,12 @@ public class SelectTeamGuiItem extends AbstractItem {
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
         return new ItemBuilder(Material.RED_BED)
-                .setName(Component.translatable("mapsetup.gui.overview.select-teams.name"));
+                .setCustomName(Component.translatable("mapsetup.gui.overview.select-teams.name"))
+                .addLoreLines(Arrays.asList(
+                        Component.empty(),
+                        Component.translatable("mapsetup.gui.overview.select-teams.lore "),
+                        Component.empty()
+                ));
     }
 
     @Override
