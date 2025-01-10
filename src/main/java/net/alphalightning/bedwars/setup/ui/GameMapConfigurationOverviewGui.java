@@ -3,7 +3,7 @@ package net.alphalightning.bedwars.setup.ui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import xyz.xenondevs.invui.gui.PagedGui;
+import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.window.Window;
@@ -20,7 +20,7 @@ public class GameMapConfigurationOverviewGui {
     }
 
     private Single createGui() {
-        return Window.single().setGui(PagedGui.guis()
+        return Window.single().setGui(Gui.normal()
                 .setStructure(
                         ". . . . . . . . .",
                         ". . . a . b . . .",
