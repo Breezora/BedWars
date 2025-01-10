@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
+import net.alphalightning.bedwars.commands.OpenGuiCommand;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -56,6 +57,7 @@ public class BedWarsPlugin extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
 
         manager.registerCommand(new CreateMapCommand());
+        manager.registerCommand(new OpenGuiCommand()); // Debug command
     }
 
     public @NotNull ObjectMapper jsonMapper() {
