@@ -26,7 +26,7 @@ public class GameMapConfigurationOverviewGui {
                         ". . . a . b . . .",
                         ". . . . . . . . ."
                 )
-                .addIngredient('.', Item.simple(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setCustomName(Component.empty())))
+                .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS).setCustomName(Component.empty())))
                 .addIngredient('a', Item.simple(new ItemBuilder(Material.RED_BED)))
                 .addIngredient('b', Item.simple(new ItemBuilder(Material.TRIAL_SPAWNER)))
                 .build()
