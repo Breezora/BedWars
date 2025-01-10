@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui;
 
+import net.alphalightning.bedwars.setup.ui.item.SelectTeamGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class GameMapConfigurationOverviewGui {
                         ". . . . . . . . ."
                 )
                 .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setCustomName(Component.empty())))
-                .addIngredient('a', Item.simple(new ItemBuilder(Material.RED_BED)))
+                .addIngredient('a', new SelectTeamGuiItem(owner))
                 .addIngredient('b', Item.simple(new ItemBuilder(Material.TRIAL_SPAWNER)))
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.overview.title"));
