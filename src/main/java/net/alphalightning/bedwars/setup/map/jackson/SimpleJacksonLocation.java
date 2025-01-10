@@ -23,7 +23,7 @@ public class SimpleJacksonLocation {
     }
 
     public SimpleJacksonLocation(Location location) {
-        this(location.getWorld().getUID(), location.getWorld().getName(), location.x(), location.y(), location.z());
+        this(location.getWorld().getUID(), location.getWorld().getName(), location.getBlockX() + 0.5D, location.y(), location.getBlockZ() + 0.5D);
     }
 
     public SimpleJacksonLocation() {
