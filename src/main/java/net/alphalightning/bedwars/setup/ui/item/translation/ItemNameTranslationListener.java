@@ -19,7 +19,7 @@ public final class ItemNameTranslationListener implements PacketListener {
     public void onPacketSend(PacketSendEvent event) {
         Player player = event.getPlayer();
 
-        if (event.getPacketType() != PacketType.Play.Server.SET_SLOT) {
+        if (event.getPacketType() != PacketType.Play.Server.WINDOW_ITEMS) {
             return;
         }
 
