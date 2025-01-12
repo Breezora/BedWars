@@ -13,7 +13,6 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases")
     maven("https://repo.aikar.co/content/groups/aikar/")
-    maven("https://repo.codemc.io/repository/maven-releases/")
 
     maven("https://repo.breezora.net/intern") {
         name = "breezoraRepositoryIntern"
@@ -26,7 +25,6 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.6")
     implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT")
