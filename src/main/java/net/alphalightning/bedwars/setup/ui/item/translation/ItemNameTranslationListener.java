@@ -29,7 +29,6 @@ public final class ItemNameTranslationListener implements PacketListener {
         List<ItemStack> items = packet.getItems();
 
         if (items.isEmpty()) {
-            plugin.getLogger().info("No items present in pac-ket");
             return;
         }
 
@@ -45,9 +44,9 @@ public final class ItemNameTranslationListener implements PacketListener {
 
     private void changeItemName(ItemStack item) {
         NBTCompound nbt = getOrCreateNBTCompound(item.getNBT());
-        NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("display"));
+        NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("custom_name"));
 
-        plugin.getLogger().info(display.getStringTagValueOrDefault("display", "empty"));
+        plugin.getLogger().info(display.getStringTagValueOrDefault("custom_name", "empty"));
     }
 
     private NBTCompound getOrCreateNBTCompound(NBTCompound nbt) {
