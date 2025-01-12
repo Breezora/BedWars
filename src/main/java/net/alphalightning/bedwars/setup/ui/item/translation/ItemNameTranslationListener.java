@@ -42,6 +42,10 @@ public final class ItemNameTranslationListener implements PacketListener {
         }
     }
 
+    /*
+     Optional[TextComponentImpl{content="Test", style=StyleImpl{obfuscated=false, bold=false, strikethrough=false, underlined=false, italic=false, color=NamedTextColor{name="white", value="#ffffff"}, clickEvent=null, hoverEvent=null, insertion=null, font=null}, children=[]}], StaticComponentType[minecraft:custom_data]=Optional[Compound{{PublicBukkitValues=Compound{{bedwars:slot=Byte(12)}}}}]}]
+     */
+
     private void changeItemName(ItemStack item) {
         NBTCompound nbt = getOrCreateNBTCompound(item.getNBT());
         NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("minecraft:custom_name"));
