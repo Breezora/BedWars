@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
+import com.github.retrooper.packetevents.protocol.nbt.NBTCompound;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems;
 import net.alphalightning.bedwars.BedWarsPlugin;
@@ -36,9 +37,20 @@ public final class ItemNameTranslationListener implements PacketListener {
             if (!item.is(ItemTypes.RED_BED)) {
                 continue;
             }
-            plugin.getLogger().info("Found red bed in packet");
-        }
 
-        plugin.getLogger().info("Updated packet");
+            changeItemName(item);
+            plugin.getLogger().info("Updated packet");
+        }
+    }
+
+    private void changeItemName(ItemStack item) {
+        NBTCompound nbt = getOrCreateNBTCompound(item.getNBT());
+        NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("display"));
+
+        plugin.getLogger().info(display.getStringTagValueOrDefault("display", "empty"));
+    }
+
+    private NBTCompound getOrCreateNBTCompound(NBTCompound nbt) {
+        return nbt != null ? nbt : new NBTCompound();
     }
 }
