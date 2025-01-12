@@ -6,9 +6,13 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import de.eldoria.jacksonbukkit.JacksonPaper;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
+import net.alphalightning.bedwars.setup.ui.item.translation.ItemNameTranslationListener;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -32,18 +36,28 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        loadPacketEvents();
         loadMessageRegistry();
     }
 
     @Override
     public void onEnable() {
+        PacketEvents.getAPI().init();
+
         registerCommands();
         getLogger().info("BedWars has been enabled");
     }
 
     @Override
     public void onDisable() {
+        PacketEvents.getAPI().terminate();
         getLogger().info("BedWars has been disabled");
+    }
+
+    private void loadPacketEvents() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+        PacketEvents.getAPI().getEventManager().registerListener(new ItemNameTranslationListener(this), PacketListenerPriority.NORMAL);
     }
 
     private void loadMessageRegistry() {
