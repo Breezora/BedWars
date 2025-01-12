@@ -29,8 +29,8 @@ public class SelectTeamGuiItem extends AbstractItem {
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
         Component display = GlobalTranslator.render(Component.translatable("mapsetup.gui.overview.select-teams.name.locked"), viewer.locale());
-
-        return new ItemBuilder(Material.RED_BED).setName(display);
+        return new ItemBuilder(Material.RED_BED)
+                .setName(display);
     }
 
     @Override
