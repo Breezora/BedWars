@@ -1,6 +1,5 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -27,7 +26,7 @@ public class SelectTeamGuiItem extends AbstractItem {
         PersistentDataContainer container = owner.getPersistentDataContainer();
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
-        return new ItemBuilder(Material.RED_BED).setName(Component.translatable("mapsetup.gui.overview.title"));
+        return new ItemBuilder(Material.RED_BED).setName("Test");
     }
 
     @Override
