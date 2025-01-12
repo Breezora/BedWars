@@ -27,7 +27,7 @@ public class GameMapConfigurationOverviewGui {
                         ". . . a . b . . .",
                         ". . . . . . . . ."
                 )
-                .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.translatable("mapsetup.gui.overview.title"))))
+                .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.empty())))
                 .addIngredient('a', new SelectTeamGuiItem(owner))
                 .addIngredient('b', Item.simple(new ItemBuilder(Material.TRIAL_SPAWNER)))
                 .build()
