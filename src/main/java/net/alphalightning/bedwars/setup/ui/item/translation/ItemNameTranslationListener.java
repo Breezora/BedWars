@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.ui.item.translation;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
+import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
 import com.github.retrooper.packetevents.protocol.nbt.NBTCompound;
 import com.github.retrooper.packetevents.protocol.nbt.NBTString;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -27,9 +28,9 @@ public final class ItemNameTranslationListener implements PacketListener {
         }
 
         WrapperPlayServerWindowItems packet = new WrapperPlayServerWindowItems(event);
-        ItemStack item = packet.readItemStackModern();
+        ItemStack item = packet.readItemStack();
 
-        if (item == null) {
+        if (!item.is(ItemTypes.RED_BED)) {
             return;
         }
 
