@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -27,7 +28,9 @@ public class SelectTeamGuiItem extends AbstractItem {
         PersistentDataContainer container = owner.getPersistentDataContainer();
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
-        return new ItemBuilder(Material.RED_BED).setName(MiniMessage.miniMessage().deserialize("<color:#92ff5c>Test"));
+        Component display = GlobalTranslator.render(Component.translatable("mapsetup.gui.overview.select-teams.name.locked"), viewer.locale());
+
+        return new ItemBuilder(Material.RED_BED).setName(display);
     }
 
     @Override
