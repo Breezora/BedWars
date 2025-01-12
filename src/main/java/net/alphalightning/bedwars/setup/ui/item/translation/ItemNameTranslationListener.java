@@ -44,9 +44,9 @@ public final class ItemNameTranslationListener implements PacketListener {
 
     private void changeItemName(ItemStack item) {
         NBTCompound nbt = getOrCreateNBTCompound(item.getNBT());
-        NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("custom_name"));
+        NBTCompound display = getOrCreateNBTCompound(nbt.getCompoundTagOrNull("minecraft:custom_name"));
 
-        plugin.getLogger().info(display.getStringTagValueOrDefault("custom_name", "empty"));
+        plugin.getLogger().info(display.getStringTagValueOrDefault("minecraft:custom_name", "empty"));
     }
 
     private NBTCompound getOrCreateNBTCompound(NBTCompound nbt) {
