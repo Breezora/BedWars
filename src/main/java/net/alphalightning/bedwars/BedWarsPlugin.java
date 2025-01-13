@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.retrooper.packetevents.PacketEvents;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
@@ -38,15 +37,12 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        PacketEvents.getAPI().init();
-
         registerCommands();
         getLogger().info("BedWars has been enabled");
     }
 
     @Override
     public void onDisable() {
-        PacketEvents.getAPI().terminate();
         getLogger().info("BedWars has been disabled");
     }
 
