@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui;
 
+import net.alphalightning.bedwars.setup.ui.item.ConfigureItemSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.SelectTeamGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -28,8 +29,8 @@ public class GameMapConfigurationOverviewGui {
                         ". . . . . . . . ."
                 )
                 .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.empty())))
-                .addIngredient('a', new SelectTeamGuiItem(owner))
-                .addIngredient('b', Item.simple(new ItemBuilder(Material.TRIAL_SPAWNER)))
+                .addIngredient('a', new SelectTeamGuiItem())
+                .addIngredient('b', new ConfigureItemSpawnerGuiItem())
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.overview.title"));
     }
