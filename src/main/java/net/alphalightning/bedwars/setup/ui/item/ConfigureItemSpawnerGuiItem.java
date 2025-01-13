@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -38,7 +39,7 @@ public class ConfigureItemSpawnerGuiItem extends AbstractItem {
                         GlobalTranslator.render(lore, viewer.locale()),
                         Component.empty()
                 ))
-                .hideTooltip(true);
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
     }
 
     @Override
