@@ -23,7 +23,7 @@ public class TeamGuiItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        return fromColor();
+        return fromColor().clone();
     }
 
     @Override
