@@ -28,7 +28,10 @@ public class GameMapConfigurationOverviewGui {
                         ". . . a . b . . .",
                         ". . . . . . . . ."
                 )
-                .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.empty())))
+                .addIngredient('.', Item.simple(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                        .setName(Component.empty())
+                        .hideTooltip(true))
+                )
                 .addIngredient('a', new SelectTeamGuiItem())
                 .addIngredient('b', new ConfigureItemSpawnerGuiItem())
                 .build()
