@@ -37,7 +37,8 @@ public class ConfigureItemSpawnerGuiItem extends AbstractItem {
                         Component.empty(),
                         GlobalTranslator.render(lore, viewer.locale()),
                         Component.empty()
-                ));
+                ))
+                .hideTooltip(true);
     }
 
     @Override
