@@ -96,7 +96,7 @@ public class TeamGuiItem extends AbstractItem {
                 display = Component.translatable("mapsetup.gui.select-teams.magenta");
                 builder.setMaterial(Material.MAGENTA_WOOL);
             }
-            case 0xffa1f6 -> {
+            case 0xff6ef8 -> {
                 display = Component.translatable("mapsetup.gui.select-teams.pink");
                 builder.setMaterial(Material.PINK_WOOL);
             }

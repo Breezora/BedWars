@@ -48,7 +48,7 @@ public class SelectTeamsGui {
                 .addIngredient('m', new TeamGuiItem(0x5555ff, owner))
                 .addIngredient('n', new TeamGuiItem(0xaa00aa, owner))
                 .addIngredient('o', new TeamGuiItem(0xff24fb, owner))
-                .addIngredient('p', new TeamGuiItem(0xffa1f6, owner))
+                .addIngredient('p', new TeamGuiItem(0xff6ef8, owner))
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.select-teams.title"));
     }
