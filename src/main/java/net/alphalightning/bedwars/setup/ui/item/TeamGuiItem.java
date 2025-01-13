@@ -32,7 +32,7 @@ public class TeamGuiItem extends AbstractItem {
     }
 
     private ItemBuilder fromColor() {
-        ItemBuilder builder = new ItemBuilder(Material.AIR); // Default empty slot if no valid hex-int was supplied
+        ItemBuilder builder = new ItemBuilder(Material.BARRIER); // Default empty slot if no valid hex-int was supplied
         Component display = Component.empty();
 
         switch (color) {
