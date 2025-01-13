@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.ui;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,10 +34,10 @@ public class ConfigureItemSpawnerGui {
                 )
                 .addIngredient('a', Item.simple(new ItemBuilder(Material.EMERALD_BLOCK)))
                 .addIngredient('b', Item.simple(new ItemBuilder(Material.DIAMOND_BLOCK)))
-                .addIngredient('c', Item.simple(new ItemBuilder(Material.ARROW)))
+                .addIngredient('c', new ReturnToOverviewGuiItem())
                 .addIngredient('d', Item.simple(new ItemBuilder(Material.GREEN_BUNDLE).unset(DataComponentTypes.BUNDLE_CONTENTS)))
                 .build()
-        ).setTitle(Component.translatable("mapsetup.gui.overview.title"));
+        ).setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"));
     }
 
     public void showGui() {
