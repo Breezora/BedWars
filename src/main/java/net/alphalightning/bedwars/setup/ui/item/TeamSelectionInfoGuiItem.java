@@ -21,9 +21,12 @@ public class TeamSelectionInfoGuiItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
+        Component placeholder = Component.text(0); // Placeholder. Needs to be replaced with logic to get the selected amount of teams
+
         Component display = Component.translatable(selected ?
                 "mapsetup.gui.select-teams.selection-info.selected" :
-                "mapsetup.gui.select-teams.selection-info.unselected"
+                "mapsetup.gui.select-teams.selection-info.unselected",
+                placeholder
         );
 
         return new ItemBuilder(Material.NAME_TAG)
