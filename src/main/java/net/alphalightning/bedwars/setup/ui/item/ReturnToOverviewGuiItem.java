@@ -17,7 +17,7 @@ public class ReturnToOverviewGuiItem extends AbstractItem {
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("mapsetup.gui.configure.back");
 
-        return new ItemBuilder(Material.RED_BED)
+        return new ItemBuilder(Material.ARROW)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
     }
 
