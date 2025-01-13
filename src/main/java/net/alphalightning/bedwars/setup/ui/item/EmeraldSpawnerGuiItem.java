@@ -17,7 +17,7 @@ public class EmeraldSpawnerGuiItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component placeholder = Component.text("0"); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
+        Component placeholder = Component.text(0); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
 
         Component display = Component.translatable("mapsetup.gui.configure-spawner.emerald", placeholder);
         Component loreAdd = Component.translatable("mapsetup.gui.configure-spawner.add");
