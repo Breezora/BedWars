@@ -19,15 +19,10 @@ import java.util.Arrays;
 public class SelectTeamGuiItem extends AbstractItem {
 
     private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
-    private final Player owner;
-
-    public SelectTeamGuiItem(Player owner) {
-        this.owner = owner;
-    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        PersistentDataContainer container = owner.getPersistentDataContainer();
+        PersistentDataContainer container = viewer.getPersistentDataContainer();
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
         Component display = Component.translatable(stage == 1 ?
