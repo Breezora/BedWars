@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.ui;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.alphalightning.bedwars.setup.ui.item.DiamondSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.EmeraldSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
 import net.kyori.adventure.text.Component;
@@ -34,7 +35,7 @@ public class ConfigureItemSpawnerGui {
                         .hideTooltip(true))
                 )
                 .addIngredient('a', new EmeraldSpawnerGuiItem())
-                .addIngredient('b', Item.simple(new ItemBuilder(Material.DIAMOND_BLOCK)))
+                .addIngredient('b', new DiamondSpawnerGuiItem())
                 .addIngredient('c', new ReturnToOverviewGuiItem())
                 .addIngredient('d', Item.simple(new ItemBuilder(Material.GREEN_BUNDLE).unset(DataComponentTypes.BUNDLE_CONTENTS)))
                 .build()
