@@ -35,7 +35,7 @@ public class TeamGuiItem extends AbstractItem {
         ItemBuilder builder = new ItemBuilder(Material.BARRIER); // Default empty slot if no valid hex-int was supplied
         Component display = Component.empty();
 
-        switch (color) {
+        switch (color) { // Colors are default hex encoded int values
             case 0xffffff -> {
                 display = Component.translatable("mapsetup.gui.select-teams.white");
                 builder.setMaterial(Material.WHITE_WOOL);
