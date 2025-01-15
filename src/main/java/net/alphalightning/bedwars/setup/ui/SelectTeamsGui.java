@@ -1,6 +1,9 @@
 package net.alphalightning.bedwars.setup.ui;
 
-import net.alphalightning.bedwars.setup.ui.item.*;
+import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.SaveConfigurationGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.TeamGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.TeamSelectionInfoGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
@@ -27,8 +30,6 @@ public class SelectTeamsGui {
                         ". . . . # m n o p",
                         "< # # # # # # # >"
                 )
-                .addIngredient('.', new BackgroundGuiItem())
-                .addIngredient('#', new DividerGuiItem())
                 .addIngredient('+', new TeamSelectionInfoGuiItem(true))
                 .addIngredient('-', new TeamSelectionInfoGuiItem(false))
                 .addIngredient('<', new ReturnToOverviewGuiItem())

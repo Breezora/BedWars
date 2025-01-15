@@ -1,6 +1,9 @@
 package net.alphalightning.bedwars.setup.ui;
 
-import net.alphalightning.bedwars.setup.ui.item.*;
+import net.alphalightning.bedwars.setup.ui.item.DiamondSpawnerGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.EmeraldSpawnerGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.SaveConfigurationGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
@@ -24,7 +27,6 @@ public class ConfigureItemSpawnerGui {
                         ". . . a . b . . .",
                         "c . . . . . . . d"
                 )
-                .addIngredient('.', new BackgroundGuiItem())
                 .addIngredient('a', new EmeraldSpawnerGuiItem())
                 .addIngredient('b', new DiamondSpawnerGuiItem())
                 .addIngredient('c', new ReturnToOverviewGuiItem())
