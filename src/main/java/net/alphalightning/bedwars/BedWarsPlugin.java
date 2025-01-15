@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
+import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
+import net.alphalightning.bedwars.setup.ui.item.DividerGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -16,6 +18,7 @@ import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import xyz.xenondevs.invui.gui.Structure;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -38,6 +41,7 @@ public class BedWarsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         registerCommands();
+        registerGuiIngredients();
         getLogger().info("BedWars has been enabled");
     }
 
@@ -58,6 +62,11 @@ public class BedWarsPlugin extends JavaPlugin {
 
         manager.registerCommand(new CreateMapCommand());
         manager.registerCommand(new OpenGuiCommand()); // Debug command
+    }
+
+    private void registerGuiIngredients() {
+        Structure.addGlobalIngredient('.', BackgroundGuiItem::new);
+        Structure.addGlobalIngredient('#', DividerGuiItem::new);
     }
 
     public @NotNull ObjectMapper jsonMapper() {
