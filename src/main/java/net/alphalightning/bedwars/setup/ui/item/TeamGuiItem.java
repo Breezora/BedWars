@@ -15,6 +15,9 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.List;
 
+import static net.alphalightning.bedwars.setup.ui.item.TeamGuiItem.Direction.DESELECTION;
+import static net.alphalightning.bedwars.setup.ui.item.TeamGuiItem.Direction.SELECTION;
+
 public class TeamGuiItem extends AbstractBoundItem {
 
     private final int color;
@@ -57,11 +60,8 @@ public class TeamGuiItem extends AbstractBoundItem {
             return;
         }
 
-        Gui gui = super.getGui();
-
         updateTeamSelection();
-        transfer(gui);
-        moveUp(gui, click.getSlot());
+        refresh(unselectedTeams.contains(this) ? SELECTION : DESELECTION, click);
 
         notifyWindows();
     }
@@ -164,8 +164,21 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void transfer(Gui gui) {
-        for (int slot : selectedSlots) {
+    private void refresh(Direction direction, Click click) {
+        Gui gui = super.getGui();
+
+        if (direction == SELECTION) {
+            transfer(gui, selectedSlots);
+            moveUp(gui, click, selectedSlots, selectedTeams);
+            return;
+        }
+
+        transfer(gui, unselectedSlots);
+        moveUp(gui, click, unselectedSlots, unselectedTeams);
+    }
+
+    private void transfer(Gui gui, int[] targetSlots) {
+        for (int slot : targetSlots) {
             if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
                 continue;
             }
@@ -176,16 +189,16 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void moveUp(Gui gui, int clickedSlot) {
-        int index = findIndex(unselectedSlots, clickedSlot);
-        int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
+    private void moveUp(Gui gui, Click click, int[] targetSlots, List<TeamGuiItem> group) {
+        int index = findIndex(targetSlots, click.getSlot());
+        int lowest = findLastUsedSlotIndex(gui, targetSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            if (i >= unselectedTeams.size()) {
-                gui.setItem(unselectedSlots[i], new BackgroundGuiItem());
+            if (i >= group.size()) {
+                gui.setItem(targetSlots[i], new BackgroundGuiItem());
 
             } else {
-                gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
+                gui.setItem(targetSlots[i], group.get(i));
             }
         }
         gui.notifyWindows();
@@ -211,4 +224,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         return -1;
     }
 
+    enum Direction {
+        SELECTION, DESELECTION
+    }
 }
