@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.ui.item;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -137,25 +138,11 @@ public class TeamGuiItem extends AbstractBoundItem {
 
     private void updateTeamSelectionInfoItem(@NotNull Gui gui) {
         if (!(gui.getItem(7) instanceof TeamSelectionInfoGuiItem item)) {
+            Bukkit.getLogger().warning("Item at slot 7 is not a TeamSelectionInfoGuiItem");
             return;
         }
 
-        ItemProvider itemProvider = item.getItemProvider(viewer);
-        if (!(itemProvider instanceof ItemBuilder builder)) {
-            return;
-        }
-
-        Component display;
-        if (item.selected()) {
-            Component placeholder = Component.text(selectedTeams.size());
-            display = Component.translatable("mapsetup.gui.select-teams.selection-info.selected", placeholder);
-
-        } else {
-            Component placeholder = Component.text(unselectedTeams.size());
-            display = Component.translatable("mapsetup.gui.select-teams.selection-info.unselected", placeholder);
-        }
-
-        builder.setName(GlobalTranslator.render(display, viewer.locale()));
+        Bukkit.getLogger().info("Works fine");
     }
 
 }
