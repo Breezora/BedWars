@@ -23,6 +23,19 @@ public class TeamGuiItem extends AbstractBoundItem {
     private final List<TeamGuiItem> selectedTeams;
     private final List<TeamGuiItem> unselectedTeams;
 
+    private final int[] selectedSlots = {
+            9, 10, 11, 12,
+            18, 19, 20, 21,
+            27, 28, 29, 30,
+            36, 37, 38, 39
+    };
+    private final int[] unselectedSlots = {
+            14, 15, 16, 17,
+            23, 24, 25, 26,
+            32, 33, 34, 35,
+            41, 42, 43, 44
+    };
+
     public TeamGuiItem(int color, Player viewer) {
         this.color = color;
         this.viewer = viewer;
@@ -44,7 +57,11 @@ public class TeamGuiItem extends AbstractBoundItem {
             return;
         }
 
+        Gui gui = super.getGui();
+
         updateTeamSelection();
+        transfer(gui, click.getSlot());
+
         notifyWindows();
     }
 
@@ -143,6 +160,18 @@ public class TeamGuiItem extends AbstractBoundItem {
                 continue;
             }
             item.notifyWindows();
+        }
+    }
+
+    private void transfer(Gui gui, int clickedSlot) {
+        for (int slot : selectedSlots) {
+            if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
+                continue;
+            }
+
+            gui.setItem(clickedSlot, new BackgroundGuiItem()); // Move all items after clicked item here
+            gui.setItem(slot, this);
+            gui.notifyWindows();
         }
     }
 
