@@ -38,4 +38,7 @@ public class TeamSelectionInfoGuiItem extends AbstractItem {
         // No interaction logic is needed
     }
 
+    public boolean selected() {
+        return selected;
+    }
 }

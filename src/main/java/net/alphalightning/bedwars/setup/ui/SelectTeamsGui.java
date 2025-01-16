@@ -10,7 +10,13 @@ import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.window.Window;
 import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SelectTeamsGui {
+
+    private static final List<TeamGuiItem> SELECTED_TEAMS = new ArrayList<>();
+    private static final List<TeamGuiItem> UNSELECTED_TEAMS = new ArrayList<>();
 
     private final Player owner;
     private final Single gui;
@@ -56,6 +62,14 @@ public class SelectTeamsGui {
 
     public void showGui() {
         gui.open(owner);
+    }
+
+    public static List<TeamGuiItem> selectedTeams() {
+        return SELECTED_TEAMS;
+    }
+
+    public static List<TeamGuiItem> unselectedTeams() {
+        return UNSELECTED_TEAMS;
     }
 
 }

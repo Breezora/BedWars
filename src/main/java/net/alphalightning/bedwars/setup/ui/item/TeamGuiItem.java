@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -12,14 +13,24 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
+import java.util.List;
+
 public class TeamGuiItem extends AbstractBoundItem {
 
     private final int color;
     private final Player viewer;
 
+    private final List<TeamGuiItem> selectedTeams;
+    private final List<TeamGuiItem> unselectedTeams;
+
     public TeamGuiItem(int color, Player viewer) {
         this.color = color;
         this.viewer = viewer;
+
+        this.selectedTeams = SelectTeamsGui.selectedTeams();
+        this.unselectedTeams = SelectTeamsGui.unselectedTeams();
+
+        unselectedTeams.add(this);
     }
 
     @Override
@@ -33,13 +44,11 @@ public class TeamGuiItem extends AbstractBoundItem {
             return;
         }
 
-        Gui gui = super.getGui();
-        gui.setItem(9, this);
-
+        updateTeamSelection(super.getGui());
         notifyWindows();
     }
 
-    private ItemBuilder fromColor() {
+    private @NotNull ItemBuilder fromColor() {
         ItemBuilder builder = new ItemBuilder(Material.BARRIER); // Default empty slot if no valid hex-int was supplied
         Component display = Component.empty();
 
@@ -111,6 +120,42 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         return builder.setName(GlobalTranslator.render(display, viewer.locale()));
+    }
+
+    private void updateTeamSelection(@NotNull Gui gui) {
+        if (unselectedTeams.contains(this)) {
+            unselectedTeams.remove(this);
+            selectedTeams.add(this);
+
+        } else {
+            selectedTeams.remove(this);
+            unselectedTeams.add(this);
+        }
+
+        updateTeamSelectionInfoItem(gui);
+    }
+
+    private void updateTeamSelectionInfoItem(@NotNull Gui gui) {
+        if (!(gui.getItem(7) instanceof TeamSelectionInfoGuiItem item)) {
+            return;
+        }
+
+        ItemProvider itemProvider = item.getItemProvider(viewer);
+        if (!(itemProvider instanceof ItemBuilder builder)) {
+            return;
+        }
+
+        Component display;
+        if (item.selected()) {
+            Component placeholder = Component.text(selectedTeams.size());
+            display = Component.translatable("mapsetup.gui.select-teams.selection-info.selected", placeholder);
+
+        } else {
+            Component placeholder = Component.text(unselectedTeams.size());
+            display = Component.translatable("mapsetup.gui.select-teams.selection-info.unselected", placeholder);
+        }
+
+        builder.setName(GlobalTranslator.render(display, viewer.locale()));
     }
 
 }
