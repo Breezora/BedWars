@@ -36,10 +36,6 @@ public class SelectTeamsGui {
                         ". . . . # m n o p",
                         "< # # # # # # # >"
                 )
-                .addIngredient('+', new TeamSelectionInfoGuiItem(true))
-                .addIngredient('-', new TeamSelectionInfoGuiItem(false))
-                .addIngredient('<', new ReturnToOverviewGuiItem())
-                .addIngredient('>', new SaveConfigurationGuiItem())
                 .addIngredient('a', new TeamGuiItem(0xffffff, owner))
                 .addIngredient('b', new TeamGuiItem(0xaaaaaa, owner))
                 .addIngredient('c', new TeamGuiItem(0x555555, owner))
@@ -56,6 +52,10 @@ public class SelectTeamsGui {
                 .addIngredient('n', new TeamGuiItem(0xaa00aa, owner))
                 .addIngredient('o', new TeamGuiItem(0xff24fb, owner))
                 .addIngredient('p', new TeamGuiItem(0xff6ef8, owner))
+                .addIngredient('+', new TeamSelectionInfoGuiItem(true)) // Team selection info items have to be added after the team gui items to display the correct amount of (un)selected teams
+                .addIngredient('-', new TeamSelectionInfoGuiItem(false))
+                .addIngredient('<', new ReturnToOverviewGuiItem())
+                .addIngredient('>', new SaveConfigurationGuiItem())
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.select-teams.title"));
     }
