@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.ui.item;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -58,9 +59,11 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         Gui gui = super.getGui();
+        int clickedSlot = click.getSlot();
 
         updateTeamSelection();
-        transfer(gui, click.getSlot());
+        transfer(gui, clickedSlot);
+        moveUp(clickedSlot);
 
         notifyWindows();
     }
@@ -174,6 +177,30 @@ public class TeamGuiItem extends AbstractBoundItem {
             gui.notifyWindows();
             return;
         }
+    }
+
+    private void moveUp(int clickedSlot) {
+        /*
+
+        klicked slot nehmen
+        slot im array suchen
+        index nehmen und entries +1 in index-1 setzen (außer beim letzten)
+        letzter entry durch bachground ersetzen
+
+         */
+        int index = findIndex(unselectedSlots, clickedSlot);
+        Bukkit.getLogger().info("Slot befindet sich an Index " + index);
+
+    }
+
+    private int findIndex(int[] array, int value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != value) {
+                continue;
+            }
+            return i;
+        }
+        return -1;
     }
 
 }
