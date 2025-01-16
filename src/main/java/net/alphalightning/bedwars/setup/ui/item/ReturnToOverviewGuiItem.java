@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -17,13 +18,12 @@ public class ReturnToOverviewGuiItem extends AbstractItem {
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("mapsetup.gui.configure.back");
 
-        return new ItemBuilder(Material.ARROW)
-                .setName(GlobalTranslator.render(display, viewer.locale()));
+        return new ItemBuilder(Material.ARROW).setName(GlobalTranslator.render(display, viewer.locale()));
     }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        //TODO: Run click logic (open new gui)
+        new GameMapConfigurationOverviewGui(player).showGui();
     }
 
 }
