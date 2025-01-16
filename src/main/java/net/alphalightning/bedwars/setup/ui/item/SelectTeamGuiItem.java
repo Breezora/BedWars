@@ -1,6 +1,5 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
-import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -43,6 +42,6 @@ public class SelectTeamGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        new SelectTeamsGui(player).showGui();
+        //TODO: Run click logic (open new gui)
     }
 }
