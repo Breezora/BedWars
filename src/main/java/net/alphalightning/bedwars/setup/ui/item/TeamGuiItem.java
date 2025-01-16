@@ -137,6 +137,36 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void updateTeamSelectionInfoItem(@NotNull Gui gui, boolean selected) {
+        if (selected) {
+            if (!(gui.getItem(1) instanceof TeamSelectionInfoGuiItem item)) {
+                return;
+            }
+
+            ItemProvider provider = item.getItemProvider(viewer);
+            if (!(provider instanceof ItemBuilder builder)) {
+                return;
+            }
+
+            Component placeholder = Component.text(selectedTeams.size());
+            Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.selected", placeholder);
+
+            builder.setName(GlobalTranslator.render(component, viewer.locale()));
+
+        } else {
+            if (!(gui.getItem(7) instanceof TeamSelectionInfoGuiItem item)) {
+                return;
+            }
+
+            ItemProvider provider = item.getItemProvider(viewer);
+            if (!(provider instanceof ItemBuilder builder)) {
+                return;
+            }
+
+            Component placeholder = Component.text(unselectedTeams.size());
+            Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.unselected", placeholder);
+
+            builder.setName(GlobalTranslator.render(component, viewer.locale()));
+        }
     }
 
 }
