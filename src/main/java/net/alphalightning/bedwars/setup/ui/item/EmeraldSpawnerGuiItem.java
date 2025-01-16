@@ -17,7 +17,6 @@ import java.util.Arrays;
 public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
 
     private static final int MAX_COUNT = 10;
-
     private int count;
 
     public EmeraldSpawnerGuiItem() {
@@ -26,9 +25,7 @@ public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component placeholder = Component.text(count); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
-
-        Component display = Component.translatable("mapsetup.gui.configure-spawner.emerald", placeholder);
+        Component display = Component.translatable("mapsetup.gui.configure-spawner.emerald", Component.text(count));
         Component loreAdd = Component.translatable("mapsetup.gui.configure-spawner.add");
         Component loreLower = Component.translatable("mapsetup.gui.configure-spawner.lower");
 
@@ -50,6 +47,7 @@ public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
                 return;
             }
             count++;
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
 
         } else if (clickType == ClickType.RIGHT) {
             if (count - 1 < 0) {
@@ -57,7 +55,7 @@ public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
                 return;
             }
             count--;
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
         }
-        notifyWindows();
     }
 }
