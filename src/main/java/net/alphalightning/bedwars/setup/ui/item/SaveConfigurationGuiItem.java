@@ -42,22 +42,19 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
 
         Bukkit.getLogger().info("Stage: " + stage);
 
-        if (stage == 1) {
+        if (stage == 1) { // Team selection stage
             int size = SelectTeamsGui.selectedTeams().size();
-
-            Bukkit.getLogger().info("Size: " + size);
-
             if (size < 2) {
                 player.sendMessage(Component.translatable("mapsetup.error.invalid-team-configuration", Component.text(size)));
                 return;
             }
+            new GameMapConfigurationOverviewGui(player).showGui();
+
+        } else if (stage == 2) { // Item spawner configuration stage
+            player.closeInventory();
         }
 
-        //TODO: Error handling für spawner adden
-
         container.set(key, PersistentDataType.INTEGER, ++stage);
-        new GameMapConfigurationOverviewGui(player).showGui();
-
         //TODO: Setup nehmen und neue stage starten
     }
 
