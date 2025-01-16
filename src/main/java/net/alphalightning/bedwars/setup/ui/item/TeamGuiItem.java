@@ -144,7 +144,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.selected", placeholder);
 
             builder.setName(GlobalTranslator.render(component, viewer.locale()));
-            Bukkit.getLogger().info("Updated selected teams info");
+            Bukkit.getLogger().info("Updated selected teams info " + SelectTeamsGui.selectedTeams().size());
 
         } else {
             if (!(gui.getItem(7) instanceof TeamSelectionInfoGuiItem item)) {
@@ -160,7 +160,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.unselected", placeholder);
 
             builder.setName(GlobalTranslator.render(component, viewer.locale()));
-            Bukkit.getLogger().info("Updated unselected teams info");
+            Bukkit.getLogger().info("Updated unselected teams info " + SelectTeamsGui.unselectedTeams().size());
         }
     }
 
