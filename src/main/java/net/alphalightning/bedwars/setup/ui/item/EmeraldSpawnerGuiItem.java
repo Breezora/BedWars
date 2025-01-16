@@ -52,7 +52,7 @@ public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
             count++;
 
         } else if (clickType == ClickType.RIGHT) {
-            if (count - 1 <= 0) {
+            if (count - 1 < 0) {
                 player.sendMessage(Component.translatable("mapsetup.error.min-emerald-spawner"));
                 return;
             }
