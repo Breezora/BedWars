@@ -29,11 +29,13 @@ public class OpenGuiCommand extends BaseCommand {
 
     @Subcommand("itemspawner")
     public void onItemSpawner(Player player) {
+        new StageSimulation(plugin, player, 2);
         new ConfigureItemSpawnerGui(player).showGui();
     }
 
     @Subcommand("teams")
     public void onTeams(Player player) {
+        new StageSimulation(plugin, player, 1);
         new SelectTeamsGui(player).showGui();
     }
 
