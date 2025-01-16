@@ -167,11 +167,15 @@ public class TeamGuiItem extends AbstractBoundItem {
         if (selectedTeams.contains(this)) { // Item was selected --> move from right to left
             transfer(gui, selectedSlots);
             moveUp(gui, click, unselectedSlots, unselectedTeams);
+            return;
         }
+
+        transfer(gui, unselectedSlots);
+        moveUp(gui, click, selectedSlots, selectedTeams);
     }
 
     private void transfer(Gui gui, int[] targetSlots) {
-        for (int slot : selectedSlots) {
+        for (int slot : targetSlots) {
             if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
                 continue;
             }
@@ -183,15 +187,15 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void moveUp(Gui gui, Click click, int[] targetSlots, List<TeamGuiItem> group) {
-        int index = findIndex(unselectedSlots, click.getSlot());
-        int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
+        int index = findIndex(targetSlots, click.getSlot());
+        int lowest = findLastUsedSlotIndex(gui, targetSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            if (i >= unselectedTeams.size()) {
-                gui.setItem(unselectedSlots[i], new BackgroundGuiItem());
+            if (i >= group.size()) {
+                gui.setItem(targetSlots[i], new BackgroundGuiItem());
 
             } else {
-                gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
+                gui.setItem(targetSlots[i], group.get(i));
             }
         }
         gui.notifyWindows();
