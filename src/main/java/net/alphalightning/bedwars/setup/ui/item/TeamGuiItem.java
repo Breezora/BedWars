@@ -57,8 +57,12 @@ public class TeamGuiItem extends AbstractBoundItem {
             return;
         }
 
+        Gui gui = super.getGui();
+
         updateTeamSelection();
-        refreshSelectionGroups(super.getGui(), click);
+        transfer(gui);
+        moveUp(gui, click.getSlot());
+
         notifyWindows();
     }
 
@@ -160,19 +164,8 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void refreshSelectionGroups(Gui gui, Click click) {
-        if (unselectedTeams.contains(this)) {
-            transferItem(gui, selectedSlots);
-            moveUp(gui, click.getSlot(), unselectedSlots, unselectedTeams);
-            return;
-        }
-
-        transferItem(gui, unselectedSlots);
-        moveUp(gui, click.getSlot(), selectedSlots, selectedTeams);
-    }
-
-    private void transferItem(Gui gui, int[] targetSlots) {
-        for (int slot : targetSlots) {
+    private void transfer(Gui gui) {
+        for (int slot : selectedSlots) {
             if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
                 continue;
             }
@@ -183,16 +176,16 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void moveUp(Gui gui, int clickedSlot, int[] slots, List<TeamGuiItem> group) {
-        int index = findIndex(slots, clickedSlot);
-        int lowest = findLastUsedSlotIndex(gui, slots, index);
+    private void moveUp(Gui gui, int clickedSlot) {
+        int index = findIndex(unselectedSlots, clickedSlot);
+        int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            if (i >= group.size()) {
-                gui.setItem(slots[i], new BackgroundGuiItem());
+            if (i >= unselectedTeams.size()) {
+                gui.setItem(unselectedSlots[i], new BackgroundGuiItem());
 
             } else {
-                gui.setItem(slots[i], unselectedTeams.get(i));
+                gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
             }
         }
         gui.notifyWindows();
