@@ -172,6 +172,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             gui.setItem(clickedSlot, new BackgroundGuiItem()); // Move all items after clicked item here
             gui.setItem(slot, this);
             gui.notifyWindows();
+            return;
         }
     }
 
