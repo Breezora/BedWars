@@ -7,12 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Gui;
-import xyz.xenondevs.invui.item.AbstractBoundItem;
 import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
-public class TeamGuiItem extends AbstractBoundItem {
+public class TeamGuiItem extends AbstractNormalGuiBoundItem {
 
     private final int color;
     private final Player viewer;
@@ -32,7 +31,6 @@ public class TeamGuiItem extends AbstractBoundItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         // No interaction logic is needed
-        gui.notifyWindows();
     }
 
     private ItemBuilder fromColor() {
