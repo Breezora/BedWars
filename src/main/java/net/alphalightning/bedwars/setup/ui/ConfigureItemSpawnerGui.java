@@ -15,9 +15,15 @@ public class ConfigureItemSpawnerGui {
     private final Player owner;
     private final Single gui;
 
+    private static int emeraldSpawnerCount;
+    private static int diamondSpawnerCount;
+
     public ConfigureItemSpawnerGui(Player owner) {
         this.owner = owner;
         this.gui = createGui();
+
+        emeraldSpawnerCount = 0;
+        diamondSpawnerCount = 0;
     }
 
     private Single createGui() {
@@ -39,4 +45,11 @@ public class ConfigureItemSpawnerGui {
         gui.open(owner);
     }
 
+    public static int emeraldSpawnerCount() {
+        return emeraldSpawnerCount;
+    }
+
+    public static int diamondSpawnerCount() {
+        return diamondSpawnerCount;
+    }
 }

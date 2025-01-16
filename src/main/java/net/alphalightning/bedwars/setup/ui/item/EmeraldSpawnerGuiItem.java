@@ -1,23 +1,30 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.AbstractItem;
+import xyz.xenondevs.invui.item.AbstractBoundItem;
 import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.Arrays;
 
-public class EmeraldSpawnerGuiItem extends AbstractItem {
+public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
+
+    private int count;
+
+    public EmeraldSpawnerGuiItem() {
+        this.count = ConfigureItemSpawnerGui.emeraldSpawnerCount();
+    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component placeholder = Component.text(0); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
+        Component placeholder = Component.text(count); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
 
         Component display = Component.translatable("mapsetup.gui.configure-spawner.emerald", placeholder);
         Component loreAdd = Component.translatable("mapsetup.gui.configure-spawner.add");
@@ -35,6 +42,12 @@ public class EmeraldSpawnerGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        //TODO: Run click logic
+        if (clickType == ClickType.LEFT) {
+            count++;
+
+        } else if (clickType == ClickType.RIGHT) {
+            count--;
+        }
+        notifyWindows();
     }
 }
