@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -15,11 +16,16 @@ import java.util.Arrays;
 
 public class DiamondSpawnerGuiItem extends AbstractItem {
 
+    private static final int MAX_COUNT = 10;
+    private int count;
+
+    public DiamondSpawnerGuiItem() {
+        this.count = ConfigureItemSpawnerGui.diamondSpawnerCount();
+    }
+
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component placeholder = Component.text("0"); // Placeholder. Needs to be replaced with logic to get the selected amount of emerald spawner
-
-        Component display = Component.translatable("mapsetup.gui.configure-spawner.diamond", placeholder);
+        Component display = Component.translatable("mapsetup.gui.configure-spawner.diamond", Component.text(count));
         Component loreAdd = Component.translatable("mapsetup.gui.configure-spawner.add");
         Component loreLower = Component.translatable("mapsetup.gui.configure-spawner.lower");
 
@@ -35,7 +41,22 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        //TODO: Run click logic
+        if (clickType == ClickType.LEFT) {
+            if(count + 1 > MAX_COUNT) {
+                player.sendMessage(Component.translatable("mapsetup.error.max.diamond-spawner", Component.text(MAX_COUNT)));
+                return;
+            }
+            count++;
+            notifyWindows();
+
+        } else if (clickType == ClickType.RIGHT) {
+            if(count - 1 < 0) {
+                player.sendMessage(Component.translatable("mapsetup.error.min-diamond-spawner"));
+                return;
+            }
+            count--;
+            notifyWindows();
+        }
     }
 
 }
