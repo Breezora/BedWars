@@ -22,6 +22,8 @@ public class SelectTeamsGui {
     private final Single gui;
 
     public SelectTeamsGui(Player owner) {
+        clearTeamSelections();
+
         this.owner = owner;
         this.gui = createGui();
     }
@@ -70,6 +72,11 @@ public class SelectTeamsGui {
 
     public static List<TeamGuiItem> unselectedTeams() {
         return UNSELECTED_TEAMS;
+    }
+
+    private void clearTeamSelections() {
+        SELECTED_TEAMS.clear();
+        UNSELECTED_TEAMS.clear();
     }
 
 }
