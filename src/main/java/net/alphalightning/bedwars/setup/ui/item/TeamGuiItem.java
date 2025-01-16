@@ -189,7 +189,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
+            gui.setItem(unselectedSlots[i], unselectedTeams.get(i - 1));
         }
         gui.notifyWindows();
     }
