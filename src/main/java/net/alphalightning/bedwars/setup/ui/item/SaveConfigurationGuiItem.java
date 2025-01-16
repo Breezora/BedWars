@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.ui.item;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
+import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -37,6 +38,15 @@ public class SaveConfigurationGuiItem extends AbstractItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
+
+        if (stage == 1) {
+            if (SelectTeamsGui.selectedTeams().size() < 2) {
+                player.sendMessage(Component.translatable("mapsetup.error.invalid-team-configuration"));
+                return;
+            }
+        }
+
+        //TODO: Error handling für spawner adden
 
         container.set(key, PersistentDataType.INTEGER, ++stage);
         new GameMapConfigurationOverviewGui(player).showGui();
