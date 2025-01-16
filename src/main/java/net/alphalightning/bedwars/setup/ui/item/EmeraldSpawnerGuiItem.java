@@ -16,6 +16,8 @@ import java.util.Arrays;
 
 public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
 
+    private static final int MAX_COUNT = 10;
+
     private int count;
 
     public EmeraldSpawnerGuiItem() {
@@ -43,9 +45,17 @@ public class EmeraldSpawnerGuiItem extends AbstractBoundItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         if (clickType == ClickType.LEFT) {
+            if (count + 1 > MAX_COUNT) {
+                player.sendMessage(Component.translatable("mapsetup.error.max.emerald-spawner", Component.text(MAX_COUNT)));
+                return;
+            }
             count++;
 
         } else if (clickType == ClickType.RIGHT) {
+            if (count - 1 <= 0) {
+                player.sendMessage(Component.translatable("mapsetup.error.min-emerald-spawner"));
+                return;
+            }
             count--;
         }
         notifyWindows();
