@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.setup.ui.item;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -134,9 +133,6 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         updateTeamSelectionInfoItems(super.getGui());
-
-        Bukkit.getLogger().info("Updated selected teams info " + SelectTeamsGui.selectedTeams().size());
-        Bukkit.getLogger().info("Updated unselected teams info " + SelectTeamsGui.unselectedTeams().size());
     }
 
     private void updateTeamSelectionInfoItems(Gui gui) {
