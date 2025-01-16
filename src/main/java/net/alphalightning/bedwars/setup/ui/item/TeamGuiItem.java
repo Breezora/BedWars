@@ -192,7 +192,7 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         // Clear overflowing slots
         for (int i = size; i < targetSlots.length; i++) {
-            gui.setItem(targetSlots[i], new BackgroundGuiItem());
+            gui.setItem(targetSlots[i], new BackgroundGuiItem(false));
         }
 
         gui.notifyWindows(); // Refresh the ui
@@ -209,7 +209,7 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         for (int i = index; i < lowest; i++) { // Loop through the range of the clicked slot and the last team item
             if (i >= group.size()) {
-                gui.setItem(targetSlots[i], new BackgroundGuiItem()); // Place a background item at the new last slot
+                gui.setItem(targetSlots[i], new BackgroundGuiItem(false)); // Place a background item at the new last slot
 
             } else {
                 gui.setItem(targetSlots[i], group.get(i)); // Move the items

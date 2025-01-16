@@ -10,7 +10,6 @@ import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
-import net.alphalightning.bedwars.setup.ui.item.DividerGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -65,8 +64,8 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void registerGuiIngredients() {
-        Structure.addGlobalIngredient('.', BackgroundGuiItem::new);
-        Structure.addGlobalIngredient('#', DividerGuiItem::new);
+        Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
+        Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
     }
 
     public @NotNull ObjectMapper jsonMapper() {

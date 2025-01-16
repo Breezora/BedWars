@@ -11,9 +11,15 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 public class BackgroundGuiItem extends AbstractItem {
 
+    private final boolean isDivider;
+
+    public BackgroundGuiItem(boolean isDivider) {
+        this.isDivider = isDivider;
+    }
+
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).hideTooltip(true); // Disable display of bundles' content
+        return new ItemBuilder(isDivider ? Material.WHITE_STAINED_GLASS_PANE : Material.GRAY_STAINED_GLASS_PANE).hideTooltip(true); // Disable display of bundles' content
     }
 
     @Override
