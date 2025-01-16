@@ -56,9 +56,11 @@ public class TeamGuiItem extends AbstractBoundItem {
         if (click.getClickType() != ClickType.LEFT) {
             return;
         }
+        Gui gui = super.getGui();
 
         updateTeamSelection();
-        refresh(click);
+        transfer(gui);
+        moveUp(gui, click);
 
         notifyWindows();
     }
@@ -161,12 +163,6 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void refresh(Click click) {
-        Gui gui = super.getGui();
-
-        transfer(gui);
-        moveUp(gui, click);
-    }
 
     private void transfer(Gui gui) {
         for (int slot : selectedSlots) {
@@ -181,15 +177,15 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void moveUp(Gui gui, Click click) {
-        int index = findIndex(selectedSlots, click.getSlot());
-        int lowest = findLastUsedSlotIndex(gui, selectedSlots, index);
+        int index = findIndex(unselectedSlots, click.getSlot());
+        int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            if (i >= selectedTeams.size()) {
-                gui.setItem(selectedSlots[i], new BackgroundGuiItem());
+            if (i >= unselectedTeams.size()) {
+                gui.setItem(unselectedSlots[i], new BackgroundGuiItem());
 
             } else {
-                gui.setItem(selectedSlots[i], selectedTeams.get(i));
+                gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
             }
         }
         gui.notifyWindows();
@@ -215,7 +211,4 @@ public class TeamGuiItem extends AbstractBoundItem {
         return -1;
     }
 
-    enum Direction {
-        SELECTION, DESELECTION
-    }
 }
