@@ -30,7 +30,7 @@ public class ConfigureItemSpawnerGui {
                 .addIngredient('a', new EmeraldSpawnerGuiItem())
                 .addIngredient('b', new DiamondSpawnerGuiItem())
                 .addIngredient('c', new ReturnToOverviewGuiItem())
-                .addIngredient('d', new SaveConfigurationGuiItem())
+                .addIngredient('d', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"));
     }
