@@ -25,13 +25,13 @@ public class TeamGuiItem extends AbstractBoundItem {
     private final List<TeamGuiItem> selectedTeams;
     private final List<TeamGuiItem> unselectedTeams;
 
-    private final int[] selectedSlots = {
+    private final int[] selectedSlots = { // The slots where selected team items are rendered; see SelectTeamsGui --> structure
             9, 10, 11, 12,
             18, 19, 20, 21,
             27, 28, 29, 30,
             36, 37, 38, 39
     };
-    private final int[] unselectedSlots = {
+    private final int[] unselectedSlots = { // The slots where non-selected team items are rendered; see SelectTeamsGui --> structure
             14, 15, 16, 17,
             23, 24, 25, 26,
             32, 33, 34, 35,
@@ -57,16 +57,15 @@ public class TeamGuiItem extends AbstractBoundItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         if (click.getClickType() != ClickType.LEFT) {
-            return;
+            return; // We only want to allow a single left click
         }
 
         updateTeamSelection();
         refresh(click);
-        notifyWindows();
     }
 
     public int weight() {
-        return weight;
+        return weight; // The weight that is used to sort the items
     }
 
     private @NotNull ItemBuilder fromColor() {
@@ -144,11 +143,11 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void updateTeamSelection() {
-        if (unselectedTeams.contains(this)) {
+        if (unselectedTeams.contains(this)) { // Select a team
             unselectedTeams.remove(this);
             selectedTeams.add(this);
 
-        } else {
+        } else { // Unselect a team
             selectedTeams.remove(this);
             unselectedTeams.add(this);
         }
@@ -157,13 +156,13 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void updateTeamSelectionInfoItems(Gui gui) {
-        int[] slots = {1, 7};
+        int[] slots = {1, 7}; // The slots where team info items are placed into; see SelectTeamsGui --> structure
 
         for (int slot : slots) {
             if (!(gui.getItem(slot) instanceof TeamSelectionInfoGuiItem item)) {
-                continue;
+                continue; // We don't care about items that are not info items
             }
-            item.notifyWindows();
+            item.notifyWindows(); // Update the item
         }
     }
 
@@ -184,64 +183,63 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void transfer(Gui gui, int[] targetSlots, List<TeamGuiItem> group) {
-        int size = Math.min(targetSlots.length, group.size());
+        int size = Math.min(targetSlots.length, group.size()); // Make sure the slot count is sufficient to render the group of items
 
-        // Setze die gewichteten Items
+        // Set weighted items
         for (int i = 0; i < size; i++) {
             gui.setItem(targetSlots[i], group.get(i));
         }
 
-        // Restlichen Slots leeren
+        // Clear overflowing slots
         for (int i = size; i < targetSlots.length; i++) {
             gui.setItem(targetSlots[i], new BackgroundGuiItem());
         }
 
-        gui.notifyWindows();
+        gui.notifyWindows(); // Refresh the ui
     }
 
     private void moveUp(Gui gui, Click click, int[] targetSlots, List<TeamGuiItem> group) {
         int index = findIndex(targetSlots, click.getSlot());
         int lowest = findLastUsedSlotIndex(gui, targetSlots, index);
 
-        for (int i = index; i < lowest; i++) {
+        // Safety check; this exception should never be thrown
+        if (index == -1 || lowest == -1) {
+            throw new IllegalStateException("An index cannot be negative");
+        }
+
+        for (int i = index; i < lowest; i++) { // Loop through the range of the clicked slot and the last team item
             if (i >= group.size()) {
-                gui.setItem(targetSlots[i], new BackgroundGuiItem());
+                gui.setItem(targetSlots[i], new BackgroundGuiItem()); // Place a background item at the new last slot
 
             } else {
-                gui.setItem(targetSlots[i], group.get(i));
+                gui.setItem(targetSlots[i], group.get(i)); // Move the items
             }
         }
-        gui.notifyWindows();
+        gui.notifyWindows(); // Refresh the ui
     }
 
     private int findLastUsedSlotIndex(Gui gui, int[] array, int lowest) {
         for (int i = array.length; i > lowest; i--) {
             if (gui.getItem(i) instanceof BackgroundGuiItem) {
-                continue;
+                continue; // We are only interested in slots that have team items
             }
-            return i;
+            return i; // Return the last slot where a team item is placed in
         }
         return -1;
     }
 
     private int findIndex(int[] array, int value) {
         for (int i = 0; i < array.length; i++) {
-            if (array[i] != value) {
+            if (array[i] != value) { // Check if value is value in array
                 continue;
             }
-            return i;
+            return i; // Return array index where value was found
         }
         return -1;
     }
 
     private void sortByWeight(List<TeamGuiItem> list) {
-        list.sort(Comparator.comparingInt(TeamGuiItem::weight));
-    }
-
-    private void clearArea(Gui gui, int[] slots) {
-        for (int slot : slots) {
-            gui.setItem(slot, new BackgroundGuiItem());
-        }
+        list.sort(Comparator.comparingInt(TeamGuiItem::weight)); // Sort list by its weight
     }
 
 }
