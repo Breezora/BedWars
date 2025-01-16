@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.setup.ui.item;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -59,10 +58,10 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         Gui gui = super.getGui();
-        int clickedSlot = click.getSlot();
 
         updateTeamSelection();
-        transfer(gui, clickedSlot);
+        transfer(gui);
+        moveUp(gui, click.getSlot());
 
         notifyWindows();
     }
@@ -165,13 +164,12 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void transfer(Gui gui, int clickedSlot) {
+    private void transfer(Gui gui) {
         for (int slot : selectedSlots) {
             if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
                 continue;
             }
 
-            moveUp(gui, clickedSlot);
             gui.setItem(slot, this);
             gui.notifyWindows();
             return;
@@ -189,8 +187,6 @@ public class TeamGuiItem extends AbstractBoundItem {
          */
         int index = findIndex(unselectedSlots, clickedSlot);
         int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
-
-        Bukkit.getLogger().info("Lowest is " + lowest);
 
         for (int i = index; i < lowest; i++) {
             gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
