@@ -38,8 +38,8 @@ public class SaveConfigurationGuiItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
 
-        new GameMapConfigurationOverviewGui(player).showGui();
         container.set(key, PersistentDataType.INTEGER, ++stage);
+        new GameMapConfigurationOverviewGui(player).showGui();
 
         //TODO: Setup nehmen und neue stage starten
     }
