@@ -193,6 +193,7 @@ public class TeamGuiItem extends AbstractBoundItem {
                 }
 
                 gui.setItem(slot, item);
+                return;
             }
             gui.notifyWindows();
         }
