@@ -15,9 +15,6 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.List;
 
-import static net.alphalightning.bedwars.setup.ui.item.TeamGuiItem.Direction.DESELECTION;
-import static net.alphalightning.bedwars.setup.ui.item.TeamGuiItem.Direction.SELECTION;
-
 public class TeamGuiItem extends AbstractBoundItem {
 
     private final int color;
@@ -61,7 +58,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         updateTeamSelection();
-        refresh(!unselectedTeams.contains(this) ? SELECTION : DESELECTION, click);
+        refresh(click);
 
         notifyWindows();
     }
@@ -164,21 +161,15 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void refresh(Direction direction, Click click) {
+    private void refresh(Click click) {
         Gui gui = super.getGui();
 
-        if (direction == SELECTION) {
-            transfer(gui, selectedSlots);
-            moveUp(gui, click);
-            return;
-        }
-
-        transfer(gui, unselectedSlots);
+        transfer(gui);
         moveUp(gui, click);
     }
 
-    private void transfer(Gui gui, int[] targetSlots) {
-        for (int slot : targetSlots) {
+    private void transfer(Gui gui) {
+        for (int slot : selectedSlots) {
             if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
                 continue;
             }
