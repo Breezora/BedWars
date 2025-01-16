@@ -169,12 +169,12 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         if (direction == SELECTION) {
             transfer(gui, selectedSlots);
-            moveUp(gui, click, selectedSlots, selectedTeams);
+            moveUp(gui, click);
             return;
         }
 
         transfer(gui, unselectedSlots);
-        moveUp(gui, click, unselectedSlots, unselectedTeams);
+        moveUp(gui, click);
     }
 
     private void transfer(Gui gui, int[] targetSlots) {
@@ -189,16 +189,16 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void moveUp(Gui gui, Click click, int[] targetSlots, List<TeamGuiItem> group) {
-        int index = findIndex(targetSlots, click.getSlot());
-        int lowest = findLastUsedSlotIndex(gui, targetSlots, index);
+    private void moveUp(Gui gui, Click click) {
+        int index = findIndex(selectedSlots, click.getSlot());
+        int lowest = findLastUsedSlotIndex(gui, selectedSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            if (i >= group.size()) {
-                gui.setItem(targetSlots[i], new BackgroundGuiItem());
+            if (i >= selectedTeams.size()) {
+                gui.setItem(selectedSlots[i], new BackgroundGuiItem());
 
             } else {
-                gui.setItem(targetSlots[i], group.get(i));
+                gui.setItem(selectedSlots[i], selectedTeams.get(i));
             }
         }
         gui.notifyWindows();
