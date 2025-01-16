@@ -5,7 +5,6 @@ import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -39,8 +38,6 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
-
-        Bukkit.getLogger().info("Stage: " + stage);
 
         if (stage == 1) { // Team selection stage
             int size = SelectTeamsGui.selectedTeams().size();
