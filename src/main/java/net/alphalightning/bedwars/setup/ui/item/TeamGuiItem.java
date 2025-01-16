@@ -63,7 +63,6 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         updateTeamSelection();
         transfer(gui, clickedSlot);
-        moveUp(clickedSlot);
 
         notifyWindows();
     }
@@ -172,14 +171,14 @@ public class TeamGuiItem extends AbstractBoundItem {
                 continue;
             }
 
-            gui.setItem(clickedSlot, new BackgroundGuiItem()); // Move all items after clicked item here
+            moveUp(gui, clickedSlot);
             gui.setItem(slot, this);
             gui.notifyWindows();
             return;
         }
     }
 
-    private void moveUp(int clickedSlot) {
+    private void moveUp(Gui gui, int clickedSlot) {
         /*
 
         klicked slot nehmen
@@ -189,8 +188,26 @@ public class TeamGuiItem extends AbstractBoundItem {
 
          */
         int index = findIndex(unselectedSlots, clickedSlot);
-        Bukkit.getLogger().info("Slot befindet sich an Index " + index);
+        int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
 
+        Bukkit.getLogger().info("Lowest is " + lowest);
+
+        for (int i = index; i < lowest; i++) {
+            int nextSlot = i + 1;
+
+            gui.setItem(i, unselectedTeams.get(nextSlot));
+        }
+        gui.notifyWindows();
+    }
+
+    private int findLastUsedSlotIndex(Gui gui, int[] array, int lowest) {
+        for (int i = array.length; i > lowest; i--) {
+            if (gui.getItem(i) instanceof BackgroundGuiItem) {
+                continue;
+            }
+            return i;
+        }
+        return -1;
     }
 
     private int findIndex(int[] array, int value) {
