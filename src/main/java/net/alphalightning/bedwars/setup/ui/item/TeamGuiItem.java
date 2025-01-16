@@ -172,25 +172,29 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         if (selectedTeams.contains(this)) { // Item was selected --> move from right to left
             sortByWeight(selectedTeams);
-            transfer(gui, selectedSlots);
+            transfer(gui, selectedSlots, selectedTeams);
             moveUp(gui, click, unselectedSlots, unselectedTeams);
             return;
         }
 
+        // Move items from left to right
         sortByWeight(unselectedTeams);
-        transfer(gui, unselectedSlots);
+        transfer(gui, unselectedSlots, unselectedTeams);
         moveUp(gui, click, selectedSlots, selectedTeams);
     }
 
-    private void transfer(Gui gui, int[] targetSlots) {
-        for (int slot : targetSlots) {
-            if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
-                continue;
-            }
+    private void transfer(Gui gui, int[] targetSlots, List<TeamGuiItem> group) {
+        clearArea(gui, targetSlots);
 
-            gui.setItem(slot, this);
+        for (TeamGuiItem item : group) {
+            for (int slot : targetSlots) {
+                if (!(gui.getItem(slot) instanceof BackgroundGuiItem)) {
+                    continue;
+                }
+
+                gui.setItem(slot, item);
+            }
             gui.notifyWindows();
-            return;
         }
     }
 
@@ -231,6 +235,12 @@ public class TeamGuiItem extends AbstractBoundItem {
 
     private void sortByWeight(List<TeamGuiItem> list) {
         list.sort(Comparator.comparingInt(TeamGuiItem::weight));
+    }
+
+    private void clearArea(Gui gui, int[] slots) {
+        for (int slot : slots) {
+            gui.setItem(slot, new BackgroundGuiItem());
+        }
     }
 
 }
