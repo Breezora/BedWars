@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.setup.ui.item.ConfigureItemSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.SelectTeamGuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.window.Window;
 import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
@@ -15,18 +16,18 @@ public class GameMapConfigurationOverviewGui {
 
     public GameMapConfigurationOverviewGui(Player owner) {
         this.owner = owner;
-        this.gui = createGui();
+        this.gui = createGui(owner.getPersistentDataContainer());
     }
 
-    private Single createGui() {
+    private Single createGui(PersistentDataContainer container) {
         return Window.single().setGui(Gui.normal()
                 .setStructure(
                         ". . . . . . . . .",
                         ". . . a . b . . .",
                         ". . . . . . . . ."
                 )
-                .addIngredient('a', new SelectTeamGuiItem())
-                .addIngredient('b', new ConfigureItemSpawnerGuiItem())
+                .addIngredient('a', new SelectTeamGuiItem(container))
+                .addIngredient('b', new ConfigureItemSpawnerGuiItem(container))
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.overview.title"));
     }
