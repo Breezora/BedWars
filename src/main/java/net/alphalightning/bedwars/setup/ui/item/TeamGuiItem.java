@@ -177,19 +177,11 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void moveUp(Gui gui, int clickedSlot) {
-        /*
-
-        klicked slot nehmen
-        slot im array suchen
-        index nehmen und entries +1 in index-1 setzen (außer beim letzten)
-        letzter entry durch bachground ersetzen
-
-         */
         int index = findIndex(unselectedSlots, clickedSlot);
         int lowest = findLastUsedSlotIndex(gui, unselectedSlots, index);
 
         for (int i = index; i < lowest; i++) {
-            gui.setItem(unselectedSlots[i], unselectedTeams.get(i - 1));
+            gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
         }
         gui.notifyWindows();
     }
