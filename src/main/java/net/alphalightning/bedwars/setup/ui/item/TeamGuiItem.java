@@ -61,7 +61,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
 
         updateTeamSelection();
-        refresh(unselectedTeams.contains(this) ? SELECTION : DESELECTION, click);
+        refresh(!unselectedTeams.contains(this) ? SELECTION : DESELECTION, click);
 
         notifyWindows();
     }
