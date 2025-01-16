@@ -205,7 +205,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             if (gui.getItem(i) instanceof BackgroundGuiItem) {
                 continue;
             }
-            return i;
+            return i - 1;
         }
         return -1;
     }
