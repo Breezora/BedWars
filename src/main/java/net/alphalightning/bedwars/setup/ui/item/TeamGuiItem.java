@@ -129,8 +129,8 @@ public class TeamGuiItem extends AbstractBoundItem {
            selectedTeams.add(this);
 
         } else {
-            unselectedTeams.remove(this);
-            selectedTeams.add(this);
+            selectedTeams.remove(this);
+            unselectedTeams.add(this);
         }
 
         updateTeamSelectionInfoItem(gui, true);
