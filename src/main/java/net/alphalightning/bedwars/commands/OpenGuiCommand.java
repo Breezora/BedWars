@@ -23,7 +23,7 @@ public class OpenGuiCommand extends BaseCommand {
 
     @Default
     public void onDefault(Player player) {
-        new StageSimulation(plugin, player, 1);
+        new StageSimulation(plugin, player, 2);
         new GameMapConfigurationOverviewGui(player).showGui();
     }
 
