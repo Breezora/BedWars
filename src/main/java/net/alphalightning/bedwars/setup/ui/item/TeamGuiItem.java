@@ -193,9 +193,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         Bukkit.getLogger().info("Lowest is " + lowest);
 
         for (int i = index; i < lowest; i++) {
-            int nextSlot = i + 1;
-
-            gui.setItem(i, unselectedTeams.get(nextSlot));
+            gui.setItem(unselectedSlots[i], unselectedTeams.get(i));
         }
         gui.notifyWindows();
     }
@@ -205,7 +203,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             if (gui.getItem(i) instanceof BackgroundGuiItem) {
                 continue;
             }
-            return i - 1;
+            return i;
         }
         return -1;
     }
