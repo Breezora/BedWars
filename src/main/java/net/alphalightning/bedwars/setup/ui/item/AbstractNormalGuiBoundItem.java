@@ -16,7 +16,7 @@ public abstract class AbstractNormalGuiBoundItem extends AbstractBoundItem {
     }
 
     @Override
-    public @NotNull AbstractGui getGui() {
+    public AbstractGui getGui() {
         return (AbstractGui) super.getGui();
     }
 }
