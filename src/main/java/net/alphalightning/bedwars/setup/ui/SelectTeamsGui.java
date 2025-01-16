@@ -57,7 +57,7 @@ public class SelectTeamsGui {
                 .addIngredient('+', new TeamSelectionInfoGuiItem(true)) // Team selection info items have to be added after the team gui items to display the correct amount of (un)selected teams
                 .addIngredient('-', new TeamSelectionInfoGuiItem(false))
                 .addIngredient('<', new ReturnToOverviewGuiItem())
-                .addIngredient('>', new SaveConfigurationGuiItem())
+                .addIngredient('>', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
                 .build()
         ).setTitle(Component.translatable("mapsetup.gui.select-teams.title"));
     }
