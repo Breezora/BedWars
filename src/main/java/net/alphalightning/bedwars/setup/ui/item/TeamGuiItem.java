@@ -13,10 +13,12 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TeamGuiItem extends AbstractBoundItem {
 
+    private final int weight;
     private final int color;
     private final Player viewer;
 
@@ -36,7 +38,8 @@ public class TeamGuiItem extends AbstractBoundItem {
             41, 42, 43, 44
     };
 
-    public TeamGuiItem(int color, Player viewer) {
+    public TeamGuiItem(int weight, int color, Player viewer) {
+        this.weight = weight;
         this.color = color;
         this.viewer = viewer;
 
@@ -59,8 +62,11 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         updateTeamSelection();
         refresh(click);
-
         notifyWindows();
+    }
+
+    public int weight() {
+        return weight;
     }
 
     private @NotNull ItemBuilder fromColor() {
@@ -165,11 +171,13 @@ public class TeamGuiItem extends AbstractBoundItem {
         Gui gui = super.getGui();
 
         if (selectedTeams.contains(this)) { // Item was selected --> move from right to left
+            sortByWeight(selectedTeams);
             transfer(gui, selectedSlots);
             moveUp(gui, click, unselectedSlots, unselectedTeams);
             return;
         }
 
+        sortByWeight(unselectedTeams);
         transfer(gui, unselectedSlots);
         moveUp(gui, click, selectedSlots, selectedTeams);
     }
@@ -219,6 +227,10 @@ public class TeamGuiItem extends AbstractBoundItem {
             return i;
         }
         return -1;
+    }
+
+    private void sortByWeight(List<TeamGuiItem> list) {
+        list.sort(Comparator.comparingInt(TeamGuiItem::weight));
     }
 
 }
