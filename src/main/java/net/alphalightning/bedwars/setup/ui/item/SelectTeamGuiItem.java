@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -46,6 +47,7 @@ public class SelectTeamGuiItem extends AbstractItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         if (stage != 1) {
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1.0f);
             return;
         }
         new SelectTeamsGui(player).showGui();
