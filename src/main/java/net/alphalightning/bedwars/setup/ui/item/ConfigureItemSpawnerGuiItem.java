@@ -20,11 +20,10 @@ import java.util.Arrays;
 
 public class ConfigureItemSpawnerGuiItem extends AbstractItem {
 
-    private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
-
     private final int stage;
 
     public ConfigureItemSpawnerGuiItem(PersistentDataContainer container) {
+        NamespacedKey key = new NamespacedKey("bedwars", "stage");
         this.stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
 
