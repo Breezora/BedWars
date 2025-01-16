@@ -185,6 +185,16 @@ public class TeamGuiItem extends AbstractBoundItem {
 
     private void transfer(Gui gui, int[] targetSlots, List<TeamGuiItem> group) {
         clearArea(gui, targetSlots);
+
+        for (TeamGuiItem item : group) {
+            for (int slot : targetSlots) {
+                if (gui.getItem(slot) instanceof BackgroundGuiItem) {
+                    continue;
+                }
+                gui.setItem(slot, item);
+            }
+        }
+        gui.notifyWindows();
     }
 
     private void moveUp(Gui gui, Click click, int[] targetSlots, List<TeamGuiItem> group) {
