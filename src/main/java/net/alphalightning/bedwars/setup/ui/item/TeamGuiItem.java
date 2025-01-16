@@ -60,8 +60,10 @@ public class TeamGuiItem extends AbstractBoundItem {
             return; // We only want to allow a single left click
         }
 
-        updateTeamSelection();
-        refresh(click);
+        Gui gui = super.getGui();
+
+        updateTeamSelection(gui);
+        refresh(gui, click);
     }
 
     public int weight() {
@@ -142,7 +144,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         return builder.setName(GlobalTranslator.render(display, viewer.locale()));
     }
 
-    private void updateTeamSelection() {
+    private void updateTeamSelection(Gui gui) {
         if (unselectedTeams.contains(this)) { // Select a team
             unselectedTeams.remove(this);
             selectedTeams.add(this);
@@ -152,7 +154,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             unselectedTeams.add(this);
         }
 
-        updateTeamSelectionInfoItems(super.getGui());
+        updateTeamSelectionInfoItems(gui);
     }
 
     private void updateTeamSelectionInfoItems(Gui gui) {
@@ -166,9 +168,7 @@ public class TeamGuiItem extends AbstractBoundItem {
         }
     }
 
-    private void refresh(Click click) {
-        Gui gui = super.getGui();
-
+    private void refresh(Gui gui, Click click) {
         if (selectedTeams.contains(this)) { // Item was selected --> move from right to left
             sortByWeight(selectedTeams);
             transfer(gui, selectedSlots, selectedTeams);
