@@ -14,16 +14,24 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
+import java.util.List;
+
 public class TeamGuiItem extends AbstractBoundItem {
 
     private final int color;
     private final Player viewer;
 
+    private final List<TeamGuiItem> selectedTeams;
+    private final List<TeamGuiItem> unselectedTeams;
+
     public TeamGuiItem(int color, Player viewer) {
         this.color = color;
         this.viewer = viewer;
 
-        SelectTeamsGui.unselectedTeams().add(this);
+        this.selectedTeams = SelectTeamsGui.selectedTeams();
+        this.unselectedTeams = SelectTeamsGui.unselectedTeams();
+
+        unselectedTeams.add(this);
     }
 
     @Override
@@ -116,13 +124,13 @@ public class TeamGuiItem extends AbstractBoundItem {
     }
 
     private void updateTeamSelection(@NotNull Gui gui) {
-        if (SelectTeamsGui.unselectedTeams().contains(this)) {
-            SelectTeamsGui.unselectedTeams().remove(this);
-            SelectTeamsGui.selectedTeams().add(this);
+        if (unselectedTeams.contains(this)) {
+            unselectedTeams.remove(this);
+           selectedTeams.add(this);
 
         } else {
-            SelectTeamsGui.selectedTeams().remove(this);
-            SelectTeamsGui.unselectedTeams().add(this);
+            unselectedTeams.remove(this);
+            selectedTeams.add(this);
         }
 
         updateTeamSelectionInfoItem(gui, true);
@@ -140,7 +148,7 @@ public class TeamGuiItem extends AbstractBoundItem {
                 return;
             }
 
-            Component placeholder = Component.text(SelectTeamsGui.selectedTeams().size());
+            Component placeholder = Component.text(selectedTeams.size());
             Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.selected", placeholder);
 
             builder.setName(GlobalTranslator.render(component, viewer.locale()));
@@ -156,7 +164,7 @@ public class TeamGuiItem extends AbstractBoundItem {
                 return;
             }
 
-            Component placeholder = Component.text(SelectTeamsGui.unselectedTeams().size());
+            Component placeholder = Component.text(unselectedTeams.size());
             Component component = Component.translatable("mapsetup.gui.select-teams.selection-info.unselected", placeholder);
 
             builder.setName(GlobalTranslator.render(component, viewer.locale()));
