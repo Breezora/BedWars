@@ -65,6 +65,7 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         updateTeamSelection(gui);
         refresh(gui, click);
+        Feedback.click(click.getPlayer());
     }
 
     public int weight() {
@@ -181,9 +182,6 @@ public class TeamGuiItem extends AbstractBoundItem {
         sortByWeight(unselectedTeams);
         transfer(gui, unselectedSlots, unselectedTeams);
         moveUp(gui, click, selectedSlots, selectedTeams);
-
-        // Feedback
-        Feedback.click(click.getPlayer());
     }
 
     private void transfer(Gui gui, int[] targetSlots, List<TeamGuiItem> group) {
