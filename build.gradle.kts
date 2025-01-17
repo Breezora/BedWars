@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.alphalightning"
-version = "1.0.0-alpha.1"
+version = "1.0.0-alpha.2"
 description = "Simple BedWars plugin to demonstrate jira"
 
 repositories {
@@ -27,7 +27,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.6")
-    implementation ("co.aikar:acf-paper:0.5.1-SNAPSHOT")
+    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("de.eldoria.jacksonbukkit:paper:1.2.0")
 }
 
@@ -52,7 +52,7 @@ tasks {
             "de.eldoria.jacksonbukkit" to "jacksonbukkit"
         )
 
-        val base = "$group.bedwars.libs"
+        val base = "net.alphalightning.bedwars.libs"
         for ((pattern, name) in mapping) relocate(pattern, "$base.$name")
 
         archiveFileName = "${project.name}-$version-deploy.jar"
