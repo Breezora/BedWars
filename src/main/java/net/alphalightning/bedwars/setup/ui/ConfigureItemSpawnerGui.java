@@ -27,18 +27,21 @@ public class ConfigureItemSpawnerGui {
     }
 
     private Single createGui() {
-        return Window.single().setGui(Gui.normal()
-                .setStructure(
-                        ". . . . . . . . .",
-                        ". . . a . b . . .",
-                        "c . . . . . . . d"
+        return Window.single()
+                .setGui(Gui.normal()
+                        .setStructure(
+                                ". . . . . . . . .",
+                                ". . . a . b . . .",
+                                "c . . . . . . . d"
+                        )
+                        .addIngredient('a', new EmeraldSpawnerGuiItem())
+                        .addIngredient('b', new DiamondSpawnerGuiItem())
+                        .addIngredient('c', new ReturnToOverviewGuiItem())
+                        .addIngredient('d', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
+                        .build()
                 )
-                .addIngredient('a', new EmeraldSpawnerGuiItem())
-                .addIngredient('b', new DiamondSpawnerGuiItem())
-                .addIngredient('c', new ReturnToOverviewGuiItem())
-                .addIngredient('d', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
-                .build()
-        ).setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"));
+                .setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"))
+                .setCloseable(false);
     }
 
     public void showGui() {
