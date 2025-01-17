@@ -45,6 +45,7 @@ public class EmeraldSpawnerGuiItem extends AbstractItem {
         if (clickType == ClickType.LEFT) {
             if (count + 1 > MAX_COUNT) {
                 player.sendMessage(Component.translatable("mapsetup.error.max.emerald-spawner", Component.text(MAX_COUNT)));
+                Feedback.error(player);
                 return;
             }
             count++;
@@ -54,6 +55,7 @@ public class EmeraldSpawnerGuiItem extends AbstractItem {
         } else if (clickType == ClickType.RIGHT) {
             if (count - 1 < 0) {
                 player.sendMessage(Component.translatable("mapsetup.error.min-emerald-spawner"));
+                Feedback.error(player);
                 return;
             }
             count--;

@@ -44,6 +44,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
             int size = SelectTeamsGui.selectedTeams().size();
             if (size < 2) {
                 player.sendMessage(Component.translatable("mapsetup.error.invalid-team-configuration", Component.text(size)));
+                Feedback.error(player);
                 return;
             }
             startNextStage(player, 1);
