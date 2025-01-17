@@ -47,10 +47,12 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
                 Feedback.error(player);
                 return;
             }
+            container.set(key, PersistentDataType.INTEGER, stage + 1);
             startNextStage(player, 1);
 
 
         } else if (stage == 2) { // Item spawner configuration stage
+            container.set(key, PersistentDataType.INTEGER, stage + 1);
             startNextStage(player, 2);
         }
         //TODO: Setup nehmen und neue stage starten
@@ -64,7 +66,6 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
             player.closeInventory();
         }
         Feedback.success(player);
-        container.set(key, PersistentDataType.INTEGER, current + 1);
     }
 
 }
