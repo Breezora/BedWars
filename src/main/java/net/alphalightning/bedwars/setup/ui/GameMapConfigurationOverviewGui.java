@@ -20,16 +20,19 @@ public class GameMapConfigurationOverviewGui {
     }
 
     private Single createGui(PersistentDataContainer container) {
-        return Window.single().setGui(Gui.normal()
-                .setStructure(
-                        ". . . . . . . . .",
-                        ". . . a . b . . .",
-                        ". . . . . . . . ."
+        return Window.single()
+                .setGui(Gui.normal()
+                        .setStructure(
+                                ". . . . . . . . .",
+                                ". . . a . b . . .",
+                                ". . . . . . . . ."
+                        )
+                        .addIngredient('a', new SelectTeamGuiItem(container))
+                        .addIngredient('b', new ConfigureItemSpawnerGuiItem(container))
+                        .build()
                 )
-                .addIngredient('a', new SelectTeamGuiItem(container))
-                .addIngredient('b', new ConfigureItemSpawnerGuiItem(container))
-                .build()
-        ).setTitle(Component.translatable("mapsetup.gui.overview.title"));
+                .setTitle(Component.translatable("mapsetup.gui.overview.title"))
+                .setCloseable(false);
     }
 
     public void showGui() {
