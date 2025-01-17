@@ -38,6 +38,9 @@ public class BedWarsPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         configuration = new ConfigurationFile(this);
+        configuration.configureDefault(JsonMapper.builder());
+        configuration.save();
+
         loadMessageRegistry();
     }
 
