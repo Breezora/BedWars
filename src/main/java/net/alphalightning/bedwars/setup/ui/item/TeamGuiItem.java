@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -64,6 +65,7 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         updateTeamSelection(gui);
         refresh(gui, click);
+        Feedback.click(click.getPlayer());
     }
 
     public int weight() {

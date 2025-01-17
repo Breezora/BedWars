@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -44,18 +45,22 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
         if (clickType == ClickType.LEFT) {
             if(count + 1 > MAX_COUNT) {
                 player.sendMessage(Component.translatable("mapsetup.error.max.diamond-spawner", Component.text(MAX_COUNT)));
+                Feedback.error(player);
                 return;
             }
             count++;
-            notifyWindows();
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
+            Feedback.more(player);
 
         } else if (clickType == ClickType.RIGHT) {
             if(count - 1 < 0) {
                 player.sendMessage(Component.translatable("mapsetup.error.min-diamond-spawner"));
+                Feedback.error(player);
                 return;
             }
             count--;
-            notifyWindows();
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
+            Feedback.lower(player);
         }
     }
 
