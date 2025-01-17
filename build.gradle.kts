@@ -50,7 +50,8 @@ tasks {
             "xyz.xenondevs.invui" to "invui",
             "co.aikar.commands" to "acf",
             "co.aikar.locales" to "locales",
-            "de.eldoria.jacksonbukkit" to "jacksonbukkit"
+            "de.eldoria.jacksonbukkit" to "jacksonbukkit",
+            "de.eldoria.eldoutilities.config" to "eldoutilities.config"
         )
 
         val base = "net.alphalightning.bedwars.libs"
