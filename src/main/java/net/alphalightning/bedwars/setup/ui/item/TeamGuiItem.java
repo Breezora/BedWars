@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.Feedback;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -180,6 +181,9 @@ public class TeamGuiItem extends AbstractBoundItem {
         sortByWeight(unselectedTeams);
         transfer(gui, unselectedSlots, unselectedTeams);
         moveUp(gui, click, selectedSlots, selectedTeams);
+
+        // Feedback
+        Feedback.click(click.getPlayer());
     }
 
     private void transfer(Gui gui, int[] targetSlots, List<TeamGuiItem> group) {

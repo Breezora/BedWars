@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
+import net.alphalightning.bedwars.setup.ui.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -47,7 +48,8 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
                 return;
             }
             count++;
-            notifyWindows();
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
+            Feedback.more(player);
 
         } else if (clickType == ClickType.RIGHT) {
             if(count - 1 < 0) {
@@ -55,7 +57,8 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
                 return;
             }
             count--;
-            notifyWindows();
+            notifyWindows(); // We call this here because we only want to trigger an update after an update
+            Feedback.lower(player);
         }
     }
 
