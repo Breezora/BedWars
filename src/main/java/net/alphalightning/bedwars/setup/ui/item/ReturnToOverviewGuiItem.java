@@ -1,6 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
-import net.alphalightning.bedwars.setup.ui.Feedback;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;

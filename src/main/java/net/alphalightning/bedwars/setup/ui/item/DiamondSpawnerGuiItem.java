@@ -1,7 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
-import net.alphalightning.bedwars.setup.ui.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;

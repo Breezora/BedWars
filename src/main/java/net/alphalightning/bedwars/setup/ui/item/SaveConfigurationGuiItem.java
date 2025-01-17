@@ -1,7 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import net.alphalightning.bedwars.setup.ui.Feedback;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;

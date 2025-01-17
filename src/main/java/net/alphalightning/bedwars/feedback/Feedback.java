@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.setup.ui;
+package net.alphalightning.bedwars.feedback;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
