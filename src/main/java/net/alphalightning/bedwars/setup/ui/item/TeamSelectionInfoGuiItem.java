@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -21,11 +22,14 @@ public class TeamSelectionInfoGuiItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component placeholder = Component.text(0); // Placeholder. Needs to be replaced with logic to get the selected amount of teams
+        Component placeholder = Component.text(selected ?
+                SelectTeamsGui.selectedTeams().size() :
+                SelectTeamsGui.unselectedTeams().size()
+        );
 
         Component display = Component.translatable(selected ?
-                "mapsetup.gui.select-teams.selection-info.selected" :
-                "mapsetup.gui.select-teams.selection-info.unselected",
+                        "mapsetup.gui.select-teams.selection-info.selected" :
+                        "mapsetup.gui.select-teams.selection-info.unselected",
                 placeholder
         );
 
@@ -37,5 +41,4 @@ public class TeamSelectionInfoGuiItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         // No interaction logic is needed
     }
-
 }

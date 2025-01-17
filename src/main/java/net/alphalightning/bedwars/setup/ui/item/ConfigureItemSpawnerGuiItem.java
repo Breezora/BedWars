@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -19,13 +21,15 @@ import java.util.Arrays;
 
 public class ConfigureItemSpawnerGuiItem extends AbstractItem {
 
-    private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
+    private final int stage;
+
+    public ConfigureItemSpawnerGuiItem(PersistentDataContainer container) {
+        NamespacedKey key = new NamespacedKey("bedwars", "stage");
+        this.stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
+    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        PersistentDataContainer container = viewer.getPersistentDataContainer();
-        int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
-
         Component display = Component.translatable(stage == 2 ?  // Stage might be different
                 "mapsetup.gui.overview.select-spawner.name" :
                 "mapsetup.gui.overview.select-spawner.name.locked"
@@ -44,6 +48,10 @@ public class ConfigureItemSpawnerGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        //TODO: Run click logic (open new gui)
+        if (stage != 2) {
+            Feedback.error(player);
+            return;
+        }
+        new ConfigureItemSpawnerGui(player).showGui();
     }
 }

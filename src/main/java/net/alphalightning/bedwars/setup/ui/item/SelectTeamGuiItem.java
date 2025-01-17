@@ -1,5 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
+import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -18,13 +20,15 @@ import java.util.Arrays;
 
 public class SelectTeamGuiItem extends AbstractItem {
 
-    private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
+    private final int stage;
+
+    public SelectTeamGuiItem(PersistentDataContainer container) {
+        NamespacedKey key = new NamespacedKey("bedwars", "stage");
+        this.stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
+    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        PersistentDataContainer container = viewer.getPersistentDataContainer();
-        int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
-
         Component display = Component.translatable(stage == 1 ?
                 "mapsetup.gui.overview.select-teams.name" :
                 "mapsetup.gui.overview.select-teams.name.locked"
@@ -42,6 +46,10 @@ public class SelectTeamGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        //TODO: Run click logic (open new gui)
+        if (stage != 1) {
+            Feedback.error(player);
+            return;
+        }
+        new SelectTeamsGui(player).showGui();
     }
 }

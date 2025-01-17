@@ -15,28 +15,45 @@ public class ConfigureItemSpawnerGui {
     private final Player owner;
     private final Single gui;
 
+    private static int emeraldSpawnerCount;
+    private static int diamondSpawnerCount;
+
     public ConfigureItemSpawnerGui(Player owner) {
         this.owner = owner;
         this.gui = createGui();
+
+        emeraldSpawnerCount = 0;
+        diamondSpawnerCount = 0;
     }
 
     private Single createGui() {
-        return Window.single().setGui(Gui.normal()
-                .setStructure(
-                        ". . . . . . . . .",
-                        ". . . a . b . . .",
-                        "c . . . . . . . d"
+        return Window.single()
+                .setGui(Gui.normal()
+                        .setStructure(
+                                ". . . . . . . . .",
+                                ". . . a . b . . .",
+                                "c . . . . . . . d"
+                        )
+                        .addIngredient('a', new EmeraldSpawnerGuiItem())
+                        .addIngredient('b', new DiamondSpawnerGuiItem())
+                        .addIngredient('c', new ReturnToOverviewGuiItem())
+                        .addIngredient('d', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
+                        .build()
                 )
-                .addIngredient('a', new EmeraldSpawnerGuiItem())
-                .addIngredient('b', new DiamondSpawnerGuiItem())
-                .addIngredient('c', new ReturnToOverviewGuiItem())
-                .addIngredient('d', new SaveConfigurationGuiItem())
-                .build()
-        ).setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"));
+                .setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"))
+                .setCloseable(false);
     }
 
     public void showGui() {
         gui.open(owner);
+    }
+
+    public static int emeraldSpawnerCount() {
+        return emeraldSpawnerCount;
+    }
+
+    public static int diamondSpawnerCount() {
+        return diamondSpawnerCount;
     }
 
 }
