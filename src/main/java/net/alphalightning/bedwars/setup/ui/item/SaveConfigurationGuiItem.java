@@ -62,7 +62,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         } else if(current == 2) {
             player.closeInventory();
         }
-        Feedback.positiveInfo(player);
+        Feedback.success(player);
         container.set(key, PersistentDataType.INTEGER, ++current);
     }
 
