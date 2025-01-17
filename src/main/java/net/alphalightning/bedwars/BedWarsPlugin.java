@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
+import net.alphalightning.bedwars.config.ConfigurationFile;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
@@ -32,8 +33,11 @@ public class BedWarsPlugin extends JavaPlugin {
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
 
+    private ConfigurationFile configuration;
+
     @Override
     public void onLoad() {
+        configuration = new ConfigurationFile(this);
         loadMessageRegistry();
     }
 
@@ -70,5 +74,9 @@ public class BedWarsPlugin extends JavaPlugin {
 
     public @NotNull ObjectMapper jsonMapper() {
         return mapper;
+    }
+
+    public @NotNull ConfigurationFile configuration() {
+        return configuration;
     }
 }
