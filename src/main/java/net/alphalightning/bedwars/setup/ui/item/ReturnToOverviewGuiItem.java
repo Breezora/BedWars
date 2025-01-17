@@ -8,12 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.AbstractItem;
+import xyz.xenondevs.invui.item.AbstractBoundItem;
 import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
-public class ReturnToOverviewGuiItem extends AbstractItem {
+public class ReturnToOverviewGuiItem extends AbstractBoundItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
@@ -24,8 +24,10 @@ public class ReturnToOverviewGuiItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        Feedback.back(player);
+        super.getGui().closeForAllViewers();
         new GameMapConfigurationOverviewGui(player).showGui();
+
+        Feedback.back(player);
     }
 
 }

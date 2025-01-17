@@ -52,6 +52,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
 
 
         } else if (stage == 2) { // Item spawner configuration stage
+            super.getGui().closeForAllViewers();
             container.set(key, PersistentDataType.INTEGER, stage + 1);
             startNextStage(player, 2);
         }
