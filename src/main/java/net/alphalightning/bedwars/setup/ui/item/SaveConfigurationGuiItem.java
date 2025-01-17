@@ -56,14 +56,14 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
     }
 
     private void startNextStage(Player player, int current) {
-        if(current == 1) {
+        if (current == 1) {
             new GameMapConfigurationOverviewGui(player).showGui();
 
-        } else if(current == 2) {
+        } else if (current == 2) {
             player.closeInventory();
         }
         Feedback.success(player);
-        container.set(key, PersistentDataType.INTEGER, ++current);
+        container.set(key, PersistentDataType.INTEGER, current + 1);
     }
 
 }
