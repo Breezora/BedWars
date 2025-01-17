@@ -37,15 +37,12 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        configuration = new ConfigurationFile(this);
-        configuration.configureDefault(JsonMapper.builder());
-        configuration.save();
-
         loadMessageRegistry();
     }
 
     @Override
     public void onEnable() {
+        loadConfiguration();
         registerCommands();
         registerGuiIngredients();
         getLogger().info("BedWars has been enabled");
@@ -73,6 +70,12 @@ public class BedWarsPlugin extends JavaPlugin {
     private void registerGuiIngredients() {
         Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
         Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
+    }
+
+    private void loadConfiguration() {
+        configuration = new ConfigurationFile(this);
+        configuration.configureDefault(JsonMapper.builder());
+        configuration.save();
     }
 
     public @NotNull ObjectMapper jsonMapper() {
