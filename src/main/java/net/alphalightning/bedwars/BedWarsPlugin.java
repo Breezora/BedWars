@@ -27,10 +27,9 @@ import java.util.ResourceBundle;
 public class BedWarsPlugin extends JavaPlugin {
 
     private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
-    private final JsonMapper.Builder jsonMapperBuilder = JsonMapper.builder()
+    private final ObjectMapper mapper = JsonMapper.builder()
             .addModule(JacksonPaper.builder().build())
-            .enable(SerializationFeature.INDENT_OUTPUT); // Pretty printing;
-    private final ObjectMapper mapper = jsonMapperBuilder
+            .enable(SerializationFeature.INDENT_OUTPUT) // Pretty printing
             .build()
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
@@ -75,8 +74,7 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void createOrLoadConfiguration() {
-        configuration = new Configuration(this);
-        configuration.configureDefault(jsonMapperBuilder);
+        configuration = new Configuration(this, jsonMapper());
 
         if (!configuration.exists(ConfigKey.defaultConfig(Default.class, Default::new))) {
             configuration.createDefault();

@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.eldoria.eldoutilities.config.ConfigKey;
 import de.eldoria.eldoutilities.config.JacksonConfig;
 import org.bukkit.plugin.Plugin;
@@ -9,8 +10,16 @@ public class Configuration extends JacksonConfig<Default> {
 
     private static final ConfigKey<Default> MAIN = ConfigKey.defaultConfig(Default.class, Default::new);
 
-    public Configuration(@NotNull Plugin plugin) {
+    private final ObjectMapper mapper;
+
+    public Configuration(@NotNull Plugin plugin, ObjectMapper mapper) {
         super(plugin, MAIN);
+        this.mapper = mapper;
+    }
+
+    @Override
+    protected ObjectMapper createMapper() {
+        return mapper;
     }
 
     public void createDefault() {
