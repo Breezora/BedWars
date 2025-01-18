@@ -12,9 +12,11 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Default;
+import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
@@ -35,6 +37,7 @@ public class BedWarsPlugin extends JavaPlugin {
             .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
 
     private Configuration configuration;
+    private Environment environment;
 
     @Override
     public void onLoad() {
@@ -80,7 +83,8 @@ public class BedWarsPlugin extends JavaPlugin {
             configuration.createDefault();
         }
 
-        getLogger().info("Using environment " + configuration.main().environment());
+        environment = configuration.main().environment();
+        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the " + Environment.colored(environment) + " environment"));
     }
 
     public ObjectMapper jsonMapper() {
