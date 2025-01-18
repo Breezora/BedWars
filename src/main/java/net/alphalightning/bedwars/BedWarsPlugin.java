@@ -23,10 +23,13 @@ import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.xenondevs.invui.gui.Structure;
 
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
+
+    private static final ConfigKey<Default> MAIN_KEY = ConfigKey.of("config", Path.of("config.json"), Default.class, Default::new);
 
     private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
     private final ObjectMapper mapper = JsonMapper.builder()
@@ -77,9 +80,9 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void createOrLoadConfiguration() {
-        configuration = new Configuration(this, jsonMapper());
+        configuration = new Configuration(this, MAIN_KEY, mapper);
 
-        if (!configuration.exists(ConfigKey.defaultConfig(Default.class, Default::new))) {
+        if (!configuration.exists(MAIN_KEY)) {
             configuration.createDefault();
         }
 

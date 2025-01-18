@@ -6,16 +6,12 @@ import de.eldoria.eldoutilities.config.JacksonConfig;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Path;
-
 public class Configuration extends JacksonConfig<Default> {
-
-    private static final ConfigKey<Default> MAIN = ConfigKey.of("config", Path.of("config.json"), Default.class, Default::new);
 
     private final ObjectMapper mapper;
 
-    public Configuration(@NotNull Plugin plugin, ObjectMapper mapper) {
-        super(plugin, MAIN);
+    public Configuration(@NotNull Plugin plugin, ConfigKey<Default> mainKey, ObjectMapper mapper) {
+        super(plugin, mainKey);
         this.mapper = mapper;
     }
 
