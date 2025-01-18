@@ -65,8 +65,14 @@ public class BedWarsPlugin extends JavaPlugin {
     public void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
 
-        manager.registerCommand(new CreateMapCommand());
-        manager.registerCommand(new OpenGuiCommand()); // Debug command
+        if (environment != Environment.PRODUCTION) {
+            manager.registerCommand(new CreateMapCommand()); // Command to create a new map
+            manager.registerCommand(new OpenGuiCommand()); // Debug command. Will be removed when map configurations work fine
+
+            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
+            return;
+        }
+        getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>map creation"));
     }
 
     private void registerGuiIngredients() {
