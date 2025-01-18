@@ -84,7 +84,7 @@ public class BedWarsPlugin extends JavaPlugin {
         }
 
         environment = configuration.main().environment();
-        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the " + Environment.colored(environment) + " environment"));
+        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
     }
 
     public ObjectMapper jsonMapper() {
