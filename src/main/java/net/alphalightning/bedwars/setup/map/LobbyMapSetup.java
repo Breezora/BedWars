@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.kyori.adventure.text.Component;
@@ -87,6 +88,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
             case 2 -> player.sendMessage(Component.translatable("lobbysetup.stage2"));
             case 3 -> player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
             default -> {
+                Feedback.error(player);
                 player.sendMessage(Component.translatable("lobbysetup.cancel"));
                 plugin.getComponentLogger().warn(Component.translatable("lobbysetup.cancel"));
             }
@@ -111,10 +113,12 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
         if (stage == 1) {
             spawn = location;
+            Feedback.success(player);
             startStage(2);
 
         } else if (stage == 2) {
             hologram = location;
+            Feedback.complete(player);
             finish();
         }
     }
