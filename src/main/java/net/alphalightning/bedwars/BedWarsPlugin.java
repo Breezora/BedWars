@@ -6,12 +6,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import de.eldoria.eldoutilities.config.ConfigKey;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
 import net.alphalightning.bedwars.config.Configuration;
-import net.alphalightning.bedwars.config.Default;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
@@ -23,13 +21,10 @@ import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.xenondevs.invui.gui.Structure;
 
-import java.nio.file.Path;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
-
-    private static final ConfigKey<Default> MAIN_KEY = ConfigKey.of("config", Path.of("config.json"), Default.class, Default::new);
 
     private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
     private final ObjectMapper mapper = JsonMapper.builder()
@@ -45,7 +40,7 @@ public class BedWarsPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         loadMessageRegistry();
-        createOrLoadConfiguration();
+        loadConfiguration();
     }
 
     @Override
@@ -79,12 +74,9 @@ public class BedWarsPlugin extends JavaPlugin {
         Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
     }
 
-    private void createOrLoadConfiguration() {
-        configuration = new Configuration(this, MAIN_KEY, mapper);
-
-        if (!configuration.exists(MAIN_KEY)) {
-            configuration.createDefault();
-        }
+    private void loadConfiguration() {
+        configuration = new Configuration(this, mapper);
+        configuration.createOrDoNothing();
 
         environment = configuration.main().environment();
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
