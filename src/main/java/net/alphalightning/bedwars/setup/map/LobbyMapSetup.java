@@ -83,10 +83,19 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         this.stage = stage;
 
         switch (stage) {
-            case 0 -> player.sendMessage(Component.translatable("lobbysetup.start"));
-            case 1 -> player.sendMessage(Component.translatable("lobbysetup.stage1"));
-            case 2 -> player.sendMessage(Component.translatable("lobbysetup.stage2"));
-            case 3 -> player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
+            case 0 -> {
+                Feedback.start(player);
+                player.sendMessage(Component.translatable("lobbysetup.start"));
+            }
+            case 1 -> player.sendMessage(Component.translatable("lobbysetup.stage1")); // Kein Sound, da Interferenz mit Stage 0
+            case 2 -> {
+                Feedback.success(player);
+                player.sendMessage(Component.translatable("lobbysetup.stage2"));
+            }
+            case 3 -> {
+                Feedback.complete(player);
+                player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
+            }
             default -> {
                 Feedback.error(player);
                 player.sendMessage(Component.translatable("lobbysetup.cancel"));
@@ -113,12 +122,10 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
         if (stage == 1) {
             spawn = location;
-            Feedback.success(player);
             startStage(2);
 
         } else if (stage == 2) {
             hologram = location;
-            Feedback.complete(player);
             finish();
         }
     }

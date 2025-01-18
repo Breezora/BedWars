@@ -24,6 +24,10 @@ public interface Feedback {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, VOLUME, PITCH);
     }
 
+    static void start(Player player) {
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, VOLUME, PITCH);
+    }
+
     static void complete(Player player) {
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, VOLUME, PITCH);
     }
