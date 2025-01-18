@@ -9,14 +9,16 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
+import net.alphalightning.bedwars.config.Configuration;
+import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Structure;
 
 import java.util.Locale;
@@ -32,9 +34,13 @@ public class BedWarsPlugin extends JavaPlugin {
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
 
+    private Configuration configuration;
+    private Environment environment;
+
     @Override
     public void onLoad() {
         loadMessageRegistry();
+        loadConfiguration();
     }
 
     @Override
@@ -68,7 +74,19 @@ public class BedWarsPlugin extends JavaPlugin {
         Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
     }
 
-    public @NotNull ObjectMapper jsonMapper() {
+    private void loadConfiguration() {
+        configuration = new Configuration(this, mapper);
+        configuration.createOrDoNothing();
+
+        environment = configuration.main().environment();
+        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
+    }
+
+    public ObjectMapper jsonMapper() {
         return mapper;
+    }
+
+    public Configuration configuration() {
+        return configuration;
     }
 }
