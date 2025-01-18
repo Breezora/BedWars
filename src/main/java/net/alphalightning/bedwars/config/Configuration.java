@@ -15,5 +15,6 @@ public class Configuration extends JacksonConfig<Default> {
 
     public void createDefault() {
         main().environment(Environment.DEVELOPMENT);
+        save();
     }
 }
