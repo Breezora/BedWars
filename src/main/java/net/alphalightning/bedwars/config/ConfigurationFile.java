@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConfigurationFile extends JacksonConfig<General> {
 
-    private static final ConfigKey<General> MAIN = ConfigKey.defaultConfig(General.class, General::new);
+    private static final ConfigKey<General> MAIN = ConfigKey.defaultConfig(General.class, () -> new General(Environment.DEVELOPMENT));
 
     public ConfigurationFile(@NotNull Plugin plugin) {
         super(plugin, MAIN);

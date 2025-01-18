@@ -1,10 +1,12 @@
 package net.alphalightning.bedwars.config;
 
-public class General {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    private final Environment environment = Environment.DEVELOPMENT;
+public record General(Environment environment) {
 
-    public Environment environment() {
-        return environment;
+    @JsonCreator
+    public General(@JsonProperty("environment") Environment environment) {
+        this.environment = environment;
     }
 }
