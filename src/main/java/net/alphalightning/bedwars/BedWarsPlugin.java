@@ -65,8 +65,10 @@ public class BedWarsPlugin extends JavaPlugin {
     public void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
 
-        manager.registerCommand(new CreateMapCommand());
-        manager.registerCommand(new OpenGuiCommand()); // Debug command
+        if (environment != Environment.DEVELOPMENT) {
+            manager.registerCommand(new CreateMapCommand()); // Command to create a new map
+            manager.registerCommand(new OpenGuiCommand()); // Debug command. Will be removed when map configurations work fine
+        }
     }
 
     private void registerGuiIngredients() {
