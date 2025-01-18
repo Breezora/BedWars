@@ -12,7 +12,6 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.OpenGuiCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Default;
-import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
@@ -36,7 +35,6 @@ public class BedWarsPlugin extends JavaPlugin {
             .setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
 
     private Configuration configuration;
-    private Environment environment;
 
     @Override
     public void onLoad() {
@@ -66,10 +64,8 @@ public class BedWarsPlugin extends JavaPlugin {
     public void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
 
-        if (environment != Environment.PRODUCTION) {
-            manager.registerCommand(new CreateMapCommand());
-            manager.registerCommand(new OpenGuiCommand()); // This is a debug only command. Will be removed after testing
-        }
+        manager.registerCommand(new CreateMapCommand());
+        manager.registerCommand(new OpenGuiCommand()); // Debug command
     }
 
     private void registerGuiIngredients() {
@@ -84,8 +80,7 @@ public class BedWarsPlugin extends JavaPlugin {
             configuration.createDefault();
         }
 
-        environment = configuration.main().environment();
-        getLogger().info("Using environment " + environment);
+        getLogger().info("Using environment " + configuration.main().environment());
     }
 
     public ObjectMapper jsonMapper() {
