@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.kyori.adventure.text.Component;
@@ -82,11 +83,21 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         this.stage = stage;
 
         switch (stage) {
-            case 0 -> player.sendMessage(Component.translatable("lobbysetup.start"));
-            case 1 -> player.sendMessage(Component.translatable("lobbysetup.stage1"));
-            case 2 -> player.sendMessage(Component.translatable("lobbysetup.stage2"));
-            case 3 -> player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
+            case 0 -> {
+                Feedback.start(player);
+                player.sendMessage(Component.translatable("lobbysetup.start"));
+            }
+            case 1 -> player.sendMessage(Component.translatable("lobbysetup.stage1")); // Kein Sound, da Interferenz mit Stage 0
+            case 2 -> {
+                Feedback.success(player);
+                player.sendMessage(Component.translatable("lobbysetup.stage2"));
+            }
+            case 3 -> {
+                Feedback.complete(player);
+                player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(FILE_NAME)));
+            }
             default -> {
+                Feedback.error(player);
                 player.sendMessage(Component.translatable("lobbysetup.cancel"));
                 plugin.getComponentLogger().warn(Component.translatable("lobbysetup.cancel"));
             }
