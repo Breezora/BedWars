@@ -32,7 +32,7 @@ public class GameMapConfigurationOverviewGui {
                                 ". . . . . . . . ."
                         )
                         .addIngredient('a', new SelectTeamGuiItem(setup))
-                        .addIngredient('b', new ConfigureItemSpawnerGuiItem(container))
+                        .addIngredient('b', new ConfigureItemSpawnerGuiItem(setup, this))
                         .build()
                 )
                 .setTitle(Component.translatable("mapsetup.gui.overview.title"))
@@ -41,5 +41,9 @@ public class GameMapConfigurationOverviewGui {
 
     public void showGui() {
         gui.open(owner);
+    }
+
+    protected GameMapSetup setup() {
+        return setup;
     }
 }

@@ -2,16 +2,13 @@ package net.alphalightning.bedwars.setup.ui.item;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractBoundItem;
 import xyz.xenondevs.invui.item.Click;
@@ -20,11 +17,10 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 public class SaveConfigurationGuiItem extends AbstractBoundItem {
 
-    private final NamespacedKey key = new NamespacedKey("bedwars", "stage");
-    private final PersistentDataContainer container;
+    private final GameMapSetup setup;
 
-    public SaveConfigurationGuiItem(PersistentDataContainer container) {
-        this.container = container;
+    public SaveConfigurationGuiItem(GameMapSetup setup) {
+        this.setup = setup;
     }
 
     @Override
@@ -38,7 +34,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        int stage = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
+        int stage = setup.stage();
 
         if (stage == 1) { // Team selection stage
             int size = SelectTeamsGui.selectedTeams().size();
@@ -47,22 +43,17 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
                 Feedback.error(player);
                 return;
             }
-            container.set(key, PersistentDataType.INTEGER, stage + 1);
             startNextStage(player, 1);
-
 
         } else if (stage == 2) { // Item spawner configuration stage
             super.getGui().findAllWindows().forEach(window -> window.setCloseable(true)); // Make gui closeable to be able to close it
-
-            container.set(key, PersistentDataType.INTEGER, stage + 1);
             startNextStage(player, 2);
         }
-        //TODO: Setup nehmen und neue stage starten
     }
 
     private void startNextStage(Player player, int current) {
         if (current == 1) {
-            new GameMapConfigurationOverviewGui(player).showGui();
+            setup.startStage(2);
 
         } else if (current == 2) {
             player.closeInventory();
