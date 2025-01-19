@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.map;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -45,6 +46,12 @@ public final class GameMapSetup implements MapSetup, Listener {
                 Feedback.start(player);
                 player.sendMessage(Component.translatable("mapsetup.start"));
             }
+            case 1 -> {
+                new GameMapConfigurationOverviewGui(player, this).showGui();
+
+                Feedback.success(player);
+                player.sendMessage(Component.translatable("mapsetup.stage.1"));
+            }
             default -> {
                 Feedback.error(player);
 
@@ -68,6 +75,10 @@ public final class GameMapSetup implements MapSetup, Listener {
     @Override
     public BedWarsPlugin plugin() {
         return plugin;
+    }
+
+    public int stage() {
+        return stage;
     }
 
     // Start cancellation logic
