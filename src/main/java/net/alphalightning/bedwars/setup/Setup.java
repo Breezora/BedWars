@@ -7,6 +7,10 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public interface Setup {
 
     void start();
@@ -16,6 +20,19 @@ public interface Setup {
     void cancel();
 
     void saveConfiguration();
+
+    BedWarsPlugin plugin();
+
+    default Path directory() {
+        return plugin().getDataFolder().toPath();
+    }
+
+    default void createDirectory() throws IOException {
+        Path configDirPath = directory().resolve("maps");
+        if (!Files.exists(configDirPath)) {
+            Files.createDirectory(configDirPath);
+        }
+    }
 
     static MapSetup.Builder mapBuilder(@NotNull ConfigurationType type) {
         if (type == ConfigurationType.LOBBY) {

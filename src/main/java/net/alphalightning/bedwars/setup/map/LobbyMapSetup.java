@@ -16,8 +16,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 
 public final class LobbyMapSetup implements MapSetup, Listener {
@@ -58,18 +56,20 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     @Override
+    public BedWarsPlugin plugin() {
+        return plugin;
+    }
+
+    @Override
     public void saveConfiguration() {
         try {
-            Path configDirPath = plugin.getDataFolder().toPath().resolve("maps");
-            if (!Files.exists(configDirPath)) {
-                Files.createDirectory(configDirPath);
-            }
+            createDirectory();
 
             SimpleJacksonLocation spawnLocation = new SimpleJacksonLocation(spawn);
             SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
 
             Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
-            plugin.jsonMapper().writeValue(configDirPath.resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
+            plugin.jsonMapper().writeValue(directory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
