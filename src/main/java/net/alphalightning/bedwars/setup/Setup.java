@@ -15,7 +15,7 @@ public interface Setup {
 
     void start();
 
-    void finish();
+    void finish(int lastStage);
 
     void cancel();
 

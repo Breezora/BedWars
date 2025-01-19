@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSetup {
 
-    int ERROR = 100;
+    void invalidate();
 
     void startStage(int stage);
 
@@ -21,6 +21,18 @@ public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSet
     @Override
     default void start() {
         startStage(1);
+    }
+
+    @Override
+    default void finish(int lastStage) {
+        startStage(lastStage);
+        saveConfiguration();
+    }
+
+    @Override
+    default void cancel() {
+        startStage(100);
+        invalidate();
     }
 
     sealed interface Builder extends Setup.Builder<Builder> permits LobbyMapSetupBuilder, GameMapSetupBuilder {
