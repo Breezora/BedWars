@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
 
@@ -69,7 +70,7 @@ public final class GameMapSetup implements MapSetup, Listener {
         return plugin;
     }
 
-    // Start stage logic
+    // Start cancellation logic
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
@@ -79,6 +80,13 @@ public final class GameMapSetup implements MapSetup, Listener {
 
         if (event.signedMessage().message().equalsIgnoreCase("cancel")) {
             event.setCancelled(true);
+            cancel();
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        if (player != null && player.equals(event.getPlayer())) {
             cancel();
         }
     }
