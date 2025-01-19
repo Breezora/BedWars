@@ -31,6 +31,9 @@ public final class LobbyMapSetupBuilder implements MapSetup.Builder {
         if (plugin == null) {
             throw new IllegalStateException("The plugin cannot be null");
         }
+        if (player == null) {
+            throw new IllegalStateException("The player cannot be null");
+        }
         return new LobbyMapSetup(plugin, player);
     }
 }
