@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui;
 
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.ui.item.DiamondSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.EmeraldSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
@@ -15,11 +16,16 @@ public class ConfigureItemSpawnerGui {
     private final Player owner;
     private final Single gui;
 
+    private final GameMapSetup setup;
+    private final GameMapConfigurationOverviewGui overviewGui;
+
     private static int emeraldSpawnerCount;
     private static int diamondSpawnerCount;
 
-    public ConfigureItemSpawnerGui(Player owner) {
+    public ConfigureItemSpawnerGui(Player owner, GameMapSetup setup, GameMapConfigurationOverviewGui overviewGui) {
         this.owner = owner;
+        this.setup = setup;
+        this.overviewGui = overviewGui;
         this.gui = createGui();
 
         emeraldSpawnerCount = 0;
@@ -36,8 +42,8 @@ public class ConfigureItemSpawnerGui {
                         )
                         .addIngredient('a', new EmeraldSpawnerGuiItem())
                         .addIngredient('b', new DiamondSpawnerGuiItem())
-                        .addIngredient('c', new ReturnToOverviewGuiItem())
-                        .addIngredient('d', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
+                        .addIngredient('c', new ReturnToOverviewGuiItem(overviewGui))
+                        .addIngredient('d', new SaveConfigurationGuiItem(setup))
                         .build()
                 )
                 .setTitle(Component.translatable("mapsetup.gui.configure-spawner.title"))

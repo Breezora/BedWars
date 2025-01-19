@@ -15,6 +15,12 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 public class ReturnToOverviewGuiItem extends AbstractBoundItem {
 
+    private final GameMapConfigurationOverviewGui gui;
+
+    public ReturnToOverviewGuiItem(GameMapConfigurationOverviewGui gui) {
+        this.gui = gui;
+    }
+
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("mapsetup.gui.configure.back");
@@ -25,7 +31,7 @@ public class ReturnToOverviewGuiItem extends AbstractBoundItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         super.getGui().closeForAllViewers();
-        new GameMapConfigurationOverviewGui(player).showGui();
+        gui.showGui();
 
         Feedback.back(player);
     }

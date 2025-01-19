@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui;
 
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.ui.item.ConfigureItemSpawnerGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.SelectTeamGuiItem;
 import net.kyori.adventure.text.Component;
@@ -12,10 +13,13 @@ import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 public class GameMapConfigurationOverviewGui {
 
     private final Player owner;
+    private final GameMapSetup setup;
+
     private final Single gui;
 
-    public GameMapConfigurationOverviewGui(Player owner) {
+    public GameMapConfigurationOverviewGui(Player owner, GameMapSetup setup) {
         this.owner = owner;
+        this.setup = setup;
         this.gui = createGui(owner.getPersistentDataContainer());
     }
 
@@ -27,8 +31,8 @@ public class GameMapConfigurationOverviewGui {
                                 ". . . a . b . . .",
                                 ". . . . . . . . ."
                         )
-                        .addIngredient('a', new SelectTeamGuiItem(container))
-                        .addIngredient('b', new ConfigureItemSpawnerGuiItem(container))
+                        .addIngredient('a', new SelectTeamGuiItem(setup, this))
+                        .addIngredient('b', new ConfigureItemSpawnerGuiItem(setup, this))
                         .build()
                 )
                 .setTitle(Component.translatable("mapsetup.gui.overview.title"))
@@ -37,5 +41,9 @@ public class GameMapConfigurationOverviewGui {
 
     public void showGui() {
         gui.open(owner);
+    }
+
+    protected GameMapSetup setup() {
+        return setup;
     }
 }

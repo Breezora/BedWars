@@ -3,6 +3,8 @@ package net.alphalightning.bedwars.setup.map;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.setup.map.jackson.Team;
+import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GameMapSetup implements MapSetup, Listener {
 
@@ -18,12 +22,12 @@ public final class GameMapSetup implements MapSetup, Listener {
     private final String fileName;
 
     private Player player;
-    private String name;
     private int stage;
+
+    private final List<Team> teams = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
-        this.name = name;
         this.player = player;
         this.fileName = name + ".json";
 
@@ -34,7 +38,6 @@ public final class GameMapSetup implements MapSetup, Listener {
     @Override
     public void invalidate() {
         player = null;
-        name = null;
     }
 
     @Override
@@ -44,6 +47,12 @@ public final class GameMapSetup implements MapSetup, Listener {
             case 0 -> {
                 Feedback.start(player);
                 player.sendMessage(Component.translatable("mapsetup.start"));
+            }
+            case 1 -> {
+                new GameMapConfigurationOverviewGui(player, this).showGui();
+
+                Feedback.success(player);
+                player.sendMessage(Component.translatable("mapsetup.stage.1"));
             }
             default -> {
                 Feedback.error(player);
@@ -59,15 +68,31 @@ public final class GameMapSetup implements MapSetup, Listener {
     public void saveConfiguration() {
         try {
             createDirectory();
-            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), name);
+            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), teams);
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
         }
     }
 
+    // Start data exposure
+
     @Override
     public BedWarsPlugin plugin() {
         return plugin;
+    }
+
+    public int stage() {
+        return stage;
+    }
+
+    public List<Team> teams() {
+        return teams;
+    }
+
+    // Start data manipulation logics
+
+    public void configureTeams(List<Team> teams) {
+        this.teams.addAll(teams);
     }
 
     // Start cancellation logic
@@ -78,7 +103,7 @@ public final class GameMapSetup implements MapSetup, Listener {
             return;
         }
 
-        if (event.signedMessage().message().equalsIgnoreCase("cancel")) {
+        if (event.signedMessage().message().equalsIgnoreCase(CANCEL_MESSAGE)) {
             event.setCancelled(true);
             cancel();
         }

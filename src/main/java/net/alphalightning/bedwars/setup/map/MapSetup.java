@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSetup {
 
+    String CANCEL_MESSAGE = "cancel";
+
     void invalidate();
 
     void startStage(int stage);

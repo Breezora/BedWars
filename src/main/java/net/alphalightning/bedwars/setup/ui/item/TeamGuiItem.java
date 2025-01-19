@@ -72,6 +72,10 @@ public class TeamGuiItem extends AbstractBoundItem {
         return weight; // The weight that is used to sort the items
     }
 
+    public int color() {
+        return color;
+    }
+
     private @NotNull ItemBuilder createItemBuilderFromColor() {
         ItemBuilder builder = new ItemBuilder(Material.BARRIER); // Default empty slot if no valid hex-int was supplied
         Component display = Component.empty();

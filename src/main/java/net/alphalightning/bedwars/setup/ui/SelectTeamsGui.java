@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.setup.ui;
 
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.ui.item.ReturnToOverviewGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.SaveConfigurationGuiItem;
 import net.alphalightning.bedwars.setup.ui.item.TeamGuiItem;
@@ -21,10 +22,15 @@ public class SelectTeamsGui {
     private final Player owner;
     private final Single gui;
 
-    public SelectTeamsGui(Player owner) {
+    private final GameMapSetup setup;
+    private final GameMapConfigurationOverviewGui overviewGui;
+
+    public SelectTeamsGui(Player owner, GameMapSetup setup, GameMapConfigurationOverviewGui overviewGui) {
         clearTeamSelections();
 
         this.owner = owner;
+        this.setup = setup;
+        this.overviewGui = overviewGui;
         this.gui = createGui();
     }
 
@@ -57,8 +63,8 @@ public class SelectTeamsGui {
                         .addIngredient('p', new TeamGuiItem(16, 0xff6ef8, owner))
                         .addIngredient('+', new TeamSelectionInfoGuiItem(true)) // Team selection info items have to be added after the team gui items to display the correct amount of (un)selected teams
                         .addIngredient('-', new TeamSelectionInfoGuiItem(false))
-                        .addIngredient('<', new ReturnToOverviewGuiItem())
-                        .addIngredient('>', new SaveConfigurationGuiItem(owner.getPersistentDataContainer()))
+                        .addIngredient('<', new ReturnToOverviewGuiItem(overviewGui))
+                        .addIngredient('>', new SaveConfigurationGuiItem(setup))
                         .build()
                 )
                 .setTitle(Component.translatable("mapsetup.gui.select-teams.title"))
