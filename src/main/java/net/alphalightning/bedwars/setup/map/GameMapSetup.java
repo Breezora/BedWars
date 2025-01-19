@@ -73,7 +73,7 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (!player.equals(event.getPlayer())) {
+        if (player == null || !player.equals(event.getPlayer())) {
             return;
         }
 
