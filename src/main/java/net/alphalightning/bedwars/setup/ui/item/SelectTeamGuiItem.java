@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
+import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -18,9 +19,13 @@ import java.util.Arrays;
 
 public class SelectTeamGuiItem extends AbstractItem {
 
+    private final GameMapSetup setup;
+    private final GameMapConfigurationOverviewGui overviewGui;
     private final int stage;
 
-    public SelectTeamGuiItem(GameMapSetup setup) {
+    public SelectTeamGuiItem(GameMapSetup setup, GameMapConfigurationOverviewGui overviewGui) {
+        this.setup = setup;
+        this.overviewGui = overviewGui;
         this.stage = setup.stage();
     }
 
@@ -47,6 +52,6 @@ public class SelectTeamGuiItem extends AbstractItem {
             Feedback.error(player);
             return;
         }
-        new SelectTeamsGui(player).showGui();
+        new SelectTeamsGui(player, setup, overviewGui).showGui();
     }
 }

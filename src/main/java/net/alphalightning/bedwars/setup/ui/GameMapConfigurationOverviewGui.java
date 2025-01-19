@@ -31,7 +31,7 @@ public class GameMapConfigurationOverviewGui {
                                 ". . . a . b . . .",
                                 ". . . . . . . . ."
                         )
-                        .addIngredient('a', new SelectTeamGuiItem(setup))
+                        .addIngredient('a', new SelectTeamGuiItem(setup, this))
                         .addIngredient('b', new ConfigureItemSpawnerGuiItem(setup, this))
                         .build()
                 )
