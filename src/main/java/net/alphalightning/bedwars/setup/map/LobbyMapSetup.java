@@ -46,7 +46,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @Override
     public void cancel() {
-        startStage(4);
+        startStage(ERROR);
         player = null;
     }
 
