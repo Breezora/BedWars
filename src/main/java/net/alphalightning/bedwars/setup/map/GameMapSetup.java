@@ -71,7 +71,7 @@ public final class GameMapSetup implements MapSetup, Listener {
     public void saveConfiguration() {
         try {
             createDirectory();
-            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), name);
+            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), teams);
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
         }
