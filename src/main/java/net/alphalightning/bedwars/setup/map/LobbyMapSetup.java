@@ -56,11 +56,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     @Override
-    public BedWarsPlugin plugin() {
-        return plugin;
-    }
-
-    @Override
     public void saveConfiguration() {
         try {
             createDirectory();
@@ -74,6 +69,11 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
         }
+    }
+
+    @Override
+    public BedWarsPlugin plugin() {
+        return plugin;
     }
 
     private void startStage(int stage) {
