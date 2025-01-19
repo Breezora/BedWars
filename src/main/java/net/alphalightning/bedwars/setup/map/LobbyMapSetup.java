@@ -39,36 +39,10 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     @Override
-    public void finish() {
-        startStage(3);
-        saveConfiguration();
-    }
-
-    @Override
-    public void cancel() {
-        startStage(ERROR);
+    public void invalidate() {
         player = null;
-    }
-
-    @Override
-    public void saveConfiguration() {
-        try {
-            createDirectory();
-
-            SimpleJacksonLocation spawnLocation = new SimpleJacksonLocation(spawn);
-            SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
-
-            Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
-            plugin.jsonMapper().writeValue(directory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
-
-        } catch (IOException exception) {
-            plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
-        }
-    }
-
-    @Override
-    public BedWarsPlugin plugin() {
-        return plugin;
+        spawn = null;
+        hologram = null;
     }
 
     @Override
@@ -99,6 +73,27 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         }
     }
 
+    @Override
+    public void saveConfiguration() {
+        try {
+            createDirectory();
+
+            SimpleJacksonLocation spawnLocation = new SimpleJacksonLocation(spawn);
+            SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
+
+            Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
+            plugin.jsonMapper().writeValue(directory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
+
+        } catch (IOException exception) {
+            plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
+        }
+    }
+
+    @Override
+    public BedWarsPlugin plugin() {
+        return plugin;
+    }
+
     // Start stage logic
 
     @EventHandler
@@ -121,7 +116,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
         } else if (stage == 2) {
             hologram = location;
-            finish();
+            finish(3);
         }
     }
 
