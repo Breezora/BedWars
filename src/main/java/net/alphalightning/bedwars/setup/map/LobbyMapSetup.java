@@ -95,8 +95,10 @@ public final class LobbyMapSetup implements MapSetup, Listener {
             }
             default -> {
                 Feedback.error(player);
-                player.sendMessage(Component.translatable("lobbysetup.cancel"));
-                plugin.getComponentLogger().warn(Component.translatable("lobbysetup.cancel"));
+
+                Component component = Component.translatable("lobbysetup.cancel");
+                player.sendMessage(component);
+                plugin.getComponentLogger().warn(component);
             }
         }
     }
