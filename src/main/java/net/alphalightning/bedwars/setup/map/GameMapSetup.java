@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.map;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -12,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GameMapSetup implements MapSetup, Listener {
 
@@ -21,6 +24,8 @@ public final class GameMapSetup implements MapSetup, Listener {
     private Player player;
     private String name;
     private int stage;
+
+    private final List<Team> teams = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -79,6 +84,10 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     public int stage() {
         return stage;
+    }
+
+    public void configureTeams(List<Team> teams) {
+        this.teams.addAll(teams);
     }
 
     // Start cancellation logic
