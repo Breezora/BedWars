@@ -98,7 +98,7 @@ public final class GameMapSetup implements MapSetup, Listener {
             return;
         }
 
-        if (event.signedMessage().message().equalsIgnoreCase("cancel")) {
+        if (event.signedMessage().message().equalsIgnoreCase(CANCEL_MESSAGE)) {
             event.setCancelled(true);
             cancel();
         }
