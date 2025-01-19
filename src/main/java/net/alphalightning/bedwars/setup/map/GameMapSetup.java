@@ -88,12 +88,6 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     public void configureTeams(List<Team> teams) {
         this.teams.addAll(teams);
-
-        StringBuilder message = new StringBuilder();
-        for (Team team : teams) {
-            message.append(team.name()).append(", ");
-        }
-        plugin.getLogger().info("Selected teams: " + message);
     }
 
     // Start cancellation logic
