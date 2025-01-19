@@ -39,11 +39,6 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     @Override
-    public void start() {
-        startStage(1);
-    }
-
-    @Override
     public void finish() {
         startStage(3);
         saveConfiguration();
@@ -76,7 +71,8 @@ public final class LobbyMapSetup implements MapSetup, Listener {
         return plugin;
     }
 
-    private void startStage(int stage) {
+    @Override
+    public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
 
         switch (stage) {

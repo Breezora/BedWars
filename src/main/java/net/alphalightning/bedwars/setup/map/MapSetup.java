@@ -7,11 +7,20 @@ import org.jetbrains.annotations.NotNull;
 
 public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSetup {
 
+    int ERROR = 100;
+
+    void startStage(int stage);
+
     default int validateStage(int current, int toStart) {
         if (current > toStart) {
             throw new IllegalStateException("Could not start stage " + toStart + ": The new stage must be at least the current stage (" + current + ") or higher.");
         }
         return toStart;
+    }
+
+    @Override
+    default void start() {
+        startStage(1);
     }
 
     sealed interface Builder extends Setup.Builder<Builder> permits LobbyMapSetupBuilder, GameMapSetupBuilder {
