@@ -77,8 +77,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
     }
 
     private void startStage(int stage) {
-        validateStage(this.stage, stage);
-        this.stage = stage;
+        this.stage = validateStage(this.stage, stage);
 
         switch (stage) {
             case 0 -> {
