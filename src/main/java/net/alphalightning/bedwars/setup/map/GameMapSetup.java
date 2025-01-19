@@ -1,13 +1,17 @@
 package net.alphalightning.bedwars.setup.map;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 import java.io.IOException;
 
-public final class GameMapSetup implements MapSetup {
+public final class GameMapSetup implements MapSetup, Listener {
 
     private final BedWarsPlugin plugin;
     private final String fileName;
@@ -23,6 +27,7 @@ public final class GameMapSetup implements MapSetup {
         this.fileName = name + ".json";
 
         startStage(0);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -62,5 +67,19 @@ public final class GameMapSetup implements MapSetup {
     @Override
     public BedWarsPlugin plugin() {
         return plugin;
+    }
+
+    // Start stage logic
+
+    @EventHandler
+    public void onChat(AsyncChatEvent event) {
+        if (!player.equals(event.getPlayer())) {
+            return;
+        }
+
+        if (event.signedMessage().message().equalsIgnoreCase("cancel")) {
+            event.setCancelled(true);
+            cancel();
+        }
     }
 }
