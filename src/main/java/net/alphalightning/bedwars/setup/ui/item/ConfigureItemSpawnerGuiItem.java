@@ -21,12 +21,12 @@ import java.util.Arrays;
 public class ConfigureItemSpawnerGuiItem extends AbstractItem {
 
     private final GameMapSetup setup;
-    private final GameMapConfigurationOverviewGui gui;
+    private final GameMapConfigurationOverviewGui overwriteGui;
     private final int stage;
 
-    public ConfigureItemSpawnerGuiItem(GameMapSetup setup, GameMapConfigurationOverviewGui gui) {
+    public ConfigureItemSpawnerGuiItem(GameMapSetup setup, GameMapConfigurationOverviewGui overwriteGui) {
         this.setup = setup;
-        this.gui = gui;
+        this.overwriteGui = overwriteGui;
         this.stage = setup.stage();
     }
 
@@ -54,6 +54,6 @@ public class ConfigureItemSpawnerGuiItem extends AbstractItem {
             Feedback.error(player);
             return;
         }
-        new ConfigureItemSpawnerGui(player, setup, gui).showGui();
+        new ConfigureItemSpawnerGui(player, setup, overwriteGui).showGui();
     }
 }
