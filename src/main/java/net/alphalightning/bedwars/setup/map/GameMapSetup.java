@@ -22,14 +22,12 @@ public final class GameMapSetup implements MapSetup, Listener {
     private final String fileName;
 
     private Player player;
-    private String name;
     private int stage;
 
     private final List<Team> teams = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
-        this.name = name;
         this.player = player;
         this.fileName = name + ".json";
 
@@ -40,7 +38,6 @@ public final class GameMapSetup implements MapSetup, Listener {
     @Override
     public void invalidate() {
         player = null;
-        name = null;
     }
 
     @Override
