@@ -86,6 +86,10 @@ public final class GameMapSetup implements MapSetup, Listener {
         return stage;
     }
 
+    public List<Team> teams() {
+        return teams;
+    }
+
     public void configureTeams(List<Team> teams) {
         this.teams.addAll(teams);
     }
