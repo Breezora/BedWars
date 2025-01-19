@@ -74,6 +74,8 @@ public final class GameMapSetup implements MapSetup, Listener {
         }
     }
 
+    // Start data exposure
+
     @Override
     public BedWarsPlugin plugin() {
         return plugin;
@@ -86,6 +88,8 @@ public final class GameMapSetup implements MapSetup, Listener {
     public List<Team> teams() {
         return teams;
     }
+
+    // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
         this.teams.addAll(teams);
