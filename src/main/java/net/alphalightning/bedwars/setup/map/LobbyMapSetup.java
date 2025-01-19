@@ -122,7 +122,7 @@ public final class LobbyMapSetup implements MapSetup, Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (player == null || !player.equals(event.getPlayer()) || !((stage == 1) || (stage == 2))) {
+        if (!player.equals(event.getPlayer()) || !((stage == 1) || (stage == 2))) {
             return;
         }
 
