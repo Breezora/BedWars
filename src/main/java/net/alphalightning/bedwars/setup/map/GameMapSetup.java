@@ -26,6 +26,7 @@ public final class GameMapSetup implements MapSetup {
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
     private int maxBuildHeight = 0;
+    private int minBuildHeight = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -50,6 +51,7 @@ public final class GameMapSetup implements MapSetup {
             case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
             case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
             case 4 -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
+            case 5 -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -109,5 +111,9 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureMaxBuildHeight(int height) {
         this.maxBuildHeight = height;
+    }
+
+    public void configureMinBuildHeight(int height) {
+        this.minBuildHeight = height;
     }
 }
