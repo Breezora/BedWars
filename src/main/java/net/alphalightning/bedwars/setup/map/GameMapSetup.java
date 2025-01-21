@@ -101,6 +101,10 @@ public final class GameMapSetup implements MapSetup, Listener {
         return teams;
     }
 
+    public int emeraldSpawnerCount() {
+        return emeraldSpawnerCount;
+    }
+
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
