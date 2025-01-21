@@ -33,6 +33,8 @@ public class TeamSizeConfigurationStage extends Stage {
             return;
         }
 
+        event.setCancelled(true); // Do not send the message inti the chat
+
         int size;
         try {
             size = Integer.parseInt(event.signedMessage().message());
@@ -55,8 +57,6 @@ public class TeamSizeConfigurationStage extends Stage {
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-
-        event.setCancelled(true);
 
         Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.3.success"));
