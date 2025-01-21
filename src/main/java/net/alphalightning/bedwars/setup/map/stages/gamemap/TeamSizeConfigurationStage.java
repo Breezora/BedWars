@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
@@ -34,10 +35,12 @@ public class TeamSizeConfigurationStage extends Stage {
 
         int size = validateInt(event.signedMessage().message());
         if (size < MIN_TEAM_SIZE) {
+            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.negative-or-zero"));
             return;
         }
         if (size > MAX_TEAM_SIZE) {
+            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.too-big"));
             return;
         }
@@ -46,7 +49,9 @@ public class TeamSizeConfigurationStage extends Stage {
             throw new IllegalStateException("The setup must be a setup of a gamemap!");
         }
 
+        Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.3.success"));
+
         gameMapSetup.configureTeamSize(size);
         gameMapSetup.startStage(4);
     }
@@ -56,6 +61,7 @@ public class TeamSizeConfigurationStage extends Stage {
         try {
             integer = Integer.parseInt(message);
         } catch (NumberFormatException exception) {
+            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
         }
         return integer;
