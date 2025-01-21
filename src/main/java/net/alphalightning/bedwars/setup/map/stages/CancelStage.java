@@ -29,6 +29,8 @@ public class CancelStage extends Stage {
         Feedback.error(player);
         player.sendMessage(component);
         plugin.getComponentLogger().warn(component);
+
+        invalidate();
     }
 
     @EventHandler

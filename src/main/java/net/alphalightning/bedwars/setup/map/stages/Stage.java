@@ -10,7 +10,7 @@ public abstract class Stage implements Listener {
 
     protected final BedWarsPlugin plugin;
     protected final MapSetup setup;
-    protected final Player player;
+    protected Player player;
 
     public Stage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         this.plugin = plugin;
@@ -18,6 +18,10 @@ public abstract class Stage implements Listener {
         this.setup = setup;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    public void invalidate() {
+        player = null;
     }
 
     public abstract void run();
