@@ -38,6 +38,7 @@ public class TeamSizeConfigurationStage extends Stage {
         int size;
         try {
             size = Integer.parseInt(event.signedMessage().message());
+
         } catch (NumberFormatException exception) {
             Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
