@@ -33,7 +33,15 @@ public class TeamSizeConfigurationStage extends Stage {
             return;
         }
 
-        int size = validateInt(event.signedMessage().message());
+        int size;
+        try {
+            size = Integer.parseInt(event.signedMessage().message());
+        } catch (NumberFormatException exception) {
+            Feedback.error(player);
+            player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
+            return;
+        }
+
         if (size < MIN_TEAM_SIZE) {
             Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.negative-or-zero"));
@@ -44,26 +52,16 @@ public class TeamSizeConfigurationStage extends Stage {
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.too-big"));
             return;
         }
-
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
+
+        event.setCancelled(true);
 
         Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.3.success"));
 
         gameMapSetup.configureTeamSize(size);
         gameMapSetup.startStage(4);
-    }
-
-    private int validateInt(String message) {
-        int integer = 0;
-        try {
-            integer = Integer.parseInt(message);
-        } catch (NumberFormatException exception) {
-            Feedback.error(player);
-            player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
-        }
-        return integer;
     }
 }
