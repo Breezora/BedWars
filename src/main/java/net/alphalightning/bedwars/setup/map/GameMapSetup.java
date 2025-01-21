@@ -3,10 +3,7 @@ package net.alphalightning.bedwars.setup.map;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.SpawnerConfigurationStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.TeamSelectionStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.TeamSizeConfigurationStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.WelcomeStage;
+import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -28,6 +25,7 @@ public final class GameMapSetup implements MapSetup {
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
+    private final int buildHeight = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -51,6 +49,7 @@ public final class GameMapSetup implements MapSetup {
             case 1 -> new TeamSelectionStage(plugin, player, this).run();
             case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
             case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
+            case 4 -> new BuildHeightConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -106,5 +105,8 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureTeamSize(int size) {
         this.teamSize = size;
+    }
+
+    public void configureBuildHeight(int height) {
     }
 }
