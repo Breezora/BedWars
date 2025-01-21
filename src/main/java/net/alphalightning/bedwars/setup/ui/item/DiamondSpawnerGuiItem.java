@@ -1,7 +1,7 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -18,10 +18,13 @@ import java.util.Arrays;
 public class DiamondSpawnerGuiItem extends AbstractItem {
 
     private static final int MAX_COUNT = 10;
+
+    private final GameMapSetup setup;
     private int count;
 
-    public DiamondSpawnerGuiItem() {
-        this.count = ConfigureItemSpawnerGui.diamondSpawnerCount();
+    public DiamondSpawnerGuiItem(GameMapSetup setup) {
+        this.setup = setup;
+        this.count = setup.diamondSpawnerCount();
     }
 
     @Override
@@ -49,6 +52,7 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
                 return;
             }
             count++;
+            setup.configureDiamondSpawnerCount(count);
             notifyWindows(); // We call this here because we only want to trigger an update after an update
             Feedback.more(player);
 
@@ -59,6 +63,7 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
                 return;
             }
             count--;
+            setup.configureDiamondSpawnerCount(count);
             notifyWindows(); // We call this here because we only want to trigger an update after an update
             Feedback.lower(player);
         }

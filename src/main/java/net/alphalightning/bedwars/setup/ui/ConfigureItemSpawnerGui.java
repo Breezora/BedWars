@@ -19,17 +19,11 @@ public class ConfigureItemSpawnerGui {
     private final GameMapSetup setup;
     private final GameMapConfigurationOverviewGui overviewGui;
 
-    private static int emeraldSpawnerCount;
-    private static int diamondSpawnerCount;
-
     public ConfigureItemSpawnerGui(Player owner, GameMapSetup setup, GameMapConfigurationOverviewGui overviewGui) {
         this.owner = owner;
         this.setup = setup;
         this.overviewGui = overviewGui;
         this.gui = createGui();
-
-        emeraldSpawnerCount = 0;
-        diamondSpawnerCount = 0;
     }
 
     private Single createGui() {
@@ -41,7 +35,7 @@ public class ConfigureItemSpawnerGui {
                                 "c . . . . . . . d"
                         )
                         .addIngredient('a', new EmeraldSpawnerGuiItem(setup))
-                        .addIngredient('b', new DiamondSpawnerGuiItem())
+                        .addIngredient('b', new DiamondSpawnerGuiItem(setup))
                         .addIngredient('c', new ReturnToOverviewGuiItem(overviewGui))
                         .addIngredient('d', new SaveConfigurationGuiItem(setup))
                         .build()
@@ -52,14 +46,6 @@ public class ConfigureItemSpawnerGui {
 
     public void showGui() {
         gui.open(owner);
-    }
-
-    public static int emeraldSpawnerCount() {
-        return emeraldSpawnerCount;
-    }
-
-    public static int diamondSpawnerCount() {
-        return diamondSpawnerCount;
     }
 
 }

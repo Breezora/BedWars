@@ -30,6 +30,7 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     private final List<Team> teams = new ArrayList<>();
     private int emeraldSpawnerCount = 0;
+    private int diamondSpawnerCount = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -105,6 +106,10 @@ public final class GameMapSetup implements MapSetup, Listener {
         return emeraldSpawnerCount;
     }
 
+    public int diamondSpawnerCount() {
+        return diamondSpawnerCount;
+    }
+
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
@@ -113,6 +118,10 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     public void configureEmeraldSpawnerCount(int count) {
         this.emeraldSpawnerCount = count;
+    }
+
+    public void configureDiamondSpawnerCount(int count) {
+        this.diamondSpawnerCount = count;
     }
 
     // Start cancellation logic
