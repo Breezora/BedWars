@@ -46,7 +46,7 @@ public class TeamSizeConfigurationStage extends Stage {
         }
 
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
-            throw new IllegalStateException("The setup must be a setup of a gamemap!");
+            return;
         }
 
         Feedback.success(player);
