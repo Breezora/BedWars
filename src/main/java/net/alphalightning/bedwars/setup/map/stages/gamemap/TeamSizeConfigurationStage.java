@@ -40,30 +40,31 @@ public class TeamSizeConfigurationStage extends Stage {
             size = Integer.parseInt(event.signedMessage().message());
 
         } catch (NumberFormatException exception) {
-            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
+            Feedback.error(player);
             return;
         }
 
         if (size < MIN_TEAM_SIZE) {
-            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.negative-or-zero"));
+            Feedback.error(player);
             return;
         }
         if (size > MAX_TEAM_SIZE) {
-            Feedback.error(player);
             player.sendMessage(Component.translatable("mapsetup.stage.3.error.too-big"));
+            Feedback.error(player);
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
 
-        Component teamSize = Component.text(size);
-        Component teamsCount = Component.text(gameMapSetup.teams().size());
-        player.sendMessage(Component.translatable("mapsetup.stage.3.success", teamSize, teamsCount));
-
+        player.sendMessage(Component.translatable("mapsetup.stage.3.success",
+                Component.text(size),
+                Component.text(gameMapSetup.teams().size()))
+        );
         Feedback.success(player);
+
         gameMapSetup.configureTeamSize(size);
         gameMapSetup.startStage(4);
     }
