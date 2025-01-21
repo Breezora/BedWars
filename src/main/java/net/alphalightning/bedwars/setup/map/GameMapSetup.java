@@ -3,6 +3,9 @@ package net.alphalightning.bedwars.setup.map;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.game.SpawnerType;
+import net.alphalightning.bedwars.setup.map.jackson.GameMap;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonSpawner;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.kyori.adventure.text.Component;
@@ -14,6 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public final class GameMapSetup implements MapSetup, Listener {
@@ -25,6 +29,7 @@ public final class GameMapSetup implements MapSetup, Listener {
     private int stage;
 
     private final List<Team> teams = new ArrayList<>();
+    private int emeraldSpawnerCount = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -68,7 +73,14 @@ public final class GameMapSetup implements MapSetup, Listener {
     public void saveConfiguration() {
         try {
             createDirectory();
-            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), teams);
+            HashMap<SpawnerType, JacksonSpawner> spawner = new HashMap<>();
+            for (int i = 0; i < emeraldSpawnerCount; i++) {
+                spawner.putIfAbsent(SpawnerType.EMERALD, new JacksonSpawner(i));
+            }
+
+            GameMap gameMap = new GameMap(teams, spawner);
+
+            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), gameMap);
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
         }
@@ -93,6 +105,10 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     public void configureTeams(List<Team> teams) {
         this.teams.addAll(teams);
+    }
+
+    public void configureEmeraldSpawnerCount(int count) {
+        this.emeraldSpawnerCount = count;
     }
 
     // Start cancellation logic
