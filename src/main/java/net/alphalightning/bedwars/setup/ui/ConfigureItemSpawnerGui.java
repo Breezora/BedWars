@@ -62,4 +62,7 @@ public class ConfigureItemSpawnerGui {
         return diamondSpawnerCount;
     }
 
+    public static void emeraldSpawnerCount(int emeraldSpawnerCount) {
+        ConfigureItemSpawnerGui.emeraldSpawnerCount = emeraldSpawnerCount;
+    }
 }

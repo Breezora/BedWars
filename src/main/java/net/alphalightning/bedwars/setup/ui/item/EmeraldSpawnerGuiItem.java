@@ -49,6 +49,7 @@ public class EmeraldSpawnerGuiItem extends AbstractItem {
                 return;
             }
             count++;
+            ConfigureItemSpawnerGui.emeraldSpawnerCount(count);
             notifyWindows(); // We call this here because we only want to trigger an update after an update
             Feedback.more(player);
 
