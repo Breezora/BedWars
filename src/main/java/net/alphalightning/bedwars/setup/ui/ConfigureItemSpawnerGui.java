@@ -40,7 +40,7 @@ public class ConfigureItemSpawnerGui {
                                 ". . . a . b . . .",
                                 "c . . . . . . . d"
                         )
-                        .addIngredient('a', new EmeraldSpawnerGuiItem())
+                        .addIngredient('a', new EmeraldSpawnerGuiItem(setup))
                         .addIngredient('b', new DiamondSpawnerGuiItem())
                         .addIngredient('c', new ReturnToOverviewGuiItem(overviewGui))
                         .addIngredient('d', new SaveConfigurationGuiItem(setup))
@@ -62,7 +62,4 @@ public class ConfigureItemSpawnerGui {
         return diamondSpawnerCount;
     }
 
-    public static void emeraldSpawnerCount(int emeraldSpawnerCount) {
-        ConfigureItemSpawnerGui.emeraldSpawnerCount = emeraldSpawnerCount;
-    }
 }
