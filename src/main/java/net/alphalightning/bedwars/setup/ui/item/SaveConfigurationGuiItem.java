@@ -64,7 +64,6 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
             new GameMapConfigurationOverviewGui(player, setup).showGui();
 
         } else if (current == 2) {
-            setup.plugin().getLogger().info("Emerald Count: " + setup.emeraldSpawnerCount() + ", Diamond Count: " + setup.diamondSpawnerCount());
             player.closeInventory();
         }
         Feedback.success(player);
