@@ -32,7 +32,7 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
             return;
         }
 
-        event.setCancelled(true); // Do not send the message inti the chat
+        event.setCancelled(true); // Do not send the message into the chat
 
         int buildHeight;
         try {
