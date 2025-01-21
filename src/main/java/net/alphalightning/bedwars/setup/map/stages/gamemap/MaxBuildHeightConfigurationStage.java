@@ -13,9 +13,9 @@ import org.bukkit.event.EventHandler;
 
 import java.time.temporal.ValueRange;
 
-public class BuildHeightConfigurationStage extends Stage implements HeightConfiguration {
+public class MaxBuildHeightConfigurationStage extends Stage implements HeightConfiguration {
 
-    public BuildHeightConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
+    public MaxBuildHeightConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
     }
 
@@ -62,6 +62,6 @@ public class BuildHeightConfigurationStage extends Stage implements HeightConfig
         player.sendMessage(Component.translatable("mapsetup.stage.4.success", Component.text(buildHeight)));
         Feedback.success(player);
 
-        gameMapSetup.configureBuildHeight(buildHeight);
+        gameMapSetup.configureMaxBuildHeight(buildHeight);
     }
 }
