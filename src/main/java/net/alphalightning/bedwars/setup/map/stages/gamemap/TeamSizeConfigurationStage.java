@@ -46,7 +46,9 @@ public class TeamSizeConfigurationStage extends Stage {
             throw new IllegalStateException("The setup must be a setup of a gamemap!");
         }
 
+        player.sendMessage(Component.translatable("mapsetup.stage.3.success"));
         gameMapSetup.configureTeamSize(size);
+        gameMapSetup.startStage(4);
     }
 
     private int validateInt(String message) {
