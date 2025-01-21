@@ -91,6 +91,10 @@ public final class GameMapSetup implements MapSetup {
         return diamondSpawnerCount;
     }
 
+    public int maxBuildHeight() {
+        return maxBuildHeight;
+    }
+
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {

@@ -53,8 +53,17 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
             Feedback.error(player);
             return;
         }
-
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            return;
+        }
+
+        int maxBuildHeight = gameMapSetup.maxBuildHeight();
+        if (buildHeight >= maxBuildHeight) {
+            player.sendMessage(Component.translatable("mapsetup.stage.5.error.too-high",
+                    Component.text(buildHeight),
+                    Component.text(maxBuildHeight))
+            );
+            Feedback.error(player);
             return;
         }
 
