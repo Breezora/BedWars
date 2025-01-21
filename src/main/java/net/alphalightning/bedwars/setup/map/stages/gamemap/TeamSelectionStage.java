@@ -16,7 +16,10 @@ public class TeamSelectionStage extends Stage {
 
     @Override
     public void run() {
-        new GameMapConfigurationOverviewGui(player, (GameMapSetup) setup).showGui();
+        if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            return;
+        }
+        new GameMapConfigurationOverviewGui(player, gameMapSetup).showGui();
         player.sendMessage(Component.translatable("mapsetup.stage.1"));
     }
 }
