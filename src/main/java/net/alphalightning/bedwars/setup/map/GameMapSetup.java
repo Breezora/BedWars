@@ -57,6 +57,8 @@ public final class GameMapSetup implements MapSetup, Listener {
                 new GameMapConfigurationOverviewGui(player, this).showGui();
                 player.sendMessage(Component.translatable("mapsetup.stage.1"));
             }
+
+            case 2 -> player.sendMessage(Component.translatable("mapsetup.stage.2"));
             default -> {
                 Feedback.error(player);
 
