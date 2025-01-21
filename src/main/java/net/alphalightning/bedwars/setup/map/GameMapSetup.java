@@ -3,10 +3,7 @@ package net.alphalightning.bedwars.setup.map;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.SpawnerConfigurationStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.TeamSelectionStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.TeamSizeConfigurationStage;
-import net.alphalightning.bedwars.setup.map.stages.gamemap.WelcomeStage;
+import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -28,6 +25,8 @@ public final class GameMapSetup implements MapSetup {
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
+    private int maxBuildHeight = 0;
+    private int minBuildHeight = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -51,6 +50,8 @@ public final class GameMapSetup implements MapSetup {
             case 1 -> new TeamSelectionStage(plugin, player, this).run();
             case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
             case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
+            case 4 -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
+            case 5 -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -90,6 +91,10 @@ public final class GameMapSetup implements MapSetup {
         return diamondSpawnerCount;
     }
 
+    public int maxBuildHeight() {
+        return maxBuildHeight;
+    }
+
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
@@ -106,5 +111,13 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureTeamSize(int size) {
         this.teamSize = size;
+    }
+
+    public void configureMaxBuildHeight(int height) {
+        this.maxBuildHeight = height;
+    }
+
+    public void configureMinBuildHeight(int height) {
+        this.minBuildHeight = height;
     }
 }

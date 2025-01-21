@@ -10,18 +10,17 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-public class TeamSizeConfigurationStage extends Stage {
+import java.time.temporal.ValueRange;
 
-    private static final int MIN_TEAM_SIZE = 1;
-    private static final int MAX_TEAM_SIZE = 100;
+public class MaxBuildHeightConfigurationStage extends Stage implements HeightConfiguration {
 
-    public TeamSizeConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
+    public MaxBuildHeightConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
     }
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.3"));
+        player.sendMessage(Component.translatable("mapsetup.stage.4"));
     }
 
     @EventHandler
@@ -29,43 +28,40 @@ public class TeamSizeConfigurationStage extends Stage {
         if (player == null || !player.equals(event.getPlayer())) {
             return;
         }
-        if (setup.stage() != 3) {
+        if (setup.stage() != 4) {
             return;
         }
 
         event.setCancelled(true); // Do not send the message into the chat
 
-        int size;
+        int buildHeight;
         try {
-            size = Integer.parseInt(event.signedMessage().message());
+            buildHeight = Integer.parseInt(event.signedMessage().message());
 
         } catch (NumberFormatException exception) {
-            player.sendMessage(Component.translatable("mapsetup.stage.3.error.invalid-number"));
+            player.sendMessage(Component.translatable("mapsetup.stage.4.error.invalid-number"));
             Feedback.error(player);
             return;
         }
 
-        if (size < MIN_TEAM_SIZE) {
-            player.sendMessage(Component.translatable("mapsetup.stage.3.error.negative-or-zero"));
+        ValueRange range = ValueRange.of(MIN_HEIGHT, MAX_HEIGHT);
+        if (!range.isValidIntValue(buildHeight)) {
+            player.sendMessage(Component.translatable("mapsetup.stage.4.error.invalid-range",
+                    Component.text(MIN_HEIGHT),
+                    Component.text(MAX_HEIGHT))
+            );
             Feedback.error(player);
             return;
         }
-        if (size > MAX_TEAM_SIZE) {
-            player.sendMessage(Component.translatable("mapsetup.stage.3.error.too-big"));
-            Feedback.error(player);
-            return;
-        }
+
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
 
-        player.sendMessage(Component.translatable("mapsetup.stage.3.success",
-                Component.text(size),
-                Component.text(gameMapSetup.teams().size()))
-        );
+        player.sendMessage(Component.translatable("mapsetup.stage.4.success", Component.text(buildHeight)));
         Feedback.success(player);
 
-        gameMapSetup.configureTeamSize(size);
-        gameMapSetup.startStage(4);
+        gameMapSetup.configureMaxBuildHeight(buildHeight);
+        gameMapSetup.startStage(5);
     }
 }

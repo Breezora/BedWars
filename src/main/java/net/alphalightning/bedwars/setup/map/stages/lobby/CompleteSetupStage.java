@@ -18,7 +18,7 @@ public class CompleteSetupStage extends Stage {
 
     @Override
     public void run() {
-        Feedback.complete(player);
         player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(fileName)));
+        Feedback.complete(player);
     }
 }

@@ -15,7 +15,7 @@ public class WelcomeStage extends Stage {
 
     @Override
     public void run() {
-        Feedback.start(player);
         player.sendMessage(Component.translatable("mapsetup.start"));
+        Feedback.start(player);
     }
 }
