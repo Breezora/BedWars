@@ -1,26 +1,24 @@
 package net.alphalightning.bedwars.setup.map;
 
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonSpawner;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
-import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
+import net.alphalightning.bedwars.setup.map.stages.CancelStage;
+import net.alphalightning.bedwars.setup.map.stages.gamemap.SpawnerConfigurationStage;
+import net.alphalightning.bedwars.setup.map.stages.gamemap.TeamSelectionStage;
+import net.alphalightning.bedwars.setup.map.stages.gamemap.WelcomeStage;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class GameMapSetup implements MapSetup, Listener {
+public final class GameMapSetup implements MapSetup {
+
+    private final CancelStage cancelStage;
 
     private final BedWarsPlugin plugin;
     private final String fileName;
@@ -36,9 +34,9 @@ public final class GameMapSetup implements MapSetup, Listener {
         this.plugin = plugin;
         this.player = player;
         this.fileName = name + ".json";
+        this.cancelStage = new CancelStage(plugin, player, this, false);
 
         startStage(0);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -50,23 +48,10 @@ public final class GameMapSetup implements MapSetup, Listener {
     public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
         switch (stage) {
-            case 0 -> {
-                Feedback.start(player);
-                player.sendMessage(Component.translatable("mapsetup.start"));
-            }
-            case 1 -> {
-                new GameMapConfigurationOverviewGui(player, this).showGui();
-                player.sendMessage(Component.translatable("mapsetup.stage.1"));
-            }
-
-            case 2 -> player.sendMessage(Component.translatable("mapsetup.stage.2"));
-            default -> {
-                Feedback.error(player);
-
-                Component component = Component.translatable("mapsetup.cancel");
-                player.sendMessage(component);
-                plugin.getComponentLogger().warn(component);
-            }
+            case 0 -> new WelcomeStage(plugin, player, this).run();
+            case 1 -> new TeamSelectionStage(plugin, player, this).run();
+            case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
+            default -> cancelStage.run();
         }
     }
 
@@ -94,12 +79,9 @@ public final class GameMapSetup implements MapSetup, Listener {
         return plugin;
     }
 
+    @Override
     public int stage() {
         return stage;
-    }
-
-    public List<Team> teams() {
-        return teams;
     }
 
     public int emeraldSpawnerCount() {
@@ -122,26 +104,5 @@ public final class GameMapSetup implements MapSetup, Listener {
 
     public void configureDiamondSpawnerCount(int count) {
         this.diamondSpawnerCount = count;
-    }
-
-    // Start cancellation logic
-
-    @EventHandler
-    public void onChat(AsyncChatEvent event) {
-        if (player == null || !player.equals(event.getPlayer())) {
-            return;
-        }
-
-        if (event.signedMessage().message().equalsIgnoreCase(CANCEL_MESSAGE)) {
-            event.setCancelled(true);
-            cancel();
-        }
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        if (player != null && player.equals(event.getPlayer())) {
-            cancel();
-        }
     }
 }

@@ -23,6 +23,8 @@ public interface Setup {
 
     BedWarsPlugin plugin();
 
+    int stage();
+
     default Path directory() {
         return plugin().getDataFolder().toPath();
     }
