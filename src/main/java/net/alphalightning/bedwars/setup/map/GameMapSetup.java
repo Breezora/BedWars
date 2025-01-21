@@ -25,7 +25,7 @@ public final class GameMapSetup implements MapSetup {
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
-    private final int maxBuildHeight = 0;
+    private int maxBuildHeight = 0;
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -108,5 +108,6 @@ public final class GameMapSetup implements MapSetup {
     }
 
     public void configureMaxBuildHeight(int height) {
+        this.maxBuildHeight = height;
     }
 }
