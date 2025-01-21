@@ -60,7 +60,7 @@ public class TeamSizeConfigurationStage extends Stage {
         }
 
         Feedback.success(player);
-        player.sendMessage(Component.translatable("mapsetup.stage.3.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.3.success", Component.text(size)));
 
         gameMapSetup.configureTeamSize(size);
         gameMapSetup.startStage(4);
