@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
+import net.alphalightning.bedwars.setup.ui.ConfigureItemSpawnerGui;
 import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
@@ -24,6 +25,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
 
     private final GameMapSetup setup;
     private final List<TeamGuiItem> selectedTeams = SelectTeamsGui.selectedTeams();
+    private final int emeraldSpawnerCount = ConfigureItemSpawnerGui.emeraldSpawnerCount();
 
     public SaveConfigurationGuiItem(GameMapSetup setup) {
         this.setup = setup;
@@ -52,6 +54,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
             startNextStage(player, 1);
 
         } else if (stage == 2) { // Item spawner configuration stage
+            setup.configureEmeraldSpawnerCount(emeraldSpawnerCount);
             super.getGui().findAllWindows().forEach(window -> window.setCloseable(true)); // Make gui closeable to be able to close it
             startNextStage(player, 2);
         }
