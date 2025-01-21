@@ -62,5 +62,6 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
         Feedback.success(player);
 
         gameMapSetup.configureMaxBuildHeight(buildHeight);
+        gameMapSetup.startStage(5);
     }
 }
