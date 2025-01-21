@@ -4,7 +4,6 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
-import net.alphalightning.bedwars.setup.ui.GameMapConfigurationOverviewGui;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -61,10 +60,10 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         if (current == 1) {
             setup.configureTeams(createTeams());
             setup.startStage(2);
-            new GameMapConfigurationOverviewGui(player, setup).showGui();
 
         } else if (current == 2) {
             player.closeInventory();
+            setup.startStage(3);
         }
         Feedback.success(player);
     }
