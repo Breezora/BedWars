@@ -78,6 +78,10 @@ public final class GameMapSetup implements MapSetup {
         return stage;
     }
 
+    public List<Team> teams() {
+        return teams;
+    }
+
     public int emeraldSpawnerCount() {
         return emeraldSpawnerCount;
     }

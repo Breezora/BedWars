@@ -59,9 +59,11 @@ public class TeamSizeConfigurationStage extends Stage {
             return;
         }
 
-        Feedback.success(player);
-        player.sendMessage(Component.translatable("mapsetup.stage.3.success", Component.text(size)));
+        Component teamSize = Component.text(size);
+        Component teamsCount = Component.text(gameMapSetup.teams().size());
+        player.sendMessage(Component.translatable("mapsetup.stage.3.success", teamSize, teamsCount));
 
+        Feedback.success(player);
         gameMapSetup.configureTeamSize(size);
         gameMapSetup.startStage(4);
     }
