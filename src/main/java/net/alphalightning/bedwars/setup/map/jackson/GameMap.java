@@ -12,7 +12,6 @@ public class GameMap {
     private final HashMap<SpawnerType, JacksonSpawner> spawner;
 
     @JsonCreator
-
     public GameMap(List<Team> teams, HashMap<SpawnerType, JacksonSpawner> spawner) {
         this.teams = teams;
         this.spawner = spawner;
