@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 public interface LocationConfiguration {
 
-    default boolean isOnGround(Player player, Location location) {
-        return player.isSneaking() && location.subtract(0, 1, 0).getBlock().getType() != Material.AIR;
+    default boolean isNotOnGround(Player player, Location location) {
+        return !player.isSneaking() || location.subtract(0, 1, 0).getBlock().getType() == Material.AIR;
     }
 
 }

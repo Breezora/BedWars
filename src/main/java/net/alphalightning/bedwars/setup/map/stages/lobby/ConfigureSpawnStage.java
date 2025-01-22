@@ -30,7 +30,7 @@ public class ConfigureSpawnStage extends Stage implements LocationConfiguration 
         if (isPlayerNotConfiguring(player)) {
             return;
         }
-        if (!isOnGround(player, location)) {
+        if (isNotOnGround(player, location)) {
             return;
         }
         if (isNotStage(1)) {
