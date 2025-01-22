@@ -58,6 +58,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         this.readableStage = stage + 1;
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id", Component.text(readableStage)));
+        Feedback.success(player);
     }
 
     @EventHandler
