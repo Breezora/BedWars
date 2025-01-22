@@ -11,7 +11,6 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.translation.TranslationRegistry;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -107,8 +106,6 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
                     return Tag.inserting(translated);
 
                 }
-            } else {
-                Bukkit.getLogger().info("Argument ist nicht translatable");
             }
 
             // Default behavior
