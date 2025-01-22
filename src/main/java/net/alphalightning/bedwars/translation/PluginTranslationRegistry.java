@@ -103,10 +103,11 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
             if (argument instanceof TranslatableComponent translatable) {
                 ComponentLike translated = registry.translate(translatable, locale);
 
-                Bukkit.getLogger().info("Argument is translatable");
-
                 if (translated != null) {
                     return Tag.inserting(translated);
+
+                } else {
+                    Bukkit.getLogger().info("Translated is null");
                 }
             }
 
