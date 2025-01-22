@@ -3,15 +3,15 @@ package net.alphalightning.bedwars.setup.map.stages.lobby;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.LobbyMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
+import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-public class ConfigureSpawnStage extends Stage {
+public class ConfigureSpawnStage extends Stage implements LocationConfiguration {
 
     public ConfigureSpawnStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -30,7 +30,7 @@ public class ConfigureSpawnStage extends Stage {
         if (this.player == null || !this.player.equals(player)) {
             return;
         }
-        if (!player.isSneaking() || location.subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
+        if (!isOnGround(player, location)) {
             return;
         }
         if (setup.stage() != 1) {
