@@ -11,6 +11,7 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.translation.TranslationRegistry;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,7 +101,9 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
             // Check if the argument is a TranslatableComponent and translate it
             ComponentLike argument = argumentComponents.get(index);
             if (argument instanceof TranslatableComponent translatable) {
-                Component translated = registry.translate(translatable, locale);
+                ComponentLike translated = registry.translate(translatable, locale);
+
+                Bukkit.getLogger().info("Argument is translatable");
 
                 if (translated != null) {
                     return Tag.inserting(translated);
