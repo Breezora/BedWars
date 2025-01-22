@@ -43,6 +43,8 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         if (count == 0) {
             player.sendMessage(Component.translatable("mapsetup.stage.7.error.no-spawner"));
             Feedback.warning(player);
+
+            setup.startStage(8);
             return;
         }
         if (stage > count) {
