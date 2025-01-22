@@ -55,7 +55,21 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         if (component.arguments().isEmpty()) {
             resulting = miniMessage.deserialize(miniString);
         } else {
-            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments(), locale, delegate));
+            // Translate arguments recursively
+//            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments(), locale, delegate));
+
+            List<ComponentLike> arguments = component.arguments().stream()
+                    .map(translationArgument -> {
+                        if(translationArgument instanceof TranslatableComponent translatable) {
+                            Component translated = delegate.translate(translatable, locale);
+                            return translated != null ? translated : translationArgument;
+                        }
+                        return translationArgument;
+                    })
+                    .map(ComponentLike.class::cast)
+                    .toList();
+
+            resulting = miniMessage.deserialize(miniString, new ArgumentTag(arguments, locale, delegate));
         }
 
         if (component.children().isEmpty()) {
