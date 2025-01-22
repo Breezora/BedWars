@@ -29,7 +29,7 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
         if (isPlayerNotConfiguring(event.getPlayer())) {
             return;
         }
-        if (setup.stage() != 5) {
+        if (isNotStage(5)) {
             return;
         }
 

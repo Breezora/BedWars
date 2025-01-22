@@ -33,7 +33,7 @@ public class ConfigureSpawnStage extends Stage implements LocationConfiguration 
         if (!isOnGround(player, location)) {
             return;
         }
-        if (setup.stage() != 1) {
+        if (isNotStage(1)) {
             return;
         }
         if (!(setup instanceof LobbyMapSetup lobbyMapSetup)) {

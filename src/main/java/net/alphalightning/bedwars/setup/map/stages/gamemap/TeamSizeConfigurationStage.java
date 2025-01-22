@@ -29,7 +29,7 @@ public class TeamSizeConfigurationStage extends Stage {
         if (isPlayerNotConfiguring(event.getPlayer())) {
             return;
         }
-        if (setup.stage() != 3) {
+        if (isNotStage(3)) {
             return;
         }
 

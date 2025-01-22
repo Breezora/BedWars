@@ -24,6 +24,10 @@ public abstract class Stage implements Listener {
         return this.player == null || !this.player.equals(player);
     }
 
+    public boolean isNotStage(int stage) {
+        return setup.stage() != stage;
+    }
+
     public void invalidate() {
         player = null;
     }

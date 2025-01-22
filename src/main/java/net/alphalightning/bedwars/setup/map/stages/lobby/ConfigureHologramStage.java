@@ -34,7 +34,7 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
         if (!isOnGround(player, location)) {
             return;
         }
-        if (setup.stage() != 2) {
+        if (isNotStage(2)) {
             return;
         }
         if (!(setup instanceof LobbyMapSetup lobbyMapSetup)) {

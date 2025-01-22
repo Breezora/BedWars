@@ -32,7 +32,7 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         if (!isOnGround(player, location)) {
             return;
         }
-        if (setup.stage() != 6) {
+        if (isNotStage(6)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

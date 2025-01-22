@@ -29,7 +29,7 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
         if (isPlayerNotConfiguring(event.getPlayer())) {
             return;
         }
-        if (setup.stage() != 4) {
+        if (isNotStage(4)) {
             return;
         }
 
