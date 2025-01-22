@@ -59,6 +59,7 @@ public final class GameMapSetup implements MapSetup {
             case 6 -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
             case 7 -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
             case 8 -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
+            case 9 -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
