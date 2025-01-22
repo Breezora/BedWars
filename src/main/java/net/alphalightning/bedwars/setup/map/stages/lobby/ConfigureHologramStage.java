@@ -28,7 +28,7 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
 
-        if (isPlayerNotConfiguring(event.getPlayer())) {
+        if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
         if (isNotOnGround(player, location)) {

@@ -26,7 +26,7 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
 
-        if (isPlayerNotConfiguring(event.getPlayer())) {
+        if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
         if (isNotOnGround(player, location)) {

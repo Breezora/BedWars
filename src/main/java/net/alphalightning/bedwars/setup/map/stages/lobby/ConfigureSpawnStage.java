@@ -27,7 +27,7 @@ public class ConfigureSpawnStage extends Stage implements LocationConfiguration 
         Player player = event.getPlayer();
         Location location = player.getLocation();
 
-        if (isPlayerNotConfiguring(player)) {
+        if (isNotPlayerConfiguring(player)) {
             return;
         }
         if (isNotOnGround(player, location)) {

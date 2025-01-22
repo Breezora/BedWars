@@ -26,7 +26,7 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (isPlayerNotConfiguring(event.getPlayer())) {
+        if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
         if (isNotStage(5)) {
