@@ -9,7 +9,6 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,7 +54,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
         TranslatableComponent translatableComponent = Component.translatable("team.red");
         Component component = Component.translatable("mapsetup.finish", translatableComponent);
 //
-        player.sendMessage(MiniMessage.miniMessage().serialize(component));
+        player.sendMessage(component);
         Feedback.success(player);
     }
 
