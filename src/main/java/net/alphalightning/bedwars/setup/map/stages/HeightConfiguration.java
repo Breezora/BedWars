@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.setup.map.stages.gamemap;
+package net.alphalightning.bedwars.setup.map.stages;
 
 public interface HeightConfiguration {
 

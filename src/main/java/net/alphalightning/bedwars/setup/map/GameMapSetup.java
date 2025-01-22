@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public final class GameMapSetup implements MapSetup {
 
     // Configuration
     private final List<Team> teams = new ArrayList<>();
+    private Location spectatorSpawn;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
@@ -52,6 +54,7 @@ public final class GameMapSetup implements MapSetup {
             case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
             case 4 -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
             case 5 -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
+            case 6 -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -119,5 +122,9 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureMinBuildHeight(int height) {
         this.minBuildHeight = height;
+    }
+
+    public void configureSpectatorSpawn(Location location) {
+        this.spectatorSpawn = location;
     }
 }
