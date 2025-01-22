@@ -46,7 +46,10 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
     public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
         final MessageFormat translationFormat = delegate.translate(component.key(), locale);
 
-        if (translationFormat == null) return null;
+        if (translationFormat == null) {
+            System.out.println("No translation found for key: " + component.key());
+            return null;
+        }
 
         final MiniMessage miniMessage = MiniMessage.miniMessage();
         final String miniString = translationFormat.toPattern();
@@ -59,6 +62,7 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         }
 
         if (component.children().isEmpty()) {
+            System.out.println("Translated result: " + resulting);
             return resulting;
         } else {
             return resulting.children(component.children());
@@ -100,15 +104,19 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
             }
 
             ComponentLike argument = argumentComponents.get(index);
+            System.out.println("Resolving argument at index " + index + ": " + argument);
 
             if (argument instanceof TranslatableComponent translatable) {
+                System.out.println("Argument is a TranslatableComponent with key: " + translatable.key());
                 Component translated = registry.translate(translatable, locale);
                 if (translated == null) {
                     throw ctx.newException("Failed to translate argument", arguments);
                 }
+                System.out.println("Translated argument: " + translated);
                 return Tag.inserting(translated);
             }
 
+            System.out.println("Argument is not translatable: " + argument);
             return Tag.inserting(argumentComponents.get(index));
         }
 
