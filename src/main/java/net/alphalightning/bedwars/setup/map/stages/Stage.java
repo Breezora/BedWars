@@ -20,6 +20,10 @@ public abstract class Stage implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    public boolean isPlayerConfiguring(Player player) {
+        return this.player != null && this.player.equals(player);
+    }
+
     public void invalidate() {
         player = null;
     }
