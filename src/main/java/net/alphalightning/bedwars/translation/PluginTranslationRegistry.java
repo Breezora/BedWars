@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public final class PluginTranslationRegistry implements TranslationRegistry {
 
@@ -83,8 +84,10 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         private static final String NAME = "argument";
         private static final String ALIAS = "arg";
 
-        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
-            this(argumentComponents,  null, null);
+        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents, Locale locale, TranslationRegistry registry) {
+            this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
+            this.locale = Objects.requireNonNull(locale, "locale");
+            this.registry = Objects.requireNonNull(registry, "registry");
         }
 
         @Override
