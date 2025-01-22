@@ -13,8 +13,6 @@ import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
@@ -49,12 +47,6 @@ public class BedWarsPlugin extends JavaPlugin {
         registerCommands();
         registerGuiIngredients();
         getLogger().info("BedWars has been enabled");
-
-        // Start testing
-        TranslatableComponent translatableComponent = Component.translatable("team.red");
-        Component test = Component.translatable("mapsetup.finish", translatableComponent);
-
-        getComponentLogger().info(test);
     }
 
     @Override
