@@ -40,4 +40,7 @@ public interface Feedback {
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, VOLUME, PITCH);
     }
 
+    static void warning(Player player) {
+        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_AMBIENT, VOLUME, PITCH);
+    }
 }

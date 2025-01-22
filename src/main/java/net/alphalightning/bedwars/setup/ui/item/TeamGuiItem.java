@@ -82,67 +82,67 @@ public class TeamGuiItem extends AbstractBoundItem {
 
         switch (color) { // Colors are default hex encoded int values
             case 0xffffff -> {
-                display = Component.translatable("mapsetup.gui.select-teams.white");
+                display = Component.translatable("team.white");
                 builder.setMaterial(Material.WHITE_WOOL);
             }
             case 0xaaaaaa -> {
-                display = Component.translatable("mapsetup.gui.select-teams.light-gray");
+                display = Component.translatable("team.light-gray");
                 builder.setMaterial(Material.LIGHT_GRAY_WOOL);
             }
             case 0x555555 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.dark-gray");
+                display = Component.translatable("team.dark-gray");
                 builder.setMaterial(Material.GRAY_WOOL);
             }
             case 0x000000 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.black");
+                display = Component.translatable("team.black");
                 builder.setMaterial(Material.BLACK_WOOL);
             }
             case 0x783d0c -> {
-                display = Component.translatable("mapsetup.gui.select-teams.brown");
+                display = Component.translatable("team.brown");
                 builder.setMaterial(Material.BROWN_WOOL);
             }
             case 0xff5555 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.red");
+                display = Component.translatable("team.red");
                 builder.setMaterial(Material.RED_WOOL);
             }
             case 0xff8800 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.orange");
+                display = Component.translatable("team.orange");
                 builder.setMaterial(Material.ORANGE_WOOL);
             }
             case 0xffff55 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.yellow");
+                display = Component.translatable("team.yellow");
                 builder.setMaterial(Material.YELLOW_WOOL);
             }
             case 0x55ff55 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.light-green");
+                display = Component.translatable("team.light-green");
                 builder.setMaterial(Material.LIME_WOOL);
             }
             case 0x00aa00 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.green");
+                display = Component.translatable("team.green");
                 builder.setMaterial(Material.GREEN_WOOL);
             }
             case 0x00aaaa -> {
-                display = Component.translatable("mapsetup.gui.select-teams.cyan");
+                display = Component.translatable("team.cyan");
                 builder.setMaterial(Material.CYAN_WOOL);
             }
             case 0xa3e5ff -> {
-                display = Component.translatable("mapsetup.gui.select-teams.light-blue");
+                display = Component.translatable("team.light-blue");
                 builder.setMaterial(Material.LIGHT_BLUE_WOOL);
             }
             case 0x5555ff -> {
-                display = Component.translatable("mapsetup.gui.select-teams.blue");
+                display = Component.translatable("team.blue");
                 builder.setMaterial(Material.BLUE_WOOL);
             }
             case 0xaa00aa -> {
-                display = Component.translatable("mapsetup.gui.select-teams.purple");
+                display = Component.translatable("team.purple");
                 builder.setMaterial(Material.PURPLE_WOOL);
             }
             case 0xff24fb -> {
-                display = Component.translatable("mapsetup.gui.select-teams.magenta");
+                display = Component.translatable("team.magenta");
                 builder.setMaterial(Material.MAGENTA_WOOL);
             }
             case 0xff6ef8 -> {
-                display = Component.translatable("mapsetup.gui.select-teams.pink");
+                display = Component.translatable("team.pink");
                 builder.setMaterial(Material.PINK_WOOL);
             }
         }
