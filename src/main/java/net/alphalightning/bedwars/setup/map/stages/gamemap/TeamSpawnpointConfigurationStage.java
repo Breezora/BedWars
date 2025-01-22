@@ -23,7 +23,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
     private final int size;
     private int phase;
 
-    private TranslatableComponent teamName;
+    private final TranslatableComponent teamName = null;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -48,10 +48,13 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
             return;
         }
         this.phase = phase;
+//        this.teamName = Component.translatable("team.red");
 
-        this.teamName = Component.translatable("team.red"); // Test purpose
-
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name", Component.text(phase), teamName));
+        // Test purpose
+        TranslatableComponent translatableComponent = Component.translatable("team.red");
+        Component component = Component.translatable("mapsetup.finish", translatableComponent);
+//
+        player.sendMessage(component);
         Feedback.success(player);
     }
 
