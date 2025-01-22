@@ -26,7 +26,7 @@ public class TeamSizeConfigurationStage extends Stage {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (player == null || !player.equals(event.getPlayer())) {
+        if (isPlayerNotConfiguring(event.getPlayer())) {
             return;
         }
         if (setup.stage() != 3) {
