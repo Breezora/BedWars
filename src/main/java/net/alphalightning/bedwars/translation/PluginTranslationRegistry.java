@@ -100,6 +100,8 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
             // Check if the argument is a TranslatableComponent and translate it
             ComponentLike argument = argumentComponents.get(index);
             if (argument instanceof TranslatableComponent translatable) {
+                System.out.println("Argument is translatable");
+
                 Component translated = registry.translate(translatable, locale);
 
                 if (translated != null) {
