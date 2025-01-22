@@ -41,7 +41,7 @@ public class DiamondSpawnerConfigurationStage extends Stage implements LocationC
             if (!(setup instanceof GameMapSetup gameMapSetup)) {
                 return;
             }
-            gameMapSetup.startStage(8);
+            gameMapSetup.startStage(9);
             return;
         }
 
