@@ -51,7 +51,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
     }
 
     private void startStage(int stage) {
-        if (stage >= count) {
+        if (stage >= count && count != 1) {
             return;
         }
         this.stage = stage;
