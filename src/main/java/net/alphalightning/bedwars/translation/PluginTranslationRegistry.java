@@ -106,9 +106,9 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
                 if (translated != null) {
                     return Tag.inserting(translated);
 
-                } else {
-                    Bukkit.getLogger().info("Translated is null");
                 }
+            } else {
+                Bukkit.getLogger().info("Argument ist nicht translatable");
             }
 
             // Default behavior
