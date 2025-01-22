@@ -24,6 +24,7 @@ public final class GameMapSetup implements MapSetup {
     // Configuration
     private final List<Team> teams = new ArrayList<>();
     private final List<Location> emeraldSpawnerLocations = new ArrayList<>();
+    private final List<Location> diamondSpawnerLocations = new ArrayList<>();
     private Location spectatorSpawn;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
@@ -57,6 +58,7 @@ public final class GameMapSetup implements MapSetup {
             case 5 -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
             case 6 -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
             case 7 -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
+            case 8 -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -132,5 +134,9 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureEmeraldSpawnerLocations(List<Location> locations) {
         this.emeraldSpawnerLocations.addAll(locations);
+    }
+
+    public void configureDiamondSpawnerLocations(List<Location> locations) {
+        this.diamondSpawnerLocations.addAll(locations);
     }
 }
