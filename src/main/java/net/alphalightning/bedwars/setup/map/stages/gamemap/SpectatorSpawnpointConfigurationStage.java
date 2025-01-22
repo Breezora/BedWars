@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -38,6 +39,9 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
+
+        player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
+        Feedback.success(player);
 
         gameMapSetup.configureSpectatorSpawn(location);
         gameMapSetup.startStage(7);
