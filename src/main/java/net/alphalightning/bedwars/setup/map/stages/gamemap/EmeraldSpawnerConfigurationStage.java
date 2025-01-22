@@ -20,7 +20,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
     private final List<Location> locations = new ArrayList<>();
 
     private final int count;
-    private int stage;
+    private int phase;
 
     public EmeraldSpawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -46,16 +46,16 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         }
 
         player.sendMessage(Component.translatable("mapsetup.stage.7", Component.text(count)));
-        startStage(1);
+        startPhase(1);
     }
 
-    private void startStage(int stage) {
-        if (stage > count) {
+    private void startPhase(int phase) {
+        if (phase > count) {
             return;
         }
-        this.stage = stage;
+        this.phase = phase;
 
-        player.sendMessage(Component.translatable("mapsetup.stage.7.id", Component.text(stage)));
+        player.sendMessage(Component.translatable("mapsetup.stage.7.id", Component.text(phase)));
         Feedback.success(player);
     }
 
@@ -78,12 +78,12 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
         // Emerald spawner configuration is not completed
 
-        if (stage < count) {
+        if (phase < count) {
             sendSuccessMessage();
             Feedback.success(player);
 
             locations.add(location);
-            startStage(++stage);
+            startPhase(++phase);
             return;
         }
 
@@ -98,6 +98,6 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
     }
 
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(stage)));
+        player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
     }
 }
