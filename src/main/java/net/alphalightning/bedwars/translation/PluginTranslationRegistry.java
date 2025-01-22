@@ -55,7 +55,7 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         if (component.arguments().isEmpty()) {
             resulting = miniMessage.deserialize(miniString);
         } else {
-            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments()));
+            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments(), this, locale));
         }
 
         if (component.children().isEmpty()) {
@@ -80,12 +80,14 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         delegate.unregister(key);
     }
 
-    private record ArgumentTag(List<? extends ComponentLike> argumentComponents) implements TagResolver {
+    private record ArgumentTag(List<? extends ComponentLike> argumentComponents, TranslationRegistry registry, Locale locale) implements TagResolver {
         private static final String NAME = "argument";
         private static final String ALIAS = "arg";
 
-        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
+        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents, final @NotNull TranslationRegistry registry, final @NotNull Locale locale) {
             this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
+            this.registry = Objects.requireNonNull(registry, "registry");
+            this.locale = Objects.requireNonNull(locale, "locale");
         }
 
         @Override
@@ -93,7 +95,19 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
             final int index = arguments.popOr("No argument number provided")
                     .asInt().orElseThrow(() -> ctx.newException("Invalid argument number", arguments));
 
-            if (index < 0 || index >= argumentComponents.size()) throw ctx.newException("Invalid argument number", arguments);
+            if (index < 0 || index >= argumentComponents.size()) {
+                throw ctx.newException("Invalid argument number", arguments);
+            }
+
+            ComponentLike argument = argumentComponents.get(index);
+
+            if (argument instanceof TranslatableComponent translatable) {
+                Component translated = registry.translate(translatable, locale);
+                if (translated == null) {
+                    throw ctx.newException("Failed to translate argument", arguments);
+                }
+                return Tag.inserting(translated);
+            }
 
             return Tag.inserting(argumentComponents.get(index));
         }
