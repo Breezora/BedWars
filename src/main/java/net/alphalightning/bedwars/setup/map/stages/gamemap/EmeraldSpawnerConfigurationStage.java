@@ -83,7 +83,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
             Feedback.success(player);
 
             locations.add(location);
-            startStage(stage + 1);
+            startStage(++stage);
             return;
         }
 
