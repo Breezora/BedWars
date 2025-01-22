@@ -41,6 +41,6 @@ public class ConfigureSpawnStage extends Stage implements LocationConfiguration 
         }
 
         lobbyMapSetup.spawn(location);
-        setup.startStage(2);
+        lobbyMapSetup.startStage(2);
     }
 }
