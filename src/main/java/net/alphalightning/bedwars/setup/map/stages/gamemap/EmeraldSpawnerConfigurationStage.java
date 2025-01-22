@@ -35,18 +35,22 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
     @Override
     public void run() {
+        if (count == 0) { // No emerald spawner have been configured previously in the setup
+            player.sendMessage(Component.translatable("mapsetup.stage.7.error.no-spawner"));
+            Feedback.warning(player);
+
+            if (!(setup instanceof GameMapSetup gameMapSetup)) {
+                return;
+            }
+            gameMapSetup.startStage(8);
+            return;
+        }
+
         player.sendMessage(Component.translatable("mapsetup.stage.7", Component.text(count)));
         startStage(0);
     }
 
     private void startStage(int stage) {
-        if (count == 0) {
-            player.sendMessage(Component.translatable("mapsetup.stage.7.error.no-spawner"));
-            Feedback.warning(player);
-
-            setup.startStage(8);
-            return;
-        }
         if (stage > count) {
             return;
         }
