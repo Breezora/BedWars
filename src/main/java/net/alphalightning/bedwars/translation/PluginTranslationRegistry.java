@@ -55,21 +55,7 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         if (component.arguments().isEmpty()) {
             resulting = miniMessage.deserialize(miniString);
         } else {
-            // Translate arguments recursively
-//            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments(), locale, delegate));
-
-            List<ComponentLike> arguments = component.arguments().stream()
-                    .map(translationArgument -> {
-                        if(translationArgument instanceof TranslatableComponent translatable) {
-                            Component translated = delegate.translate(translatable, locale);
-                            return translated != null ? translated : translationArgument;
-                        }
-                        return translationArgument;
-                    })
-                    .map(ComponentLike.class::cast)
-                    .toList();
-
-            resulting = miniMessage.deserialize(miniString, new ArgumentTag(arguments, locale, delegate));
+            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments()));
         }
 
         if (component.children().isEmpty()) {
@@ -94,14 +80,12 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
         delegate.unregister(key);
     }
 
-    private record ArgumentTag(List<? extends ComponentLike> argumentComponents, Locale locale, TranslationRegistry registry) implements TagResolver {
+    private record ArgumentTag(List<? extends ComponentLike> argumentComponents) implements TagResolver {
         private static final String NAME = "argument";
         private static final String ALIAS = "arg";
 
-        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents, Locale locale, TranslationRegistry registry) {
+        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
             this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
-            this.locale = Objects.requireNonNull(locale, "locale");
-            this.registry = Objects.requireNonNull(registry, "registry");
         }
 
         @Override
@@ -111,19 +95,7 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
 
             if (index < 0 || index >= argumentComponents.size()) throw ctx.newException("Invalid argument number", arguments);
 
-            // Check if the argument is a TranslatableComponent and translate it
-            ComponentLike argument = argumentComponents.get(index);
-            if (argument instanceof TranslatableComponent translatable) {
-                ComponentLike translated = registry.translate(translatable, locale);
-
-                if (translated != null) {
-                    return Tag.inserting(translated);
-
-                }
-            }
-
-            // Default behavior
-            return Tag.inserting(argument);
+            return Tag.inserting(argumentComponents.get(index));
         }
 
         @Override
