@@ -1,25 +1,15 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.TranslatableComponent;
-import net.kyori.adventure.text.minimessage.Context;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.ParsingException;
-import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.translation.TranslationRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public final class PluginTranslationRegistry implements TranslationRegistry {
+public final class PluginTranslationRegistry extends MiniMessageTranslator implements TranslationRegistry {
 
     private final TranslationRegistry delegate;
 
@@ -38,34 +28,11 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
     }
 
     @Override
-    public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
-        return null;
-    }
-
-    @Override
-    public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
-        final MessageFormat translationFormat = delegate.translate(component.key(), locale);
-
-        if (translationFormat == null) {
+    protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
+        if (!delegate.contains(key)) {
             return null;
         }
-
-        final MiniMessage miniMessage = MiniMessage.miniMessage();
-        final String miniString = translationFormat.toPattern();
-        final Component resulting;
-
-        if (component.arguments().isEmpty()) {
-            resulting = miniMessage.deserialize(miniString);
-        } else {
-            resulting = miniMessage.deserialize(miniString, new ArgumentTag(component.arguments(), this, locale));
-        }
-
-        if (component.children().isEmpty()) {
-            return resulting;
-
-        } else {
-            return resulting.children(component.children());
-        }
+        return Objects.requireNonNull(delegate.translate(key, locale)).toPattern();
     }
 
     @Override
@@ -81,48 +48,6 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
     @Override
     public void unregister(@NotNull String key) {
         delegate.unregister(key);
-    }
-
-    private record ArgumentTag(List<? extends ComponentLike> argumentComponents, TranslationRegistry registry, Locale locale) implements TagResolver {
-        private static final String NAME = "argument";
-        private static final String ALIAS = "arg";
-
-        private ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents, TranslationRegistry registry, Locale locale) {
-            this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
-            this.registry = Objects.requireNonNull(registry, "registry");
-            this.locale = Objects.requireNonNull(locale, "locale");
-        }
-
-        @Override
-        public Tag resolve(@NotNull String name, @NotNull ArgumentQueue arguments, @NotNull Context ctx) throws ParsingException {
-            final int index = arguments.popOr("No argument number provided")
-                    .asInt().orElseThrow(() -> ctx.newException("Invalid argument number", arguments));
-
-            if (index < 0 || index >= argumentComponents.size()) {
-                throw ctx.newException("Invalid argument number", arguments);
-            }
-
-            ComponentLike argument = argumentComponents.get(index);
-
-            // Prüfen, ob das Argument ein TranslatableComponent ist
-            if (argument instanceof TranslatableComponent translatable) {
-
-                // Rekursiv übersetzen
-                Component translated = registry.translate(translatable, locale);
-                if (translated == null) {
-                    throw ctx.newException("Failed to translate argument: " + translatable.key(), arguments);
-                }
-                return Tag.inserting(translated);
-            }
-
-            // Fallback für andere Argumenttypen
-            return Tag.inserting(argument);
-        }
-
-        @Override
-        public boolean has(@NotNull String name) {
-            return name.equals(NAME) || name.equals(ALIAS);
-        }
     }
 
 }
