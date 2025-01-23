@@ -7,9 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Objects;
 
-public final class PluginTranslationRegistry extends MiniMessageTranslator implements TranslationRegistry {
+public final class PluginTranslationRegistry implements TranslationRegistry {
 
     private final TranslationRegistry delegate;
 
@@ -23,16 +22,13 @@ public final class PluginTranslationRegistry extends MiniMessageTranslator imple
     }
 
     @Override
-    public @NotNull Key name() {
-        return delegate.name();
+    public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
+        return null;
     }
 
     @Override
-    protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
-        if (!delegate.contains(key)) {
-            return null;
-        }
-        return Objects.requireNonNull(delegate.translate(key, locale)).toPattern();
+    public @NotNull Key name() {
+        return delegate.name();
     }
 
     @Override
