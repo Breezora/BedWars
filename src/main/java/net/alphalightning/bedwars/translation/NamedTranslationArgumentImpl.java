@@ -26,17 +26,17 @@ final class NamedTranslationArgumentImpl implements NamedTranslationArgument, Vi
 
     @Override
     public @TagPattern @NotNull String name() {
-        return name;
+        return this.name;
     }
 
     @Override
     public @NotNull TranslationArgument translationArgument() {
-        return translationArgument;
+        return this.translationArgument;
     }
 
     @Override
     public @UnknownNullability ComponentLike apply(final @NotNull Void context) {
-        return translationArgument;
+        return this.translationArgument;
     }
 
     @Override
