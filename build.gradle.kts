@@ -24,13 +24,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.6")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("de.eldoria.jacksonbukkit:paper:1.2.0")
     implementation("de.eldoria.util:jackson-configuration:2.1.9")
-    implementation("net.kyori:adventure-api:4.18.0")
 }
 
 tasks {
