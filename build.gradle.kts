@@ -52,7 +52,8 @@ tasks {
             "co.aikar.commands" to "acf",
             "co.aikar.locales" to "locales",
             "de.eldoria.jacksonbukkit" to "jacksonbukkit",
-            "de.eldoria.eldoutilities.config" to "eldoutilities.config"
+            "de.eldoria.eldoutilities.config" to "eldoutilities.config",
+            "net.kyori.adventure" to "adventure"
         )
 
         val base = "net.alphalightning.bedwars.libs"
