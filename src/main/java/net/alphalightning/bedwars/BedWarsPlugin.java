@@ -11,7 +11,7 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
-import net.alphalightning.bedwars.translation.MiniMessageTranslator;
+import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -19,12 +19,9 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import xyz.xenondevs.invui.gui.Structure;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
@@ -63,20 +60,7 @@ public class BedWarsPlugin extends JavaPlugin {
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
-        GlobalTranslator.translator().addSource(new MiniMessageTranslator() {
-            @Override
-            protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
-                if (!translationRegistry.contains(key)) {
-                    return null;
-                }
-                return Objects.requireNonNull(translationRegistry.translate(key, locale)).toPattern();
-            }
-
-            @Override
-            public @NotNull Key name() {
-                return Key.key("bedwars:messages_translator");
-            }
-        });
+        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
     }
 
     public void registerCommands() {
