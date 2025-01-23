@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-public class PluginMiniMassageTranslator extends MiniMessageTranslator {
+public class PluginMiniMassageTranslator extends MiniMessageTranslator implements TranslationRegistry {
 
     private final TranslationRegistry translationRegistry;
 
@@ -32,7 +32,32 @@ public class PluginMiniMassageTranslator extends MiniMessageTranslator {
     }
 
     @Override
+    public boolean contains(@NotNull String key) {
+        return translationRegistry.contains(key);
+    }
+
+    @Override
+    public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
+        return null;
+    }
+
+    @Override
     public @NotNull Key name() {
-        return Key.key("bedwars:minimessage");
+        return translationRegistry.name();
+    }
+
+    @Override
+    public void defaultLocale(@NotNull Locale locale) {
+        translationRegistry.defaultLocale(locale);
+    }
+
+    @Override
+    public void register(@NotNull String key, @NotNull Locale locale, @NotNull MessageFormat format) {
+        translationRegistry.register(key, locale, format);
+    }
+
+    @Override
+    public void unregister(@NotNull String key) {
+        translationRegistry.unregister(key);
     }
 }
