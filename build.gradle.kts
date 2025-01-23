@@ -30,6 +30,7 @@ dependencies {
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("de.eldoria.jacksonbukkit:paper:1.2.0")
     implementation("de.eldoria.util:jackson-configuration:2.1.9")
+    implementation("net.kyori:adventure-api:4.18.0")
 }
 
 tasks {
@@ -51,7 +52,8 @@ tasks {
             "co.aikar.commands" to "acf",
             "co.aikar.locales" to "locales",
             "de.eldoria.jacksonbukkit" to "jacksonbukkit",
-            "de.eldoria.eldoutilities.config" to "eldoutilities.config"
+            "de.eldoria.eldoutilities.config" to "eldoutilities.config",
+            "net.kyori.adventure" to "adventure"
         )
 
         val base = "net.alphalightning.bedwars.libs"
