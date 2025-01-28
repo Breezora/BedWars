@@ -25,6 +25,7 @@ final class ArgumentTag implements TagResolver {
     ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
         this.argumentComponents = new ArrayList<>(Objects.requireNonNull(argumentComponents, "argumentComponents"));
 
+        Bukkit.getLogger().info("Args: " + argumentComponents);
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
