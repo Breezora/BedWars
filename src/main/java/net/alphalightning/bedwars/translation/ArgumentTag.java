@@ -1,6 +1,9 @@
 package net.alphalightning.bedwars.translation;
 
-import net.kyori.adventure.text.*;
+import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TranslationArgument;
+import net.kyori.adventure.text.VirtualComponent;
+import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -39,11 +42,7 @@ final class ArgumentTag implements TagResolver {
                 continue;
             }
 
-            if (namedArgument.translationArgument().value() instanceof TranslatableComponent translatableComponent) {
-                namedArgumentMap.put(namedArgument.name(), translatableComponent);
-            } else {
-                namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
-            }
+            namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
         }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
