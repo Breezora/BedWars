@@ -55,13 +55,14 @@ final class ArgumentTag implements TagResolver {
 
             return Tag.inserting(this.argumentComponents.get(index));
         } else {
+            Bukkit.getLogger().info("Parsing tag '" + name + "'");
             final ComponentLike namedArgument = this.namedArguments.get(name);
 
             if (namedArgument != null) {
-                Bukkit.getLogger().info("Named argument ist nicht null");
+                Bukkit.getLogger().info("Named arg ist nicht null");
                 return Tag.inserting(namedArgument);
             } else {
-                Bukkit.getLogger().info("Named argument ist null");
+                Bukkit.getLogger().info("Named arg ist null");
                 return null;
             }
         }
