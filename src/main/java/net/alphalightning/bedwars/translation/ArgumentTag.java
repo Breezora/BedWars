@@ -31,7 +31,7 @@ final class ArgumentTag implements TagResolver {
             Bukkit.getLogger().info("Argument: " + argument);
 
             if (argument instanceof TranslationArgument translationArgument) {
-                if (translationArgument instanceof VirtualComponent virtual) {
+                if (translationArgument.value() instanceof VirtualComponent virtual) {
                     Bukkit.getLogger().info("Arg ist virtual: " + virtual);
 
                 } else {
