@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.translation;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.VirtualComponent;
+import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -28,17 +29,13 @@ final class ArgumentTag implements TagResolver {
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
-            Bukkit.getLogger().info("Argument: " + argument);
-
             if (argument instanceof TranslationArgument translationArgument) {
                 if (translationArgument.value() instanceof VirtualComponent virtual) {
                     Bukkit.getLogger().info("Arg ist virtual: " + virtual);
 
-                } else {
-                    Bukkit.getLogger().info("Arg ist nicht virtual");
+                    final VirtualComponentRenderer<?> renderer = virtual.renderer();
+                    Bukkit.getLogger().info("Virtual renderer: " + renderer);
                 }
-            } else {
-                Bukkit.getLogger().info("Arg ist nicht translatable arg");
             }
         }
 
@@ -70,10 +67,8 @@ final class ArgumentTag implements TagResolver {
             final ComponentLike namedArgument = this.namedArguments.get(name);
 
             if (namedArgument != null) {
-                Bukkit.getLogger().info("Named arg ist nicht null");
                 return Tag.inserting(namedArgument);
             } else {
-                Bukkit.getLogger().info("Named arg ist null");
                 return null;
             }
         }
