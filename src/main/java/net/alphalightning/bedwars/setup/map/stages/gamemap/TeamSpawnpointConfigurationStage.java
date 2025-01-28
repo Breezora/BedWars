@@ -7,6 +7,7 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -52,7 +53,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 Component.text(phase),
-                Component.translatable("team.red"))
+                NamedTranslationArgument.component("name", teamName))
         );
         Feedback.success(player);
     }
@@ -93,7 +94,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
     }
 
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", NamedTranslationArgument.component("name", teamName)));
     }
 
 }

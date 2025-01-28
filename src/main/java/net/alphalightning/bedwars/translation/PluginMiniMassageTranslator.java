@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.translation;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.TranslationRegistry;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +29,8 @@ public class PluginMiniMassageTranslator extends MiniMessageTranslator implement
         if (messageFormat == null) {
             return null;
         }
+
+        Bukkit.getLogger().info(messageFormat.toPattern());
         return messageFormat.toPattern();
     }
 
