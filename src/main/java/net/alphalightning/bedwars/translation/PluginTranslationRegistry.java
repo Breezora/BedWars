@@ -7,7 +7,6 @@ import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.translation.Translator;
 import net.kyori.examination.Examinable;
 import net.kyori.examination.ExaminableProperty;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,15 +39,8 @@ public class PluginTranslationRegistry implements TranslationRegistry, Examinabl
     public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
         Translation translation = this.translations.get(key);
         if (translation == null) {
-            if (key.equalsIgnoreCase("mapsetup.stage.9.name")) {
-                Bukkit.getLogger().warning("Key " + key + " hat keine translation");
-            }
             return null;
         }
-        if (key.equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().warning(requireNonNull(translation.translate(locale)).toPattern());
-        }
-
         return translation.translate(locale);
     }
 
