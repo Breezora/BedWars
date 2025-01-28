@@ -19,15 +19,12 @@ import java.util.List;
 
 public class TeamLootspawnerConfigurationStage extends Stage implements LocationConfiguration {
 
-    public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup, int count) { super(plugin, player, setup);
-
+    public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) { super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.count = 0;
             return;
         }
-
         this.count = gameMapSetup.teams().size();
-
     }
 
     private int phase;
