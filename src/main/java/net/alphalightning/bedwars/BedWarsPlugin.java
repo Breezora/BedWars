@@ -11,7 +11,6 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
-import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
 import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -61,7 +60,6 @@ public class BedWarsPlugin extends JavaPlugin {
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
-        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
     }
 
     public void registerCommands() {

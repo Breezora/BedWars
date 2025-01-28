@@ -8,11 +8,12 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-public class PluginTranslationRegistry implements TranslationRegistry {
+public class PluginTranslationRegistry extends PluginMiniMassageTranslator implements TranslationRegistry {
 
     private final TranslationRegistry delegate;
 
     public PluginTranslationRegistry(TranslationRegistry delegate) {
+        super(delegate);
         this.delegate = delegate;
     }
 
