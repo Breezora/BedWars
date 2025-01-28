@@ -57,10 +57,8 @@ public class BedWarsPlugin extends JavaPlugin {
         PluginTranslationRegistry translationRegistry = new PluginTranslationRegistry(Key.key("bedwars:messages"));
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
-        PluginMiniMassageTranslator translator = new PluginMiniMassageTranslator(translationRegistry);
-
         GlobalTranslator.translator().addSource(translationRegistry);
-        GlobalTranslator.translator().addSource(translator);
+        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
     }
 
     public void registerCommands() {
