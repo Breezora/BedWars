@@ -37,6 +37,8 @@ final class ArgumentTag implements TagResolver {
                 } else {
                     Bukkit.getLogger().info("Arg ist nicht virtual");
                 }
+            } else {
+                Bukkit.getLogger().info("Arg ist nicht translatable arg");
             }
         }
 
