@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.translation;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.TranslationRegistry;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,14 +21,18 @@ public class PluginMiniMassageTranslator extends MiniMessageTranslator implement
 
     @Override
     protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
+        Bukkit.getLogger().info("Getting string with key: " + key);
         if (!translationRegistry.contains(key)) {
+            Bukkit.getLogger().warning("Registry hat kein Key " + key);
             return null;
         }
         MessageFormat messageFormat = translationRegistry.translate(key, locale);
 
         if (messageFormat == null) {
+            Bukkit.getLogger().warning("Message format ist null");
             return null;
         }
+
         return messageFormat.toPattern();
     }
 
