@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.TranslationRegistry;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,10 +25,6 @@ public class PluginMiniMassageTranslator extends MiniMessageTranslator {
 
         if (messageFormat == null) {
             return null;
-        }
-
-        if (key.equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info(messageFormat.toPattern());
         }
         return messageFormat.toPattern();
     }
