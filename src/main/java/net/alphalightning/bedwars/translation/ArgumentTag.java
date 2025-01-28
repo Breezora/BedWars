@@ -28,15 +28,17 @@ final class ArgumentTag implements TagResolver {
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
-            if (argument instanceof TranslationArgument translationArgument) {
-                if (translationArgument.value() instanceof VirtualComponent virtual) {
-                    final VirtualComponentRenderer<?> renderer = virtual.renderer();
+            if (!(argument instanceof TranslationArgument translationArgument)) {
+                continue;
+            }
+            if (!(translationArgument.value() instanceof VirtualComponent virtual)) {
+                continue;
+            }
 
-                    if (renderer instanceof NamedTranslationArgument namedArgument) {
-                        namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
+            final VirtualComponentRenderer<?> renderer = virtual.renderer();
 
-                    }
-                }
+            if (renderer instanceof NamedTranslationArgument namedArgument) {
+                namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
             }
         }
 
