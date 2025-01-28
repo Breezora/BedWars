@@ -1,8 +1,6 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.VirtualComponent;
-import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -25,19 +23,22 @@ final class ArgumentTag implements TagResolver {
     ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
         this.argumentComponents = new ArrayList<>(Objects.requireNonNull(argumentComponents, "argumentComponents"));
 
-        Bukkit.getLogger().info("Args: " + argumentComponents);
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
-            if (argument instanceof VirtualComponent) {
-                final VirtualComponentRenderer<?> renderer = ((VirtualComponent) argument).renderer();
-
-                if (renderer instanceof NamedTranslationArgument) {
-                    final NamedTranslationArgument namedArgument = (NamedTranslationArgument) argument;
-                    namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
-                }
-            }
+            Bukkit.getLogger().info("Argument: " + argument);
         }
+
+//        for (final ComponentLike argument : this.argumentComponents) {
+//            if (argument instanceof VirtualComponent) {
+//                final VirtualComponentRenderer<?> renderer = ((VirtualComponent) argument).renderer();
+//
+//                if (renderer instanceof NamedTranslationArgument) {
+//                    final NamedTranslationArgument namedArgument = (NamedTranslationArgument) argument;
+//                    namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
+//                }
+//            }
+//        }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
     }
