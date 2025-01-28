@@ -67,7 +67,6 @@ final class ArgumentTag implements TagResolver {
 
             return Tag.inserting(this.argumentComponents.get(index));
         } else {
-            Bukkit.getLogger().info("Parsing tag '" + name + "'");
             final ComponentLike namedArgument = this.namedArguments.get(name);
 
             if (namedArgument != null) {
