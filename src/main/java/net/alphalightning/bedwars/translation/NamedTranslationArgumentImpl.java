@@ -5,7 +5,6 @@ import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.internal.TagInternals;
 import net.kyori.adventure.text.minimessage.tag.TagPattern;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -42,7 +41,6 @@ final class NamedTranslationArgumentImpl implements NamedTranslationArgument, Vi
 
     @Override
     public @NotNull String fallbackString() {
-        Bukkit.getLogger().warning("Could not render virtual component");
         return ""; // Not for display purposes
     }
 }
