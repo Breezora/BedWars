@@ -30,7 +30,7 @@ final class ArgumentTag implements TagResolver {
             if (argument instanceof VirtualComponent) {
                 final VirtualComponentRenderer<?> renderer = ((VirtualComponent) argument).renderer();
 
-                if (renderer instanceof NamedTranslationArgument named) {
+                if (renderer instanceof NamedTranslationArgument) {
                     final NamedTranslationArgument namedArgument = (NamedTranslationArgument) argument;
                     namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
                 }
