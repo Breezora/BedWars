@@ -8,6 +8,7 @@ import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,8 +56,10 @@ final class ArgumentTag implements TagResolver {
             final ComponentLike namedArgument = this.namedArguments.get(name);
 
             if (namedArgument != null) {
+                Bukkit.getLogger().info("Named argument ist null");
                 return Tag.inserting(namedArgument);
             } else {
+                Bukkit.getLogger().info("Named argument ist nicht null");
                 return null;
             }
         }
