@@ -21,18 +21,18 @@ public class PluginMiniMassageTranslator extends MiniMessageTranslator implement
 
     @Override
     protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
-        Bukkit.getLogger().info("Getting string with key: " + key);
         if (!translationRegistry.contains(key)) {
-            Bukkit.getLogger().warning("Registry hat kein Key " + key);
             return null;
         }
         MessageFormat messageFormat = translationRegistry.translate(key, locale);
 
         if (messageFormat == null) {
-            Bukkit.getLogger().warning("Message format ist null");
             return null;
         }
 
+        if (key.equalsIgnoreCase("mapsetup.stage.9.name")) {
+            Bukkit.getLogger().info(messageFormat.toPattern());
+        }
         return messageFormat.toPattern();
     }
 
