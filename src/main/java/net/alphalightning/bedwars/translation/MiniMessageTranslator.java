@@ -34,7 +34,6 @@ public abstract class MiniMessageTranslator implements Translator {
     @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
-        System.out.println(miniMessageString);
 
         if (miniMessageString == null) {
             return null;
@@ -43,10 +42,8 @@ public abstract class MiniMessageTranslator implements Translator {
         final Component resultingComponent;
 
         if (component.arguments().isEmpty()) {
-            System.out.println("Keine args");
             resultingComponent = this.miniMessage.deserialize(miniMessageString);
         } else {
-            System.out.println("Args gefunden");
             resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 

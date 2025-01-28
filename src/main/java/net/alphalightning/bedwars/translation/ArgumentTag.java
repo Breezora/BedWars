@@ -27,13 +27,10 @@ final class ArgumentTag implements TagResolver {
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
-            System.out.println("Argumente: " + argument);
             if (argument instanceof VirtualComponent) {
-                System.out.println("Arg ist virtual");
                 final VirtualComponentRenderer<?> renderer = ((VirtualComponent) argument).renderer();
 
                 if (renderer instanceof NamedTranslationArgument named) {
-                    System.out.println("Arg ist named: " + named.name());
                     final NamedTranslationArgument namedArgument = (NamedTranslationArgument) argument;
                     namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
                 }
@@ -41,7 +38,6 @@ final class ArgumentTag implements TagResolver {
         }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
-        System.out.println("Named args: " + namedArgumentMap);
     }
 
     @Override
