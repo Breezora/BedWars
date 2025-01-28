@@ -9,7 +9,6 @@ import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,21 +35,10 @@ final class ArgumentTag implements TagResolver {
                     if (renderer instanceof NamedTranslationArgument namedArgument) {
                         namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
 
-                    } else {
-                        Bukkit.getLogger().info("Renderer ist nicht named: " + renderer);
                     }
                 }
             }
         }
-
-//            if (argument instanceof VirtualComponent) {
-//                final VirtualComponentRenderer<?> renderer = ((VirtualComponent) argument).renderer();
-//
-//                if (renderer instanceof NamedTranslationArgument) {
-//                    final NamedTranslationArgument namedArgument = (NamedTranslationArgument) argument;
-//                    namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
-//                }
-//            }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
     }
