@@ -52,8 +52,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
         this.teamName = Component.translatable("team.red");
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
-                Component.text(phase),
-                teamName
+                NamedTranslationArgument.numeric("phase", phase),
+                NamedTranslationArgument.component("name", teamName)
         ));
         Feedback.success(player);
     }
