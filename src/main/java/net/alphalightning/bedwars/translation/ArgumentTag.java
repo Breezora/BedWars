@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.VirtualComponent;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
@@ -29,11 +30,13 @@ final class ArgumentTag implements TagResolver {
         for (final ComponentLike argument : this.argumentComponents) {
             Bukkit.getLogger().info("Argument: " + argument);
 
-            if (argument instanceof VirtualComponent virtual) {
-                Bukkit.getLogger().info("Arg ist virtual: " + virtual);
+            if (argument instanceof TranslationArgument translationArgument) {
+                if (translationArgument instanceof VirtualComponent virtual) {
+                    Bukkit.getLogger().info("Arg ist virtual: " + virtual);
 
-            } else {
-                Bukkit.getLogger().info("Arg ist nicht virtual");
+                } else {
+                    Bukkit.getLogger().info("Arg ist nicht virtual");
+                }
             }
         }
 
