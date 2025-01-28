@@ -31,10 +31,14 @@ final class ArgumentTag implements TagResolver {
         for (final ComponentLike argument : this.argumentComponents) {
             if (argument instanceof TranslationArgument translationArgument) {
                 if (translationArgument.value() instanceof VirtualComponent virtual) {
-                    Bukkit.getLogger().info("Arg ist virtual: " + virtual);
-
                     final VirtualComponentRenderer<?> renderer = virtual.renderer();
-                    Bukkit.getLogger().info("Virtual renderer: " + renderer);
+
+                    if (renderer instanceof NamedTranslationArgument namedArgument) {
+                        namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
+
+                    } else {
+                        Bukkit.getLogger().info("Renderer ist nicht named: " + renderer);
+                    }
                 }
             }
         }
