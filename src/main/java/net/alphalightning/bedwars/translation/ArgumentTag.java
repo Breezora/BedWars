@@ -39,7 +39,7 @@ final class ArgumentTag implements TagResolver {
                 continue;
             }
 
-            if (namedArgument.translationArgument() instanceof TranslatableComponent translatableComponent) {
+            if (namedArgument.translationArgument().value() instanceof TranslatableComponent translatableComponent) {
                 namedArgumentMap.put(namedArgument.name(), translatableComponent);
             } else {
                 namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
