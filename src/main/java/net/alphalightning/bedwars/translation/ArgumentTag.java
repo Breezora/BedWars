@@ -46,7 +46,6 @@ final class ArgumentTag implements TagResolver {
         }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
-        Bukkit.getLogger().info("Named Args: " + namedArguments);
     }
 
     @Override
@@ -62,6 +61,7 @@ final class ArgumentTag implements TagResolver {
             return Tag.inserting(this.argumentComponents.get(index));
         } else {
             final ComponentLike namedArgument = this.namedArguments.get(name);
+            Bukkit.getLogger().info("Named arg (" + name + "):" + namedArgument);
 
             if (namedArgument != null) {
                 return Tag.inserting(namedArgument);
