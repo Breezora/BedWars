@@ -84,8 +84,6 @@ public abstract class MiniMessageTranslator implements Translator {
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
 
-        Bukkit.getLogger().info(miniMessageString);
-
         if (miniMessageString == null) {
             return null;
         }
