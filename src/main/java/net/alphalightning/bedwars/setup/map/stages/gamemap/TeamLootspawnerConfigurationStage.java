@@ -29,7 +29,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
 
     private int phase;
     boolean slowConfigFinished = false;
-    private int slow = 1;
     private final int count;
     private final List<Location> locations = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             Feedback.error(player);
         }
             slowConfigFinished = true;
-            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.sucess"));
+            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.success"));
             startPhase(1);
         }
     }
