@@ -5,6 +5,7 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.Translator;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,7 +68,7 @@ public abstract class MiniMessageTranslator implements Translator {
      * {@link TranslatableComponent#fallback() translatable component's fallback} (or the
      * key itself).</p>
      *
-     * @param key the key
+     * @param key    the key
      * @param locale the locale
      * @return the resulting MiniMessage string
      * @since 4.19.0
@@ -79,11 +80,16 @@ public abstract class MiniMessageTranslator implements Translator {
         return null;
     }
 
+    //TODO: Debug this shit
+
     @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
 
+        Bukkit.getLogger().info(miniMessageString);
+
         if (miniMessageString == null) {
+            Bukkit.getLogger().warning("Mini String ist null");
             return null;
         }
 
