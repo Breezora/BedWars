@@ -5,7 +5,6 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.Translator;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,7 +93,6 @@ public abstract class MiniMessageTranslator implements Translator {
             resultingComponent = this.miniMessage.deserialize(miniMessageString);
         } else {
             resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
-            Bukkit.getLogger().info("Component hat Args: " + resultingComponent);
         }
 
         if (component.children().isEmpty()) {
