@@ -24,7 +24,7 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
     private Component teamName;
 
 
-    public TeamChestConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup, List<Team> teams) {
+    public TeamChestConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.teams = Collections.emptyList();
@@ -83,7 +83,7 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
         Feedback.success(player);
 
-        gameMapSetup.startStage(10);
+        gameMapSetup.startStage(12);
     }
 
     private void sendSuccessMessage() {
