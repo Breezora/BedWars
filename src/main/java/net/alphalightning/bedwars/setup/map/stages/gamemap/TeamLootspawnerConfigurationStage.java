@@ -59,7 +59,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
                 gameMapSetup.configureSlowIron(true);
                 player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.slow"));
                 Feedback.success(player);
-                return;
             } else {
                 gameMapSetup.configureSlowIron(false);
                 Feedback.success(player);
