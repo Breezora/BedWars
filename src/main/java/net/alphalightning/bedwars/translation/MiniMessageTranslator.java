@@ -98,10 +98,12 @@ public abstract class MiniMessageTranslator implements Translator {
         }
 
         if (component.children().isEmpty()) {
+            Bukkit.getLogger().info("Component hat keine children: " + component);
             return resultingComponent;
         } else {
             for (ComponentLike componentLike : resultingComponent.children()) {
                 if (!(componentLike instanceof TranslatableComponent translatable)) {
+                    Bukkit.getLogger().info("Child ist nicht translatable: " + componentLike);
                     continue;
                 }
                 Bukkit.getLogger().info("Children ist translatable: " + translatable);
