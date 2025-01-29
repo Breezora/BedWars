@@ -28,6 +28,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
     }
 
     private int phase;
+    boolean slowConfigFinished = false;
     private int slow = 1;
     private final int count;
     private final List<Location> locations = new ArrayList<>();
@@ -40,32 +41,34 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (slow == 1) {
+        if (!slowConfigFinished) {
             if (isNotPlayerConfiguring(player)) {
                 return;
             }
             if (isNotStage(10)) {
                 return;
             }
-
+            if (!(setup instanceof GameMapSetup gameMapSetup)) {
+                return;
+            }
             event.setCancelled(true); //Nachricht nicht in den Chat senden
 
             String message = event.signedMessage().message();
 
 
-            if (!message.equalsIgnoreCase("y")) {
-                player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.error"));
-                Feedback.error(player);
+            if (isYes_or_no(message)) {
+                gameMapSetup.configureSlowIron(true);
+                player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.slow"));
+                Feedback.success(player);
                 return;
+            } else {
+                gameMapSetup.configureSlowIron(false);
+                Feedback.success(player);
+                player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.fast"));
             }
-            if (!(setup instanceof GameMapSetup gameMapSetup)) {
-                return;
-            }
-            gameMapSetup.configureSlowIron(true);
-            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.slow"));
-            Feedback.success(player);
+
+            slowConfigFinished = true;
             startPhase(1);
-            slow = 2;
         }
     }
     @EventHandler
@@ -84,15 +87,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-
-
-        if (slow == 1) {
-            gameMapSetup.configureSlowIron(false);
-            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.fast"));
-            Feedback.success(player);
-            player.sendMessage(Component.translatable("mapsetup.stage.10.name"));
-            startPhase(1);
-        }
         if (phase < count) {
             sendSuccessMessage();
             Feedback.success(player);
@@ -100,7 +94,21 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             locations.add(location);
             startPhase(++phase);
         }
+
+        sendSuccessMessage();
+        player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
+        Feedback.success(player);
+
+        gameMapSetup.configureLootSpawnerLocations(locations);
+        gameMapSetup.startStage(11);
     }
+
+    private boolean isYes_or_no(String message) {
+        if (message.equalsIgnoreCase("y")) {
+            return true;
+        } else if (message.equalsIgnoreCase("n")) {return false;}
+    }
+
     private void startPhase(int phase) {
         if (phase > count) {
             return;
