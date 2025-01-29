@@ -97,6 +97,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
 
             locations.add(location);
             startPhase(++phase);
+            return;
         }
 
         sendSuccessMessage();
@@ -121,10 +122,10 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         this.phase = phase;
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase)));
-        Feedback.success(player);
     }
 
     private void sendSuccessMessage() {
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", Component.text(phase)));
+        Feedback.success(player);
     }
 }
