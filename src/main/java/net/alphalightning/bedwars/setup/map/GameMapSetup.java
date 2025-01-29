@@ -63,6 +63,7 @@ public final class GameMapSetup implements MapSetup {
             case 8 -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
             case 9 -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
             case 10 -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
+            case 11 -> new TeamChestConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
