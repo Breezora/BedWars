@@ -68,6 +68,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         } else {
             player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.error"));
             Feedback.error(player);
+            return;
         }
             slowConfigFinished = true;
             player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.success"));
