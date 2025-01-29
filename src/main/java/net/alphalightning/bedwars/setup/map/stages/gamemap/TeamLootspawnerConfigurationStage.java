@@ -55,7 +55,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
 
             String message = event.signedMessage().message();
 
-
+        if (message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n")) {
             if (isYes_or_no(message)) {
                 gameMapSetup.configureSlowIron(true);
                 player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.slow"));
@@ -66,8 +66,12 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
                 Feedback.success(player);
                 player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.fast"));
             }
-
+        } else {
+            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.error"));
+            Feedback.error(player);
+        }
             slowConfigFinished = true;
+            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.sucess"));
             startPhase(1);
         }
     }
