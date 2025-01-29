@@ -62,10 +62,11 @@ final class ArgumentTag implements TagResolver {
         } else {
             final ComponentLike namedArgument = this.namedArguments.get(name);
 
-            Bukkit.getLogger().info("Named Arg: " + namedArgument);
-
             if (namedArgument != null) {
-                return Tag.inserting(namedArgument);
+                Tag tag = Tag.inserting(namedArgument);
+                Bukkit.getLogger().info("Tag: " + tag);
+
+                return tag;
             } else {
                 return null;
             }
@@ -80,9 +81,6 @@ final class ArgumentTag implements TagResolver {
 
 /*
 
-{
-phase=TranslationArgumentImpl{value=1},
-name=TranslationArgumentImpl{value=TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[]}}
-}
+ TranslationArgumentImpl{value=TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[]}}
 
  */
