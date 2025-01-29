@@ -33,6 +33,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.12"));
+        startPhase(1);
     }
 
     @EventHandler
