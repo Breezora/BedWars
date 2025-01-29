@@ -107,6 +107,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         if (message.equalsIgnoreCase("y")) {
             return true;
         } else if (message.equalsIgnoreCase("n")) {return false;}
+        return false;
     }
 
     private void startPhase(int phase) {
