@@ -80,8 +80,6 @@ public abstract class MiniMessageTranslator implements Translator {
         return null;
     }
 
-    //TODO: Debug this shit
-
     @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
@@ -89,7 +87,6 @@ public abstract class MiniMessageTranslator implements Translator {
         Bukkit.getLogger().info(miniMessageString);
 
         if (miniMessageString == null) {
-            Bukkit.getLogger().warning("Mini String ist null");
             return null;
         }
 
@@ -99,6 +96,7 @@ public abstract class MiniMessageTranslator implements Translator {
             resultingComponent = this.miniMessage.deserialize(miniMessageString);
         } else {
             resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
+            Bukkit.getLogger().info("" + resultingComponent);
         }
 
         if (component.children().isEmpty()) {
