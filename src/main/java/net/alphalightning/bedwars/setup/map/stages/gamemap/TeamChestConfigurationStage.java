@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements LocationConfiguration {
     private final List<Team> teams;
-    private final int size;
+    private final int count;
     private int phase;
 
     private Component teamName;
@@ -28,11 +28,11 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.teams = Collections.emptyList();
-            this.size = 0;
+            this.count = 0;
             return;
         }
         this.teams = gameMapSetup.teams();
-        this.size = teams.size();
+        this.count = gameMapSetup.teams().size();
     }
 
     @Override
@@ -42,14 +42,14 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
     }
 
     private void startPhase(int phase) {
-        if (phase > size) {
+        if (phase > count) {
             return;
         }
         this.phase = phase;
 
         this.teamName = Component.translatable("team.red"); // Test purpose
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name", Component.text(phase), teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name", teamName));
         Feedback.success(player);
     }
 
@@ -69,7 +69,7 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-        if (phase < size) {
+        if (phase < count) {
             sendSuccessMessage();
             Feedback.success(player);
 
