@@ -32,7 +32,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.12"));
+        player.sendMessage(Component.translatable("mapsetup.stage.13"));
         startPhase(1);
     }
 
@@ -61,7 +61,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         }
 
         sendSuccessMessage();
-        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
         Feedback.success(player);
 
         gameMapSetup.configureUpgradeVillager(locations);
@@ -74,11 +74,11 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         }
         this.phase = phase;
 
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name", Component.text(phase)));
     }
 
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
         Feedback.success(player);
     }
 }
