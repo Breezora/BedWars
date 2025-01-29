@@ -35,7 +35,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.10"));
-        startPhase(1);
+        player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed"));
     }
 
     @EventHandler
@@ -77,34 +77,35 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
+        if (slowConfigFinished) {
+            if (isNotPlayerConfiguring(event.getPlayer())) {
+                return;
+            }
+            if (isNotOnGround(player, location)) {
+                return;
+            }
+            if (isNotStage(10)) {
+                return;
+            }
+            if (!(setup instanceof GameMapSetup gameMapSetup)) {
+                return;
+            }
+            if (phase < count) {
+                sendSuccessMessage();
+                Feedback.success(player);
 
-        if (isNotPlayerConfiguring(event.getPlayer())) {
-            return;
-        }
-        if(isNotOnGround(player, location)) {
-            return;
-        }
-        if (isNotStage(10)) {
-            return;
-        }
-        if (!(setup instanceof GameMapSetup gameMapSetup)) {
-            return;
-        }
-        if (phase < count) {
+                locations.add(location);
+                startPhase(++phase);
+                return;
+            }
+
             sendSuccessMessage();
+            player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
             Feedback.success(player);
 
-            locations.add(location);
-            startPhase(++phase);
-            return;
+            gameMapSetup.configureLootSpawnerLocations(locations);
+            gameMapSetup.startStage(11);
         }
-
-        sendSuccessMessage();
-        player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
-        Feedback.success(player);
-
-        gameMapSetup.configureLootSpawnerLocations(locations);
-        gameMapSetup.startStage(11);
     }
 
     private boolean isYes_or_no(String message) {
