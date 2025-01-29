@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -95,19 +94,12 @@ public abstract class MiniMessageTranslator implements Translator {
             resultingComponent = this.miniMessage.deserialize(miniMessageString);
         } else {
             resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
+            Bukkit.getLogger().info("Component hat Args: " + resultingComponent);
         }
 
         if (component.children().isEmpty()) {
-            Bukkit.getLogger().info("Component hat keine children: " + component);
             return resultingComponent;
         } else {
-            for (ComponentLike componentLike : resultingComponent.children()) {
-                if (!(componentLike instanceof TranslatableComponent translatable)) {
-                    Bukkit.getLogger().info("Child ist nicht translatable: " + componentLike);
-                    continue;
-                }
-                Bukkit.getLogger().info("Children ist translatable: " + translatable);
-            }
             return resultingComponent.children(component.children());
         }
     }
