@@ -46,8 +46,6 @@ final class ArgumentTag implements TagResolver {
         }
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
-
-        Bukkit.getLogger().info("Named Args: " + namedArguments);
     }
 
     @Override
@@ -59,10 +57,12 @@ final class ArgumentTag implements TagResolver {
             if (index < 0 || index >= this.argumentComponents.size()) {
                 throw ctx.newException("Invalid argument number", arguments);
             }
-
             return Tag.inserting(this.argumentComponents.get(index));
+
         } else {
             final ComponentLike namedArgument = this.namedArguments.get(name);
+
+            Bukkit.getLogger().info("Named Arg: " + namedArgument);
 
             if (namedArgument != null) {
                 return Tag.inserting(namedArgument);
@@ -77,3 +77,12 @@ final class ArgumentTag implements TagResolver {
         return name.equals(NAME) || name.equals(ALIAS) || this.namedArguments.containsKey(name);
     }
 }
+
+/*
+
+{
+phase=TranslationArgumentImpl{value=1},
+name=TranslationArgumentImpl{value=TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[]}}
+}
+
+ */
