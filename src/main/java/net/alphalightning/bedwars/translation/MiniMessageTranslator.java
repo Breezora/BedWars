@@ -55,12 +55,12 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("Translation: " + translation);
-        }
-
         final List<Component> newChildren = new ArrayList<>();
         for (Component child : translation.children()) {
+            if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
+                Bukkit.getLogger().info("Child: " + child);
+            }
+
             if (child instanceof TranslatableComponent translatable) {
                 final Component childTranslation = this.translate(translatable, locale, depth + 1);
                 newChildren.add(childTranslation != null ? childTranslation : child);
