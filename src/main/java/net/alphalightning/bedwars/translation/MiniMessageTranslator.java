@@ -76,17 +76,8 @@ public abstract class MiniMessageTranslator implements Translator {
             Component translated = this.translate(translatable, locale, depth);
 
             if (translated != null) { // Adopt children from original component
-                List<Component> mergedChildren = new ArrayList<>();
-                List<Component> originalChildren = translated.children();
-
-                for (int i = 0; i < originalChildren.size(); i++) {
-                    Component originalChild = originalChildren.get(i);
-                    Component translatedChild = i < translated.children().size()
-                            ? translated.children().get(i)
-                            : Component.empty();
-
-                    mergedChildren.add(translatedChild.style(originalChild.style()));
-                }
+                List<Component> mergedChildren = new ArrayList<>(translated.children());
+                mergedChildren.addAll(translatable.children());
 
                 return translated.children(mergedChildren);
             }
