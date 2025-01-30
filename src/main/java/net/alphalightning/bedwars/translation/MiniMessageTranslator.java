@@ -4,10 +4,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static java.util.Objects.requireNonNull;
@@ -34,23 +37,44 @@ public abstract class MiniMessageTranslator implements Translator {
 
     @Override
     public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
+        requireNonNull(component, "component");
+        requireNonNull(locale, "locale");
+        return this.translate(component, locale, 0);
+    }
+
+    private @Nullable Component translate(final @NotNull TranslatableComponent component, @NotNull Locale locale, final int depth) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
         if (miniMessageString == null) {
             return null;
         }
 
-        final Component resultingComponent;
-
+        Component translation;
         if (component.arguments().isEmpty()) {
-            resultingComponent = this.miniMessage.deserialize(miniMessageString);
+            translation = this.miniMessage.deserialize(miniMessageString);
         } else {
-            resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
+            translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        if (component.children().isEmpty()) {
-            return resultingComponent;
-        } else {
-            return resultingComponent.children(component.children());
+        final List<Component> children = translation.children();
+        if (translation instanceof TranslatableComponent translatable) {
+            Bukkit.getLogger().info("Translation is translatable");
+            translation = this.translate(translatable, locale, depth + 1);
         }
+
+        final List<Component> newChildren = new ArrayList<>();
+        for (Component child : children) {
+            if (child instanceof TranslatableComponent translatable) {
+                final Component childTranslation = this.translate(translatable, locale, depth + 1);
+                newChildren.add(childTranslation != null ? childTranslation : child);
+
+            } else {
+                newChildren.add(child);
+            }
+        }
+
+        if (translation == null) {
+            return null;
+        }
+        return translation.children(newChildren);
     }
 }
