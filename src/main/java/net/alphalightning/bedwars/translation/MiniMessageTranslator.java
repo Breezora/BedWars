@@ -74,7 +74,14 @@ public abstract class MiniMessageTranslator implements Translator {
     private Component translateRecursively(Component component, Locale locale, int depth) {
         if (component instanceof TranslatableComponent translatable) { // Translate recursively if component is translatable
             Component translated = this.translate(translatable, locale, depth);
-            return translated != null ? translated : translatable;
+
+            if (translated != null) { // Adopt children from original component
+                List<Component> mergedChildren = new ArrayList<>(translated.children());
+                mergedChildren.addAll(translatable.children());
+
+                return translated.children(mergedChildren);
+            }
+            return translatable;
         }
 
         // Translate every child
