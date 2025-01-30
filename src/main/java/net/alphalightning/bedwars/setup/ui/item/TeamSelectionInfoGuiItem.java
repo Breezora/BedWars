@@ -1,8 +1,8 @@
 package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
-import net.alphalightning.bedwars.translation.CustomGlobalTranslator;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -34,7 +34,7 @@ public class TeamSelectionInfoGuiItem extends AbstractItem {
         );
 
         return new ItemBuilder(Material.NAME_TAG)
-                .setName(CustomGlobalTranslator.render(display, viewer.locale())); // Disable display of bundles' content
+                .setName(GlobalTranslator.render(display, viewer.locale())); // Disable display of bundles' content
     }
 
     @Override

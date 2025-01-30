@@ -2,8 +2,8 @@ package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
-import net.alphalightning.bedwars.translation.CustomGlobalTranslator;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -34,11 +34,11 @@ public class DiamondSpawnerGuiItem extends AbstractItem {
         Component loreLower = Component.translatable("mapsetup.gui.configure-spawner.lower");
 
         return new ItemBuilder(Material.DIAMOND_BLOCK)
-                .setName(CustomGlobalTranslator.render(display, viewer.locale()))
+                .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(Arrays.asList(
                         Component.empty(),
-                        CustomGlobalTranslator.render(loreAdd, viewer.locale()),
-                        CustomGlobalTranslator.render(loreLower, viewer.locale()),
+                        GlobalTranslator.render(loreAdd, viewer.locale()),
+                        GlobalTranslator.render(loreLower, viewer.locale()),
                         Component.empty()
                 ));
     }
