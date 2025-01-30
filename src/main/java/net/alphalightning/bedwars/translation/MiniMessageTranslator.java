@@ -48,11 +48,19 @@ public abstract class MiniMessageTranslator implements Translator {
             return null;
         }
 
+        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
+            Bukkit.getLogger().info("MiniString: " + miniMessageString);
+        }
+
         Component translation;
         if (component.arguments().isEmpty()) {
             translation = this.miniMessage.deserialize(miniMessageString);
         } else {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
+        }
+
+        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
+            Bukkit.getLogger().info("Translation: " + translation);
         }
 
         final List<Component> children = new ArrayList<>();
