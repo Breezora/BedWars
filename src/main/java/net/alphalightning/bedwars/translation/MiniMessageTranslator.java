@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,6 +66,10 @@ public abstract class MiniMessageTranslator implements Translator {
                 final Component childTranslation = this.translate(translatable, locale, depth + 1);
                 newChildren.add(childTranslation != null ? childTranslation : child);
 
+                if (!translatable.children().isEmpty()) {
+                    return this.translate(translatable.children(newChildren), locale, depth + 1);
+                }
+
             } else {
                 newChildren.add(child);
             }
@@ -72,4 +77,15 @@ public abstract class MiniMessageTranslator implements Translator {
 
         return translation.children(newChildren);
     }
+
+    private List<Component> extractChildren(Component translation) {
+        return Collections.emptyList();
+    }
+
+    /*
+    Translation: TextComponentImpl{content="9.1. Bitte sneake an der Position, an der der Spawnpunkt von "
+                    children=[TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[TextComponentImpl{content=" sein soll.", children=[]}]}]}
+
+     Child: TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[TextComponentImpl{content=" sein soll.", children=[]}]}
+     */
 }
