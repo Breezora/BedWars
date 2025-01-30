@@ -41,10 +41,7 @@ final class CustomGlobalTranslatorImpl implements CustomGlobalTranslator {
         for (final Translator source : sources) {
             final MessageFormat translation = source.translate(key, locale);
             if (translation != null) {
-                Bukkit.getLogger().info("Translation ist nicht null: " + translation);
                 return translation;
-            } else {
-                Bukkit.getLogger().warning("Translation ist null: " + key);
             }
         }
         return null;
@@ -79,6 +76,7 @@ final class CustomGlobalTranslatorImpl implements CustomGlobalTranslator {
     }
 
     private @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale, final int depth) {
+        Bukkit.getLogger().info("Depth: " + depth);
         if (depth >= 128) {
             return null;
         }
@@ -86,8 +84,11 @@ final class CustomGlobalTranslatorImpl implements CustomGlobalTranslator {
         for (final Translator source : sources) {
             Component translation = source.translate(component, locale);
             if (translation == null) {
+                Bukkit.getLogger().warning("Translation ist null");
                 continue;
             }
+
+            Bukkit.getLogger().info("Translation ist nicht null: " + translation);
 
             final List<Component> children = translation.children();
             if (translation instanceof TranslatableComponent) {
