@@ -4,13 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,35 +54,34 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        final List<Component> newChildren = new ArrayList<>();
-        for (Component child : translation.children()) {
-            if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-                Bukkit.getLogger().info("Child: " + child);
-            }
-
+        final List<Component> children = new ArrayList<>();
+        for (final Component child : translation.children()) {
             if (child instanceof TranslatableComponent translatable) {
                 final Component childTranslation = this.translate(translatable, locale, depth + 1);
-                newChildren.add(childTranslation != null ? childTranslation : child);
-
-                if (!translatable.children().isEmpty()) {
-                    return this.translate(translatable.children(newChildren), locale, depth + 1);
-                }
+                children.add(childTranslation != null ? childTranslation : child);
 
             } else {
-                newChildren.add(child);
+                children.add(child);
             }
         }
 
-        return translation.children(newChildren);
-    }
-
-    private List<Component> extractChildren(Component translation) {
-        return Collections.emptyList();
+        return translation.children(children);
     }
 
     /*
-    Translation: TextComponentImpl{content="9.1. Bitte sneake an der Position, an der der Spawnpunkt von "
-                    children=[TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[TextComponentImpl{content=" sein soll.", children=[]}]}]}
+    Translation: TextComponentImpl{
+                    content="9.1. Bitte sneake an der Position, an der der Spawnpunkt von ",
+                    children=[
+                        TranslatableComponentImpl{
+                            key="team.red",
+                            children=[TextComponentImpl{
+                                content=" sein soll.",
+                                children=[]
+                                }
+                             ]
+                         }
+                      ]
+                   }
 
      Child: TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[TextComponentImpl{content=" sein soll.", children=[]}]}
      */
