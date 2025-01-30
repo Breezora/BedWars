@@ -55,6 +55,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
     private void loadMessageRegistry() {
         TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("bedwars:messages"));
+        translationRegistry.defaultLocale(Locale.GERMAN);
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
