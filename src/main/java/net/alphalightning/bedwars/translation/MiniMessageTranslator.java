@@ -55,6 +55,10 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
+        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
+            Bukkit.getLogger().info("Translation: " + translation);
+        }
+
         final List<Component> children = new ArrayList<>();
         for (final Component child : translation.children()) {
             children.add(this.translateRecursively(child, locale, depth + 1));
@@ -81,4 +85,8 @@ public abstract class MiniMessageTranslator implements Translator {
 
         return component.children(children); // Component contains translated children
     }
+
+    /*
+    Children: [TextComponentImpl{content="Team Rot", children=[]}]
+     */
 }
