@@ -6,6 +6,7 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.renderer.TranslatableComponentRenderer;
 import net.kyori.adventure.translation.Translator;
 import net.kyori.examination.ExaminableProperty;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +41,10 @@ final class CustomGlobalTranslatorImpl implements CustomGlobalTranslator {
         for (final Translator source : sources) {
             final MessageFormat translation = source.translate(key, locale);
             if (translation != null) {
+                Bukkit.getLogger().info("Translation ist nicht null: " + translation);
                 return translation;
+            } else {
+                Bukkit.getLogger().warning("Translation ist null: " + key);
             }
         }
         return null;
