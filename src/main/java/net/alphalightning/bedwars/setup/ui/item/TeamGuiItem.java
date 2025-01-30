@@ -2,8 +2,8 @@ package net.alphalightning.bedwars.setup.ui.item;
 
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
+import net.alphalightning.bedwars.translation.CustomGlobalTranslator;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -147,7 +147,7 @@ public class TeamGuiItem extends AbstractBoundItem {
             }
         }
 
-        return builder.setName(GlobalTranslator.render(display, viewer.locale()));
+        return builder.setName(CustomGlobalTranslator.render(display, viewer.locale()));
     }
 
     private void updateTeamSelection(Gui gui) {

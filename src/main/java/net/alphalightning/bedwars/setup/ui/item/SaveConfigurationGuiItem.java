@@ -5,8 +5,8 @@ import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
+import net.alphalightning.bedwars.translation.CustomGlobalTranslator;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -33,7 +33,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         Component display = Component.translatable("mapsetup.gui.save-configuration");
 
         return new ItemBuilder(Material.GREEN_BUNDLE)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
+                .setName(CustomGlobalTranslator.render(display, viewer.locale()))
                 .unset(DataComponentTypes.BUNDLE_CONTENTS); // Disable display of bundles' content
     }
 
