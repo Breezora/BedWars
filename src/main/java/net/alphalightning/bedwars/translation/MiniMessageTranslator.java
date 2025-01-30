@@ -65,7 +65,7 @@ public abstract class MiniMessageTranslator implements Translator {
             }
         }
 
-        return translation.children(children);
+        return translation.children(children).append(Component.empty());
     }
 
     /*
