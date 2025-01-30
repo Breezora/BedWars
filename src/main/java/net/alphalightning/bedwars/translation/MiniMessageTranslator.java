@@ -48,10 +48,6 @@ public abstract class MiniMessageTranslator implements Translator {
             return null;
         }
 
-        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("MiniString: " + miniMessageString);
-        }
-
         Component translation;
         if (component.arguments().isEmpty()) {
             translation = this.miniMessage.deserialize(miniMessageString);
@@ -68,13 +64,7 @@ public abstract class MiniMessageTranslator implements Translator {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
 
-        Component result = translation.children(children);
-
-        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("Result: " + result);
-        }
-
-        return result;
+        return translation.children(children).style(component.style().merge(translation.style()));
     }
 
     private Component translateRecursively(Component component, Locale locale, int depth) {
@@ -85,7 +75,7 @@ public abstract class MiniMessageTranslator implements Translator {
                 List<Component> mergedChildren = new ArrayList<>(translated.children());
                 mergedChildren.addAll(translatable.children());
 
-                return translated.children(mergedChildren).style(translatable.style().merge(translated.style()));
+                return translated.children(mergedChildren);
             }
             return translatable;
         }
