@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -87,6 +86,7 @@ public abstract class MiniMessageTranslator implements Translator {
         return this.translate(component, locale, 0);
     }
 
+    /*
     private @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale, final int depth) {
         if (depth >= 128) {
             return null;
@@ -124,7 +124,6 @@ public abstract class MiniMessageTranslator implements Translator {
         return resultingComponent.children(newChildren);
     }
 
-    /*
     @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
@@ -146,6 +145,7 @@ public abstract class MiniMessageTranslator implements Translator {
             return resultingComponent.children(component.children());
         }
     }
+    */
 
     private @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale, final int depth) {
         if (depth >= 128) {
@@ -181,6 +181,5 @@ public abstract class MiniMessageTranslator implements Translator {
 
         return null;
     }
-     */
 
 }
