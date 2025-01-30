@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,14 +54,8 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        final List<Component> children = translation.children();
-        if (translation instanceof TranslatableComponent translatable) {
-            Bukkit.getLogger().info("Translation is translatable");
-            translation = this.translate(translatable, locale, depth + 1);
-        }
-
         final List<Component> newChildren = new ArrayList<>();
-        for (Component child : children) {
+        for (Component child : translation.children()) {
             if (child instanceof TranslatableComponent translatable) {
                 final Component childTranslation = this.translate(translatable, locale, depth + 1);
                 newChildren.add(childTranslation != null ? childTranslation : child);
@@ -72,9 +65,6 @@ public abstract class MiniMessageTranslator implements Translator {
             }
         }
 
-        if (translation == null) {
-            return null;
-        }
         return translation.children(newChildren);
     }
 }
