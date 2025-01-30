@@ -77,7 +77,7 @@ public abstract class MiniMessageTranslator implements Translator {
 
                 return translated.children(mergedChildren).style(translatable.style().merge(translated.style()));
             }
-            return translatable.style(translatable.style());
+            return translatable;
         }
 
         // Translate every child
