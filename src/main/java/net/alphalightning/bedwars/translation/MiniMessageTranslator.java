@@ -76,22 +76,4 @@ public abstract class MiniMessageTranslator implements Translator {
 
         return component.children(children); // Component contains translated children
     }
-
-    /*
-    Translation: TextComponentImpl{
-                    content="9.1. Bitte sneake an der Position, an der der Spawnpunkt von ",
-                    children=[
-                        TranslatableComponentImpl{
-                            key="team.red",
-                            children=[TextComponentImpl{
-                                content=" sein soll.",
-                                children=[]
-                                }
-                             ]
-                         }
-                      ]
-                   }
-
-     Child: TranslatableComponentImpl{key="team.red", arguments=[], fallback=null, children=[TextComponentImpl{content=" sein soll.", children=[]}]}
-     */
 }
