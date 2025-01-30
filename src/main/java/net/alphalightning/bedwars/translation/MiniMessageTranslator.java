@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -82,6 +83,49 @@ public abstract class MiniMessageTranslator implements Translator {
     }
 
     @Override
+    public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
+        return this.translate(component, locale, 0);
+    }
+
+    private @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale, final int depth) {
+        if (depth >= 128) {
+            return null;
+        }
+
+        final String miniMessageString = this.getMiniMessageString(component.key(), locale);
+        if (miniMessageString == null) {
+            return null;
+        }
+
+        final List<ComponentLike> translatedArguments = new ArrayList<>();
+        for (final Object argument : component.arguments()) {
+            if (argument instanceof TranslatableComponent translatableArgument) {
+                Component translatedArgument = this.translate(translatableArgument, locale, depth + 1);
+                translatedArguments.add(translatedArgument != null ? translatedArgument : translatableArgument);
+
+            } else if (argument instanceof ComponentLike componentLike) {
+                translatedArguments.add(componentLike);
+            }
+        }
+
+        Component resultingComponent = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(translatedArguments));
+
+        final List<Component> newChildren = new ArrayList<>();
+        for (final Component child : component.children()) {
+            if (child instanceof TranslatableComponent translatableChild) {
+                Component translatedChild = this.translate(translatableChild, locale, depth + 1);
+                newChildren.add(translatedChild != null ? translatedChild : child);
+
+            } else {
+                newChildren.add(child);
+            }
+        }
+
+        return resultingComponent.children(newChildren);
+    }
+
+    /*
+    @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
         if (miniMessageString == null) {
@@ -137,5 +181,6 @@ public abstract class MiniMessageTranslator implements Translator {
 
         return null;
     }
+     */
 
 }
