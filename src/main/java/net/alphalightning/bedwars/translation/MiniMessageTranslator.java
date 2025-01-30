@@ -55,20 +55,18 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("Translation: " + translation);
-        }
-
         final List<Component> children = new ArrayList<>();
         for (final Component child : translation.children()) {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
 
+        Component result = translation.children(children);
+
         if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("Children: " + children);
+            Bukkit.getLogger().info("Result: " + result);
         }
 
-        return translation.children(children).style(component.style().merge(translation.style()));
+        return result;
     }
 
     private Component translateRecursively(Component component, Locale locale, int depth) {
@@ -79,9 +77,9 @@ public abstract class MiniMessageTranslator implements Translator {
                 List<Component> mergedChildren = new ArrayList<>(translated.children());
                 mergedChildren.addAll(translatable.children());
 
-                return translated.children(mergedChildren).style(translatable.style().merge(translated.style()));
+                return translated.children(mergedChildren);
             }
-            return translatable.style(translatable.style());
+            return translatable;
         }
 
         // Translate every child
@@ -90,10 +88,6 @@ public abstract class MiniMessageTranslator implements Translator {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
 
-        return component.children(children).style(component.style()); // Component contains translated children
+        return component.children(children); // Component contains translated children
     }
-
-    /*
-    Children: [TextComponentImpl{content="Team Rot", children=[]}]
-     */
 }
