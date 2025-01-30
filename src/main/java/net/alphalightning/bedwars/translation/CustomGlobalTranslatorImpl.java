@@ -83,32 +83,30 @@ final class CustomGlobalTranslatorImpl implements CustomGlobalTranslator {
 
         for (final Translator source : sources) {
             Component translation = source.translate(component, locale);
-            if (translation == null) {
-                Bukkit.getLogger().warning("Translation ist null");
-                continue;
-            }
+            if (translation != null) {
 
-            Bukkit.getLogger().info("Translation ist nicht null: " + translation);
+                Bukkit.getLogger().info("Translation ist nicht null: " + translation);
 
-            final List<Component> children = translation.children();
-            if (translation instanceof TranslatableComponent) {
-                translation = this.translate((TranslatableComponent) translation, locale, depth + 1);
-            }
-
-            final List<Component> newChildren = new ArrayList<>();
-            for (final Component child : children) {
-                if (child instanceof TranslatableComponent) {
-                    final Component childTranslation = this.translate((TranslatableComponent) child, locale, depth + 1);
-                    newChildren.add(childTranslation != null ? childTranslation : child);
-                } else {
-                    newChildren.add(child);
+                final List<Component> children = translation.children();
+                if (translation instanceof TranslatableComponent) {
+                    translation = this.translate((TranslatableComponent) translation, locale, depth + 1);
                 }
-            }
 
-            if (translation == null) {
-                return null;
+                final List<Component> newChildren = new ArrayList<>();
+                for (final Component child : children) {
+                    if (child instanceof TranslatableComponent) {
+                        final Component childTranslation = this.translate((TranslatableComponent) child, locale, depth + 1);
+                        newChildren.add(childTranslation != null ? childTranslation : child);
+                    } else {
+                        newChildren.add(child);
+                    }
+                }
+
+                if (translation == null) {
+                    return null;
+                }
+                return translation.children(newChildren);
             }
-            return translation.children(newChildren);
         }
         return null;
     }
