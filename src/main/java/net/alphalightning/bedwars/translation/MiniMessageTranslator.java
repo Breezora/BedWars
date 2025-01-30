@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static java.util.Objects.requireNonNull;
@@ -82,7 +84,6 @@ public abstract class MiniMessageTranslator implements Translator {
     @Override
     public @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
         final String miniMessageString = this.getMiniMessageString(component.key(), locale);
-
         if (miniMessageString == null) {
             return null;
         }
@@ -101,4 +102,40 @@ public abstract class MiniMessageTranslator implements Translator {
             return resultingComponent.children(component.children());
         }
     }
+
+    private @Nullable Component translate(final @NotNull TranslatableComponent component, final @NotNull Locale locale, final int depth) {
+        if (depth >= 128) {
+            return null;
+        }
+
+        final String miniMessageString = this.getMiniMessageString(component.key(), locale);
+        if (miniMessageString == null) {
+            return null;
+        }
+
+        Component translation = this.translate(component, locale);
+        if (translation == null) {
+            return null;
+        }
+
+        final List<Component> children = translation.children();
+        if (translation instanceof TranslatableComponent translatable) {
+            translation = this.translate(translatable, locale, depth + 1);
+        }
+
+        final List<Component> newChildren = new ArrayList<>();
+        for (final Component child : children) {
+            if (child instanceof TranslatableComponent translatableChild) {
+                final Component translatedChild = this.translate(translatableChild, locale, depth + 1);
+                newChildren.add(translatedChild != null ? translatedChild : child);
+
+            } else {
+                newChildren.add(child);
+            }
+            return translation != null ? translation.children(newChildren) : null;
+        }
+
+        return null;
+    }
+
 }
