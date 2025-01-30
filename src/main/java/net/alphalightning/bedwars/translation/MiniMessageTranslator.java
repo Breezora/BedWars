@@ -68,7 +68,7 @@ public abstract class MiniMessageTranslator implements Translator {
             Bukkit.getLogger().info("Children: " + children);
         }
 
-        return translation.children(children).style(component.style());
+        return translation.children(children).style(component.style().merge(translation.style()));
     }
 
     private Component translateRecursively(Component component, Locale locale, int depth) {
@@ -79,7 +79,7 @@ public abstract class MiniMessageTranslator implements Translator {
                 List<Component> mergedChildren = new ArrayList<>(translated.children());
                 mergedChildren.addAll(translatable.children());
 
-                return translated.children(mergedChildren).style(component.style());
+                return translated.children(mergedChildren).style(translatable.style().merge(translated.style()));
             }
             return translatable.style(translatable.style());
         }
