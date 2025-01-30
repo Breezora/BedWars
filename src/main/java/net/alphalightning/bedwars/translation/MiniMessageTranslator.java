@@ -55,7 +55,7 @@ public abstract class MiniMessageTranslator implements Translator {
         }
 
         final List<Component> children = new ArrayList<>();
-        for (final Component child : component.children()) {
+        for (final Component child : translation.children()) {
             if (child instanceof TranslatableComponent translatable) {
                 final Component childTranslation = this.translate(translatable, locale, depth + 1);
                 children.add(childTranslation != null ? childTranslation : child);
