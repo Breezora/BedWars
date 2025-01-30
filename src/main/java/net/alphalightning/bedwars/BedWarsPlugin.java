@@ -12,10 +12,10 @@ import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
-import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.xenondevs.invui.gui.Structure;
@@ -54,7 +54,7 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void loadMessageRegistry() {
-        PluginTranslationRegistry translationRegistry = new PluginTranslationRegistry(Key.key("bedwars:messages"));
+        TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("bedwars:messages"));
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
