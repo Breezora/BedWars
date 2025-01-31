@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.text.*;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -56,11 +58,18 @@ final class ArgumentTag implements TagResolver {
             return this.withStyledComponent(this.argumentComponents.get(index));
 
         } else {
-            final ComponentLike namedArgument = this.namedArguments.get(name);
+            ComponentLike namedArgument = this.namedArguments.get(name);
             if (namedArgument == null) {
                 return null;
             }
-            Bukkit.getLogger().info("Style: " + namedArgument.asComponent().style());
+
+            Bukkit.getLogger().info("Vorheriger Style: " + namedArgument.asComponent().style());
+
+            if (namedArgument instanceof TranslatableComponent && namedArgument.asComponent().color() == null) {
+                namedArgument = namedArgument.asComponent().style(Style.style(NamedTextColor.GRAY));
+            }
+
+            Bukkit.getLogger().info("Neuer Style: " + namedArgument.asComponent().style());
 
             return this.withStyledComponent(namedArgument);
         }
