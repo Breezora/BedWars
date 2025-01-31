@@ -77,11 +77,11 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
         if (phase < count) {
-            sendSuccessMessage();
-            Feedback.success(player);
-
             Team team = teams.get(phase - 1).chest(location);
             teams.set(phase - 1, team);
+
+            sendSuccessMessage();
+            Feedback.success(player);
 
             startPhase(++phase);
             return;
