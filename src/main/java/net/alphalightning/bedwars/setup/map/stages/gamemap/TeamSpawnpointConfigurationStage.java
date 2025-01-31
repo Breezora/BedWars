@@ -96,7 +96,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureTeams(teams);
         gameMapSetup.startStage(10);
     }
 
