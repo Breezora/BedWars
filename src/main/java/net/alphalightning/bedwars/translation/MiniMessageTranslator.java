@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,15 +54,10 @@ public abstract class MiniMessageTranslator implements Translator {
             translation = this.miniMessage.deserialize(miniMessageString, new ArgumentTag(component.arguments()));
         }
 
-        if (component.key().equalsIgnoreCase("mapsetup.stage.9.name")) {
-            Bukkit.getLogger().info("Translation: " + translation);
-        }
-
         final List<Component> children = new ArrayList<>();
         for (final Component child : translation.children()) {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
-
         return translation.children(children);
     }
 
