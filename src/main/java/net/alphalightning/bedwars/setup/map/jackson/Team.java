@@ -8,8 +8,8 @@ public class Team {
     private final String name;
     private Location spawnpoint;
     private Location chest;
-    private Location bed_downside;
-    private Location bed_upside;
+    private Location bedDownside;
+    private Location bedUpside;
 
     @JsonCreator
     public Team(String name) {
@@ -17,12 +17,12 @@ public class Team {
     }
 
     @JsonCreator
-    public Team(String name, Location spawnpoint, Location chest, Location bed_downside, Location bed_upside) {
+    public Team(String name, Location spawnpoint, Location chest, Location bedDownside, Location bedUpside) {
         this.name = name;
         this.spawnpoint = spawnpoint;
         this.chest = chest;
-        this.bed_downside = bed_downside;
-        this.bed_upside = bed_upside;
+        this.bedDownside = bedDownside;
+        this.bedUpside = bedUpside;
     }
 
     public String name() {
@@ -35,17 +35,17 @@ public class Team {
 
     public Location chest() { return chest; }
 
-    public Location bed_downside() { return bed_downside; }
+    public Location bedDownside() { return bedDownside; }
 
-    public Location bed_upside() { return bed_upside; }
+    public Location bedUpside() { return bedUpside; }
 
-    public Team bed_downside(Location bed_downside) {
-        this.bed_downside = bed_downside;
+    public Team bedDownside(Location bedDownside) {
+        this.bedDownside = bedDownside;
         return this;
     }
 
-    public Team bed_upside(Location bed_upside) {
-        this.bed_upside = bed_upside;
+    public Team bedUpside(Location bedUpside) {
+        this.bedUpside = bedUpside;
         return this;
     }
 
