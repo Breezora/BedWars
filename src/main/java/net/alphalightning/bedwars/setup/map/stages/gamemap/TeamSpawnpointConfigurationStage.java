@@ -55,7 +55,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
         this.phase = phase;
         this.index++;
-        this.team = teams.get(phase - 1);
+        this.team = teams.get(index);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
