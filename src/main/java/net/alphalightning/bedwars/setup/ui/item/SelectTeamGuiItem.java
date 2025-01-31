@@ -52,6 +52,7 @@ public class SelectTeamGuiItem extends AbstractItem {
             Feedback.error(player);
             return;
         }
+        Feedback.click(click.getPlayer());
         new SelectTeamsGui(player, setup, overviewGui).showGui();
     }
 }
