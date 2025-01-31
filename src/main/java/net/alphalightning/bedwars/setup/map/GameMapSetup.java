@@ -33,6 +33,7 @@ public final class GameMapSetup implements MapSetup {
     private int maxBuildHeight = 0;
     private int minBuildHeight = 0;
     private boolean slowIron;
+    private final List<Location> shopVillagerLocations = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -64,6 +65,7 @@ public final class GameMapSetup implements MapSetup {
             case 9 -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
             case 10 -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
             case 11 -> new TeamChestConfigurationStage(plugin, player, this).run();
+            case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -149,7 +151,9 @@ public final class GameMapSetup implements MapSetup {
         this.lootSpawnerLocations.addAll(locations);
     }
 
-    public void configureSlowIron(Boolean slow) {
+    public void configureSlowIron(Boolean slow) { this.slowIron = slow; }
 
-    }
+    public void configureShopVillager(List<Location> locations) {this.shopVillagerLocations.addAll(locations);}
+
 }
+
