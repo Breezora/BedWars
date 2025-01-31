@@ -8,6 +8,7 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
     private final int count;
     private int phase;
 
-    private Component teamName;
+    private TranslatableComponent teamName;
 
     public BedConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -48,8 +49,7 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
             return;
         }
         this.phase = phase;
-
-        this.teamName = Component.translatable("team.red"); // Test purpose
+        this.teamName = Component.translatable("team." + teams.get(phase - 1).name());
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name", teamName));
         Feedback.success(player);
