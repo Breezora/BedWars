@@ -7,6 +7,7 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -17,7 +18,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import java.util.Collections;
 import java.util.List;
 
-public class TeamChestConfigurationStage extends Stage implements LocationConfiguration {
+public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
     private final List<Team> teams;
     private final int count;
@@ -47,7 +48,7 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + teams.get(phase - 1).name());
+        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name", teamName));
         Feedback.success(player);

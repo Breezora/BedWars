@@ -7,6 +7,7 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -18,7 +19,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import java.util.Collections;
 import java.util.List;
 
-public class TeamSpawnpointConfigurationStage extends Stage implements LocationConfiguration {
+public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
     private final List<Team> teams;
     private final int size;
@@ -49,7 +50,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + teams.get(phase - 1).name());
+        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 NamedTranslationArgument.numeric("phase", phase),
