@@ -134,7 +134,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             return;
         }
         this.phase = phase;
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), Component.text("Team XY")));
     }
 
     private void sendSuccessMessage() {

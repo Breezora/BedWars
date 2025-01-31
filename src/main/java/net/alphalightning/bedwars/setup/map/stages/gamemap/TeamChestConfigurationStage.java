@@ -49,7 +49,7 @@ public class TeamChestConfigurationStage extends Stage implements LocationConfig
         this.phase = phase;
         this.teamName = Component.translatable("team." + teams.get(phase - 1).name());
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name", Component.text(phase), teamName));
         Feedback.success(player);
     }
 

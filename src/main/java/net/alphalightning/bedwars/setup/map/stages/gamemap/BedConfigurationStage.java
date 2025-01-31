@@ -51,7 +51,7 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
         this.phase = phase;
         this.teamName = Component.translatable("team." + teams.get(phase - 1).name());
 
-        player.sendMessage(Component.translatable("mapsetup.stage.14.name", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.14.name", Component.text(phase), teamName));
         Feedback.success(player);
     }
 
