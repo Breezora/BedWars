@@ -11,7 +11,6 @@ import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -87,8 +86,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
             team.spawnpoint(location);
             teams.set(phase - 1, team);
-
-            Bukkit.getLogger().info("Team " + team.name() + ":" + team.toString());
 
             phase++;
             startPhase(phase);
