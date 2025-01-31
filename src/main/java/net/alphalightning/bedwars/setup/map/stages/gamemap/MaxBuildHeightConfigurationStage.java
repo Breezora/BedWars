@@ -45,10 +45,10 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
             return;
         }
 
-        ValueRange range = ValueRange.of(MIN_HEIGHT, MAX_HEIGHT);
+        ValueRange range = ValueRange.of(MIN_MAX_HEIGHT, MAX_HEIGHT);
         if (!range.isValidIntValue(buildHeight)) {
             player.sendMessage(Component.translatable("mapsetup.stage.4.error.invalid-range",
-                    Component.text(MIN_HEIGHT),
+                    Component.text(MIN_MAX_HEIGHT),
                     Component.text(MAX_HEIGHT))
             );
             Feedback.error(player);
