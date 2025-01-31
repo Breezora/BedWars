@@ -58,7 +58,6 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location down = player.getLocation();
-        Location up = player.getFacing().getDirection().toLocation(down.getWorld());
 
         if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
@@ -78,17 +77,21 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
 
             player.getFacing().getDirection().normalize();
 
-            Team team = teams.get(phase - 1).bed_downside(down);
+            Team team = teams.get(phase - 1).bedDownside(down);
             teams.set(phase - 1, team);
+
             if (getFacingLocation(player, down) != null) {
-                team = teams.get(phase - 1).bed_upside(getFacingLocation(player, down));
+                team = teams.get(phase - 1).bedUpside(getFacingLocation(player, down));
                 teams.set(phase - 1, team);
                 startPhase(++phase);
+                return;
             }
 
-
+            player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
+            Feedback.error(player);
             return;
         }
+
         sendSuccessMessage();
         player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
         Feedback.success(player);
@@ -106,21 +109,13 @@ public class BedConfigurationStage extends Stage implements LocationConfiguratio
 
         // Je nach Richtung den neuen Block berechnen
         switch (facing) {
-            case NORTH:
-                newLocation.add(0, 0, -1);
-                break;
-            case SOUTH:
-                newLocation.add(0, 0, 1);
-                break;
-            case WEST:
-                newLocation.add(-1, 0, 0);
-                break;
-            case EAST:
-                newLocation.add(1, 0, 0);
-                break;
-            default:
-                player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
+            case NORTH -> newLocation.add(0, 0, -1);
+            case SOUTH -> newLocation.add(0, 0, 1);
+            case WEST -> newLocation.add(-1, 0, 0);
+            case EAST -> newLocation.add(1, 0, 0);
+            default -> {
                 return null;
+            }
         }
         return newLocation;
     }
