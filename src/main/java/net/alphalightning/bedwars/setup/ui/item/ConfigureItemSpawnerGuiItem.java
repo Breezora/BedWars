@@ -54,6 +54,7 @@ public class ConfigureItemSpawnerGuiItem extends AbstractItem {
             Feedback.error(player);
             return;
         }
+        Feedback.click(click.getPlayer());
         new ConfigureItemSpawnerGui(player, setup, overwriteGui).showGui();
     }
 }
