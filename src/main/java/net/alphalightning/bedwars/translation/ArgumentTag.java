@@ -6,6 +6,7 @@ import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +41,8 @@ final class ArgumentTag implements TagResolver {
 
             namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
         }
+
+        Bukkit.getLogger().info("Named Args: " + namedArgumentMap);
 
         this.namedArguments = Collections.unmodifiableMap(namedArgumentMap);
     }
