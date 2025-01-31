@@ -66,9 +66,8 @@ public class Team {
         return this;
     }
 
-    public Team spawnpoint(Location spawnpoint) {
+    public void spawnpoint(Location spawnpoint) {
         this.spawnpoint = spawnpoint;
-        return this;
     }
 
     public Team lootspawner(Location lootspawner) {
