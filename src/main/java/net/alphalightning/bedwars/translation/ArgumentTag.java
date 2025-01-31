@@ -1,6 +1,9 @@
 package net.alphalightning.bedwars.translation;
 
-import net.kyori.adventure.text.*;
+import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TranslationArgument;
+import net.kyori.adventure.text.VirtualComponent;
+import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -52,13 +55,7 @@ final class ArgumentTag implements TagResolver {
             if (index < 0 || index >= this.argumentComponents.size()) {
                 throw ctx.newException("Invalid argument number", arguments);
             }
-
-            ComponentLike argument = this.argumentComponents.get(index);
-            if (argument instanceof TranslatableComponent translatableComponent) {
-                return Tag.selfClosingInserting(translatableComponent);
-            }
-
-            return Tag.selfClosingInserting(argument);
+            return Tag.selfClosingInserting(this.argumentComponents.get(index));
 
         } else {
             ComponentLike namedArgument = this.namedArguments.get(name);
