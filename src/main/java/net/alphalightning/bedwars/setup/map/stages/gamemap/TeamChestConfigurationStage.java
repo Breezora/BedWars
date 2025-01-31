@@ -15,11 +15,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int count;
     private int phase;
@@ -72,7 +74,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         }
         if (phase < count) {
             Team team = teams.get(phase - 1).chest(location);
-            teams.set(phase - 1, team);
+            tempTeams.add(team);
 
             sendSuccessMessage();
             Feedback.success(player);
@@ -84,6 +86,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
         Feedback.success(player);
 
+        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(12);
     }
 

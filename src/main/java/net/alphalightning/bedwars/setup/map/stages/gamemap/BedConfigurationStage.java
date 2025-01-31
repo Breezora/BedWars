@@ -16,16 +16,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class BedConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int count;
     private int phase;
 
     private TranslatableComponent teamName;
+    private Team team;
 
     public BedConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -50,7 +53,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name", Component.text(phase), teamName));
         Feedback.success(player);
@@ -78,12 +82,12 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
             player.getFacing().getDirection().normalize();
 
-            Team team = teams.get(phase - 1).bedDownside(down);
-            teams.set(phase - 1, team);
+            Team team = this.team.bedDownside(down);
+            tempTeams.add(team);
 
             if (getFacingLocation(player, down) != null) {
-                team = teams.get(phase - 1).bedUpside(getFacingLocation(player, down));
-                teams.set(phase - 1, team);
+                team = this.team.bedUpside(getFacingLocation(player, down));
+                tempTeams.add(team);
                 startPhase(++phase);
                 return;
             }
@@ -97,6 +101,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
         Feedback.success(player);
 
+        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(15);
     }
 

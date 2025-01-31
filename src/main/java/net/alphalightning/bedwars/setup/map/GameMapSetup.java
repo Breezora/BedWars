@@ -115,6 +115,7 @@ public final class GameMapSetup implements MapSetup {
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
+        this.teams.clear();
         this.teams.addAll(teams);
     }
 

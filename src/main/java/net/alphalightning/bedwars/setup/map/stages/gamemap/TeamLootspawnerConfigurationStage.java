@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -30,12 +31,14 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     private static final String NO_ALIAS = "n";
     private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
 
+    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int count;
     private boolean isSlowConfigFinished = false;
     private int phase;
 
     private TranslatableComponent teamName;
+    private Team team;
 
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -94,6 +97,17 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         }
     }
 
+    private void startPhase(int phase) {
+        if (phase > count) {
+            return;
+        }
+        this.phase = phase;
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
+
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
+    }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
@@ -111,8 +125,8 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
                 return;
             }
             if (phase < count) {
-                Team team = teams.get(phase - 1).lootspawner(location);
-                teams.set(phase - 1, team);
+                Team team = this.team.lootspawner(location);
+                tempTeams.add(team);
 
                 sendSuccessMessage();
                 Feedback.success(player);
@@ -125,6 +139,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
             Feedback.success(player);
 
+            gameMapSetup.configureTeams(tempTeams);
             gameMapSetup.startStage(11);
         }
     }
@@ -138,18 +153,8 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         return false;
     }
 
-    private void startPhase(int phase) {
-        if (phase > count) {
-            return;
-        }
-        this.phase = phase;
-        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
-
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
-    }
-
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
     }
 }

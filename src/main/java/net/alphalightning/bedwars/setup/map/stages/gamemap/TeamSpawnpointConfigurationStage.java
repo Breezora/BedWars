@@ -16,18 +16,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int size;
     private int phase;
 
-    private Team team;
-
     private TranslatableComponent teamName = null;
+    private Team team;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -80,15 +81,13 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
 
         if (phase < size) {
+            Team team = this.team.spawnpoint(location);
+            tempTeams.add(team);
+
             sendSuccessMessage();
             Feedback.success(player);
 
-
-            team.spawnpoint(location);
-            teams.set(phase - 1, team);
-
-            phase++;
-            startPhase(phase);
+            startPhase(++phase);
             return;
         }
 
@@ -96,6 +95,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
         Feedback.success(player);
 
+        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(10);
     }
 
