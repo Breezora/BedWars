@@ -64,7 +64,7 @@ public abstract class MiniMessageTranslator implements Translator {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
 
-        return translation.children(children).style(component.style().merge(translation.style()));
+        return translation.children(children);
     }
 
     private Component translateRecursively(Component component, Locale locale, int depth) {
@@ -75,7 +75,7 @@ public abstract class MiniMessageTranslator implements Translator {
                 List<Component> mergedChildren = new ArrayList<>(translated.children());
                 mergedChildren.addAll(translatable.children());
 
-                return translated.children(mergedChildren).style(translatable.style().merge(translated.style()));
+                return translated.children(mergedChildren);
             }
             return translatable;
         }
@@ -86,6 +86,6 @@ public abstract class MiniMessageTranslator implements Translator {
             children.add(this.translateRecursively(child, locale, depth + 1));
         }
 
-        return component.children(children).style(component.style()); // Component contains translated children
+        return component.children(children); // Component contains translated children
     }
 }
