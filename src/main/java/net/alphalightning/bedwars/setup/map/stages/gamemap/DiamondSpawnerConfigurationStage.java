@@ -18,7 +18,6 @@ import java.util.List;
 public class DiamondSpawnerConfigurationStage extends Stage implements LocationConfiguration {
 
     private final List<Location> locations = new ArrayList<>();
-
     private final int count;
     private int phase;
 

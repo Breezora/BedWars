@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.6")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")

@@ -12,14 +12,28 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class TeamLootspawnerConfigurationStage extends Stage implements LocationConfiguration {
 
-    public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) { super(plugin, player, setup);
+    private static final String YES = "yes";
+    private static final String YES_ALIAS = "y";
+    private static final String NO = "no";
+    private static final String NO_ALIAS = "n";
+    private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
+
+    private final List<Location> locations = new ArrayList<>();
+    private final int count;
+    private boolean isSlowConfigFinished = false;
+    private int phase;
+
+    public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
+        super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.count = 0;
             return;
@@ -27,20 +41,15 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         this.count = gameMapSetup.teams().size();
     }
 
-    private int phase;
-    boolean slowConfigFinished = false;
-    private final int count;
-    private final List<Location> locations = new ArrayList<>();
-
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.10"));
-        player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed"));
+        player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner"));
     }
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (!slowConfigFinished) {
+        if (!isSlowConfigFinished) {
             if (isNotPlayerConfiguring(player)) {
                 return;
             }
@@ -54,30 +63,33 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
 
             String message = event.signedMessage().message();
 
-        if (message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n")) {
-            if (isYes_or_no(message)) {
-                gameMapSetup.configureSlowIron(true);
-                player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.slow"));
-                Feedback.success(player);
+            if (VALID_MESSAGES.contains(message.toLowerCase())) {
+                if (isSlowLootspawner(message)) {
+                    gameMapSetup.configureSlowIron(true);
+                    player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.slow"));
+                    Feedback.success(player);
+
+                } else {
+                    gameMapSetup.configureSlowIron(false);
+                    Feedback.success(player);
+                    player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.fast"));
+                }
             } else {
-                gameMapSetup.configureSlowIron(false);
-                Feedback.success(player);
-                player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.fast"));
+                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.error"));
+                Feedback.error(player);
+                return;
             }
-        } else {
-            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.error"));
-            Feedback.error(player);
-            return;
-        }
-            slowConfigFinished = true;
-            player.sendMessage(Component.translatable("mapsetup.stage.10.setupspeed.success"));
+
+            isSlowConfigFinished = true;
+            player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.success"));
             startPhase(1);
         }
     }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
-        if (slowConfigFinished) {
+        if (isSlowConfigFinished) {
             if (isNotPlayerConfiguring(event.getPlayer())) {
                 return;
             }
@@ -108,10 +120,12 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
         }
     }
 
-    private boolean isYes_or_no(String message) {
-        if (message.equalsIgnoreCase("y")) {
+    private boolean isSlowLootspawner(@NotNull String message) {
+        if (message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS)) {
             return true;
-        } else if (message.equalsIgnoreCase("n")) {return false;}
+        } else if (message.equalsIgnoreCase(NO) || message.equalsIgnoreCase(NO_ALIAS)) {
+            return false;
+        }
         return false;
     }
 
@@ -120,7 +134,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             return;
         }
         this.phase = phase;
-
         player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase)));
     }
 
