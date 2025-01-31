@@ -11,6 +11,7 @@ import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +27,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private int phase;
 
     private Team team;
-    private int index;
 
     private TranslatableComponent teamName = null;
 
@@ -40,7 +40,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
         this.teams = gameMapSetup.teams();
         this.size = teams.size();
-        this.index = -1; // Start at -1 to avoid IndexOutOfBoundsException
     }
 
     @Override
@@ -54,8 +53,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         this.phase = phase;
-        this.index++;
-        this.team = teams.get(index);
+        this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
@@ -87,7 +85,13 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             Feedback.success(player);
 
             team.spawnpoint(location);
-            teams.set(index, team);
+
+            Bukkit.getLogger().info("Team davor " + team.name() + ":" + team.toString());
+
+            teams.set(phase - 1, team);
+
+            Bukkit.getLogger().info("Team nachher " + teams.get(phase - 1).name() + ": " + teams.get(phase - 1).toString());
+
 
             startPhase(++phase);
             return;
