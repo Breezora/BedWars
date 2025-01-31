@@ -23,6 +23,7 @@ public final class GameMapSetup implements MapSetup {
 
     // Configuration
     private final List<Team> teams = new ArrayList<>();
+    private final List<Location> lootSpawnerLocations = new ArrayList<>();
     private final List<Location> emeraldSpawnerLocations = new ArrayList<>();
     private final List<Location> diamondSpawnerLocations = new ArrayList<>();
     private Location spectatorSpawn;
@@ -31,6 +32,9 @@ public final class GameMapSetup implements MapSetup {
     private int teamSize = 0;
     private int maxBuildHeight = 0;
     private int minBuildHeight = 0;
+    private boolean slowIron;
+    private final List<Location> shopVillagerLocations = new ArrayList<>();
+    private final List<Location> upgradeVillagerLocations = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -60,6 +64,10 @@ public final class GameMapSetup implements MapSetup {
             case 7 -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
             case 8 -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
             case 9 -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
+            case 10 -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
+            case 11 -> new TeamChestConfigurationStage(plugin, player, this).run();
+            case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
+            case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -140,4 +148,15 @@ public final class GameMapSetup implements MapSetup {
     public void configureDiamondSpawnerLocations(List<Location> locations) {
         this.diamondSpawnerLocations.addAll(locations);
     }
+
+    public void configureLootSpawnerLocations(List<Location> locations) {
+        this.lootSpawnerLocations.addAll(locations);
+    }
+
+    public void configureSlowIron(Boolean slow) { this.slowIron = slow; }
+
+    public void configureShopVillager(List<Location> locations) {this.shopVillagerLocations.addAll(locations);}
+    public void configureUpgradeVillager(List<Location> locations) {this.upgradeVillagerLocations.addAll(locations);}
+
 }
+
