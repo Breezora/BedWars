@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.translation;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.VirtualComponent;
-import net.kyori.adventure.text.VirtualComponentRenderer;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -14,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static java.util.Objects.requireNonNull;
+
 final class ArgumentTag implements TagResolver {
 
     private static final String NAME = "argument";
@@ -23,8 +24,9 @@ final class ArgumentTag implements TagResolver {
     private final Map<String, ComponentLike> namedArguments;
 
     ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
-        this.argumentComponents = new ArrayList<>(Objects.requireNonNull(argumentComponents, "argumentComponents"));
+        requireNonNull(argumentComponents, "argumentComponents");
 
+        this.argumentComponents = new ArrayList<>(argumentComponents);
         final Map<String, ComponentLike> namedArgumentMap = new HashMap<>(this.argumentComponents.size());
 
         for (final ComponentLike argument : this.argumentComponents) {
@@ -34,13 +36,9 @@ final class ArgumentTag implements TagResolver {
             if (!(translationArgument.value() instanceof VirtualComponent virtual)) {
                 continue;
             }
-
-            final VirtualComponentRenderer<?> renderer = virtual.renderer();
-
-            if (!(renderer instanceof NamedTranslationArgument namedArgument)) {
+            if (!(virtual.renderer() instanceof NamedTranslationArgument namedArgument)) {
                 continue;
             }
-
             namedArgumentMap.put(namedArgument.name(), namedArgument.translationArgument());
         }
 
@@ -62,7 +60,6 @@ final class ArgumentTag implements TagResolver {
             if (namedArgument == null) {
                 return null;
             }
-
             return Tag.selfClosingInserting(namedArgument);
         }
     }
