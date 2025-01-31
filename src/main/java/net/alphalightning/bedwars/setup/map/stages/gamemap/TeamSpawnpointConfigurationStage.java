@@ -86,14 +86,10 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
             team.spawnpoint(location);
 
-            Bukkit.getLogger().info("Team davor " + team.name() + ":" + team.toString());
+            Bukkit.getLogger().info("Team " + team.name() + ":" + team.toString());
 
-            teams.set(phase - 1, team);
-
-            Bukkit.getLogger().info("Team nachher " + teams.get(phase - 1).name() + ": " + teams.get(phase - 1).toString());
-
-
-            startPhase(++phase);
+            phase++;
+            startPhase(phase);
             return;
         }
 
