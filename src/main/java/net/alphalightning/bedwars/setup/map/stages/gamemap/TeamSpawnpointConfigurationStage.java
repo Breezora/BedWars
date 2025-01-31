@@ -7,7 +7,9 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +24,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
     private final int size;
     private int phase;
 
-    private Component teamName;
+    private TranslatableComponent teamName = null;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -47,10 +49,12 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
             return;
         }
         this.phase = phase;
+        this.teamName = Component.translatable("team.red");
 
-        this.teamName = Component.translatable("team.red"); // Test purpose
-
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name", Component.text(phase), teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name",
+                NamedTranslationArgument.numeric("phase", phase),
+                NamedTranslationArgument.component("name", teamName)
+        ));
         Feedback.success(player);
     }
 
@@ -90,7 +94,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements LocationC
     }
 
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", NamedTranslationArgument.component("name", teamName)));
     }
 
 }

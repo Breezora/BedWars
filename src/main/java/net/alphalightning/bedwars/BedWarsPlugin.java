@@ -11,7 +11,7 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
-import net.alphalightning.bedwars.translation.PluginTranslationRegistry;
+import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 
 public class BedWarsPlugin extends JavaPlugin {
 
-    private final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("bedwars:messages")));
     private final ObjectMapper mapper = JsonMapper.builder()
             .addModule(JacksonPaper.builder().build())
             .enable(SerializationFeature.INDENT_OUTPUT) // Pretty printing
@@ -55,10 +54,12 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void loadMessageRegistry() {
+        TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("bedwars:messages"));
         translationRegistry.defaultLocale(Locale.GERMAN);
         translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         GlobalTranslator.translator().addSource(translationRegistry);
+        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
     }
 
     public void registerCommands() {
