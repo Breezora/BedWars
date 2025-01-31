@@ -17,9 +17,9 @@ import java.util.List;
 
 public class UpgradeVillagerConfigurationStage extends Stage implements LocationConfiguration {
 
+    private final List<Location> locations = new ArrayList<>();
     private final int count;
     private int phase;
-    private final List<Location> locations = new ArrayList<>();
 
     public UpgradeVillagerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
