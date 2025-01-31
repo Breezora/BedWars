@@ -9,6 +9,7 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -33,22 +34,22 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
     private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
-    private final int count;
-    private boolean isSlowConfigFinished = false;
+    private final int size;
     private int phase;
 
     private TranslatableComponent teamName = null;
     private Team team;
+    private boolean isSpawningSpeedConfigured = false;
 
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.teams = Collections.emptyList();
-            this.count = 0;
+            this.size = 0;
             return;
         }
         this.teams = gameMapSetup.teams();
-        this.count = teams.size();
+        this.size = teams.size();
     }
 
     @Override
@@ -58,19 +59,23 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     }
 
     private void startPhase(int phase) {
-        if (phase > count) {
+        if (phase > size) {
             return;
         }
         this.phase = phase;
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name",
+                NamedTranslationArgument.numeric("phase", phase),
+                NamedTranslationArgument.component("name", teamName)
+        ));
+        Feedback.success(player);
     }
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (!isSlowConfigFinished) {
+        if (!isSpawningSpeedConfigured) {
             if (isNotPlayerConfiguring(player)) {
                 return;
             }
@@ -101,7 +106,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
                 return;
             }
 
-            isSlowConfigFinished = true;
+            isSpawningSpeedConfigured = true;
             player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.success"));
             startPhase(1);
         }
@@ -110,37 +115,40 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
-        if (isSlowConfigFinished) {
-            if (isNotPlayerConfiguring(event.getPlayer())) {
-                return;
-            }
-            if (isNotOnGround(player, location)) {
-                return;
-            }
-            if (isNotStage(10)) {
-                return;
-            }
-            if (!(setup instanceof GameMapSetup gameMapSetup)) {
-                return;
-            }
-            if (phase < count) {
-                Team team = this.team.lootspawner(location);
-                tempTeams.add(team);
 
-                sendSuccessMessage();
-                Feedback.success(player);
-
-                startPhase(++phase);
-                return;
-            }
+        if (isNotPlayerConfiguring(event.getPlayer())) {
+            return;
+        }
+        if (isNotOnGround(player, location)) {
+            return;
+        }
+        if (isNotStage(10)) {
+            return;
+        }
+        if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            return;
+        }
+        if (!isSpawningSpeedConfigured) {
+            return;
+        }
+        if (phase < size) {
+            Team team = this.team.lootspawner(location);
+            tempTeams.add(team);
 
             sendSuccessMessage();
-            player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
             Feedback.success(player);
 
-            gameMapSetup.configureTeams(tempTeams);
-            gameMapSetup.startStage(11);
+            startPhase(++phase);
+            return;
         }
+
+        sendSuccessMessage();
+        player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
+        Feedback.success(player);
+
+        gameMapSetup.configureTeams(tempTeams);
+        gameMapSetup.startStage(11);
+
     }
 
     private boolean isSlowLootspawner(@NotNull String message) {
@@ -154,6 +162,5 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
     private void sendSuccessMessage() {
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
-        Feedback.success(player);
     }
 }
