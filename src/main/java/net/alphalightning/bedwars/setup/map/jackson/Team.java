@@ -75,4 +75,16 @@ public class Team {
         this.lootspawner = lootspawner;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "name='" + name + '\'' +
+                ", spawnpoint=" + spawnpoint +
+                ", chest=" + chest +
+                ", bedDownside=" + bedDownside +
+                ", bedUpside=" + bedUpside +
+                ", lootspawner=" + lootspawner +
+                '}';
+    }
 }
