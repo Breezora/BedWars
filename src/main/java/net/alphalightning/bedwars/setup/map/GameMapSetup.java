@@ -23,7 +23,6 @@ public final class GameMapSetup implements MapSetup {
 
     // Configuration
     private final List<Team> teams = new ArrayList<>();
-    private final List<Location> lootSpawnerLocations = new ArrayList<>();
     private final List<Location> emeraldSpawnerLocations = new ArrayList<>();
     private final List<Location> diamondSpawnerLocations = new ArrayList<>();
     private Location spectatorSpawn;
@@ -148,10 +147,6 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureDiamondSpawnerLocations(List<Location> locations) {
         this.diamondSpawnerLocations.addAll(locations);
-    }
-
-    public void configureLootSpawnerLocations(List<Location> locations) {
-        this.lootSpawnerLocations.addAll(locations);
     }
 
     public void configureSlowIron(Boolean slow) { this.slowIron = slow; }
