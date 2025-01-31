@@ -7,16 +7,18 @@ public class Team {
 
     private final String name;
     private Location spawnpoint;
+    private Location chest;
 
     @JsonCreator
     public Team(String name) {
-        this(name, null);
+        this(name, null, null);
     }
 
     @JsonCreator
-    public Team(String name, Location spawnpoint) {
+    public Team(String name, Location spawnpoint, Location chest) {
         this.name = name;
         this.spawnpoint = spawnpoint;
+        this.chest = chest;
     }
 
     public String name() {
@@ -25,6 +27,15 @@ public class Team {
 
     public Location spawnpoint() {
         return spawnpoint;
+    }
+
+    public Location chest() {
+        return chest;
+    }
+
+    public Team chest(Location chest) {
+        this.chest = chest;
+        return this;
     }
 
     public Team spawnpoint(Location spawnpoint) {
