@@ -26,7 +26,8 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
     private final int count;
     private int phase;
 
-    private TranslatableComponent teamName;
+    private TranslatableComponent teamName = null;
+    private Team team;
 
     public TeamChestConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -50,7 +51,8 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name", Component.text(phase), teamName));
         Feedback.success(player);
@@ -73,7 +75,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
         if (phase < count) {
-            Team team = teams.get(phase - 1).chest(location);
+            Team team = this.team.chest(location);
             tempTeams.add(team);
 
             sendSuccessMessage();

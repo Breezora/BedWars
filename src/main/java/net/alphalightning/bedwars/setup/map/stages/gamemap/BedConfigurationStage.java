@@ -27,7 +27,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
     private final int count;
     private int phase;
 
-    private TranslatableComponent teamName;
+    private TranslatableComponent teamName = null;
     private Team team;
 
     public BedConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {

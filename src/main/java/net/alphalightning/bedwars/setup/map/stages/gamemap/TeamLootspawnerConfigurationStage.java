@@ -37,7 +37,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     private boolean isSlowConfigFinished = false;
     private int phase;
 
-    private TranslatableComponent teamName;
+    private TranslatableComponent teamName = null;
     private Team team;
 
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
@@ -49,13 +49,23 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         }
         this.teams = gameMapSetup.teams();
         this.count = teams.size();
-
     }
 
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.10"));
         player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner"));
+    }
+
+    private void startPhase(int phase) {
+        if (phase > count) {
+            return;
+        }
+        this.phase = phase;
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
+
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
     }
 
     @EventHandler
@@ -95,17 +105,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.success"));
             startPhase(1);
         }
-    }
-
-    private void startPhase(int phase) {
-        if (phase > count) {
-            return;
-        }
-        this.phase = phase;
-        this.team = teams.get(phase - 1);
-        this.teamName = Component.translatable("team." + convertName(team.name()));
-
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
     }
 
     @EventHandler
