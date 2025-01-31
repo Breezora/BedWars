@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +36,11 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         }
         this.teams = gameMapSetup.teams();
         this.count = gameMapSetup.teams().size();
+
+        // Debug only
+        for (Team team : teams) {
+            Bukkit.getLogger().info("Team " + team.name() + ": " + team);
+        }
     }
 
     @Override
@@ -71,11 +77,11 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
         if (phase < count) {
-            sendSuccessMessage();
-            Feedback.success(player);
-
             Team team = teams.get(phase - 1).chest(location);
             teams.set(phase - 1, team);
+
+            sendSuccessMessage();
+            Feedback.success(player);
 
             startPhase(++phase);
             return;
