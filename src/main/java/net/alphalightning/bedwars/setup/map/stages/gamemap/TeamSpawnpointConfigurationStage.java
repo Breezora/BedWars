@@ -25,6 +25,9 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private final int size;
     private int phase;
 
+    private Team team;
+    private int index;
+
     private TranslatableComponent teamName = null;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
@@ -37,6 +40,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
         this.teams = gameMapSetup.teams();
         this.size = teams.size();
+        this.index = -1; // Start at -1 to avoid IndexOutOfBoundsException
     }
 
     @Override
@@ -50,7 +54,9 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
+        this.index++;
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 NamedTranslationArgument.numeric("phase", phase),
@@ -80,8 +86,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             sendSuccessMessage();
             Feedback.success(player);
 
-            Team team = teams.get(phase - 1).spawnpoint(location);
-            teams.set(phase - 1, team);
+            team.spawnpoint(location);
+            teams.set(index, team);
 
             startPhase(++phase);
             return;
