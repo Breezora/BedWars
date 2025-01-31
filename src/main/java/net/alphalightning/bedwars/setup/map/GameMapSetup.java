@@ -25,15 +25,15 @@ public final class GameMapSetup implements MapSetup {
     private final List<Team> teams = new ArrayList<>();
     private final List<Location> emeraldSpawnerLocations = new ArrayList<>();
     private final List<Location> diamondSpawnerLocations = new ArrayList<>();
+    private final List<Location> shopVillagerLocations = new ArrayList<>();
+    private final List<Location> upgradeVillagerLocations = new ArrayList<>();
     private Location spectatorSpawn;
+    private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
     private int teamSize = 0;
     private int maxBuildHeight = 0;
     private int minBuildHeight = 0;
-    private boolean slowIron;
-    private final List<Location> shopVillagerLocations = new ArrayList<>();
-    private final List<Location> upgradeVillagerLocations = new ArrayList<>();
 
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
@@ -153,7 +153,25 @@ public final class GameMapSetup implements MapSetup {
     public void configureSlowIron(Boolean slow) { this.slowIron = slow; }
 
     public void configureShopVillager(List<Location> locations) {this.shopVillagerLocations.addAll(locations);}
+
     public void configureUpgradeVillager(List<Location> locations) {this.upgradeVillagerLocations.addAll(locations);}
 
+    @Override
+    public String toString() {
+        return "GameMapSetup{" +
+                "teams=" + teams +
+                ", emeraldSpawnerLocations=" + emeraldSpawnerLocations +
+                ", diamondSpawnerLocations=" + diamondSpawnerLocations +
+                ", shopVillagerLocations=" + shopVillagerLocations +
+                ", upgradeVillagerLocations=" + upgradeVillagerLocations +
+                ", spectatorSpawn=" + spectatorSpawn +
+                ", slowIron=" + slowIron +
+                ", emeraldSpawnerCount=" + emeraldSpawnerCount +
+                ", diamondSpawnerCount=" + diamondSpawnerCount +
+                ", teamSize=" + teamSize +
+                ", maxBuildHeight=" + maxBuildHeight +
+                ", minBuildHeight=" + minBuildHeight +
+                '}';
+    }
 }
 
