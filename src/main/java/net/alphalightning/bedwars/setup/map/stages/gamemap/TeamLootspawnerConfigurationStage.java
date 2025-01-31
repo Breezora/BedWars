@@ -5,21 +5,24 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
+import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 
-public class TeamLootspawnerConfigurationStage extends Stage implements LocationConfiguration {
+public class TeamLootspawnerConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
     private static final String YES = "yes";
     private static final String YES_ALIAS = "y";
@@ -27,18 +30,23 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
     private static final String NO_ALIAS = "n";
     private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
 
-    private final List<Location> locations = new ArrayList<>();
+    private final List<Team> teams;
     private final int count;
     private boolean isSlowConfigFinished = false;
     private int phase;
 
+    private TranslatableComponent teamName;
+
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            this.teams = Collections.emptyList();
             this.count = 0;
             return;
         }
-        this.count = gameMapSetup.teams().size();
+        this.teams = gameMapSetup.teams();
+        this.count = teams.size();
+
     }
 
     @Override
@@ -103,10 +111,12 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
                 return;
             }
             if (phase < count) {
+                Team team = teams.get(phase - 1);
+                team.lootspawner(location);
+
                 sendSuccessMessage();
                 Feedback.success(player);
 
-                locations.add(location);
                 startPhase(++phase);
                 return;
             }
@@ -115,7 +125,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
             Feedback.success(player);
 
-            gameMapSetup.configureLootSpawnerLocations(locations);
             gameMapSetup.startStage(11);
         }
     }
@@ -134,7 +143,9 @@ public class TeamLootspawnerConfigurationStage extends Stage implements Location
             return;
         }
         this.phase = phase;
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), Component.text("Team XY")));
+        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
+
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name", Component.text(phase), teamName));
     }
 
     private void sendSuccessMessage() {
