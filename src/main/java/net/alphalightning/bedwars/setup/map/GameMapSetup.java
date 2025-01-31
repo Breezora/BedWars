@@ -68,6 +68,7 @@ public final class GameMapSetup implements MapSetup {
             case 11 -> new TeamChestConfigurationStage(plugin, player, this).run();
             case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
+            case 14 -> new BedConfigurationStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
