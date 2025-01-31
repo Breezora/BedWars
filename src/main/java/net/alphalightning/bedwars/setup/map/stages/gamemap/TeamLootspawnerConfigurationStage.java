@@ -111,8 +111,8 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
                 return;
             }
             if (phase < count) {
-                Team team = teams.get(phase - 1);
-                team.lootspawner(location);
+                Team team = teams.get(phase - 1).lootspawner(location);
+                teams.set(phase - 1, team);
 
                 sendSuccessMessage();
                 Feedback.success(player);
