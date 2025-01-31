@@ -50,7 +50,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         this.phase = phase;
         this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name", Component.text(phase), teamName));
         Feedback.success(player);
     }
 
