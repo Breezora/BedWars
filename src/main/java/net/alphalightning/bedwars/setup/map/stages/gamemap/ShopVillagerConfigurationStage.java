@@ -51,16 +51,17 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
+
         if (phase < count) {
-            sendSuccessMessage();
+            player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
             Feedback.success(player);
 
-            locations.add(location);
+            locations.add(location.add(OFFSET));
             startPhase(++phase);
             return;
         }
 
-        sendSuccessMessage();
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
         Feedback.success(player);
 
@@ -77,8 +78,4 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         player.sendMessage(Component.translatable("mapsetup.stage.12.name", Component.text(phase)));
     }
 
-    private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
-        Feedback.success(player);
-    }
 }

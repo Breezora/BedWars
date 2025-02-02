@@ -8,8 +8,8 @@ public class Team {
     private final String name;
     private Location spawnpoint;
     private Location chest;
-    private Location bedDownside;
-    private Location bedUpside;
+    private Location bedBottomHalf;
+    private Location bedTopHalf;
     private Location lootspawner;
 
     @JsonCreator
@@ -18,12 +18,12 @@ public class Team {
     }
 
     @JsonCreator
-    public Team(String name, Location spawnpoint, Location chest, Location bedDownside, Location bedUpside, Location lootspawner) {
+    public Team(String name, Location spawnpoint, Location chest, Location bedBottomHalf, Location bedTopHalf, Location lootspawner) {
         this.name = name;
         this.spawnpoint = spawnpoint;
         this.chest = chest;
-        this.bedDownside = bedDownside;
-        this.bedUpside = bedUpside;
+        this.bedBottomHalf = bedBottomHalf;
+        this.bedTopHalf = bedTopHalf;
         this.lootspawner = lootspawner;
     }
 
@@ -39,41 +39,36 @@ public class Team {
         return chest;
     }
 
-    public Location bedDownside() {
-        return bedDownside;
+    public Location bedBottomHalf() {
+        return bedBottomHalf;
     }
 
-    public Location bedUpside() {
-        return bedUpside;
+    public Location bedTopHalf() {
+        return bedTopHalf;
     }
 
     public Location lootspawner() {
         return lootspawner;
     }
 
-    public Team bedDownside(Location bedDownside) {
-        this.bedDownside = bedDownside;
-        return this;
+    public void bedBottomHalf(Location bedBottomHalf) {
+        this.bedBottomHalf = bedBottomHalf.clone();
     }
 
-    public Team bedUpside(Location bedUpside) {
-        this.bedUpside = bedUpside;
-        return this;
+    public void bedTopHalf(Location bedTopHalf) {
+        this.bedTopHalf = bedTopHalf.clone();
     }
 
-    public Team chest(Location chest) {
-        this.chest = chest;
-        return this;
+    public void chest(Location chest) {
+        this.chest = chest.clone();
     }
 
-    public Team spawnpoint(Location spawnpoint) {
-        this.spawnpoint = spawnpoint;
-        return this;
+    public void spawnpoint(Location spawnpoint) {
+        this.spawnpoint = spawnpoint.clone();
     }
 
-    public Team lootspawner(Location lootspawner) {
-        this.lootspawner = lootspawner;
-        return this;
+    public void lootspawner(Location lootspawner) {
+        this.lootspawner = lootspawner.clone();
     }
 
     @Override
@@ -82,8 +77,8 @@ public class Team {
                 "name='" + name + '\'' +
                 ", spawnpoint=" + spawnpoint +
                 ", chest=" + chest +
-                ", bedDownside=" + bedDownside +
-                ", bedUpside=" + bedUpside +
+                ", bedBottomHalf=" + bedBottomHalf +
+                ", bedTopHalf=" + bedTopHalf +
                 ", lootspawner=" + lootspawner +
                 '}';
     }
