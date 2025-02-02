@@ -4,7 +4,6 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
@@ -81,7 +80,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
 
         if (phase < size) {
-            team.spawnpoint(new JacksonLocation(location));
+            team.spawnpoint(location);
 
             sendSuccessMessage();
             Feedback.success(player);
