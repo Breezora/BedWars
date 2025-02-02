@@ -4,7 +4,6 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -53,9 +52,6 @@ public final class GameMapSetup implements MapSetup {
     @Override
     public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
-
-        Bukkit.getLogger().info("Teams: " + teams); // Debug only
-
         switch (stage) {
             case 0 -> new WelcomeStage(plugin, player, this).run();
             case 1 -> new TeamSelectionStage(plugin, player, this).run();
