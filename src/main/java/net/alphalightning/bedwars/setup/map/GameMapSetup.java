@@ -68,7 +68,6 @@ public final class GameMapSetup implements MapSetup {
             case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             case 14 -> new BedConfigurationStage(plugin, player, this).run();
-            case 15 -> new DebugStage(plugin, player, this).run();
             default -> cancelStage.run();
         }
     }
@@ -156,23 +155,5 @@ public final class GameMapSetup implements MapSetup {
     public void configureShopVillager(List<Location> locations) {this.shopVillagerLocations.addAll(locations);}
 
     public void configureUpgradeVillager(List<Location> locations) {this.upgradeVillagerLocations.addAll(locations);}
-
-    @Override
-    public String toString() {
-        return "GameMapSetup{" +
-                "teams=" + teams +
-                ", emeraldSpawnerLocations=" + emeraldSpawnerLocations +
-                ", diamondSpawnerLocations=" + diamondSpawnerLocations +
-                ", shopVillagerLocations=" + shopVillagerLocations +
-                ", upgradeVillagerLocations=" + upgradeVillagerLocations +
-                ", spectatorSpawn=" + spectatorSpawn +
-                ", slowIron=" + slowIron +
-                ", emeraldSpawnerCount=" + emeraldSpawnerCount +
-                ", diamondSpawnerCount=" + diamondSpawnerCount +
-                ", teamSize=" + teamSize +
-                ", maxBuildHeight=" + maxBuildHeight +
-                ", minBuildHeight=" + minBuildHeight +
-                '}';
-    }
 }
 
