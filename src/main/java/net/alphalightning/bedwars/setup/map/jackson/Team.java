@@ -51,9 +51,8 @@ public class Team {
         return lootspawner;
     }
 
-    public Team bedBottomHalf(Location bedBottomHalf) {
+    public void bedBottomHalf(Location bedBottomHalf) {
         this.bedBottomHalf = bedBottomHalf;
-        return this;
     }
 
     public void bedTopHalf(Location bedTopHalf) {
