@@ -52,23 +52,23 @@ public class Team {
     }
 
     public void bedBottomHalf(Location bedBottomHalf) {
-        this.bedBottomHalf = bedBottomHalf;
+        this.bedBottomHalf = bedBottomHalf.clone();
     }
 
     public void bedTopHalf(Location bedTopHalf) {
-        this.bedTopHalf = bedTopHalf;
+        this.bedTopHalf = bedTopHalf.clone();
     }
 
     public void chest(Location chest) {
-        this.chest = chest;
+        this.chest = chest.clone();
     }
 
     public void spawnpoint(Location spawnpoint) {
-        this.spawnpoint = spawnpoint;
+        this.spawnpoint = spawnpoint.clone();
     }
 
     public void lootspawner(Location lootspawner) {
-        this.lootspawner = lootspawner;
+        this.lootspawner = lootspawner.clone();
     }
 
     @Override
