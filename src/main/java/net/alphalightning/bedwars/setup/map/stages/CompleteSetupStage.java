@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars.setup.map.stages;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.exception.NotRegisteredException;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.kyori.adventure.text.Component;
@@ -23,14 +22,6 @@ public class CompleteSetupStage extends Stage {
         player.sendMessage(Component.translatable(isLobbySetup ? "lobbysetup.finish" : "mapsetup.finish", Component.text(fileName)));
         Feedback.complete(player);
 
-        try {
-            super.playerManager.unregisterPlayer(player);
-
-        } catch (NotRegisteredException exception) {
-            player.sendMessage(Component.translatable("error.setup.none"));
-
-        } finally {
-            invalidate();
-        }
+        invalidate();
     }
 }
