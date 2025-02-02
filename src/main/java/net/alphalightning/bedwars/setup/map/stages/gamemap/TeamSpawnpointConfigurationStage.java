@@ -11,7 +11,6 @@ import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +26,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -52,11 +50,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         this.phase = phase;
-        this.team = teams.get(phase - 1);
-        this.teamName = Component.translatable("team." + convertName(team.name()));
-
-        Bukkit.getLogger().info("Current team: " + team.name());
-        Bukkit.getLogger().info("Phase: " + phase + ", Size: " + size);
+        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 NamedTranslationArgument.numeric("phase", phase),
@@ -82,13 +76,27 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        if (phase - 1 < size) {
-            player.sendMessage(Component.translatable("mapsetup.stage.9.name.success",
-                    NamedTranslationArgument.component("name", teamName)
-            ));
+        if (phase < size) {
+            sendSuccessMessage();
+            Feedback.success(player);
+
+            Team team = teams.get(phase - 1);
+            team.spawnpoint(location);
+            teams.set(phase - 1, team);
+
             startPhase(++phase);
+            return;
         }
+
+        sendSuccessMessage();
+        player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
+        Feedback.success(player);
 
         gameMapSetup.startStage(10);
     }
+
+    private void sendSuccessMessage() {
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", NamedTranslationArgument.component("name", teamName)));
+    }
+
 }
