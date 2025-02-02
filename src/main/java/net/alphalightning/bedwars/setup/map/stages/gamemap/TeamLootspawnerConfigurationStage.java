@@ -18,7 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -32,13 +31,12 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     private static final String NO_ALIAS = "n";
     private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
 
-    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int size;
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team;
+    private Team team = null;
     private boolean isSpawningSpeedConfigured = false;
 
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
@@ -131,24 +129,24 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         if (!isSpawningSpeedConfigured) {
             return;
         }
-        if (phase < size) {
-            Team team = this.team.lootspawner(location);
-            tempTeams.add(team);
 
-            sendSuccessMessage();
+        if (phase < size) { // Teams are configured
+            team.lootspawner(location);
+
+            player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
             Feedback.success(player);
 
             startPhase(++phase);
             return;
         }
 
-        sendSuccessMessage();
+        team.lootspawner(location); // Last team is configured
+
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(11);
-
     }
 
     private boolean isSlowLootspawner(@NotNull String message) {
@@ -158,9 +156,5 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return false;
         }
         return false;
-    }
-
-    private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
     }
 }
