@@ -96,7 +96,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     }
 
     private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", NamedTranslationArgument.component("name", teamName)));
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
     }
 
 }
