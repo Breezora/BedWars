@@ -77,24 +77,20 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
 
-        final Location corrected = location.add(OFFSET);
+        // Teamchest configuration is not completed
 
-        if (phase < count) { // Teams are configured
-            team.chest(corrected);
+        team.chest(location.add(OFFSET));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
+        Feedback.success(player);
 
-            player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
-            Feedback.success(player);
-
+        if (phase < count) {
             startPhase(++phase);
             return;
         }
 
-        team.chest(corrected);
+        // All chests have been configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
-        Feedback.success(player);
-
         gameMapSetup.startStage(12);
     }
 }

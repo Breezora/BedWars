@@ -83,29 +83,30 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             if (!(setup instanceof GameMapSetup gameMapSetup)) {
                 return;
             }
+
             event.setCancelled(true); //Nachricht nicht in den Chat senden
 
             String message = event.signedMessage().message();
 
-            if (VALID_MESSAGES.contains(message.toLowerCase())) {
-                if (isSlowLootspawner(message)) {
-                    gameMapSetup.configureSlowIron(true);
-                    player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.slow"));
-                    Feedback.success(player);
-
-                } else {
-                    gameMapSetup.configureSlowIron(false);
-                    Feedback.success(player);
-                    player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.fast"));
-                }
-            } else {
+            if (!VALID_MESSAGES.contains(message.toLowerCase())) {
                 player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.error"));
                 Feedback.error(player);
                 return;
             }
 
             isSpawningSpeedConfigured = true;
+
+            boolean isFast = isSpawnFast(message);
+            gameMapSetup.configureSlowIron(isFast);
+
+            if (isFast) {
+                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.fast"));
+            } else {
+                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.slow"));
+            }
+
             player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.success"));
+            Feedback.success(player);
             startPhase(1);
         }
     }
@@ -130,33 +131,24 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return;
         }
 
-        final Location corrected = location.add(OFFSET);
+        // Lootspawner configuration is not completed
 
-        if (phase < size) { // Teams are configured
-            team.lootspawner(corrected);
+        team.lootspawner(location.add(OFFSET));
+        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
+        Feedback.success(player);
 
-            player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
-            Feedback.success(player);
-
+        if (phase < size) {
             startPhase(++phase);
             return;
         }
 
-        team.lootspawner(corrected); // Last team is configured
+        // Lootspawner are all configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
-        Feedback.success(player);
-
         gameMapSetup.startStage(11);
     }
 
-    private boolean isSlowLootspawner(@NotNull String message) {
-        if (message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS)) {
-            return true;
-        } else if (message.equalsIgnoreCase(NO) || message.equalsIgnoreCase(NO_ALIAS)) {
-            return false;
-        }
-        return false;
+    private boolean isSpawnFast(@NotNull String message) {
+        return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
     }
 }

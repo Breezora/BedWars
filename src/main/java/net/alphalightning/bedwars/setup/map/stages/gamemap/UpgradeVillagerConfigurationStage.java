@@ -36,6 +36,16 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         startPhase(1);
     }
 
+    private void startPhase(int phase) {
+        if (phase > count) {
+            return;
+        }
+        this.phase = phase;
+
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name", Component.text(phase)));
+        Feedback.success(player);
+    }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
@@ -51,29 +61,22 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-        if (phase < count) {
-            player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
-            Feedback.success(player);
 
-            locations.add(location.add(OFFSET));
+        // Upgrade villagers have not all been set
+
+        locations.add(location.add(OFFSET));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
+        Feedback.success(player);
+
+        if (phase < count) {
             startPhase(++phase);
             return;
         }
 
-        player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
-        player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
-        Feedback.success(player);
+        // All villagers are configured
 
+        player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
         gameMapSetup.configureUpgradeVillager(locations);
         gameMapSetup.startStage(14);
-    }
-
-    private void startPhase(int phase) {
-        if (phase > count) {
-            return;
-        }
-        this.phase = phase;
-
-        player.sendMessage(Component.translatable("mapsetup.stage.13.name", Component.text(phase)));
     }
 }

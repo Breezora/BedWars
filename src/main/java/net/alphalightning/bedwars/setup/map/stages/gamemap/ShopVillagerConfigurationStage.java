@@ -36,9 +36,21 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         startPhase(1);
     }
 
+    private void startPhase(int phase) {
+        if (phase > count) {
+            return;
+        }
+        this.phase = phase;
+
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name", Component.text(phase)));
+        Feedback.success(player);
+    }
+
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
+
         if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
@@ -52,30 +64,21 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
             return;
         }
 
-        if (phase < count) {
-            player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
-            Feedback.success(player);
+        // Shop villager have not all been configured
 
-            locations.add(location.add(OFFSET));
+        locations.add(location.add(OFFSET));
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
+        Feedback.success(player);
+
+        if (phase < count) {
             startPhase(++phase);
             return;
         }
 
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
-        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
-        Feedback.success(player);
+        // Villager configuration is completed
 
+        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
         gameMapSetup.configureShopVillager(locations);
         gameMapSetup.startStage(13);
     }
-
-    private void startPhase(int phase) {
-        if (phase > count) {
-            return;
-        }
-        this.phase = phase;
-
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name", Component.text(phase)));
-    }
-
 }
