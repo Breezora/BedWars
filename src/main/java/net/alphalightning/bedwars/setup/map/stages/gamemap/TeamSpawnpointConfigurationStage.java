@@ -84,6 +84,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         if (phase < size) {
             team.spawnpoint(location);
+            teams.set(phase - 1, team);
 
             sendSuccessMessage();
             Feedback.success(player);
