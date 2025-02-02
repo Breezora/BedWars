@@ -64,7 +64,7 @@ public final class LobbyMapSetup implements MapSetup {
             SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
 
             Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
-            plugin.jsonMapper().writeValue(directory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
+            plugin.jsonMapper().writeValue(mapsDirectory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());

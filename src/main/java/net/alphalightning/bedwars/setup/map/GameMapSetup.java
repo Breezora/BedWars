@@ -86,7 +86,7 @@ public final class GameMapSetup implements MapSetup {
             createDirectory();
 
             GameMap gameMap = new GameMap(name, teamSize, minBuildHeight, maxBuildHeight, slowIron, spectatorSpawn, teams, shopVillagerLocations, upgradeVillagerLocations, spawner);
-            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), gameMap);
+            plugin.jsonMapper().writeValue(mapsDirectory().resolve(fileName).toFile(), gameMap);
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
