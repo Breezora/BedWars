@@ -1,8 +1,9 @@
-package net.alphalightning.bedwars.provider;
+package net.alphalightning.bedwars.manager.impl;
 
 import net.alphalightning.bedwars.exception.AlreadyRegisteredException;
 import net.alphalightning.bedwars.exception.NotRegisteredException;
 import net.alphalightning.bedwars.manager.PlayerManager;
+import net.alphalightning.bedwars.provider.PlayerProvider;
 import net.alphalightning.bedwars.provider.impl.ConfigurationPlayerProvider;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import org.bukkit.entity.Player;
