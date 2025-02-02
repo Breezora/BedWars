@@ -56,23 +56,20 @@ public class Team {
         return this;
     }
 
-    public Team bedUpside(Location bedUpside) {
+    public void bedUpside(Location bedUpside) {
         this.bedUpside = bedUpside;
-        return this;
     }
 
-    public Team chest(Location chest) {
+    public void chest(Location chest) {
         this.chest = chest;
-        return this;
     }
 
     public void spawnpoint(Location spawnpoint) {
         this.spawnpoint = spawnpoint;
     }
 
-    public Team lootspawner(Location lootspawner) {
+    public void lootspawner(Location lootspawner) {
         this.lootspawner = lootspawner;
-        return this;
     }
 
     @Override
