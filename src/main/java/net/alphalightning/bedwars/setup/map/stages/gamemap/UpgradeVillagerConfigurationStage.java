@@ -62,6 +62,8 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
             return;
         }
 
+        // Upgrade villagers have not all been set
+
         locations.add(location.add(OFFSET));
         player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
         Feedback.success(player);
@@ -70,6 +72,8 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
             startPhase(++phase);
             return;
         }
+
+        // All villagers are configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
         gameMapSetup.configureUpgradeVillager(locations);

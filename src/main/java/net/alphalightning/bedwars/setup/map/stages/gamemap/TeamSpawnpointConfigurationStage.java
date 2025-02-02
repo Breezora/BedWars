@@ -78,6 +78,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
+        // Spawnpoints of teams have not all been configured
+
         team.spawnpoint(location.add(OFFSET));
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         Feedback.success(player);
@@ -86,6 +88,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             startPhase(++phase);
             return;
         }
+
+        // All spawnpoints are configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
         gameMapSetup.startStage(10);

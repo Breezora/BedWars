@@ -131,14 +131,18 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return;
         }
 
+        // Lootspawner configuration is not completed
+
         team.lootspawner(location.add(OFFSET));
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
 
-        if (phase < size) { // Teams are configured
+        if (phase < size) {
             startPhase(++phase);
             return;
         }
+
+        // Lootspawner are all configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
         gameMapSetup.startStage(11);

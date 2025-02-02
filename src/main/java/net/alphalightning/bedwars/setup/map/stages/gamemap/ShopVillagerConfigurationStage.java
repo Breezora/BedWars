@@ -75,6 +75,8 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
             return;
         }
 
+        // Villager configuration is completed
+
         player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
         gameMapSetup.configureShopVillager(locations);
         gameMapSetup.startStage(13);
