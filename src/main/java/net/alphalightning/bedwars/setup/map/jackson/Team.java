@@ -6,7 +6,7 @@ import org.bukkit.Location;
 public class Team {
 
     private final String name;
-    private JacksonLocation spawnpoint;
+    private Location spawnpoint;
     private Location chest;
     private Location bedDownside;
     private Location bedUpside;
@@ -18,7 +18,7 @@ public class Team {
     }
 
     @JsonCreator
-    public Team(String name, JacksonLocation spawnpoint, Location chest, Location bedDownside, Location bedUpside, Location lootspawner) {
+    public Team(String name, Location spawnpoint, Location chest, Location bedDownside, Location bedUpside, Location lootspawner) {
         this.name = name;
         this.spawnpoint = spawnpoint;
         this.chest = chest;
@@ -31,7 +31,7 @@ public class Team {
         return name;
     }
 
-    public JacksonLocation spawnpoint() {
+    public Location spawnpoint() {
         return spawnpoint;
     }
 
@@ -66,7 +66,7 @@ public class Team {
         return this;
     }
 
-    public void spawnpoint(JacksonLocation spawnpoint) {
+    public void spawnpoint(Location spawnpoint) {
         this.spawnpoint = spawnpoint;
     }
 
