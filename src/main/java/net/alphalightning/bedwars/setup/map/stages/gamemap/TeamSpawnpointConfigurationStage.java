@@ -82,7 +82,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        if (phase - 1 <= size) {
+        if (phase - 1 < size) {
             player.sendMessage(Component.translatable("mapsetup.stage.9.name.success",
                     NamedTranslationArgument.component("name", teamName)
             ));
