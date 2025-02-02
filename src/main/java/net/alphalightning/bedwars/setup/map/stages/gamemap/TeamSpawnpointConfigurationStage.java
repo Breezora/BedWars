@@ -83,13 +83,10 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        sendSuccessMessage();
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success",
+                NamedTranslationArgument.component("name", teamName)
+        ));
         startPhase(++phase);
 
     }
-
-    private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", NamedTranslationArgument.component("name", teamName)));
-    }
-
 }
