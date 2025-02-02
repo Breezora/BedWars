@@ -21,5 +21,7 @@ public class CompleteSetupStage extends Stage {
     public void run() {
         player.sendMessage(Component.translatable(isLobbySetup ? "lobbysetup.finish" : "mapsetup.finish", Component.text(fileName)));
         Feedback.complete(player);
+
+        invalidate();
     }
 }
