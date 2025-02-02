@@ -1,14 +1,20 @@
 package net.alphalightning.bedwars.setup.map;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.game.SpawnerType;
+import net.alphalightning.bedwars.setup.map.jackson.GameMap;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
+import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public final class GameMapSetup implements MapSetup {
@@ -22,12 +28,12 @@ public final class GameMapSetup implements MapSetup {
     private int stage;
 
     // Configuration
+    private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<Team> teams = new ArrayList<>();
-    private final List<Location> emeraldSpawnerLocations = new ArrayList<>();
-    private final List<Location> diamondSpawnerLocations = new ArrayList<>();
-    private final List<Location> shopVillagerLocations = new ArrayList<>();
-    private final List<Location> upgradeVillagerLocations = new ArrayList<>();
-    private Location spectatorSpawn;
+    private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
+    private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
+    private JacksonLocation spectatorSpawn;
+    private final String name;
     private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
@@ -38,6 +44,7 @@ public final class GameMapSetup implements MapSetup {
     public GameMapSetup(BedWarsPlugin plugin, Player player, String name) {
         this.plugin = plugin;
         this.player = player;
+        this.name = name;
         this.fileName = name + ".json";
         this.cancelStage = new CancelStage(plugin, player, this, false);
 
@@ -68,6 +75,7 @@ public final class GameMapSetup implements MapSetup {
             case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             case 14 -> new BedConfigurationStage(plugin, player, this).run();
+            case 15 -> new CompleteSetupStage(plugin, player, this, fileName).run();
             default -> cancelStage.run();
         }
     }
@@ -76,7 +84,9 @@ public final class GameMapSetup implements MapSetup {
     public void saveConfiguration() {
         try {
             createDirectory();
-            plugin.jsonMapper().writeValue(directory().resolve(fileName).toFile(), null);
+
+            GameMap gameMap = new GameMap(name, teamSize, minBuildHeight, maxBuildHeight, slowIron, spectatorSpawn, teams, shopVillagerLocations, upgradeVillagerLocations, spawner);
+            plugin.jsonMapper().writeValue(mapsDirectory().resolve(fileName).toFile(), gameMap);
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
@@ -114,7 +124,6 @@ public final class GameMapSetup implements MapSetup {
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
-        this.teams.clear();
         this.teams.addAll(teams);
     }
 
@@ -138,22 +147,28 @@ public final class GameMapSetup implements MapSetup {
         this.minBuildHeight = height;
     }
 
+    public void configureSlowIron(Boolean slow) {
+        this.slowIron = slow;
+    }
+
     public void configureSpectatorSpawn(Location location) {
-        this.spectatorSpawn = location;
+        this.spectatorSpawn = new JacksonLocation(location);
     }
 
-    public void configureEmeraldSpawnerLocations(List<Location> locations) {
-        this.emeraldSpawnerLocations.addAll(locations);
+    public void configureEmeraldSpawnerLocations(@NotNull List<Location> locations) {
+        this.spawner.putIfAbsent(SpawnerType.EMERALD, locations.stream().map(SimpleJacksonLocation::new).toList());
     }
 
-    public void configureDiamondSpawnerLocations(List<Location> locations) {
-        this.diamondSpawnerLocations.addAll(locations);
+    public void configureDiamondSpawnerLocations(@NotNull List<Location> locations) {
+        this.spawner.putIfAbsent(SpawnerType.DIAMOND, locations.stream().map(SimpleJacksonLocation::new).toList());
     }
 
-    public void configureSlowIron(Boolean slow) { this.slowIron = slow; }
+    public void configureShopVillager(@NotNull List<Location> locations) {
+        this.shopVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+    }
 
-    public void configureShopVillager(List<Location> locations) {this.shopVillagerLocations.addAll(locations);}
-
-    public void configureUpgradeVillager(List<Location> locations) {this.upgradeVillagerLocations.addAll(locations);}
+    public void configureUpgradeVillager(@NotNull List<Location> locations) {
+        this.upgradeVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+    }
 }
 

@@ -29,8 +29,12 @@ public interface Setup {
         return plugin().getDataFolder().toPath();
     }
 
+    default Path mapsDirectory() {
+        return directory().resolve("maps");
+    }
+
     default void createDirectory() throws IOException {
-        Path configDirPath = directory().resolve("maps");
+        Path configDirPath = mapsDirectory();
         if (!Files.exists(configDirPath)) {
             Files.createDirectory(configDirPath);
         }
