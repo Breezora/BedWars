@@ -53,11 +53,10 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
         this.phase = phase;
         this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         Bukkit.getLogger().info("Current team: " + team.name());
         Bukkit.getLogger().info("Phase: " + phase + ", Size: " + size);
-
-        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 NamedTranslationArgument.numeric("phase", phase),
@@ -83,10 +82,13 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success",
-                NamedTranslationArgument.component("name", teamName)
-        ));
-        startPhase(++phase);
+        if (phase - 1 <= size) {
+            player.sendMessage(Component.translatable("mapsetup.stage.9.name.success",
+                    NamedTranslationArgument.component("name", teamName)
+            ));
+            startPhase(++phase);
+        }
 
+        gameMapSetup.startStage(10);
     }
 }
