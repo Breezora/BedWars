@@ -55,6 +55,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         this.team = teams.get(phase - 1);
 
         Bukkit.getLogger().info("Current team: " + team.name());
+        Bukkit.getLogger().info("Phase: " + phase + ", Size: " + size);
 
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
@@ -79,7 +80,11 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            return;
         }
+
+        sendSuccessMessage();
+
     }
 
     private void sendSuccessMessage() {
