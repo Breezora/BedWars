@@ -78,24 +78,16 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        final Location corrected = location.add(OFFSET);
+        team.spawnpoint(location.add(OFFSET));
+        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
+        Feedback.success(player);
 
-        if (phase < size) { // Teams are configured
-            team.spawnpoint(corrected);
-
-            player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
-            Feedback.success(player);
-
+        if (phase < size) {
             startPhase(++phase);
             return;
         }
 
-        team.spawnpoint(corrected); // Last team is configured
-
-        player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
-        Feedback.success(player);
-
         gameMapSetup.startStage(10);
     }
 }
