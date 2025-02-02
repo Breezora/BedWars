@@ -27,6 +27,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private int phase;
 
     private TranslatableComponent teamName = null;
+    private Team team = null;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -51,7 +52,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         this.phase = phase;
-        this.teamName = Component.translatable("team." + convertName(teams.get(phase - 1).name()));
+        this.team = teams.get(phase - 1);
+        this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
                 NamedTranslationArgument.numeric("phase", phase),
@@ -78,7 +80,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
 
         if (phase < size) { // Teams are configured
-            updateSpawnpoint(location);
+            team.spawnpoint(location);
 
             player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
             Feedback.success(player);
@@ -87,7 +89,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        updateSpawnpoint(location); // Last team is configured
+        team.spawnpoint(location); // Last team is configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
@@ -96,10 +98,5 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         Bukkit.getLogger().info("Teams: " + teams);
 
         gameMapSetup.startStage(10);
-    }
-
-    private void updateSpawnpoint(Location location) {
-        Team team = teams.get(phase - 1);
-        team.spawnpoint(location);
     }
 }
