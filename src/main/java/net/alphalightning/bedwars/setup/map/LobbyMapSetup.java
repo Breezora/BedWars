@@ -4,10 +4,10 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
-import net.alphalightning.bedwars.setup.map.stages.lobby.CompleteSetupStage;
+import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
+import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureHologramStage;
 import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureSpawnStage;
-import net.alphalightning.bedwars.setup.map.stages.lobby.WelcomeStage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -47,10 +47,10 @@ public final class LobbyMapSetup implements MapSetup {
     public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
         switch (stage) {
-            case 0 -> new WelcomeStage(plugin, player, this).run();
+            case 0 -> new WelcomeStage(plugin, player, this, true).run();
             case 1 -> new ConfigureSpawnStage(plugin, player, this).run();
             case 2 -> new ConfigureHologramStage(plugin, player, this).run();
-            case 3 -> new CompleteSetupStage(plugin, player, this, FILE_NAME).run();
+            case 3 -> new CompleteSetupStage(plugin, player, this, FILE_NAME, true).run();
             default -> cancelStage.run();
         }
     }

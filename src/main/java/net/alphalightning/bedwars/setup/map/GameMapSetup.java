@@ -7,6 +7,8 @@ import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
+import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
+import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -60,7 +62,7 @@ public final class GameMapSetup implements MapSetup {
     public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
         switch (stage) {
-            case 0 -> new WelcomeStage(plugin, player, this).run();
+            case 0 -> new WelcomeStage(plugin, player, this, false).run();
             case 1 -> new TeamSelectionStage(plugin, player, this).run();
             case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
             case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
@@ -75,7 +77,7 @@ public final class GameMapSetup implements MapSetup {
             case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             case 14 -> new BedConfigurationStage(plugin, player, this).run();
-            case 15 -> new CompleteSetupStage(plugin, player, this, fileName).run();
+            case 15 -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
             default -> cancelStage.run();
         }
     }
