@@ -24,34 +24,33 @@ public class CreateMapCommand extends BaseCommand {
     @Subcommand("lobby")
     public void onCreateLobby(Player player) {
         try {
-            mapNameManager.registerText("lobby");
+            playerManager.registerPlayer(player, ConfigurationType.LOBBY);
 
         } catch (AlreadyRegisteredException exception) {
-            player.sendMessage(Component.translatable("error.setup.lobby.running"));
+            player.sendMessage(Component.translatable("error.setup.already-running"));
         }
-
         try {
-            playerManager.registerPlayer(player, ConfigurationType.LOBBY);
+            mapNameManager.registerText("lobby");
             Setup.mapBuilder(ConfigurationType.LOBBY)
                     .plugin(plugin)
                     .executor(player)
                     .build().start();
 
         } catch (AlreadyRegisteredException exception) {
-            player.sendMessage(Component.translatable("error.setup.already-running"));
+            player.sendMessage(Component.translatable("error.setup.lobby.running"));
         }
     }
 
     @Subcommand("gamemap")
     public void onCreateGameMap(Player player, @Name("mapName") @NotNull String mapName) {
         try {
-            mapNameManager.registerText(mapName.toLowerCase());
-        } catch (AlreadyRegisteredException exception) {
-            player.sendMessage(Component.translatable("error.setup.map.exists", Component.text(mapName)));
-        }
-
-        try {
             playerManager.registerPlayer(player, ConfigurationType.MAP);
+
+        } catch (AlreadyRegisteredException exception) {
+            player.sendMessage(Component.translatable("error.setup.already-running"));
+        }
+        try {
+            mapNameManager.registerText(mapName.toLowerCase());
             Setup.mapBuilder(ConfigurationType.MAP)
                     .plugin(plugin)
                     .executor(player)
@@ -59,7 +58,7 @@ public class CreateMapCommand extends BaseCommand {
                     .build().start();
 
         } catch (AlreadyRegisteredException exception) {
-            player.sendMessage(Component.translatable("error.setup.already-running"));
+            player.sendMessage(Component.translatable("error.setup.map.exists", Component.text(mapName)));
         }
     }
 }
