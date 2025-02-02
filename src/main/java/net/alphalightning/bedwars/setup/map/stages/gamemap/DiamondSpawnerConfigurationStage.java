@@ -90,7 +90,7 @@ public class DiamondSpawnerConfigurationStage extends Stage implements LocationC
 
         // Configuration is completed
 
-        locations.add(location.add(OFFSET));
+        locations.add(corrected);
 
         player.sendMessage(Component.translatable("mapsetup.stage.8.id.success", Component.text(phase)));
         player.sendMessage(Component.translatable("mapsetup.stage.8.success"));
