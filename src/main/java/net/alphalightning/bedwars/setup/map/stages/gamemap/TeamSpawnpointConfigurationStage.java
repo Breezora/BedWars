@@ -53,6 +53,9 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
         this.phase = phase;
         this.team = teams.get(phase - 1);
+
+        Bukkit.getLogger().info("Current team: " + team);
+
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name",
