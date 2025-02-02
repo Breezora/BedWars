@@ -8,27 +8,27 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class BedConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int count;
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team;
+    private Team team = null;
 
     public BedConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -56,18 +56,21 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.14.name", Component.text(phase), teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.14.name",
+                NamedTranslationArgument.numeric("phase", phase),
+                NamedTranslationArgument.component("name", teamName)
+        ));
         Feedback.success(player);
     }
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        Location down = player.getLocation();
+        Location location = player.getLocation();
 
         if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
-        if (isNotOnGround(player, down)) {
+        if (isNotOnGround(player, location)) {
             return;
         }
         if (isNotStage(14)) {
@@ -76,32 +79,18 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-        if (phase < count) {
-            sendSuccessMessage();
-            Feedback.success(player);
 
-            player.getFacing().getDirection().normalize();
-
-            Team team = this.team.bedDownside(down);
-            tempTeams.add(team);
-
-            if (getFacingLocation(player, down) != null) {
-                team = this.team.bedUpside(getFacingLocation(player, down));
-                tempTeams.add(team);
-                startPhase(++phase);
-                return;
-            }
-
-            player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
-            Feedback.error(player);
+        if (phase < count) { // Teams are configured
+            updateBed(location);
+            startPhase(++phase);
             return;
         }
 
-        sendSuccessMessage();
+        updateBed(location); // Last team is configured
+
         player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(15);
     }
 
@@ -109,20 +98,33 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
     }
 
-    private Location getFacingLocation(Player player, Location down) {
-        BlockFace facing = player.getFacing(); // Blickrichtung des Spielers
-        Location newLocation = down.clone(); // Kopie der Down-Location erstellen
+    private void updateBed(Location bottom) {
+        team.bedBottomHalf(bottom);
 
-        // Je nach Richtung den neuen Block berechnen
-        switch (facing) {
-            case NORTH -> newLocation.add(0, 0, -1);
-            case SOUTH -> newLocation.add(0, 0, 1);
-            case WEST -> newLocation.add(-1, 0, 0);
-            case EAST -> newLocation.add(1, 0, 0);
+        Location topHalf = calculateTopHalf(bottom);
+        if (topHalf == null) {
+            player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
+            Feedback.error(player);
+            return;
+        }
+
+        team.bedTopHalf(topHalf);
+
+        player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
+        Feedback.success(player);
+    }
+
+    private @Nullable Location calculateTopHalf(@NotNull Location bottom) {
+        Location top = bottom.clone();
+        switch (player.getFacing()) {
+            case NORTH -> top.add(0, 0, -1);
+            case SOUTH -> top.add(0, 0, 1);
+            case WEST -> top.add(-1, 0, 0);
+            case EAST -> top.add(1, 0, 0);
             default -> {
                 return null;
             }
         }
-        return newLocation;
+        return top;
     }
 }
