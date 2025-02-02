@@ -25,7 +25,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private final List<Team> teams;
     private final int size;
     private int phase;
-    private int configured;
 
     private TranslatableComponent teamName = null;
     private Team team;
@@ -36,12 +35,10 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.teams = Collections.emptyList();
             this.size = 0;
-            this.configured = 0;
             return;
         }
         this.teams = gameMapSetup.teams();
         this.size = teams.size();
-        this.configured = 1;
     }
 
     @Override
@@ -82,31 +79,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
-            return;
         }
-
-        Bukkit.getLogger().info("Configured " + configured + ", Size " + size);
-
-        if (configured < size) {
-            team.spawnpoint(location);
-
-            Bukkit.getLogger().info("Update team " + team.name() + ": " + team);
-
-            sendSuccessMessage();
-            Feedback.success(player);
-
-            configured++;
-            startPhase(++phase);
-            return;
-        }
-
-        Bukkit.getLogger().info("Teams: " + teams);
-
-        sendSuccessMessage();
-        player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
-        Feedback.success(player);
-
-        gameMapSetup.startStage(10);
     }
 
     private void sendSuccessMessage() {
