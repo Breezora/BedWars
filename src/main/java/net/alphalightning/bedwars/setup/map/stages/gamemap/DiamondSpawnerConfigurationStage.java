@@ -75,18 +75,22 @@ public class DiamondSpawnerConfigurationStage extends Stage implements LocationC
             return;
         }
 
-        // Emerald spawner configuration is not completed
+        // Diamond spawner configuration is not completed
+
+        final Location corrected = location.add(OFFSET);
 
         if (phase < count) {
             player.sendMessage(Component.translatable("mapsetup.stage.8.id.success", Component.text(phase)));
             Feedback.success(player);
 
-            locations.add(location.add(OFFSET));
+            locations.add(corrected);
             startPhase(++phase);
             return;
         }
 
         // Configuration is completed
+
+        locations.add(location.add(OFFSET));
 
         player.sendMessage(Component.translatable("mapsetup.stage.8.id.success", Component.text(phase)));
         player.sendMessage(Component.translatable("mapsetup.stage.8.success"));

@@ -77,17 +77,20 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
         // Emerald spawner configuration is not completed
 
+        final Location corrected = location.add(OFFSET);
+
         if (phase < count) {
             player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
             Feedback.success(player);
 
-            locations.add(location.add(OFFSET));
+            locations.add(corrected);
             startPhase(++phase);
             return;
         }
 
         // Configuration is completed
 
+        location.add(corrected);
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         player.sendMessage(Component.translatable("mapsetup.stage.7.success"));
