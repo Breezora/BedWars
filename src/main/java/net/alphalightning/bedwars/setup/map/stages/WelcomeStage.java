@@ -1,21 +1,23 @@
-package net.alphalightning.bedwars.setup.map.stages.lobby;
+package net.alphalightning.bedwars.setup.map.stages;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 public class WelcomeStage extends Stage {
 
-    public WelcomeStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
+    private final boolean isLobbySetup;
+
+    public WelcomeStage(BedWarsPlugin plugin, Player player, MapSetup setup, boolean isLobbySetup) {
         super(plugin, player, setup);
+        this.isLobbySetup = isLobbySetup;
     }
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("lobbysetup.start"));
+        player.sendMessage(Component.translatable(isLobbySetup ? "lobbysetup.start" : "mapsetup.start"));
         Feedback.start(player);
     }
 }
