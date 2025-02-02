@@ -84,6 +84,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
 
         sendSuccessMessage();
+        startPhase(phase++);
 
     }
 
