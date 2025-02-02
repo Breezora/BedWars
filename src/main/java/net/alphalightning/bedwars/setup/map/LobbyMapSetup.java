@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureHologramStage;
 import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureSpawnStage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,6 +35,11 @@ public final class LobbyMapSetup implements MapSetup {
         this.cancelStage = new CancelStage(plugin, player, this, true);
 
         startStage(0);
+    }
+
+    @Override
+    public @NotNull String mapName() {
+        return "lobby";
     }
 
     @Override

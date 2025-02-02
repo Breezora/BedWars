@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.map.stages;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.exception.NotRegisteredException;
 import net.alphalightning.bedwars.manager.PlayerManager;
+import net.alphalightning.bedwars.manager.TextManager;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.kyori.adventure.text.Component;
@@ -13,7 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class Stage implements Listener {
 
-    protected final PlayerManager<ConfigurationType> playerManager;
+    private final PlayerManager<ConfigurationType> playerManager;
+    private final TextManager mapNameManager;
+
     protected final BedWarsPlugin plugin;
     protected final MapSetup setup;
     protected Player player;
@@ -23,6 +26,7 @@ public abstract class Stage implements Listener {
         this.player = player;
         this.setup = setup;
         this.playerManager = plugin.setupPlayerManager();
+        this.mapNameManager = plugin.mapNameManager();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -38,6 +42,7 @@ public abstract class Stage implements Listener {
     public void invalidate() {
         try {
             playerManager.unregisterPlayer(player);
+            mapNameManager.unregisterText(setup.mapName().toLowerCase());
 
         } catch (NotRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.none"));

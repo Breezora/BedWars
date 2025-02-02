@@ -28,7 +28,7 @@ public class MapNameManager implements TextManager {
 
     @Override
     public void registerText(@NotNull String text) throws AlreadyRegisteredException {
-        if (this.allTextProvider.texts().contains(text.toLowerCase())) {
+        if (this.allTextProvider.has(text.toLowerCase())) {
             throw new AlreadyRegisteredException();
         }
         mapNames.add(text.toLowerCase());
@@ -36,7 +36,7 @@ public class MapNameManager implements TextManager {
 
     @Override
     public void unregisterText(@NotNull String text) throws NotRegisteredException {
-        if (!this.allTextProvider.texts().contains(text.toLowerCase())) {
+        if (!this.allTextProvider.has(text.toLowerCase())) {
             throw new NotRegisteredException();
         }
         mapNames.remove(text);

@@ -24,4 +24,9 @@ public class MapNameProvider implements TextProvider {
     public int count() {
         return (int) this.textSupplier.get().count();
     }
+
+    @Override
+    public boolean has(@NotNull String text) {
+        return this.textSupplier.get().anyMatch(s -> s.equalsIgnoreCase(text.toLowerCase()));
+    }
 }

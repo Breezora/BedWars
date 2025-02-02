@@ -54,6 +54,11 @@ public final class GameMapSetup implements MapSetup {
     }
 
     @Override
+    public @NotNull String mapName() {
+        return this.name;
+    }
+
+    @Override
     public void invalidate() {
         player = null;
     }

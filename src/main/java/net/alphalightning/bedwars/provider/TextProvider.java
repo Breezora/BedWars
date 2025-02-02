@@ -10,4 +10,6 @@ public interface TextProvider {
 
     int count();
 
+    boolean has(@NotNull String text);
+
 }

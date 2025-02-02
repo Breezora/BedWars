@@ -5,24 +5,31 @@ import co.aikar.commands.annotation.*;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.exception.AlreadyRegisteredException;
 import net.alphalightning.bedwars.manager.PlayerManager;
+import net.alphalightning.bedwars.manager.TextManager;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import net.alphalightning.bedwars.setup.Setup;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("createmap")
 @CommandPermission("bedwars.admin")
 @Description("Erstellt eine neue Map (Lobby/GameMap)")
 public class CreateMapCommand extends BaseCommand {
 
-    @Dependency
-    private BedWarsPlugin plugin;
-
-    @Dependency
-    private PlayerManager<ConfigurationType> playerManager;
+    @Dependency private BedWarsPlugin plugin;
+    @Dependency private PlayerManager<ConfigurationType> playerManager;
+    @Dependency private TextManager mapNameManager;
 
     @Subcommand("lobby")
     public void onCreateLobby(Player player) {
+        try {
+            mapNameManager.registerText("lobby");
+
+        } catch (AlreadyRegisteredException exception) {
+            player.sendMessage(Component.translatable("error.setup.lobby.running"));
+        }
+
         try {
             playerManager.registerPlayer(player, ConfigurationType.LOBBY);
             Setup.mapBuilder(ConfigurationType.LOBBY)
@@ -36,7 +43,13 @@ public class CreateMapCommand extends BaseCommand {
     }
 
     @Subcommand("gamemap")
-    public void onCreateGameMap(Player player, @Name("mapName") String mapName) {
+    public void onCreateGameMap(Player player, @Name("mapName") @NotNull String mapName) {
+        try {
+            mapNameManager.registerText(mapName.toLowerCase());
+        } catch (AlreadyRegisteredException exception) {
+            player.sendMessage(Component.translatable("error.setup.map.exists", Component.text(mapName)));
+        }
+
         try {
             playerManager.registerPlayer(player, ConfigurationType.MAP);
             Setup.mapBuilder(ConfigurationType.MAP)

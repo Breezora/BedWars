@@ -11,7 +11,9 @@ import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.manager.PlayerManager;
+import net.alphalightning.bedwars.manager.TextManager;
 import net.alphalightning.bedwars.manager.impl.ConfigurationPlayerManager;
+import net.alphalightning.bedwars.manager.impl.MapNameManager;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
@@ -29,6 +31,7 @@ import java.util.ResourceBundle;
 public class BedWarsPlugin extends JavaPlugin {
 
     private final PlayerManager<ConfigurationType> setupPlayerManager = new ConfigurationPlayerManager();
+    private final TextManager mapNameManager = new MapNameManager();
     private final ObjectMapper mapper = JsonMapper.builder()
             .addModule(JacksonPaper.builder().build())
             .enable(SerializationFeature.INDENT_OUTPUT) // Pretty printing
@@ -71,6 +74,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
         if (environment != Environment.PRODUCTION) {
             manager.registerDependency(PlayerManager.class, setupPlayerManager);
+            manager.registerDependency(TextManager.class, mapNameManager);
 
             manager.registerCommand(new CreateMapCommand()); // Command to create a new map
 
@@ -103,5 +107,9 @@ public class BedWarsPlugin extends JavaPlugin {
 
     public PlayerManager<ConfigurationType> setupPlayerManager() {
         return setupPlayerManager;
+    }
+
+    public TextManager mapNameManager() {
+        return mapNameManager;
     }
 }
