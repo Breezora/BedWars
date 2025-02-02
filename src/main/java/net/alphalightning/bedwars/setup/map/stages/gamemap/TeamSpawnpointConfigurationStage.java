@@ -11,18 +11,17 @@ import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int size;
     private int phase;
@@ -81,8 +80,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         }
 
         if (phase < size) {
-            Team team = this.team.spawnpoint(location);
-            tempTeams.add(team);
+            this.team.spawnpoint(location);
 
             sendSuccessMessage();
             Feedback.success(player);
@@ -91,11 +89,12 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
+        Bukkit.getLogger().info("Teams: " + teams);
+
         sendSuccessMessage();
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(10);
     }
 
