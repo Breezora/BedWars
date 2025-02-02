@@ -6,11 +6,11 @@ import org.bukkit.Location;
 public class Team {
 
     private final String name;
-    private Location spawnpoint;
-    private Location chest;
-    private Location bedBottomHalf;
-    private Location bedTopHalf;
-    private Location lootspawner;
+    private JacksonLocation spawnpoint;
+    private SimpleJacksonLocation chest;
+    private SimpleJacksonLocation bedBottomHalf;
+    private SimpleJacksonLocation bedTopHalf;
+    private SimpleJacksonLocation lootspawner;
 
     @JsonCreator
     public Team(String name) {
@@ -18,7 +18,7 @@ public class Team {
     }
 
     @JsonCreator
-    public Team(String name, Location spawnpoint, Location chest, Location bedBottomHalf, Location bedTopHalf, Location lootspawner) {
+    public Team(String name, JacksonLocation spawnpoint, SimpleJacksonLocation chest, SimpleJacksonLocation bedBottomHalf, SimpleJacksonLocation bedTopHalf, SimpleJacksonLocation lootspawner) {
         this.name = name;
         this.spawnpoint = spawnpoint;
         this.chest = chest;
@@ -31,55 +31,43 @@ public class Team {
         return name;
     }
 
-    public Location spawnpoint() {
+    public JacksonLocation spawnpoint() {
         return spawnpoint;
     }
 
-    public Location chest() {
+    public SimpleJacksonLocation chest() {
         return chest;
     }
 
-    public Location bedBottomHalf() {
+    public SimpleJacksonLocation bedBottomHalf() {
         return bedBottomHalf;
     }
 
-    public Location bedTopHalf() {
+    public SimpleJacksonLocation bedTopHalf() {
         return bedTopHalf;
     }
 
-    public Location lootspawner() {
+    public SimpleJacksonLocation lootspawner() {
         return lootspawner;
     }
 
     public void bedBottomHalf(Location bedBottomHalf) {
-        this.bedBottomHalf = bedBottomHalf.clone();
+        this.bedBottomHalf = new SimpleJacksonLocation(bedBottomHalf);
     }
 
     public void bedTopHalf(Location bedTopHalf) {
-        this.bedTopHalf = bedTopHalf.clone();
+        this.bedTopHalf = new SimpleJacksonLocation(bedTopHalf);
     }
 
     public void chest(Location chest) {
-        this.chest = chest.clone();
+        this.chest = new SimpleJacksonLocation(chest);
     }
 
     public void spawnpoint(Location spawnpoint) {
-        this.spawnpoint = spawnpoint.clone();
+        this.spawnpoint = new JacksonLocation(spawnpoint);
     }
 
     public void lootspawner(Location lootspawner) {
-        this.lootspawner = lootspawner.clone();
-    }
-
-    @Override
-    public String toString() {
-        return "Team{" +
-                "name='" + name + '\'' +
-                ", spawnpoint=" + spawnpoint +
-                ", chest=" + chest +
-                ", bedBottomHalf=" + bedBottomHalf +
-                ", bedTopHalf=" + bedTopHalf +
-                ", lootspawner=" + lootspawner +
-                '}';
+        this.lootspawner = new SimpleJacksonLocation(lootspawner);
     }
 }
