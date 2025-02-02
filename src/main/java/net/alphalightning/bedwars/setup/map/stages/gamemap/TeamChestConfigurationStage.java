@@ -8,6 +8,7 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -15,19 +16,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final List<Team> tempTeams = new ArrayList<>();
     private final List<Team> teams;
     private final int count;
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team;
+    private Team team = null;
 
     public TeamChestConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -54,7 +53,10 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name", Component.text(phase), teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name",
+                NamedTranslationArgument.numeric("phase", phase),
+                NamedTranslationArgument.component("name", teamName)
+        ));
         Feedback.success(player);
     }
 
@@ -74,26 +76,23 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
-        if (phase < count) {
-            Team team = this.team.chest(location);
-            tempTeams.add(team);
 
-            sendSuccessMessage();
+        if (phase < count) { // Teams are configured
+            team.chest(location);
+
+            player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
             Feedback.success(player);
 
             startPhase(++phase);
             return;
         }
-        sendSuccessMessage();
+
+        team.chest(location);
+
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureTeams(tempTeams);
         gameMapSetup.startStage(12);
     }
-
-    private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
-    }
-
 }
