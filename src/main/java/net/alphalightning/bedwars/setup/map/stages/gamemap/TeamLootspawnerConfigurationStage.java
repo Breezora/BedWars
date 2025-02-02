@@ -130,8 +130,10 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return;
         }
 
+        final Location corrected = location.add(OFFSET);
+
         if (phase < size) { // Teams are configured
-            team.lootspawner(location);
+            team.lootspawner(corrected);
 
             player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
             Feedback.success(player);
@@ -140,7 +142,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return;
         }
 
-        team.lootspawner(location); // Last team is configured
+        team.lootspawner(corrected); // Last team is configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));

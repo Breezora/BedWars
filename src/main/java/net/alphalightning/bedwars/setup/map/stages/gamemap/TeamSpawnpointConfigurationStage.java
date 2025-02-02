@@ -11,7 +11,6 @@ import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,10 +78,10 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        Bukkit.getLogger().info("Before setting spawnpoint - Y: " + location.getY());
+        final Location corrected = location.add(OFFSET);
 
         if (phase < size) { // Teams are configured
-            team.spawnpoint(location.clone());
+            team.spawnpoint(corrected);
 
             player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
             Feedback.success(player);
@@ -91,9 +90,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
             return;
         }
 
-        team.spawnpoint(location.clone()); // Last team is configured
-
-        Bukkit.getLogger().info("After setting spawnpoint - Y: " + team.spawnpoint().getY());
+        team.spawnpoint(corrected); // Last team is configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));

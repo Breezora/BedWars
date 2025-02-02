@@ -80,22 +80,20 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
             return;
         }
 
+        final Location corrected = location.add(OFFSET);
+
         if (phase < count) { // Teams are configured
-            updateBed(location);
+            updateBed(corrected);
             startPhase(++phase);
             return;
         }
 
-        updateBed(location); // Last team is configured
+        updateBed(corrected); // Last team is configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
         Feedback.success(player);
 
         gameMapSetup.startStage(15);
-    }
-
-    private void sendSuccessMessage() {
-        player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
     }
 
     private void updateBed(Location bottom) {

@@ -77,8 +77,10 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
 
+        final Location corrected = location.add(OFFSET);
+
         if (phase < count) { // Teams are configured
-            team.chest(location);
+            team.chest(corrected);
 
             player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
             Feedback.success(player);
@@ -87,7 +89,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
             return;
         }
 
-        team.chest(location);
+        team.chest(corrected);
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));

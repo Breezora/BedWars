@@ -43,7 +43,9 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureSpectatorSpawn(location);
+        final Location corrected = location.add(OFFSET);
+
+        gameMapSetup.configureSpectatorSpawn(corrected);
         gameMapSetup.startStage(7);
     }
 }
