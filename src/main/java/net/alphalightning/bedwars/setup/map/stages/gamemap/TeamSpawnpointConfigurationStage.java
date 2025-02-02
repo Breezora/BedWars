@@ -84,7 +84,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         Bukkit.getLogger().info("Phase " + phase + ", Size " + size);
 
-        if (phase < size) {
+        if (phase <= size) {
             team.spawnpoint(location);
 
             Bukkit.getLogger().info("Update team " + team.name() + ": " + team);
