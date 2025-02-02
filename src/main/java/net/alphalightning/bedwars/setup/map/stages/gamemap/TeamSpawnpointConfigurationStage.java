@@ -98,6 +98,5 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
     private void updateSpawnpoint(Location location) {
         Team team = teams.get(phase - 1);
         team.spawnpoint(location);
-        teams.set(phase - 1, team);
     }
 }
