@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.exception.AlreadyRegisteredException;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.manager.PlayerManager;
 import net.alphalightning.bedwars.manager.TextManager;
 import net.alphalightning.bedwars.setup.ConfigurationType;
@@ -28,6 +29,7 @@ public class CreateMapCommand extends BaseCommand {
 
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.already-running"));
+            Feedback.error(player);
         }
         try {
             mapNameManager.registerText("lobby");
@@ -38,6 +40,7 @@ public class CreateMapCommand extends BaseCommand {
 
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.lobby.running"));
+            Feedback.error(player);
         }
     }
 
@@ -48,6 +51,7 @@ public class CreateMapCommand extends BaseCommand {
 
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.already-running"));
+            Feedback.error(player);
         }
         try {
             mapNameManager.registerText(mapName.toLowerCase());
@@ -59,6 +63,7 @@ public class CreateMapCommand extends BaseCommand {
 
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.map.exists", Component.text(mapName)));
+            Feedback.error(player);
         }
     }
 }
