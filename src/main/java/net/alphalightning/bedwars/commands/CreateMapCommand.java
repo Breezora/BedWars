@@ -30,6 +30,7 @@ public class CreateMapCommand extends BaseCommand {
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.already-running"));
             Feedback.error(player);
+            return;
         }
         try {
             mapNameManager.registerText("lobby");
@@ -52,6 +53,7 @@ public class CreateMapCommand extends BaseCommand {
         } catch (AlreadyRegisteredException exception) {
             player.sendMessage(Component.translatable("error.setup.already-running"));
             Feedback.error(player);
+            return;
         }
         try {
             mapNameManager.registerText(mapName.toLowerCase());
