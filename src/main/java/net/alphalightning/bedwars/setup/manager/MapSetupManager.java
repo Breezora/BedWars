@@ -26,6 +26,15 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
     private Player executor;
     private String mapName;
 
+    /*
+    IMPORTANT:
+    We are using a singleton with the monitor keyword "synchronized" to make sure
+    that only one player at a time can access this instance. This allows us to
+    prevent duplications in map names or in active player setups.
+     */
+
+    // Start singleton instance
+
     private MapSetupManager() {
         this.activeSetups = new ConcurrentHashMap<>();
         this.activeMaps = new ConcurrentHashMap<>();
@@ -38,6 +47,8 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         return instance;
     }
 
+    // End singleton instance
+
     public synchronized MapSetupManager prepareNewSetup(BedWarsPlugin plugin, ConfigurationType configurationType, Player executor, String mapName) {
         this.plugin = plugin;
         this.configurationType = configurationType;
@@ -47,7 +58,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
     }
 
     @Override
-    public @NotNull MapSetup get() {
+    public @NotNull MapSetup get() { // Create fresh setup instance
         MapSetup.Builder builder = Setup.mapBuilder(this.configurationType)
                 .plugin(this.plugin)
                 .executor(this.executor);
@@ -59,7 +70,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
     }
 
     public synchronized void startSetup() {
-        if (hasActiveSetup(this.executor)) {
+        if (hasActiveSetup(this.executor)) { // Player is already running a setup
             this.executor.sendMessage(Component.translatable("error.setup.running.self"));
             Feedback.error(this.executor);
             return;
@@ -68,7 +79,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         final MapSetup setup = get();
         final String name = setup.mapName();
 
-        if (activeMaps.containsKey(toLowerCase(name))) {
+        if (activeMaps.containsKey(toLowerCase(name))) { // A map with that is currently configured by someone else
             if (name.equalsIgnoreCase(LOBBY_MAP_NAME)) {
                 this.executor.sendMessage(Component.translatable("error.setup.running.lobby"));
             } else {
@@ -78,6 +89,8 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
             setup.cancel(true);
             return;
         }
+
+        // Start map configuration
 
         activeMaps.put(toLowerCase(name), setup);
         activeSetups.put(this.executor, setup);
