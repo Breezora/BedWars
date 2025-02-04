@@ -49,8 +49,6 @@ public final class GameMapSetup implements MapSetup {
         this.name = name;
         this.fileName = name + ".json";
         this.cancelStage = new CancelStage(plugin, player, this, false);
-
-        startStage(0);
     }
 
     @Override
@@ -80,6 +78,11 @@ public final class GameMapSetup implements MapSetup {
             case 15 -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
             default -> cancelStage.run();
         }
+    }
+
+    @Override
+    public @NotNull String mapName() {
+        return this.name;
     }
 
     @Override

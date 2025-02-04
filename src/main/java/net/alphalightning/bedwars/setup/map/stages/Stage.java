@@ -1,21 +1,25 @@
 package net.alphalightning.bedwars.setup.map.stages;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Stage implements Listener {
 
     protected final BedWarsPlugin plugin;
+    protected final MapSetupManager setupManager;
     protected final MapSetup setup;
     protected Player player;
 
-    public Stage(BedWarsPlugin plugin, Player player, MapSetup setup) {
+    public Stage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
         this.plugin = plugin;
         this.player = player;
         this.setup = setup;
+        this.setupManager = plugin.setupManager();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

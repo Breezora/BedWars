@@ -42,6 +42,6 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
         }
 
         lobbyMapSetup.hologram(location);
-        lobbyMapSetup.finish(3);
+        setupManager.finishSetup(player, 3);
     }
 }

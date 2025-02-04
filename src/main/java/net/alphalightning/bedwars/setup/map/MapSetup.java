@@ -11,6 +11,8 @@ public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSet
 
     void startStage(int stage);
 
+    @NotNull String mapName();
+
     default int validateStage(int current, int toStart) {
         if (current > toStart) {
             throw new IllegalStateException("Could not start stage " + toStart + ": The new stage must be at least the current stage (" + current + ") or higher.");
@@ -20,6 +22,7 @@ public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSet
 
     @Override
     default void start() {
+        startStage(0);
         startStage(1);
     }
 
@@ -30,8 +33,10 @@ public sealed interface MapSetup extends Setup permits LobbyMapSetup, GameMapSet
     }
 
     @Override
-    default void cancel() {
-        startStage(100);
+    default void cancel(boolean failure) {
+        if (!failure) {
+            startStage(100);
+        }
         invalidate();
     }
 
