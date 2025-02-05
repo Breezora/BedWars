@@ -11,7 +11,6 @@ import net.alphalightning.bedwars.setup.visual.impl.PlayerVisualisation;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -48,8 +47,8 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
 
         final Location withOffset = location.add(OFFSET);
 
-        final NPC npc = CitizensAPI.createInMemoryNPCRegistry("spectator").createNPC(EntityType.PLAYER, "Team");
-        npc.setName(LegacyComponentSerializer.legacySection().serialize(Component.translatable("team.spectator")));
+        final NPC npc = CitizensAPI.createInMemoryNPCRegistry("spectator").createNPC(EntityType.PLAYER, "Spectator");
+//        npc.setName(LegacyComponentSerializer.legacySection().serialize(Component.translatable("team.spectator")));
 
         new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(npc, withOffset));
 
