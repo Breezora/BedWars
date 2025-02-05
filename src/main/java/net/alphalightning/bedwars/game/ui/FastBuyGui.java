@@ -9,10 +9,11 @@ public class FastBuyGui {
         return Gui.normal()
                 .setStructure(
                         "a . . . . . . . a",
-                        ". . . . . . . . .",
+                        ". b . . . . . . .",
                         ". . . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
+                .addIngredient('b', new WoolItem())
                 .build();
     }
 
