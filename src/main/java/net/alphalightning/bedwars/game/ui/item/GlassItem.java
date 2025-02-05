@@ -23,7 +23,7 @@ public class GlassItem extends AbstractItem {
 
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.glass.lore.tooltip");
 
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.glass.not-enough-iron");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
         return new ItemBuilder(Material.GLASS)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
