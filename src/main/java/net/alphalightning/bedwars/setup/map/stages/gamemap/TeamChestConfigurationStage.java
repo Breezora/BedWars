@@ -10,6 +10,8 @@ import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.setup.visual.impl.BlockEdgeRenderer;
 import net.alphalightning.bedwars.setup.visual.impl.BlockEdgeVisualisation;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualisation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -85,6 +87,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
         team.chest(withOffset);
         new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualisation(team.color()));
+        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualisation());
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);
