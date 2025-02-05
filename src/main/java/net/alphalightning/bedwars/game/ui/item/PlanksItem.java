@@ -24,7 +24,7 @@ public class PlanksItem  extends AbstractItem {
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.wood.lore.tooltip");
         Component tooltip2 = Component.translatable("gui.shop.itemshop.buyable.wood.lore.tooltip.2");
 
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
         return new ItemBuilder(Material.OAK_PLANKS)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
