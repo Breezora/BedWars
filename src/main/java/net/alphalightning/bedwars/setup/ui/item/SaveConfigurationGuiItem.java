@@ -68,7 +68,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         Feedback.success(player);
     }
 
-    private List<Team> createTeams() {
+    private @NotNull List<Team> createTeams() {
         List<Team> teams = new ArrayList<>();
         for (TeamGuiItem teamGuiItem : selectedTeams) {
             Team team = new Team(fromColor(teamGuiItem.color()));
