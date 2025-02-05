@@ -3,10 +3,7 @@ package net.alphalightning.bedwars.setup.visual.impl;
 import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.setup.visual.Visualisation;
 import net.alphalightning.bedwars.setup.visual.VisualisationConfiguration;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +18,9 @@ public class BlockEdgeVisualisation implements Visualisation<Block>, Visualisati
 
     @Override
     public void show(@NotNull Block block) {
-        final BoundingBox boundingBox = block.getBoundingBox();
+        Bukkit.getLogger().info("Rendering box");
+
+        final BoundingBox boundingBox = BoundingBox.of(block);
         final double minX = boundingBox.getMinX();
         final double maxX = boundingBox.getMaxX();
         final double minY = boundingBox.getMinY();
