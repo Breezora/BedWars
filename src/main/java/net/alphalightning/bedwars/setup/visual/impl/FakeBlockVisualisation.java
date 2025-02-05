@@ -19,7 +19,7 @@ public class FakeBlockVisualisation implements Visualisation<Location> {
 
         world.spawnEntity(location, EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
-            final Location displayLocation = blockLocation.add(0.5D, 0, 0.5D).addRotation(location.getYaw() * -1, location.getPitch() * -1);
+            final Location displayLocation = blockLocation.addRotation(location.getYaw() * -1, location.getPitch() * -1);
 
             blockDisplay.setBlock(Bukkit.createBlockData(Material.CHEST));
             blockDisplay.teleport(displayLocation);
