@@ -8,10 +8,15 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.setup.visual.impl.PlayerRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.PlayerVisualisation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -80,7 +85,12 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         // Spawnpoints of teams have not all been configured
 
-        team.spawnpoint(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+
+        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Team");
+        new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(plugin, npc, false, withOffset));
+
+        team.spawnpoint(withOffset);
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         Feedback.success(player);
 

@@ -6,8 +6,13 @@ import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.visual.impl.PlayerRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.PlayerVisualisation;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -40,10 +45,15 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
             return;
         }
 
+        final Location withOffset = location.add(OFFSET);
+
+        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Spectator");
+        new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(plugin, npc, true, withOffset));
+
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
         Feedback.success(player);
 
-        gameMapSetup.configureSpectatorSpawn(location.add(OFFSET));
+        gameMapSetup.configureSpectatorSpawn(withOffset);
         gameMapSetup.startStage(7);
     }
 }
