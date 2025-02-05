@@ -10,10 +10,11 @@ public class FastBuyGui {
                 .setStructure(
                         "a . . . . . . . a",
                         ". b . . . . . . .",
-                        ". . . . . . . . ."
+                        ". c . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new WoolItem())
+                .addIngredient('c', new PlanksItem())
                 .build();
     }
 
