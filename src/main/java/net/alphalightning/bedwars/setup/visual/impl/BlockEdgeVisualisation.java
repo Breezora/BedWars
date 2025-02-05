@@ -64,7 +64,7 @@ public class BlockEdgeVisualisation implements Visualisation<Block>, Visualisati
     private void spawnParticle(@NotNull Location location) {
         new ParticleBuilder(Particle.DUST)
                 .location(location)
-                .color(Color.fromBGR(color), SIZE)
+                .color(Color.fromRGB(color), SIZE)
                 .spawn();
     }
 }
