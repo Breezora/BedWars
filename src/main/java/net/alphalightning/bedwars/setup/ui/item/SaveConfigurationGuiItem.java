@@ -71,7 +71,9 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
     private @NotNull List<Team> createTeams() {
         List<Team> teams = new ArrayList<>();
         for (TeamGuiItem teamGuiItem : selectedTeams) {
-            Team team = new Team(fromColor(teamGuiItem.color()));
+            int color = teamGuiItem.color();
+
+            Team team = new Team(fromColor(color), color);
             teams.add(team);
         }
 
