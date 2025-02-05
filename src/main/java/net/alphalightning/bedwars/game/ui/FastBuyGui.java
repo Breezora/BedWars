@@ -9,7 +9,7 @@ public class FastBuyGui {
         return Gui.normal()
                 .setStructure(
                         "a . . . . . . . a",
-                        ". b d f . . . . .",
+                        ". b d f h . . . .",
                         ". c e g . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
@@ -19,6 +19,7 @@ public class FastBuyGui {
                 .addIngredient('e', new EndstoneItem())
                 .addIngredient('f', new StoneSwordItem())
                 .addIngredient('g', new StoneSwordItem())
+                .addIngredient('h', new WoodenPickaxeItem())
                 .build();
     }
 
