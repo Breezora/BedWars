@@ -22,11 +22,9 @@ public class CancelStage extends Stage {
 
     @Override
     public void run() {
-        Component component = Component.translatable(isLobbySetup ?
-                "lobbysetup.cancel" :
-                "mapsetup.cancel");
-
+        Component component = Component.translatable(isLobbySetup ? "lobbysetup.cancel" : "mapsetup.cancel");
         Feedback.error(player);
+
         player.sendMessage(component);
         plugin.getComponentLogger().warn(component);
 
@@ -38,17 +36,21 @@ public class CancelStage extends Stage {
         if (player == null || !player.equals(event.getPlayer())) {
             return;
         }
-
-        if (event.signedMessage().message().equalsIgnoreCase(CANCEL_MESSAGE)) {
-            event.setCancelled(true);
-            setup.cancel();
+        if (!event.signedMessage().message().equalsIgnoreCase(CANCEL_MESSAGE)) {
+            return;
         }
+        if (!setupManager.hasActiveSetup(player)) {
+            return;
+        }
+
+        event.setCancelled(true);
+        setupManager.cancelSetup(player);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         if (player != null && player.equals(event.getPlayer())) {
-            setup.cancel();
+            setupManager.cancelSetup(player);
         }
     }
 

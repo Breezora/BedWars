@@ -17,7 +17,7 @@ public interface Setup {
 
     void finish(int lastStage);
 
-    void cancel();
+    void cancel(boolean failure);
 
     void saveConfiguration();
 

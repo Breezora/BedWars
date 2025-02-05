@@ -10,13 +10,12 @@ import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureHologramStage;
 import net.alphalightning.bedwars.setup.map.stages.lobby.ConfigureSpawnStage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Map;
 
-public final class LobbyMapSetup implements MapSetup {
-
-    private static final String FILE_NAME = "lobby.json";
+public final class LobbyMapSetup implements MapSetup, LobbyConfiguration {
 
     private final CancelStage cancelStage;
 
@@ -32,8 +31,6 @@ public final class LobbyMapSetup implements MapSetup {
         this.plugin = plugin;
         this.player = player;
         this.cancelStage = new CancelStage(plugin, player, this, true);
-
-        startStage(0);
     }
 
     @Override
@@ -50,9 +47,14 @@ public final class LobbyMapSetup implements MapSetup {
             case 0 -> new WelcomeStage(plugin, player, this, true).run();
             case 1 -> new ConfigureSpawnStage(plugin, player, this).run();
             case 2 -> new ConfigureHologramStage(plugin, player, this).run();
-            case 3 -> new CompleteSetupStage(plugin, player, this, FILE_NAME, true).run();
+            case 3 -> new CompleteSetupStage(plugin, player, this, LOBBY_FILE_NAME, true).run();
             default -> cancelStage.run();
         }
+    }
+
+    @Override
+    public @NotNull String mapName() {
+        return LOBBY_MAP_NAME;
     }
 
     @Override
@@ -64,10 +66,10 @@ public final class LobbyMapSetup implements MapSetup {
             SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
 
             Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
-            plugin.jsonMapper().writeValue(mapsDirectory().resolve(FILE_NAME).toFile(), new LobbyLocations(locationsMap));
+            plugin.jsonMapper().writeValue(mapsDirectory().resolve(LOBBY_FILE_NAME).toFile(), new LobbyLocations(locationsMap));
 
         } catch (IOException exception) {
-            plugin.getLogger().severe("Could not save file " + FILE_NAME + ": " + exception.getMessage());
+            plugin.getLogger().severe("Could not save file " + LOBBY_FILE_NAME + ": " + exception.getMessage());
         }
     }
 
