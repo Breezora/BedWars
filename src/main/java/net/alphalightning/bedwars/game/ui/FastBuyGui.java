@@ -9,8 +9,8 @@ public class FastBuyGui {
         return Gui.normal()
                 .setStructure(
                         "a . . . . . . . a",
-                        ". x x x x x x x .",
-                        ". x x x x x x x ."
+                        ". . . . . . . . .",
+                        ". . . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
                 .build();
