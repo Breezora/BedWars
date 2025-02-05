@@ -4,13 +4,18 @@ import net.alphalightning.bedwars.setup.visual.Visualisation;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerVisualisation implements Visualisation<NPC> {
+public class PlayerVisualisation implements Visualisation<NPC>, Listener {
 
+    private final NPC npc;
     private final Location location;
 
-    public PlayerVisualisation(Location location) {
+    public PlayerVisualisation(NPC npc, Location location) {
+        this.npc = npc;
         this.location = location;
     }
 
@@ -22,7 +27,10 @@ public class PlayerVisualisation implements Visualisation<NPC> {
         entity.setInvulnerable(false); // Make this true when everything works correctly and the npc must despawn
         entity.setNoPhysics(false);
         entity.setGravity(true);
+    }
 
-        entity.setGlowing(true);
+    @EventHandler
+    public void onCitizensDisable(PluginDisableEvent event) {
+        npc.destroy();
     }
 }
