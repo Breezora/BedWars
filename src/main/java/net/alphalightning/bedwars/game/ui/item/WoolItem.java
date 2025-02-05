@@ -19,7 +19,7 @@ public class WoolItem extends AbstractItem {
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.buyable.wool.name");
 
-        Component price = Component.translatable("gui.shop.itemshop.buyable.wool.lore");
+        Component price = Component.translatable("gui.shop.itemshop.buyable.wool.price");
 
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip");
         Component tooltip2 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip.2");
