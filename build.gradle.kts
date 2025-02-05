@@ -13,6 +13,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases")
     maven("https://repo.aikar.co/content/groups/aikar/")
+    maven("https://maven.citizensnpcs.co/repo")
 
     maven("https://repo.breezora.net/intern") {
         name = "breezoraRepositoryIntern"
@@ -25,6 +26,9 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("net.citizensnpcs:citizens-main:2.0.37-SNAPSHOT") {
+        exclude("*", "*")
+    }
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.6")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
@@ -72,4 +76,5 @@ bukkitPluginYaml {
     main = "$group.bedwars.BedWarsPlugin"
     authors = listOf("Merry", "Waddle")
     apiVersion = "1.21"
+    depend = listOf("Citizens")
 }
