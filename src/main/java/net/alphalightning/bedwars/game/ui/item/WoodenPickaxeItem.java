@@ -31,7 +31,7 @@ public class WoodenPickaxeItem extends AbstractItem {
         Component permrespawn3 = Component.translatable("gui.shop.itemshop.buyable.lore.permrespawn3");
 
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
-        return new ItemBuilder(Material.IRON_SWORD)
+        return new ItemBuilder(Material.WOODEN_PICKAXE)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         GlobalTranslator.render(level, viewer.locale()),

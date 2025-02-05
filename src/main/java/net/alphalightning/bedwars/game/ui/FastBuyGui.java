@@ -18,7 +18,7 @@ public class FastBuyGui {
                 .addIngredient('d', new GlassItem())
                 .addIngredient('e', new EndstoneItem())
                 .addIngredient('f', new StoneSwordItem())
-                .addIngredient('g', new StoneSwordItem())
+                .addIngredient('g', new IronSwordItem())
                 .addIngredient('h', new WoodenPickaxeItem())
                 .build();
     }
