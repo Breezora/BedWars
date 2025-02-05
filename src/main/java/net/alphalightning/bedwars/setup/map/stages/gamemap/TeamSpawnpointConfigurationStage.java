@@ -15,6 +15,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -87,8 +88,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         final Location withOffset = location.add(OFFSET);
 
-        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Team");
-        new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(plugin, npc, false, withOffset));
+        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, LegacyComponentSerializer.legacySection().serialize(teamName));
+        new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(withOffset));
 
         team.spawnpoint(withOffset);
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
