@@ -9,11 +9,9 @@ import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
 public class ItemShopGui {
 
-    private final Player owner;
     private final Single gui;
 
     public ItemShopGui() {
-        this.owner = owner;
         this.gui = createGui();
     }
 
@@ -40,8 +38,8 @@ public class ItemShopGui {
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
     }
 
-    public void showGui() {
-        gui.open(owner);
+    public void showGui(Player player) {
+        gui.open(player);
     }
 
 }

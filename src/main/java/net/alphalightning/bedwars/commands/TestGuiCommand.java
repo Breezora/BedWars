@@ -5,8 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import net.alphalightning.bedwars.game.ui.ItemShopGui;
-import org.bukkit.entity.Item;
-import xyz.xenondevs.invui.gui.Gui;
+import org.bukkit.entity.Player;
 
 @CommandAlias("testgui")
 @CommandPermission("bedwars.dev")
@@ -15,8 +14,8 @@ public class TestGuiCommand extends BaseCommand {
 
     ItemShopGui gui = new ItemShopGui();
 
-    public void onTestGuiCommand() {
-        gui.showGui();
+    public void onTestGuiCommand(Player player) {
+        gui.showGui(player);
     }
 
 }
