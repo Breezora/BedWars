@@ -10,7 +10,7 @@ public class FastBuyGui {
                 .setStructure(
                         "a . . . . . . . a",
                         ". b d f . . . . .",
-                        ". c e . . . . . ."
+                        ". c e g . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new WoolItem())
@@ -18,6 +18,7 @@ public class FastBuyGui {
                 .addIngredient('d', new GlassItem())
                 .addIngredient('e', new EndstoneItem())
                 .addIngredient('f', new StoneSwordItem())
+                .addIngredient('g', new StoneSwordItem())
                 .build();
     }
 
