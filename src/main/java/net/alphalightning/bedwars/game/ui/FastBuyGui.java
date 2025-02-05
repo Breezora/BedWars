@@ -9,12 +9,13 @@ public class FastBuyGui {
         return Gui.normal()
                 .setStructure(
                         "a . . . . . . . a",
-                        ". b . . . . . . .",
+                        ". b d . . . . . .",
                         ". c . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new WoolItem())
                 .addIngredient('c', new PlanksItem())
+                .addIngredient('d', new GlassItem())
                 .build();
     }
 
