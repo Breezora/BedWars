@@ -78,10 +78,10 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         return teams;
     }
 
-    private String fromColor(int color) {
+    private @NotNull String fromColor(int color) {
         return switch (color) {
             case 0xffffff -> "white";
-            case 0xaaaaaa -> "grey";
+            case 0xaaaaaa -> "light_grey";
             case 0x555555 -> "dark_gray";
             case 0x000000 -> "black";
             case 0x783d0c -> "brown";
