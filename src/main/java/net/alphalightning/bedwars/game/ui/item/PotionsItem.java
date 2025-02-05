@@ -11,19 +11,22 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
+import java.util.List;
+
 public class PotionsItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.potions.name");
-
+        Component lore = Component.translatable("gui.shop.itemshop.lore");
 
         return new ItemBuilder(Material.NETHER_STAR)
-                .setName(GlobalTranslator.render(display, viewer.locale()));
+                .setName(GlobalTranslator.render(display, viewer.locale()))
+                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
 
     @Override
-    public void handleClick(ClickType clickType, Player player, Click click) {
+    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
 
     }
 }

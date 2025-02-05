@@ -22,11 +22,11 @@ public class ArmorItem extends AbstractItem {
 
         return new ItemBuilder(Material.CHAINMAIL_BOOTS)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(lore));
+                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
 
     @Override
-    public void handleClick(ClickType clickType, Player player, Click click) {
+    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
 
     }
 }

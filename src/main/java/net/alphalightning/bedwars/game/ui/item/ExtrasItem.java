@@ -14,6 +14,7 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import java.util.List;
 
 public class ExtrasItem extends AbstractItem {
+
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.extras.name");
@@ -21,11 +22,11 @@ public class ExtrasItem extends AbstractItem {
 
         return new ItemBuilder(Material.TNT)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(lore));
+                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
 
     @Override
-    public void handleClick(ClickType clickType, Player player, Click click) {
+    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
 
     }
 }
