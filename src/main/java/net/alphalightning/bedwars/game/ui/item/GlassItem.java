@@ -31,7 +31,7 @@ public class GlassItem extends AbstractItem {
                         GlobalTranslator.render(tooltip, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(enough, viewer.locale())))
-                .setAmount(16);
+                .setAmount(4);
     }
 
     @Override
