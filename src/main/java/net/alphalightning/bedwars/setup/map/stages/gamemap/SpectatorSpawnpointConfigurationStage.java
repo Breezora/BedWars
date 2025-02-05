@@ -48,7 +48,9 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
 
         final Location withOffset = location.add(OFFSET);
 
-        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, LegacyComponentSerializer.legacySection().serialize(Component.translatable("team.spectator")));
+        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Team");
+        npc.setName(LegacyComponentSerializer.legacySection().serialize(Component.translatable("team.spectator")));
+
         new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(npc, withOffset));
 
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));

@@ -88,7 +88,9 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         final Location withOffset = location.add(OFFSET);
 
-        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, LegacyComponentSerializer.legacySection().serialize(teamName));
+        final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Team");
+        npc.setName(LegacyComponentSerializer.legacySection().serialize(teamName));
+
         new PlayerRenderer(plugin, npc).render(new PlayerVisualisation(npc, withOffset));
 
         team.spawnpoint(withOffset);
