@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.visual.impl;
 
 import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.setup.visual.Visualisation;
-import net.alphalightning.bedwars.setup.visual.VisualisationConfiguration;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -11,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockEdgeVisualisation implements Visualisation<Block>, VisualisationConfiguration {
+public class BlockEdgeVisualisation implements Visualisation<Block> {
 
     private final int color;
 
