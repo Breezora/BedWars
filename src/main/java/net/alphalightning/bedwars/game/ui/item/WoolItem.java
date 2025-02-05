@@ -18,19 +18,23 @@ public class WoolItem extends AbstractItem {
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.buyable.wool.name");
-        Component lore1 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip");
-        Component lore2 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip.2");
-        Component lore3 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip.3");
 
-        Component lore4 = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
+        Component price = Component.translatable("gui.shop.itemshop.buyable.wool.lore");
+
+        Component tooltip = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip");
+        Component tooltip2 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip.2");
+        Component tooltip3 = Component.translatable("gui.shop.itemshop.buyable.wool.lore.tooltip.3");
+
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
         return new ItemBuilder(Material.WHITE_WOOL)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(GlobalTranslator.render(lore1, viewer.locale()),
+                .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(lore2, viewer.locale()),
-                        GlobalTranslator.render(lore3, viewer.locale()),
+                        GlobalTranslator.render(tooltip, viewer.locale()),
+                        GlobalTranslator.render(tooltip2, viewer.locale()),
+                        GlobalTranslator.render(tooltip3, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(lore4, viewer.locale())))
+                        GlobalTranslator.render(enough, viewer.locale())))
                 .setAmount(16);
     }
 
