@@ -16,7 +16,7 @@ public record SingleLineVisualisation(Player player) implements Visualisation<Lo
 
     @Override
     public void show(@NotNull Location start) {
-        final Vector direction = player.getEyeLocation().getDirection();
+        final Vector direction = start.getDirection();
         for (double covered = 0; covered <= LINE_LENGTH; covered += STEP) {
             Location point = start.clone().add(direction.clone().multiply(covered));
             drawParticle(point);
