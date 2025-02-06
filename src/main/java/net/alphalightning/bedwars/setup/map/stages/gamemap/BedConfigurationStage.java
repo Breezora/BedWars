@@ -13,15 +13,13 @@ import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualization;
 import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
 import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.alphalightning.bedwars.utils.BedUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +101,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
     private void updateBed(Location bottom) {
         team.bedBottomHalf(bottom);
 
-        Location topHalf = calculateTopHalf(bottom);
+        Location topHalf = BedUtils.calculateHeadLocation(bottom, player.getFacing());
         if (topHalf == null) {
             player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
             Feedback.error(player);
@@ -113,45 +111,9 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         team.bedTopHalf(topHalf);
 
         new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color()));
-        new FakeBlockRenderer(plugin, topHalf).render(new FakeBlockVisualization(coloredBed())); // "BED" is top half
+        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualization(player, BedUtils.fromColor(team.color())));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);
-    }
-
-    private @Nullable Location calculateTopHalf(@NotNull Location bottom) {
-        Location top = bottom.clone();
-        switch (player.getFacing()) {
-            case NORTH -> top.add(0, 0, -1);
-            case SOUTH -> top.add(0, 0, 1);
-            case WEST -> top.add(-1, 0, 0);
-            case EAST -> top.add(1, 0, 0);
-            default -> {
-                return null;
-            }
-        }
-        return top;
-    }
-
-    private Material coloredBed() {
-        return switch (team.color()) { // Colors are default hex encoded int values
-            case 0xffffff -> Material.WHITE_BED;
-            case 0xaaaaaa -> Material.LIGHT_GRAY_BED;
-            case 0x555555 -> Material.GRAY_BED;
-            case 0x000000 -> Material.BLACK_BED;
-            case 0x783d0c -> Material.BROWN_BED;
-            case 0xff5555 -> Material.RED_BED;
-            case 0xff8800 -> Material.ORANGE_BED;
-            case 0xffff55 -> Material.YELLOW_BED;
-            case 0x55ff55 -> Material.LIME_BED;
-            case 0x00aa00 -> Material.GREEN_BED;
-            case 0x00aaaa -> Material.CYAN_BED;
-            case 0xa3e5ff -> Material.LIGHT_BLUE_BED;
-            case 0x5555ff -> Material.BLUE_BED;
-            case 0xaa00aa -> Material.PURPLE_BED;
-            case 0xff24fb -> Material.MAGENTA_BED;
-            case 0xff6ef8 -> Material.PINK_BED;
-            default -> Material.AIR;
-        };
     }
 }
