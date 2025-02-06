@@ -9,9 +9,9 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.setup.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualization;
 import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -112,8 +112,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         team.bedTopHalf(topHalf);
 
-        new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualisation(team.color()));
-        new FakeBlockRenderer(plugin, topHalf).render(new FakeBlockVisualisation(coloredBed())); // "BED" is top half
+        new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color()));
+        new FakeBlockRenderer(plugin, topHalf).render(new FakeBlockVisualization(coloredBed())); // "BED" is top half
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);

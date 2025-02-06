@@ -1,15 +1,15 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
-import net.alphalightning.bedwars.setup.visual.BlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.BlockVisualization;
 import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockEdgeVisualisation implements BlockVisualisation<Block> {
+public class BlockEdgeVisualization implements BlockVisualization<Block> {
 
     private final int color;
 
-    public BlockEdgeVisualisation(int color) {
+    public BlockEdgeVisualization(int color) {
         this.color = color;
     }
 
