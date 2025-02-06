@@ -88,7 +88,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
         team.chest(withOffset);
         new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(team.color()));
-        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualization(Material.CHEST));
+        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualization(player, Material.CHEST));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);
