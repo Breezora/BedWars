@@ -6,8 +6,8 @@ import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
-import net.alphalightning.bedwars.setup.visual.impl.MultiVerticalBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.MultiVerticalBlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualisation;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -46,8 +46,8 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
 
         final Location withOffset = location.add(OFFSET);
 
-        new MultiVerticalBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
-                .render(new MultiVerticalBlockVisualisation(0xbfbfbf));
+        new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
+                .render(new MultiBlockVisualisation(0xbfbfbf));
 
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
         Feedback.success(player);

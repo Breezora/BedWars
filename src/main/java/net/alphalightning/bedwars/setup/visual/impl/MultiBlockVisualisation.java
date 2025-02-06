@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MultiVerticalBlockVisualisation implements BlockVisualisation<List<Block>> {
+public class MultiBlockVisualisation implements BlockVisualisation<List<Block>> {
 
     private final int color;
 
-    public MultiVerticalBlockVisualisation(int color) {
+    public MultiBlockVisualisation(int color) {
         this.color = color;
     }
 

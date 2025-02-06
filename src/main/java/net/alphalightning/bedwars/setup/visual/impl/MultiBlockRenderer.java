@@ -9,18 +9,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MultiVerticalBlockRenderer implements VisualisationRenderer<MultiVerticalBlockVisualisation> {
+public class MultiBlockRenderer implements VisualisationRenderer<MultiBlockVisualisation> {
 
     private final BedWarsPlugin plugin;
     private final List<Block> blocks;
 
-    public MultiVerticalBlockRenderer(BedWarsPlugin plugin, List<Block> blocks) {
+    public MultiBlockRenderer(BedWarsPlugin plugin, List<Block> blocks) {
         this.plugin = plugin;
         this.blocks = blocks;
     }
 
     @Override
-    public @NotNull BukkitTask render(@NotNull MultiVerticalBlockVisualisation visualisation) {
+    public @NotNull BukkitTask render(@NotNull MultiBlockVisualisation visualisation) {
         return Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.blocks), 0L, 5L);
     }
 }
