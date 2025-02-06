@@ -8,6 +8,10 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.impl.SingleLineRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.SingleLineVisualisation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -80,7 +84,15 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         // Spawnpoints of teams have not all been configured
 
-        team.spawnpoint(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+
+        if (!event.isSneaking()) {
+            new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
+                    .render(new MultiBlockVisualisation(team.color()));
+            new SingleLineRenderer(plugin, player).render(new SingleLineVisualisation(player));
+        }
+
+        team.spawnpoint(withOffset);
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         Feedback.success(player);
 

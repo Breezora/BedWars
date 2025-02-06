@@ -1,14 +1,14 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.visual.VisualizationRenderer;
+import net.alphalightning.bedwars.setup.visual.VisualisationRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 
-public class BlockEdgeRenderer implements VisualizationRenderer<BlockEdgeVisualisation> {
+public class BlockEdgeRenderer implements VisualisationRenderer<BlockEdgeVisualisation> {
 
     private final BedWarsPlugin plugin;
     private final Block block;
