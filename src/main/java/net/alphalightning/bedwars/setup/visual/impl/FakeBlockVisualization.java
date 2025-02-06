@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.setup.visual.impl;
 import net.alphalightning.bedwars.setup.visual.Visualization;
 import net.alphalightning.bedwars.utils.BedUtils;
 import net.alphalightning.bedwars.utils.BlockUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,11 +28,9 @@ public class FakeBlockVisualization implements Visualization<Location> {
     public void show(@NotNull Location location) {
         final World world = location.getWorld();
         final BlockFace blockFace = BlockUtil.cardinalDirection(this.player);
-        final Location topHalf = BedUtils.calculateHeadLocation(location, blockFace);
 
-        if (topHalf == null) {
-            throw new IllegalStateException("Top half of bed could not be calculated");
-        }
+        Bukkit.getLogger().info("Spawning block at: " + location.toBlockLocation());
+
         world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
