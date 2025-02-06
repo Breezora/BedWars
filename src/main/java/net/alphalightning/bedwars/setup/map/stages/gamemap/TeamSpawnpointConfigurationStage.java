@@ -88,7 +88,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
                 .render(new MultiBlockVisualisation(team.color()));
-        new SingleLineRenderer(plugin).render(new SingleLineVisualisation(player));
+        new SingleLineRenderer(plugin, player).render(new SingleLineVisualisation(player));
 
         team.spawnpoint(withOffset);
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));

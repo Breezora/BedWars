@@ -14,11 +14,6 @@ public record SingleLineVisualisation(Player player) implements Visualisation<Lo
     private static final int COLOR = 0xff5286;
 
     @Override
-    public @NotNull Player player() {
-        return player;
-    }
-
-    @Override
     public void show(@NotNull Location start) {
         for (double covered = 0; covered <= LINE_LENGTH; covered += STEP) {
             Location point = start.clone().add(player.getEyeLocation().getDirection().multiply(covered));
