@@ -16,6 +16,7 @@ import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -87,7 +88,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
         team.chest(withOffset);
         new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualisation(team.color()));
-        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualisation());
+        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualisation(Material.CHEST));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);
