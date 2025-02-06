@@ -5,7 +5,9 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class MultiVerticalBlockVisualisation implements BlockVisualisation<Block[]> {
+import java.util.List;
+
+public class MultiVerticalBlockVisualisation implements BlockVisualisation<List<Block>> {
 
     private final int color;
 
@@ -14,12 +16,12 @@ public class MultiVerticalBlockVisualisation implements BlockVisualisation<Block
     }
 
     @Override
-    public void show(Block @NotNull [] blocks) {
-        if (blocks.length != 2) {
+    public void show(@NotNull List<Block> blocks) {
+        if (blocks.size() != 2) {
             return;
         }
 
-        final BoundingBox boundingBox = BoundingBox.of(blocks[0], blocks[1]);
-        visualizeBoundingBox(blocks[0].getWorld(), boundingBox, this.color);
+        final BoundingBox boundingBox = BoundingBox.of(blocks.getFirst(), blocks.getLast());
+        visualizeBoundingBox(blocks.getFirst().getWorld(), boundingBox, this.color);
     }
 }
