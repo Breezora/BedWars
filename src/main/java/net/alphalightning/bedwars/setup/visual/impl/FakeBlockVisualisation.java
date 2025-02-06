@@ -12,6 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class FakeBlockVisualisation implements Visualisation<Location> {
 
+    private final Material material;
+
+    public FakeBlockVisualisation(Material material) {
+        this.material = material;
+    }
+
     @Override
     public void show(@NotNull Location location) {
         final Location blockLocation = location.toBlockLocation();
@@ -21,7 +27,7 @@ public class FakeBlockVisualisation implements Visualisation<Location> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             final Location displayLocation = blockLocation.addRotation(location.getYaw() * -1, location.getPitch() * -1);
 
-            blockDisplay.setBlock(Bukkit.createBlockData(Material.CHEST));
+            blockDisplay.setBlock(Bukkit.createBlockData(material));
             blockDisplay.teleport(displayLocation);
         });
     }
