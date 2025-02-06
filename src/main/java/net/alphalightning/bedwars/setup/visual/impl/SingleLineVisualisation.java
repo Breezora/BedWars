@@ -18,7 +18,7 @@ public record SingleLineVisualisation(Player player) implements Visualisation<Lo
     public void show(@NotNull Location start) {
         final Vector direction = start.getDirection();
         for (double covered = 0; covered <= LINE_LENGTH; covered += STEP) {
-            Location point = start.clone().add(direction.clone().multiply(covered));
+            Location point = start.toBlockLocation().add(0.5D, 0.75D, 0.5D).add(direction.clone().multiply(covered));
             drawParticle(point);
         }
     }
