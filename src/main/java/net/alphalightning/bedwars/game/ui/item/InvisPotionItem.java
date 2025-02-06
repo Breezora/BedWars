@@ -27,7 +27,7 @@ public class InvisPotionItem extends AbstractItem {
         Component lore = Component.translatable("gui.shop.itemshop.buyable.potion.invisibility.lore");
 
         return new ItemBuilder(Material.POTION)
-                .setCustomName(display)
+                .setCustomName(GlobalTranslator.render(display, viewer.locale()))
                 .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
                 .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0)))
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
