@@ -29,20 +29,23 @@ public class FakeBlockVisualization implements Visualization<Location> {
         final BlockFace blockFace = BlockUtil.cardinalDirection(this.player);
 
         if (material.name().contains("BED")) {
-            location = switch (blockFace) {
-                case NORTH -> location.add(1, 0, 0);
-                case SOUTH -> location.add(0, 0, 1);
-                case EAST -> location.add(1, 0, 1);
-                default -> location;
-            };
+            location = correctLocation(location, blockFace);
+
         }
 
         world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
-            final BlockFace displayFacing = this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace();
-
             blockDisplay.setBlock(this.material.createBlockData());
-            blockDisplay.setRotation(BedUtils.yawByBlockFace(displayFacing), 0f);
+            blockDisplay.setRotation(BedUtils.yawByBlockFace(blockFace), 0f);
         });
+    }
+
+    private @NotNull Location correctLocation(Location location, @NotNull BlockFace blockFace) {
+        return switch (blockFace) {
+            case NORTH -> location.add(1, 0, 0);
+            case SOUTH -> location.add(0, 0, 1);
+            case EAST -> location.add(1, 0, 1);
+            default -> location;
+        };
     }
 }
