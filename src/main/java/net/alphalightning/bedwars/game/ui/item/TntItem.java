@@ -24,7 +24,7 @@ public class TntItem extends AbstractItem {
 
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
 
-        return new ItemBuilder(Material.CHAINMAIL_BOOTS)
+        return new ItemBuilder(Material.TNT)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
