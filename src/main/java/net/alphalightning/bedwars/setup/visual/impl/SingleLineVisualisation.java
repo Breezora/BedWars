@@ -6,6 +6,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public record SingleLineVisualisation(Player player) implements Visualisation<Location> {
@@ -15,8 +16,9 @@ public record SingleLineVisualisation(Player player) implements Visualisation<Lo
 
     @Override
     public void show(@NotNull Location start) {
+        final Vector direction = player.getEyeLocation().getDirection();
         for (double covered = 0; covered <= LINE_LENGTH; covered += STEP) {
-            Location point = start.clone().add(player.getEyeLocation().getDirection().multiply(covered));
+            Location point = start.clone().add(direction.clone().multiply(covered));
             drawParticle(point);
         }
     }
