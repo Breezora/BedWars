@@ -47,7 +47,7 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         final Location withOffset = location.add(OFFSET);
 
         new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
-                .render(new MultiBlockVisualisation(0xbfbfbf));
+                .render(new MultiBlockVisualisation(0xecb8f5));
 
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
         Feedback.success(player);
