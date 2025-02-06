@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public interface BlockVisualisation<T> extends Visualisation<T> {
+public interface BlockVisualization<T> extends Visualization<T> {
 
     default void visualizeBoundingBox(@NotNull World world, @NotNull BoundingBox boundingBox, int color) {
         final double minX = boundingBox.getMinX();

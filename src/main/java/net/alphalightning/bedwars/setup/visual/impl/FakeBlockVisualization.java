@@ -1,6 +1,6 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
-import net.alphalightning.bedwars.setup.visual.Visualisation;
+import net.alphalightning.bedwars.setup.visual.Visualization;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,11 +10,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.jetbrains.annotations.NotNull;
 
-public class FakeBlockVisualisation implements Visualisation<Location> {
+public class FakeBlockVisualization implements Visualization<Location> {
 
     private final Material material;
 
-    public FakeBlockVisualisation(Material material) {
+    public FakeBlockVisualization(Material material) {
         this.material = material;
     }
 

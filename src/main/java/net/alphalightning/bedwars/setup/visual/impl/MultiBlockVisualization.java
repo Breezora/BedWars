@@ -1,17 +1,17 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
-import net.alphalightning.bedwars.setup.visual.BlockVisualisation;
+import net.alphalightning.bedwars.setup.visual.BlockVisualization;
 import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MultiBlockVisualisation implements BlockVisualisation<List<Block>> {
+public class MultiBlockVisualization implements BlockVisualization<List<Block>> {
 
     private final int color;
 
-    public MultiBlockVisualisation(int color) {
+    public MultiBlockVisualization(int color) {
         this.color = color;
     }
 

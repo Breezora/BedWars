@@ -1,13 +1,13 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.visual.VisualisationRenderer;
+import net.alphalightning.bedwars.setup.visual.VisualizationRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public class FakeBlockRenderer implements VisualisationRenderer<FakeBlockVisualisation> {
+public class FakeBlockRenderer implements VisualizationRenderer<FakeBlockVisualization> {
 
     private final BedWarsPlugin plugin;
     private final Location location;
@@ -18,7 +18,7 @@ public class FakeBlockRenderer implements VisualisationRenderer<FakeBlockVisuali
     }
 
     @Override
-    public @NotNull BukkitTask render(@NotNull FakeBlockVisualisation visualisation) {
+    public @NotNull BukkitTask render(@NotNull FakeBlockVisualization visualisation) {
         return Bukkit.getScheduler().runTask(plugin, () -> visualisation.show(location));
     }
 }
