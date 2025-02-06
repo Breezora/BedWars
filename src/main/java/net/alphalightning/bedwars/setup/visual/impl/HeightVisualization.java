@@ -11,7 +11,7 @@ public class HeightVisualization implements Visualization<Location> {
 
     private static final double RADIUS = 7.5D;
     private static final double SPAWN_DISTANCE = 5.0D;
-    private static final int PARTICLE_COUNT = 40;
+    private static final int PARTICLE_COUNT = 60;
 
     private final double height;
 
