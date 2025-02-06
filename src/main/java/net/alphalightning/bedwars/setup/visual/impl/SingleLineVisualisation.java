@@ -27,9 +27,9 @@ public record SingleLineVisualisation(Player player) implements Visualisation<Lo
     }
 
     private void drawParticle(Location location) {
-        new ParticleBuilder(Particle.DOLPHIN)
+        new ParticleBuilder(Particle.DUST)
                 .location(location)
-                .color(Color.fromRGB(COLOR), 1.5F)
+                .color(Color.fromRGB(COLOR), SIZE)
                 .spawn();
     }
 }
