@@ -37,7 +37,7 @@ public class FakeBlockVisualization implements Visualization<Location> {
         world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
-            blockDisplay.setRotation(BedUtils.yawByBlockFace(blockFace), 0f);
+            blockDisplay.setRotation(BedUtils.yawByBlockFace(this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace()), 0f);
         });
     }
 
