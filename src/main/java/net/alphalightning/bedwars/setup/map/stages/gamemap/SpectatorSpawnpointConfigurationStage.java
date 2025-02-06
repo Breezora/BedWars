@@ -6,17 +6,12 @@ import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualisation;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineVisualisation;
+import net.alphalightning.bedwars.setup.visual.UnboundTeamVisuals;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-
-import java.util.List;
 
 public class SpectatorSpawnpointConfigurationStage extends Stage implements LocationConfiguration {
 
@@ -48,13 +43,8 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
 
         final Location withOffset = location.add(OFFSET);
 
-        if (!event.isSneaking()) {
-            new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
-                    .render(new MultiBlockVisualisation(0xecb8f5));
-            new SingleLineRenderer(plugin, player).render(new SingleLineVisualisation(player));
-        }
-
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
+        UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
         Feedback.success(player);
 
         gameMapSetup.configureSpectatorSpawn(withOffset);
