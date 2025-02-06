@@ -7,7 +7,6 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -21,22 +20,17 @@ import java.util.List;
 
 public class InvisPotionItem extends AbstractItem {
 
-
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-
-
         Component display = Component.translatable("gui.shop.itemshop.buyable.potion.invisibility.name");
         Component price = Component.translatable("gui.shop.itemshop.buyable.potion.invisibility.price");
         Component lore = Component.translatable("gui.shop.itemshop.buyable.potion.invisibility.lore");
 
-
         return new ItemBuilder(Material.POTION)
                 .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
-                .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0))
-                        .customName("Test"))
+                .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0)))
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
-
+                .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(lore, viewer.locale())))
