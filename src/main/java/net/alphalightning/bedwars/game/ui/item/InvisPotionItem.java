@@ -7,6 +7,8 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
@@ -29,11 +31,12 @@ public class InvisPotionItem extends AbstractItem {
 
 
         return new ItemBuilder(Material.POTION)
-                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY))
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(lore, viewer.locale())));
+                        GlobalTranslator.render(lore, viewer.locale())))
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY).addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 1)))
+                ;
 
     }
 
