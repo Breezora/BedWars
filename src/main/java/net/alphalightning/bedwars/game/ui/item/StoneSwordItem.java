@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ public class StoneSwordItem extends AbstractItem {
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
         return new ItemBuilder(Material.STONE_SWORD)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(enough, viewer.locale())));

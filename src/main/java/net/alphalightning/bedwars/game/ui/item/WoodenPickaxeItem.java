@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -33,6 +34,7 @@ public class WoodenPickaxeItem extends AbstractItem {
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
         return new ItemBuilder(Material.WOODEN_PICKAXE)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         GlobalTranslator.render(level, viewer.locale()),
                         Component.empty(),
