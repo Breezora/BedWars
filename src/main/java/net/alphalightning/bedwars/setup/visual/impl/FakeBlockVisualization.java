@@ -51,10 +51,9 @@ public class FakeBlockVisualization implements Visualization<Location> {
             };
         }
         return switch (blockFace) {
-            case NORTH -> location.subtract(1, 0, 1);
             case SOUTH -> location.add(1, 0, 1);
-            case WEST -> location.add(-1, 0, 1);
-            case EAST -> location.add(1, 0, -1);
+            case WEST -> location.add(0, 0, 1);
+            case EAST -> location.add(1, 0, 0);
             default -> location;
         };
     }
