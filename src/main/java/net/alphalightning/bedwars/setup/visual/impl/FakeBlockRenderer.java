@@ -1,13 +1,13 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.visual.VisualizationRenderer;
+import net.alphalightning.bedwars.setup.visual.VisualisationRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public class FakeBlockRenderer implements VisualizationRenderer<FakeBlockVisualisation> {
+public class FakeBlockRenderer implements VisualisationRenderer<FakeBlockVisualisation> {
 
     private final BedWarsPlugin plugin;
     private final Location location;
