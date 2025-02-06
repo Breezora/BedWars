@@ -113,7 +113,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         team.bedTopHalf(topHalf);
 
         new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualisation(team.color()));
-        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualisation(Material.RED_BED));
+        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualisation(coloredBed()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);
@@ -131,5 +131,27 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
             }
         }
         return top;
+    }
+
+    private Material coloredBed() {
+        return switch (team.color()) { // Colors are default hex encoded int values
+            case 0xffffff -> Material.WHITE_BED;
+            case 0xaaaaaa -> Material.LIGHT_GRAY_BED;
+            case 0x555555 -> Material.GRAY_BED;
+            case 0x000000 -> Material.BLACK_BED;
+            case 0x783d0c -> Material.BROWN_BED;
+            case 0xff5555 -> Material.RED_BED;
+            case 0xff8800 -> Material.ORANGE_BED;
+            case 0xffff55 -> Material.YELLOW_BED;
+            case 0x55ff55 -> Material.LIME_BED;
+            case 0x00aa00 -> Material.GREEN_BED;
+            case 0x00aaaa -> Material.CYAN_BED;
+            case 0xa3e5ff -> Material.LIGHT_BLUE_BED;
+            case 0x5555ff -> Material.BLUE_BED;
+            case 0xaa00aa -> Material.PURPLE_BED;
+            case 0xff24fb -> Material.MAGENTA_BED;
+            case 0xff6ef8 -> Material.PINK_BED;
+            default -> Material.AIR;
+        };
     }
 }
