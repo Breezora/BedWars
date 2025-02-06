@@ -31,9 +31,11 @@ public class InvisPotionItem extends AbstractItem {
 
 
         return new ItemBuilder(Material.POTION)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
-                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY).addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 1)))
-                .clearLore()
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
+                .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0))
+                        .customName("Test"))
+
+                .hideTooltip(true)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(lore, viewer.locale())))
