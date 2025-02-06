@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.setup.visual.impl;
 import net.alphalightning.bedwars.setup.visual.Visualization;
 import net.alphalightning.bedwars.utils.BedUtils;
 import net.alphalightning.bedwars.utils.BlockUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -29,12 +28,21 @@ public class FakeBlockVisualization implements Visualization<Location> {
         final World world = location.getWorld();
         final BlockFace blockFace = BlockUtil.cardinalDirection(this.player);
 
-        Bukkit.getLogger().info("Spawning block at: " + location.toBlockLocation());
+        if (material.name().contains("BED")) {
+            location = switch (blockFace) {
+                case NORTH -> location.add(-1, 0, 0);
+                case SOUTH -> location.add(1, 0, 0);
+                case EAST -> location.add(1, 0, 1);
+                default -> location;
+            };
+        }
 
         world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
+            final BlockFace displayFacing = this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace();
+
             blockDisplay.setBlock(this.material.createBlockData());
-            blockDisplay.setRotation(BedUtils.yawByBlockFace(blockFace), 0f);
+            blockDisplay.setRotation(BedUtils.yawByBlockFace(displayFacing), 0f);
         });
     }
 }
