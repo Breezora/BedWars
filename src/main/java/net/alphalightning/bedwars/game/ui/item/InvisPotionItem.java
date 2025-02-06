@@ -30,7 +30,7 @@ public class InvisPotionItem extends AbstractItem {
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
                 .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0)))
-                .set(DataComponentTypes.ITEM_NAME, GlobalTranslator.render(display, viewer.locale()))
+                .set(DataComponentTypes.CUSTOM_NAME, GlobalTranslator.render(display, viewer.locale()))
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
