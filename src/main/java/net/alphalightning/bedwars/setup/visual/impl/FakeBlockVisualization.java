@@ -29,8 +29,9 @@ public class FakeBlockVisualization implements Visualization<Location> {
         final BlockFace blockFace = BlockUtil.cardinalDirection(this.player);
 
         if (material.name().contains("BED")) {
-            location = correctLocation(location, blockFace);
-
+            location = correctLocation(location, blockFace, true);
+        } else {
+            location = correctLocation(location, blockFace, false);
         }
 
         world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
@@ -40,11 +41,19 @@ public class FakeBlockVisualization implements Visualization<Location> {
         });
     }
 
-    private @NotNull Location correctLocation(Location location, @NotNull BlockFace blockFace) {
+    private @NotNull Location correctLocation(Location location, @NotNull BlockFace blockFace, boolean isBed) {
+        if (isBed) {
+            return switch (blockFace) {
+                case NORTH -> location.add(1, 0, 0);
+                case SOUTH -> location.add(0, 0, 1);
+                case EAST -> location.add(1, 0, 1);
+                default -> location;
+            };
+        }
         return switch (blockFace) {
-            case NORTH -> location.add(1, 0, 0);
-            case SOUTH -> location.add(0, 0, 1);
-            case EAST -> location.add(1, 0, 1);
+            case NORTH -> location.add(1,0,1);
+            case WEST -> location.add(1, 0, 0);
+            case EAST -> location.add(0, 0, 1);
             default -> location;
         };
     }
