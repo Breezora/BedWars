@@ -32,7 +32,7 @@ public class FakeBlockVisualization implements Visualization<Location> {
         if (topHalf == null) {
             throw new IllegalStateException("Top half of bed could not be calculated");
         }
-        world.spawnEntity(location.toCenterLocation().subtract(0, 0.5D, 0), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
+        world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
             blockDisplay.setRotation(BedUtils.yawByBlockFace(blockFace), 0f);
