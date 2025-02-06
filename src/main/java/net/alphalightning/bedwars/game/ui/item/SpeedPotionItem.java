@@ -25,6 +25,7 @@ public class SpeedPotionItem extends AbstractItem {
         Component display = Component.translatable("gui.shop.itemshop.buyable.potion.speed.name");
         Component price = Component.translatable("gui.shop.itemshop.buyable.potion.speed.price");
         Component lore = Component.translatable("gui.shop.itemshop.buyable.potion.speed.lore");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald");
 
         return new ItemBuilder(Material.POTION)
                 .setCustomName(GlobalTranslator.render(display, viewer.locale()))
@@ -33,9 +34,10 @@ public class SpeedPotionItem extends AbstractItem {
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(lore, viewer.locale())))
-                ;
-
+                        GlobalTranslator.render(lore, viewer.locale()),
+                        Component.empty(),
+                        GlobalTranslator.render(enough, viewer.locale()))
+                );
     }
 
     @Override
