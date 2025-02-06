@@ -7,6 +7,7 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -34,8 +35,8 @@ public class InvisPotionItem extends AbstractItem {
                 .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
                 .addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 30, 0))
                         .customName("Test"))
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
 
-                .hideTooltip(true)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(lore, viewer.locale())))
