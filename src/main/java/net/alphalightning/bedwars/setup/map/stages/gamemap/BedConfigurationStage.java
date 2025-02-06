@@ -8,12 +8,15 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualisation;
 import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
 import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualisation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -110,6 +113,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         team.bedTopHalf(topHalf);
 
         new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualisation(team.color()));
+        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualisation(Material.RED_BED));
+
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);
     }
