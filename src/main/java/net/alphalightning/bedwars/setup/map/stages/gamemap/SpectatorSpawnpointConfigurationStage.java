@@ -6,6 +6,7 @@ import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.visual.UnboundTeamVisuals;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -40,10 +41,13 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
             return;
         }
 
+        final Location withOffset = location.add(OFFSET);
+
         player.sendMessage(Component.translatable("mapsetup.stage.6.success"));
+        UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
         Feedback.success(player);
 
-        gameMapSetup.configureSpectatorSpawn(location.add(OFFSET));
+        gameMapSetup.configureSpectatorSpawn(withOffset);
         gameMapSetup.startStage(7);
     }
 }
