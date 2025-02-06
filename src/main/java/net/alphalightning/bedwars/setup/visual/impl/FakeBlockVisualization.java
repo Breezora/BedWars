@@ -30,8 +30,8 @@ public class FakeBlockVisualization implements Visualization<Location> {
 
         if (material.name().contains("BED")) {
             location = switch (blockFace) {
-                case NORTH -> location.add(-1, 0, 0);
-                case SOUTH -> location.add(1, 0, 0);
+                case NORTH -> location.add(1, 0, 0);
+                case SOUTH -> location.add(0, 0, 1);
                 case EAST -> location.add(1, 0, 1);
                 default -> location;
             };
