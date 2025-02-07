@@ -12,7 +12,6 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -76,11 +75,9 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        Bukkit.getLogger().info("Location: " + withOffset);
-
-        new EntityRenderer(plugin, location.toCenterLocation()).render(new EntityVisualization(EntityType.VILLAGER, Component.translatable("entity.interact")));
-        new TextRenderer(plugin, withOffset.clone().toCenterLocation().add(0, 1.5D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
         UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
+        new EntityRenderer(plugin, withOffset.toCenterLocation().subtract(0, 0.5D, 0)).render(new EntityVisualization(EntityType.VILLAGER, Component.translatable("entity.interact")));
+        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 1.5D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
