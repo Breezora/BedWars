@@ -29,6 +29,8 @@ public class EntityVisualization implements Visualization<Location> {
             }
             entity.customName(this.name);
             entity.setSilent(true);
+            entity.setNoPhysics(true);
+            entity.setGravity(false);
         });
     }
 }
