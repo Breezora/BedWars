@@ -19,6 +19,11 @@ public class TextRenderer implements VisualizationRenderer<TextVisualization> {
 
     @Override
     public @NotNull BukkitTask render(@NotNull TextVisualization visualisation) {
-        return Bukkit.getScheduler().runTask(this.plugin, () -> visualisation.show(this.location));
+        return Bukkit.getScheduler().runTask(this.plugin, () -> {
+            final Location withoutHeadRotation = this.location.clone();
+            withoutHeadRotation.setPitch(0f);
+
+            visualisation.show(withoutHeadRotation);
+        });
     }
 }
