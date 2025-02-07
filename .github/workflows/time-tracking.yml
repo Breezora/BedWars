@@ -8,6 +8,7 @@ on:
 
 jobs:
   update_jira-time:
+    if: "!startsWith(github.event.head_commit.message, 'Merge')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,9 +28,9 @@ jobs:
           HOURS=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*hour(s)?)' || echo "0")
           MINUTES=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*min(ute)?s?)' || echo "0")
           SECONDS=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*second(s)?)' || echo "0")
-  
+          
           TOTAL_SECONDS=$((HOURS * 3600 + MINUTES * 60 + SECONDS))
-      
+          
           echo "Extracted time: ${TOTAL_SECONDS}s (${HOURS}h ${MINUTES}m ${SECONDS}s)"
           echo "total_time=${TOTAL_SECONDS}" >> $GITHUB_ENV
 
