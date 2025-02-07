@@ -1,0 +1,60 @@
+name: Update Jira time tracking
+on:
+  push:
+    branches:
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+
+jobs:
+  update_jira-time:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get last commit message
+        id: commit_message
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Extract time from commit message
+        id: extract_time
+        run: |
+          echo "Commit message: ${{ env.message }}"
+          HOURS=$(echo "${{ env.message }}" | grep -oE 'Took ([0-9]+)h' | grep -oE '[0-9]+')
+          MINUTES=$(echo "${{ env.message }}" | grep -oE '([0-9]+)m' | grep -oE '[0-9]+')
+          SECONDS=$(echo "${{ env.message }}" | grep -oE '([0-9]+)s' | grep -oE '[0-9]+')
+          HOURS=${HOURS:-0}
+          MINUTES=${MINUTES:-0}
+          SECONDS=${SECONDS:-0}
+          TOTAL_MINUTES=$((HOURS * 60 + MINUTES))
+          echo "Extracted time: ${TOTAL_MINUTES}m ${SECONDS}s"
+          echo "total_time=${TOTAL_MINUTES}m" >> $GITHUB_ENV
+
+      - name: Extract Jira issue key
+        id: extract_issue_key
+        run: |
+          ISSUE_KEY=$(echo "${{ env.message }}" | grep -oE '[A-Z]+-[0-9]+')
+          if [ -z "$ISSUE_KEY" ]; then
+            echo "No Jira issue key found in commit message. Skipping."
+            exit 0
+          fi
+          echo "Jira Issue Key: $ISSUE_KEY"
+          echo "issue_key=$ISSUE_KEY" >> $GITHUB_ENV
+
+      - name: Add Worklog to Jira
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_MAIL }}
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        run: |
+          curl --request POST \
+            --url "$JIRA_BASE_URL/rest/api/3/issue/${{ env.issue_key }}/worklog" \
+            --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --data "{ \"timeSpent\": \"${{ env.total_time }}\" }"
+
+      - name: Success Message
+        run: echo "Jira time tracking updated successfully."
