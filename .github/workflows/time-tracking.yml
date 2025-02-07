@@ -20,17 +20,17 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ')  # Zeilenumbrüche entfernen
           echo "message=$COMMIT_MSG" >> $GITHUB_ENV
 
-      - name: Extract time from commit message
+      - name: Extract Time from Commit Message
         id: extract_time
         run: |
           echo "Commit message: ${{ env.message }}"
-          HOURS=$(echo "${{ env.message }}" | grep -oE 'Took ([0-9]+)h' | grep -oE '[0-9]+')
-          MINUTES=$(echo "${{ env.message }}" | grep -oE '([0-9]+)m' | grep -oE '[0-9]+')
-          SECONDS=$(echo "${{ env.message }}" | grep -oE '([0-9]+)s' | grep -oE '[0-9]+')
-          HOURS=${HOURS:-0}
-          MINUTES=${MINUTES:-0}
-          SECONDS=${SECONDS:-0}
+          
+          HOURS=$(echo "${{ env.message }}" | grep -oE 'Took ([0-9]+)h' | grep -oE '[0-9]+' || echo "0")
+          MINUTES=$(echo "${{ env.message }}" | grep -oE '([0-9]+)m' | grep -oE '[0-9]+' || echo "0")
+          SECONDS=$(echo "${{ env.message }}" | grep -oE '([0-9]+)s' | grep -oE '[0-9]+' || echo "0")
+          
           TOTAL_MINUTES=$((HOURS * 60 + MINUTES))
+          
           echo "Extracted time: ${TOTAL_MINUTES}m ${SECONDS}s"
           echo "total_time=${TOTAL_MINUTES}m" >> $GITHUB_ENV
 
