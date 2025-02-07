@@ -11,6 +11,7 @@ on:
 env:
   host_url: ${{ secrets.PTERODACTYL_HOST }}
   api_key: ${{ secrets.PTERODACTYL_API_KEY }}
+  vip_person: waddlespam
 
 jobs:
   evaluate_target:
@@ -19,10 +20,12 @@ jobs:
     steps:
       - name: Evaluate target server
         run: |
-          if [[ "${{ github.actor }}" == "waddlespam" ]]; then
-            echo "server_id={{ secrets.PTERODACTYL_SERVER_ID_2 }}" >> $GITHUB_ENV
+          if [[ "${{ github.actor }}" == "${{ env.vip_person }}" ]]; then
+            echo "server_id=${{ secrets.PTERODACTYL_SERVER_ID_2 }}" >> $GITHUB_ENV
+            echo "Using environment of vip person ${{ env.vip_person }}"
           else
             echo "server_id=${{ secrets.PTERODACTYL_SERVER_ID }}" >> $GITHUB_ENV
+            echo "Using default environment"
           fi
 
   stop_server:
