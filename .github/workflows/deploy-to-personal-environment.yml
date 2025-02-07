@@ -15,6 +15,7 @@ env:
 
 jobs:
   evaluate_target:
+    if: "!startsWith(github.event.head_commit.message, 'Merge')" # Only deploy if the push is not triggered by a merge action
     environment: local development
     runs-on: ubuntu-latest
     steps:
