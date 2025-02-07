@@ -20,7 +20,7 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ') 
           echo "message=$COMMIT_MSG" >> $GITHUB_ENV
 
-      - name: Extract Time from Commit Message
+      - name: Extract time from commit message
         id: extract_time
         run: |
           echo "Commit message: ${{ env.message }}"
@@ -45,7 +45,7 @@ jobs:
           echo "Jira Issue Key: $ISSUE_KEY"
           echo "issue_key=$ISSUE_KEY" >> $GITHUB_ENV
 
-      - name: Add Worklog to Jira
+      - name: Add worklog to Jira
         env:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_MAIL }}
@@ -57,6 +57,3 @@ jobs:
             --header "Accept: application/json" \
             --header "Content-Type: application/json" \
             --data "{ \"timeSpent\": \"${{ env.total_time }}\" }"
-
-      - name: Success Message
-        run: echo "Jira time tracking updated successfully."
