@@ -24,9 +24,9 @@ jobs:
         run: |
           echo "Commit message: ${{ env.message }}"
           
-          HOURS=$(echo "${{ env.message }}" | grep -oE 'lh \"([0-9]+)\"' | grep -oE '[0-9]+')
-          MINUTES=$(echo "${{ env.message }}" | grep -oE 'lm \"([0-9]+)\"' | grep -oE '[0-9]+')
-          SECONDS=$(echo "${{ env.message }}" | grep -oE 'ts \"([0-9]+)\"' | grep -oE '[0-9]+')
+          HOURS=$(echo "${{ env.message }}" | grep -oE 'lh \"([0-9]+)\"' | grep -oE '[0-9]+' || echo "0")
+          MINUTES=$(echo "${{ env.message }}" | grep -oE 'lm \"([0-9]+)\"' | grep -oE '[0-9]+' || echo "0")
+          SECONDS=$(echo "${{ env.message }}" | grep -oE 'ts \"([0-9]+)\"' | grep -oE '[0-9]+' || echo "0")
           
           TOTAL_SECONDS=$((HOURS * 3600 + MINUTES * 60 + SECONDS))
       
