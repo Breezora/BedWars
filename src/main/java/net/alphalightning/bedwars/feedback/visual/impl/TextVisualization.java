@@ -24,7 +24,7 @@ public class TextVisualization implements Visualization<Location> {
         world.spawnEntity(location, EntityType.TEXT_DISPLAY, SpawnReason.CUSTOM, entity -> {
             TextDisplay textDisplay = (TextDisplay) entity;
             textDisplay.text(this.text);
-            textDisplay.setShadowed(false);
+            textDisplay.setShadowed(true);
             textDisplay.setSeeThrough(true);
         });
     }
