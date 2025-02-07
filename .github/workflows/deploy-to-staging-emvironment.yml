@@ -14,7 +14,7 @@ env:
 jobs:
   stop_server:
     if: "startsWith(github.event.head_commit.message, 'Merge')" # Only deploy if the push is not triggered by a merge action
-    environment: staging
+    environment: local development
     runs-on: ubuntu-latest
     steps:
       - name: Stop local server
@@ -27,7 +27,7 @@ jobs:
           -d '{"signal":"stop"}'
 
   deploy:
-    environment: staging
+    environment: local development
     runs-on: ubuntu-latest
     needs:
       - stop_server
@@ -58,7 +58,7 @@ jobs:
           restart: true
 
   start_server:
-    environment: staging
+    environment: local development
     runs-on: ubuntu-latest
     needs:
       - deploy
