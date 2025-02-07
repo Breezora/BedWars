@@ -78,9 +78,9 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         Bukkit.getLogger().info("Location: " + withOffset);
 
-        UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
         new EntityRenderer(plugin, location.toCenterLocation()).render(new EntityVisualization(EntityType.VILLAGER, Component.translatable("entity.interact")));
         new TextRenderer(plugin, withOffset.clone().toCenterLocation().add(0, 1.5D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
+        UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
