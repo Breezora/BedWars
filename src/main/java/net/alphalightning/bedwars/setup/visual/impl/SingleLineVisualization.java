@@ -1,7 +1,7 @@
 package net.alphalightning.bedwars.setup.visual.impl;
 
 import com.destroystokyo.paper.ParticleBuilder;
-import net.alphalightning.bedwars.setup.visual.Visualisation;
+import net.alphalightning.bedwars.setup.visual.Visualization;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-public record SingleLineVisualisation(Player player) implements Visualisation<Location> {
+public record SingleLineVisualization(Player player) implements Visualization<Location> {
 
     private static final int LINE_LENGTH = 5;
     private static final int COLOR = 0xff5286;

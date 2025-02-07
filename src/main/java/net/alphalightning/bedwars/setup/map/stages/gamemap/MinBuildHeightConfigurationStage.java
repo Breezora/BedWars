@@ -7,6 +7,8 @@ import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.HeightConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.setup.visual.impl.HeightRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.HeightVisualization;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,6 +70,7 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
             return;
         }
 
+        new HeightRenderer(plugin, player).render(new HeightVisualization(buildHeight));
         player.sendMessage(Component.translatable("mapsetup.stage.5.success", Component.text(buildHeight)));
         Feedback.success(player);
 
