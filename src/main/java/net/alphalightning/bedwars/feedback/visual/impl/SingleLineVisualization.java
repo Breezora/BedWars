@@ -1,7 +1,7 @@
-package net.alphalightning.bedwars.setup.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.impl;
 
 import com.destroystokyo.paper.ParticleBuilder;
-import net.alphalightning.bedwars.setup.visual.Visualization;
+import net.alphalightning.bedwars.feedback.visual.Visualization;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;

@@ -1,6 +1,6 @@
-package net.alphalightning.bedwars.setup.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.impl;
 
-import net.alphalightning.bedwars.setup.visual.BlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.BlockVisualization;
 import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
