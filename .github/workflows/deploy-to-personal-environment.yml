@@ -12,7 +12,6 @@ env:
   host_url: ${{ secrets.PTERODACTYL_HOST }}
   api_key: ${{ secrets.PTERODACTYL_API_KEY }}
   server_ids: ${{ secrets.PTERODACTYL_SERVER_IDS }}
-  vip_person: waddlespam
 
 jobs:
   evaluate_target:
@@ -25,7 +24,7 @@ jobs:
       - name: Evaluate target server
         id: set-id
         run: |
-          SERVER_ID=$(echo '${{ env.server_ids }}' | jq -r '."${{ env.vip_person }}"')
+          SERVER_ID=$(echo '${{ env.server_ids }}' | jq -r '."${{ github.actor }}"')
           echo "SERVER_ID=$SERVER_ID"
           echo "SERVER_ID=$SERVER_ID" >> "$GITHUB_OUTPUT"
 
