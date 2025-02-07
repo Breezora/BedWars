@@ -25,7 +25,7 @@ public class TextVisualization implements Visualization<Location> {
             TextDisplay textDisplay = (TextDisplay) entity;
             textDisplay.text(this.text);
             textDisplay.setShadowed(true);
-            textDisplay.setSeeThrough(true);
+            textDisplay.setSeeThrough(false);
         });
     }
 }
