@@ -12,6 +12,7 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -74,6 +75,8 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
+
+        Bukkit.getLogger().info("Location: " + withOffset);
 
         UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
         new EntityRenderer(plugin, withOffset).render(new EntityVisualization(EntityType.VILLAGER, Component.translatable("entity.interact")));
