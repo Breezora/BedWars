@@ -77,8 +77,8 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         locations.add(withOffset);
 
         new EntityRenderer(plugin, location.toCenterLocation().subtract(0, 0.5D, 0)).render(new EntityVisualization(EntityType.VILLAGER, null));
-        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 0.75D, 0)).render(new TextVisualization(Component.translatable("entity.interact")));
-        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 0.95D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
+        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 1.75D, 0)).render(new TextVisualization(Component.translatable("entity.interact")));
+        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 1.95D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
         Bukkit.getScheduler().runTaskLater(plugin, () -> UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset), 10L); // Render this later to avoid some stupid collisions with the texts and villager
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
