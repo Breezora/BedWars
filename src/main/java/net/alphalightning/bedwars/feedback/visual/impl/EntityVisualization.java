@@ -28,7 +28,6 @@ public class EntityVisualization implements Visualization<Location> {
                 livingEntity.setAI(false);
             }
             entity.customName(this.name);
-            entity.setNoPhysics(true);
             entity.setSilent(true);
         });
     }
