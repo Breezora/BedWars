@@ -31,6 +31,7 @@ public class EntityVisualization implements Visualization<Location> {
             entity.setSilent(true);
             entity.setNoPhysics(true);
             entity.setGravity(false);
+            entity.setInvulnerable(false); //FIXME: Change this to true when handling setup cancels/completions
         });
     }
 }
