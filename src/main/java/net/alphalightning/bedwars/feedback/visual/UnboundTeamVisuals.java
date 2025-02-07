@@ -1,10 +1,10 @@
-package net.alphalightning.bedwars.setup.visual;
+package net.alphalightning.bedwars.feedback.visual;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualization;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.SingleLineRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.SingleLineVisualization;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

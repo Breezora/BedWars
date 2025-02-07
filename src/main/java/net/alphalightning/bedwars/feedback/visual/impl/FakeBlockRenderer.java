@@ -1,7 +1,7 @@
-package net.alphalightning.bedwars.setup.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.setup.visual.VisualizationRenderer;
+import net.alphalightning.bedwars.feedback.visual.VisualizationRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;

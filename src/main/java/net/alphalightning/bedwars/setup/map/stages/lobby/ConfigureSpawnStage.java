@@ -5,7 +5,7 @@ import net.alphalightning.bedwars.setup.map.LobbyMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
-import net.alphalightning.bedwars.setup.visual.UnboundTeamVisuals;
+import net.alphalightning.bedwars.feedback.visual.UnboundTeamVisuals;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

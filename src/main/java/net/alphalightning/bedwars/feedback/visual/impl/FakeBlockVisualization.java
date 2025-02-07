@@ -1,6 +1,6 @@
-package net.alphalightning.bedwars.setup.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.impl;
 
-import net.alphalightning.bedwars.setup.visual.Visualization;
+import net.alphalightning.bedwars.feedback.visual.Visualization;
 import net.alphalightning.bedwars.utils.BedUtils;
 import net.alphalightning.bedwars.utils.BlockUtil;
 import org.bukkit.Location;

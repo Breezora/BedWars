@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.setup.visual;
+package net.alphalightning.bedwars.feedback.visual;
 
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;

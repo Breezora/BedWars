@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.setup.visual;
+package net.alphalightning.bedwars.feedback.visual;
 
 public interface VisualizationConfiguration {
 
