@@ -21,7 +21,7 @@ jobs:
       - name: Evaluate target server
         run: |
           if [[ "${{ github.actor }}" == "${{ env.vip_person }}" ]]; then
-            echo "server_id={{ secrets.PTERODACTYL_SERVER_ID_2 }}" >> $GITHUB_ENV
+            echo "server_id=${{ secrets.PTERODACTYL_SERVER_ID_2 }}" >> $GITHUB_ENV
             echo "Using environment of vip person ${{ env.vip_person }}"
           else
             echo "server_id=${{ secrets.PTERODACTYL_SERVER_ID }}" >> $GITHUB_ENV
