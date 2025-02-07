@@ -48,7 +48,7 @@ jobs:
         run: |
           curl --request POST \
             --url "${{ secrets.JIRA_BASE_URL }}/rest/api/3/issue/${{ env.issue_key }}/worklog" \
-            --user "${{ secrets.JIRA_USER_MAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
             --header "Accept: application/json" \
             --header "Content-Type: application/json" \
             --data "{ \"timeSpent\": \"${{ env.total_time }}\" }"
