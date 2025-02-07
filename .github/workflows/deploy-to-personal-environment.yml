@@ -10,13 +10,26 @@ on:
 
 env:
   host_url: ${{ secrets.PTERODACTYL_HOST }}
-  server_id: ${{ secrets.PTERODACTYL_SERVER_ID }}
   api_key: ${{ secrets.PTERODACTYL_API_KEY }}
 
 jobs:
+  evaluate_target:
+    environment: local development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate target server
+        run: |
+          if [[ "${{ github.actor }}" == "waddlespam" ]]; then
+            echo "server_id={{ secrets.PTERODACTYL_SERVER_ID_2 }}" >> $GITHUB_ENV
+          else
+            echo "server_id=${{ secrets.PTERODACTYL_SERVER_ID }}" >> $GITHUB_ENV
+          fi
+
   stop_server:
     environment: local development
     runs-on: ubuntu-latest
+    needs:
+      - evaluate_target
     steps:
       - name: Stop local server
         run: |
