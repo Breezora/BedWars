@@ -3,18 +3,12 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.UnboundTeamVisuals;
-import net.alphalightning.bedwars.feedback.visual.impl.EntityRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.EntityVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.TextRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.TextVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -76,10 +70,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        new EntityRenderer(plugin, location.toCenterLocation().subtract(0, 0.5D, 0)).render(new EntityVisualization(EntityType.VILLAGER, null));
-        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 1.7D, 0)).render(new TextVisualization(Component.translatable("entity.interact")));
-        new TextRenderer(plugin, withOffset.toCenterLocation().add(0, 1.95D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
-        Bukkit.getScheduler().runTaskLater(plugin, () -> UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset), 1L); // Render this later to avoid some stupid collisions with the texts and villager
+        UnboundTeamVisuals.renderShop(plugin, player, location, withOffset, Component.translatable("entity.villager.shop.item"));
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
