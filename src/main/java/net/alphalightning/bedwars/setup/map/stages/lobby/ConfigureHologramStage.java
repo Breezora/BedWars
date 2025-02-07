@@ -2,6 +2,8 @@ package net.alphalightning.bedwars.setup.map.stages.lobby;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.HologramRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.HologramVisualization;
 import net.alphalightning.bedwars.setup.map.LobbyMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -41,7 +43,11 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
             return;
         }
 
-        lobbyMapSetup.hologram(location);
+        final Location withOffset = location.add(OFFSET);
+
+        lobbyMapSetup.hologram(withOffset);
+        new HologramRenderer(plugin, withOffset).render(new HologramVisualization(plugin, 28263, 1065, 1534, 1834, 369, 660));
+
         setupManager.finishSetup(player, 3);
     }
 }
