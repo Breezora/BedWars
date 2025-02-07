@@ -80,7 +80,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         UnboundTeamVisuals.renderSpawnpoint(plugin, player, withOffset);
         new EntityRenderer(plugin, withOffset).render(new EntityVisualization(EntityType.VILLAGER, Component.translatable("entity.interact")));
-        new TextRenderer(plugin, withOffset.add(0, 1.5D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
+        new TextRenderer(plugin, withOffset.clone().add(0, 1.5D, 0)).render(new TextVisualization(Component.translatable("entity.villager.shop.item")));
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
