@@ -17,7 +17,7 @@ jobs:
       - name: Get last commit message
         id: commit_message
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ')  # Zeilenumbrüche entfernen
+          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ') 
           echo "message=$COMMIT_MSG" >> $GITHUB_ENV
 
       - name: Extract Time from Commit Message
