@@ -24,10 +24,11 @@ jobs:
         run: |
           echo "Commit message: ${{ env.message }}"
           
-          HOURS=$(echo "[BED-106] Revert Took 3 minutes" | grep -oE '(\d+)\s*hours' | grep -oE '[0-9]+' || echo "0")
-          MINUTES=$(echo "[BED-106] Revert Took 3 minutes" | grep -oE '(\d+)\s*minutes' | grep -oE '[0-9]+' || echo "0")
-          SECONDS=$(echo "[BED-106] Revert Took 3 minutes" | grep -oE '(\d+)\s*seconds' | grep -oE '[0-9]+' || echo "0")
-          
+          HOURS=$(echo "${{ env.message }}" | grep -oE '(\d+)\s*hours' | grep -oE '[0-9]+' || echo "0")
+          MINUTES=$(echo "${{ env.message }}" | grep -oE '(\d+)\s*(minutes?|min)' | grep -oE '[0-9]+' || echo "0")
+          SECONDS=$(echo "${{ env.message }}" | grep -oE '(\d+)\s*seconds?' | grep -oE '[0-9]+' || echo "0")
+  
+  
           TOTAL_SECONDS=$((HOURS * 3600 + MINUTES * 60 + SECONDS))
       
           echo "Extracted time: ${TOTAL_SECONDS}s (${HOURS}h ${MINUTES}m ${SECONDS}s)"
