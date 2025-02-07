@@ -43,8 +43,10 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
             return;
         }
 
-        lobbyMapSetup.hologram(location);
-        new HologramRenderer(plugin, location).render(new HologramVisualization(plugin, 28263, 1065, 1534, 1834, 369, 660));
+        final Location withOffset = location.add(OFFSET);
+
+        lobbyMapSetup.hologram(withOffset);
+        new HologramRenderer(plugin, withOffset).render(new HologramVisualization(plugin, 28263, 1065, 1534, 1834, 369, 660));
 
         setupManager.finishSetup(player, 3);
     }
