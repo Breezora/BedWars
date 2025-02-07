@@ -28,7 +28,7 @@ public class HologramVisualization implements Visualization<Location> {
         this.wonGames = wonGames;
         this.destroyedBeds = destroyedBeds;
         this.kd = MathUtil.round((double) kills / deaths, 2);
-        this.winRate = MathUtil.round((double) wonGames / playedGames, 2);
+        this.winRate = MathUtil.toPercentage((double) wonGames / playedGames, 2);
     }
 
     @Override
