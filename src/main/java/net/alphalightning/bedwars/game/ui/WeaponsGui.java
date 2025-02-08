@@ -16,7 +16,7 @@ public class WeaponsGui {
                 .addIngredient('b', new StoneSwordItem())
                 .addIngredient('c', new IronSwordItem())
                 .addIngredient('d', new DiamondSwordItem())
-                .addIngredient('d', new StickItem())
+                .addIngredient('e', new StickItem())
                 .build();
     }
 
