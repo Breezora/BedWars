@@ -12,7 +12,11 @@ import xyz.xenondevs.invui.item.*;
 import java.util.Collections;
 
 public class BlocksItem extends AbstractTabGuiBoundItem {
-    private final TabGui gui = super.getGui();
+    private final TabGui gui;
+
+    public BlocksItem() {
+        gui = super.getGui();
+    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {

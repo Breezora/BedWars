@@ -13,7 +13,11 @@ import java.util.Collections;
 
 public class FastBuyItem extends AbstractTabGuiBoundItem {
 
-    private final TabGui gui = super.getGui();
+    private final TabGui gui;
+
+    public FastBuyItem() {
+       gui = super.getGui();
+    }
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
@@ -29,7 +33,6 @@ public class FastBuyItem extends AbstractTabGuiBoundItem {
         if(gui.getTab() != 0) {
             builder.setLore(Collections.singletonList(GlobalTranslator.render(lore, viewer.locale())));
         }
-
         return builder;
     }
 
