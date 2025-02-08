@@ -20,7 +20,7 @@ public class PotionsItem extends AbstractItem {
         Component display = Component.translatable("gui.shop.itemshop.potions.name");
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        return new ItemBuilder(Material.NETHER_STAR)
+        return new ItemBuilder(Material.POTION)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
