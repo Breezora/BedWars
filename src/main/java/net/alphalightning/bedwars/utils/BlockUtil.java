@@ -1,7 +1,9 @@
 package net.alphalightning.bedwars.utils;
 
+import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 public final class BlockUtil {
@@ -27,6 +29,33 @@ public final class BlockUtil {
         } else {
             return BlockFace.EAST;
         }
+    }
+
+    public static boolean isHalfBlock(@NotNull Location location) {
+        return location.y() % 1 == 0.5;
+    }
+
+    public static @NotNull BoundingBox fromLocation(@NotNull Location location, double scale) {
+        final double x = location.x();
+        final double y = location.y();
+        final double z = location.z();
+
+        double minY, maxY;
+
+        if (!BlockUtil.isHalfBlock(location)) {
+            minY = (y - 0.5) * scale;
+            maxY = (y + 0.5) * scale;
+        } else {
+            minY = y * scale;
+            maxY = (y + 1) * scale;
+        }
+
+        double minX = (x - 0.5) * scale;
+        double minZ = (z - 0.5) * scale;
+        double maxX = (x + 0.5) * scale;
+        double maxZ = (z + 0.5) * scale;
+
+        return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
 }

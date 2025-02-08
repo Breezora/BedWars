@@ -126,6 +126,10 @@ public final class GameMapSetup implements MapSetup {
         return maxBuildHeight;
     }
 
+    public boolean hasSlowIron() {
+        return slowIron;
+    }
+
     // Start data manipulation logics
 
     public void configureTeams(List<Team> teams) {
