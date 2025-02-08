@@ -68,6 +68,8 @@ public class SpawnerVisualization implements Visualization<Location> {
             centered.setY(0.1D);
         }
 
+        Bukkit.getLogger().info("Location: " + centered);
+
         return world.dropItem(centered, new ItemStack(material), item -> {
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
