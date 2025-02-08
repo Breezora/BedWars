@@ -2,6 +2,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerVisualization;
+import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -77,7 +80,11 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
         // Emerald spawner configuration is not completed
 
-        locations.add(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+        locations.add(withOffset);
+
+        new ValuableSpawnerRenderer(plugin, withOffset).render(new ValuableSpawnerVisualization(plugin, SpawnerType.EMERALD));
+
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         Feedback.success(player);
 
