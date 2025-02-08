@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,11 +18,13 @@ public class SpawnerVisualization implements Visualization<Location> {
 
     private final BedWarsPlugin plugin;
 
+    private final GameMapSetup gameMapSetup;
     private final Set<Item> spawnedItems = new HashSet<>();
     private int counter;
 
-    public SpawnerVisualization(BedWarsPlugin plugin) {
+    public SpawnerVisualization(BedWarsPlugin plugin, GameMapSetup gameMapSetup) {
         this.plugin = plugin;
+        this.gameMapSetup = gameMapSetup;
     }
 
     @Override
@@ -33,6 +36,9 @@ public class SpawnerVisualization implements Visualization<Location> {
             return;
         }
 
+        if (!gameMapSetup.hasSlowIron()) {
+            visualizeIron(world, spawnLocation);
+        }
         visualizeIron(world, spawnLocation);
 
         if (this.counter % 10 == 0) { // Every 5s (10 * 0.5s = 5s)
