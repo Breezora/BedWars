@@ -142,7 +142,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         if (!BlockUtil.isHalfBlock(withOffset)) {
             new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(color));
         } else {
-            new BoundingBoxRenderer(plugin, withOffset.toCenterLocation().add(OFFSET)).render(new BoundingBoxVisualization(color));
+            new BoundingBoxRenderer(plugin, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color));
         }
         new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin, gameMapSetup));
 
