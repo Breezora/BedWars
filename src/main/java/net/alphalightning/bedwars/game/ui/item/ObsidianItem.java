@@ -24,7 +24,7 @@ public class ObsidianItem extends AbstractItem {
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.obsidian.lore.tooltip");
 
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald");
-        return new ItemBuilder(Material.LADDER)
+        return new ItemBuilder(Material.OBSIDIAN)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
