@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VisualizationManager implements ServiceProvider<BukkitTask> {
@@ -47,6 +48,12 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
     public synchronized void unregisterAll(@NotNull MapSetup setup) {
         this.activeRenderings.getOrDefault(setup, new ArrayList<>()).forEach(BukkitTask::cancel);
         this.activeRenderings.remove(setup);
+    }
+
+    public synchronized void removeEntities(@NotNull MapSetup setup) {
+        this.fakeEntities.getOrDefault(setup, new ArrayList<>()).stream()
+                .filter(Objects::nonNull)
+                .forEach(Entity::remove);
     }
 
     @Override

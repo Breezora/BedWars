@@ -110,7 +110,10 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         setup.finish(lastStage);
         this.activeMaps.remove(toLowerCase(setup.mapName()));
 
-        Bukkit.getScheduler().runTaskLater(this.plugin, () -> this.visualizationManager.unregisterAll(setup), 30 * 20L);
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            this.visualizationManager.unregisterAll(setup);
+            this.visualizationManager.removeEntities(setup);
+        }, 30 * 20L);
     }
 
     public synchronized void cancelSetup(Player player) {
@@ -122,6 +125,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         setup.cancel(false);
         this.activeMaps.remove(toLowerCase(setup.mapName()));
         this.visualizationManager.unregisterAll(setup);
+        this.visualizationManager.removeEntities(setup);
     }
 
     public synchronized boolean hasActiveSetup(Player player) {
