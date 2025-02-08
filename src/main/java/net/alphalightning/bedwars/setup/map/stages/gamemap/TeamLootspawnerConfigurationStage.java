@@ -139,7 +139,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         team.lootspawner(withOffset);
 
 
-        new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin));
+        new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin, gameMapSetup));
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
 
