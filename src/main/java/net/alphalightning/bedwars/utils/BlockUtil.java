@@ -40,14 +40,16 @@ public final class BlockUtil {
         final double y = location.y();
         final double z = location.z();
 
-        double minY;
+        double minY, maxY;
+
         if (!BlockUtil.isHalfBlock(location)) {
             minY = (y - 0.5) * scale;
+            maxY = (y + 0.5) * scale;
         } else {
             minY = y * scale;
+            maxY = (y + 1) * scale;
         }
 
-        double maxY = (y + 0.5) * scale;
         double minX = (x - 0.5) * scale;
         double minZ = (z - 0.5) * scale;
         double maxX = (x + 0.5) * scale;
