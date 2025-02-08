@@ -1,10 +1,15 @@
 package net.alphalightning.bedwars.game.ui.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.PotionContents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
 import xyz.xenondevs.invui.item.Click;
@@ -21,7 +26,10 @@ public class PotionsItem extends AbstractItem {
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
         return new ItemBuilder(Material.POTION)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
+                .setCustomName(GlobalTranslator.render(display, viewer.locale()))
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
+                        .addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20 * 30, 0)))
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
 
