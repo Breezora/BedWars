@@ -13,14 +13,10 @@ import java.util.Collections;
 
 public class FastBuyItem extends AbstractTabGuiBoundItem {
 
-    private final TabGui gui;
-
-    public FastBuyItem() {
-       gui = super.getGui();
-    }
-
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
+        TabGui gui = super.getGui();
+
         Component display = Component.translatable(gui.getTab() == 0 ?
                 "gui.shop.itemshop.fastbuy.name.selected" :
                 "gui.shop.itemshop.fastbuy.name"
@@ -41,6 +37,7 @@ public class FastBuyItem extends AbstractTabGuiBoundItem {
         if (clickType != ClickType.LEFT) {
             return;
         }
+        TabGui gui = super.getGui();
 
         gui.setTab(0);
     }
