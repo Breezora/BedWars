@@ -6,14 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.AbstractItem;
-import xyz.xenondevs.invui.item.Click;
-import xyz.xenondevs.invui.item.ItemBuilder;
-import xyz.xenondevs.invui.item.ItemProvider;
+import xyz.xenondevs.invui.gui.TabGui;
+import xyz.xenondevs.invui.item.*;
 
 import java.util.List;
 
-public class BlocksItem extends AbstractItem {
+public class BlocksItem extends AbstractTabGuiBoundItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
@@ -27,6 +25,10 @@ public class BlocksItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-
+        if (clickType != ClickType.LEFT) {
+            return;
+        }
+        TabGui gui = super.getGui();
+        gui.setTab(1);
     }
 }

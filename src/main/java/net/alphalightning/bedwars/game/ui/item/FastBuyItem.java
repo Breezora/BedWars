@@ -6,26 +6,29 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.AbstractItem;
-import xyz.xenondevs.invui.item.Click;
-import xyz.xenondevs.invui.item.ItemBuilder;
-import xyz.xenondevs.invui.item.ItemProvider;
+import xyz.xenondevs.invui.gui.TabGui;
+import xyz.xenondevs.invui.item.*;
 
-import java.util.Arrays;
 
-public class FastBuyItem extends AbstractItem {
+
+public class FastBuyItem extends AbstractTabGuiBoundItem {
+
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.fastbuy.name");
 
-
         return new ItemBuilder(Material.NETHER_STAR)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
     }
 
-    @Override
-    public void handleClick(ClickType clickType, Player player, Click click) {
 
+    @Override
+    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
+        if (clickType != ClickType.LEFT) {
+            return;
+        }
+        TabGui gui = super.getGui();
+        gui.setTab(0);
     }
 }
