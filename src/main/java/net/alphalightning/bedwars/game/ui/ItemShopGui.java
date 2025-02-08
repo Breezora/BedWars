@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.Markers;
 import xyz.xenondevs.invui.gui.PagedGui;
+import xyz.xenondevs.invui.gui.TabGui;
 import xyz.xenondevs.invui.window.Window;
 import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
@@ -20,28 +21,29 @@ public class ItemShopGui {
     }
 
     Gui fastBuyGui = new FastBuyGui().gui();
+    Gui blocksGui = new BlocksGui().gui();
 
     private Single createGui() {
         return Window.single()
-                .setGui(PagedGui.guis()
+                .setGui(TabGui.normal()
                         .setStructure(
-                                "a b c d e f g h i",
+                                "0 1 2 3 4 5 6 7 8",
                                 "x x x x x x x x x",
                                 "x x x x x x x x x",
                                 "x x x x x x x x x",
                                 ". . . . . . . . ."
                         )
                         .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
-                        .addIngredient('a', new FastBuyItem())
-                        .addIngredient('b', new BlocksItem())
-                        .addIngredient('c', new CombatItem())
-                        .addIngredient('d', new ArmorItem())
-                        .addIngredient('e', new ToolsItem())
-                        .addIngredient('f', new BowsItem())
-                        .addIngredient('g', new PotionsItem())
-                        .addIngredient('h', new ExtrasItem())
-                        .addIngredient('i', new KitsItem())
-                        .setContent(List.of(fastBuyGui))
+                        .addIngredient('0', new FastBuyItem())
+                        .addIngredient('1', new BlocksItem())
+                        .addIngredient('2', new CombatItem())
+                        .addIngredient('3', new ArmorItem())
+                        .addIngredient('4', new ToolsItem())
+                        .addIngredient('5', new BowsItem())
+                        .addIngredient('6', new PotionsItem())
+                        .addIngredient('7', new ExtrasItem())
+                        .addIngredient('8', new KitsItem())
+                        .setTabs(List.of(fastBuyGui, blocksGui))
                         .build()
                 )
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
