@@ -9,26 +9,36 @@ import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.TabGui;
 import xyz.xenondevs.invui.item.*;
 
-
+import java.util.Collections;
 
 public class FastBuyItem extends AbstractTabGuiBoundItem {
 
+    private final TabGui gui = super.getGui();
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component display = Component.translatable("gui.shop.itemshop.fastbuy.name");
+        Component display = Component.translatable(gui.getTab() == 0 ?
+                "gui.shop.itemshop.fastbuy.name.selected" :
+                "gui.shop.itemshop.fastbuy.name"
+        );
+        Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        return new ItemBuilder(Material.NETHER_STAR)
+        final ItemBuilder builder = new ItemBuilder(Material.NETHER_STAR)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
-    }
 
+        if(gui.getTab() != 0) {
+            builder.setLore(Collections.singletonList(GlobalTranslator.render(lore, viewer.locale())));
+        }
+
+        return builder;
+    }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         if (clickType != ClickType.LEFT) {
             return;
         }
-        TabGui gui = super.getGui();
+
         gui.setTab(0);
     }
 }

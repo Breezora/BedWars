@@ -9,18 +9,27 @@ import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.TabGui;
 import xyz.xenondevs.invui.item.*;
 
-import java.util.List;
+import java.util.Collections;
 
 public class BlocksItem extends AbstractTabGuiBoundItem {
+    private final TabGui gui = super.getGui();
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component display = Component.translatable("gui.shop.itemshop.blocks.name");
+        Component display = Component.translatable(gui.getTab() == 0 ?
+                "gui.shop.itemshop.blocks.name.selected" :
+                "gui.shop.itemshop.blocks.name"
+        );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        return new ItemBuilder(Material.TERRACOTTA)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
+        final ItemBuilder builder = new ItemBuilder(Material.TERRACOTTA)
+                .setName(GlobalTranslator.render(display, viewer.locale()));
+
+        if(gui.getTab() != 1) {
+            builder.setLore(Collections.singletonList(GlobalTranslator.render(lore, viewer.locale())));
+        }
+
+        return builder;
     }
 
     @Override
