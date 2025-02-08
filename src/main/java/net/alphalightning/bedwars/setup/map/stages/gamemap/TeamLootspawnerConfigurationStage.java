@@ -3,10 +3,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.SpawnerRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.SpawnerVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.*;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -14,7 +11,7 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
-import net.alphalightning.bedwars.utils.LocationUtil;
+import net.alphalightning.bedwars.utils.BlockUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -141,8 +138,13 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         final Location withOffset = location.add(OFFSET);
         team.lootspawner(withOffset);
 
+        final int color = gameMapSetup.hasSlowIron() ? 0x00ff00 : 0xff0000;
+        if (!BlockUtil.isHalfBlock(withOffset)) {
+            new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(color));
+        } else {
+            new BoundingBoxRenderer(plugin, withOffset).render(new BoundingBoxVisualization(color));
+        }
         new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin, gameMapSetup));
-        new BoundingBoxRenderer(plugin, LocationUtil.adjustedCentered(withOffset)).render(new BoundingBoxVisualization(gameMapSetup.hasSlowIron() ? 0xff0000 : 0x00de04));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
