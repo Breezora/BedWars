@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.impl.HologramRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.HologramVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.LobbyMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -15,6 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class ConfigureHologramStage extends Stage implements LocationConfiguration {
+
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
 
     public ConfigureHologramStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -44,9 +47,9 @@ public class ConfigureHologramStage extends Stage implements LocationConfigurati
         }
 
         final Location withOffset = location.add(OFFSET);
-
         lobbyMapSetup.hologram(withOffset);
-        new HologramRenderer(plugin, withOffset).render(new HologramVisualization(plugin, 28263, 1065, 1534, 1834, 369, 660));
+
+        this.visualizationManager.registerTask(lobbyMapSetup, new HologramRenderer(plugin, lobbyMapSetup, withOffset).render(new HologramVisualization(plugin, lobbyMapSetup, 28263, 1065, 1534, 1834, 369, 660)));
 
         setupManager.finishSetup(player, 3);
     }

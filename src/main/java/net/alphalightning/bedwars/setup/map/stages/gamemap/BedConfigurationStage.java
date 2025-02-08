@@ -2,16 +2,17 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.utils.BedUtils;
 import net.kyori.adventure.text.Component;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class BedConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
     private final int count;
     private int phase;
@@ -79,13 +81,13 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         if (isNotStage(14)) {
             return;
         }
-        if (!(setup instanceof GameMapSetup)) {
+        if (!(setup instanceof GameMapSetup gameMapSetup)) {
             return;
         }
 
         // Bed configuration is not completed
 
-        updateBed(location.add(OFFSET));
+        updateBed(gameMapSetup, location.add(OFFSET));
 
         if (phase < count) {
             startPhase(++phase);
@@ -98,7 +100,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         setupManager.finishSetup(player, 15);
     }
 
-    private void updateBed(Location bottom) {
+    private void updateBed(MapSetup setup, Location bottom) {
         team.bedBottomHalf(bottom);
 
         Location topHalf = BedUtils.calculateHeadLocation(bottom, player.getFacing());
@@ -110,8 +112,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         team.bedTopHalf(topHalf);
 
-        new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color()));
-        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualization(player, BedUtils.fromColor(team.color())));
+        this.visualizationManager.registerTask(setup, new MultiBlockRenderer(plugin, setup, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color())));
+        this.visualizationManager.registerTask(setup, new FakeBlockRenderer(plugin, setup, bottom).render(new FakeBlockVisualization(setup, player, BedUtils.fromColor(team.color()))));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);

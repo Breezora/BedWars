@@ -4,6 +4,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.impl.*;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -33,6 +34,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     private static final String NO_ALIAS = "n";
     private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
     private final int size;
     private int phase;
@@ -140,11 +142,11 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         final int color = gameMapSetup.hasSlowIron() ? 0x00ff00 : 0xff0000;
         if (!BlockUtil.isHalfBlock(withOffset)) {
-            new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(color));
+            this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(color)));
         } else {
-            new BoundingBoxRenderer(plugin, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color));
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer(plugin, gameMapSetup, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color)));
         }
-        new TeamLootSpawnerRenderer(plugin, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup));
+        this.visualizationManager.registerTask(gameMapSetup, new TeamLootSpawnerRenderer(plugin, setup, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);

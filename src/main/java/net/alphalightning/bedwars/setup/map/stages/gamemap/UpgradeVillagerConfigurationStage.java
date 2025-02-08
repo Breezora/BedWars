@@ -68,7 +68,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        UnboundTeamVisuals.renderShop(plugin, player, location, withOffset, Component.translatable("entity.villager.shop.upgrade"));
+        UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.upgrade"));
 
         player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
         Feedback.success(player);

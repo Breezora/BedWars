@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.utils.LocationUtil;
 import org.bukkit.Bukkit;
@@ -17,8 +18,8 @@ import java.util.Set;
 
 public class TeamLootspawnerVisualization implements Visualization<Location> {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final BedWarsPlugin plugin;
-
     private final GameMapSetup gameMapSetup;
     private final Set<Item> spawnedItems = new HashSet<>();
     private int counter;
@@ -66,11 +67,13 @@ public class TeamLootspawnerVisualization implements Visualization<Location> {
 
     private @NotNull Item spawnItem(@NotNull World world, @NotNull Location spawnLocation, Material material) {
         final Location centered = LocationUtil.adjustedCentered(spawnLocation);
-        return world.spawn(centered, Item.class, false, item -> {
+        final Item spawnedItem = world.spawn(centered, Item.class, false, item -> {
             item.setItemStack(new ItemStack(material));
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
         });
+        this.visualizationManager.trackEntity(this.gameMapSetup, spawnedItem);
+        return spawnedItem;
     }
 }

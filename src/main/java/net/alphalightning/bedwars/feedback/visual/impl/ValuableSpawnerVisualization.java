@@ -2,7 +2,9 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.game.SpawnerType;
+import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.utils.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,12 +19,15 @@ import java.util.Set;
 
 public class ValuableSpawnerVisualization implements Visualization<Location> {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final Set<Item> spawnedItems = new HashSet<>();
     private final BedWarsPlugin plugin;
+    private final MapSetup setup;
     private final SpawnerType type;
 
-    public ValuableSpawnerVisualization(BedWarsPlugin plugin, SpawnerType type) {
+    public ValuableSpawnerVisualization(BedWarsPlugin plugin, MapSetup setup, SpawnerType type) {
         this.plugin = plugin;
+        this.setup = setup;
         this.type = type;
     }
 
@@ -44,11 +49,13 @@ public class ValuableSpawnerVisualization implements Visualization<Location> {
 
     private @NotNull Item spawnItem(@NotNull World world, Location spawnLocation) {
         final Location centered = LocationUtil.adjustedCentered(spawnLocation);
-        return world.spawn(centered, Item.class, false, item -> {
+        final Item spawnedItem = world.spawn(centered, Item.class, false, item -> {
             item.setItemStack(new ItemStack(this.type == SpawnerType.EMERALD ? Material.EMERALD : Material.DIAMOND));
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
         });
+        this.visualizationManager.trackEntity(this.setup, spawnedItem);
+        return spawnedItem;
     }
 }
