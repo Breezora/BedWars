@@ -68,11 +68,13 @@ public class SpawnerVisualization implements Visualization<Location> {
             centered.setY(centered.y() + 0.1D);
         }
 
-        return world.dropItemNaturally(centered.add(0, 0, 0), new ItemStack(material), item -> { // #add(0, 0, 0) is a bypass to spawn at the exact location and avoid randomness
-            item.setItemStack(new ItemStack(material));
+        Item spawnedItem = world.dropItem(centered, new ItemStack(material), item -> {
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
         });
+        spawnedItem.teleport(centered);
+
+        return spawnedItem;
     }
 }
