@@ -22,7 +22,7 @@ public class TntItem extends AbstractItem {
         Component lore = Component.translatable("gui.shop.itemshop.buyable.tnt.lore");
         Component lore2 = Component.translatable("gui.shop.itemshop.buyable.tnt.lore.2");
 
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
 
         return new ItemBuilder(Material.TNT)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
