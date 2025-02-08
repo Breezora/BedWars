@@ -14,7 +14,6 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
-import net.alphalightning.bedwars.utils.LocationUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -142,7 +141,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         team.lootspawner(withOffset);
 
         new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin, gameMapSetup));
-        new BoundingBoxRenderer(plugin, LocationUtil.adjustedCentered(withOffset)).render(new BoundingBoxVisualization(gameMapSetup.hasSlowIron() ? 0xff0000 : 0x00de04));
+        new BoundingBoxRenderer(plugin, withOffset).render(new BoundingBoxVisualization(gameMapSetup.hasSlowIron() ? 0xff0000 : 0x00de04));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
