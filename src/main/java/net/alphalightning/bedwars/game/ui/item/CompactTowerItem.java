@@ -22,7 +22,7 @@ public class CompactTowerItem extends AbstractItem {
 
         Component lore = Component.translatable("gui.shop.itemshop.buyable.compacttower.lore");
 
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
 
         return new ItemBuilder(Material.CHEST)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
