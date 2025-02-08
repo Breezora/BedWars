@@ -18,8 +18,8 @@ public class WeaponsItem extends AbstractTabGuiBoundItem {
         TabGui gui = super.getGui();
 
         Component display = Component.translatable(gui.getTab() == 2 ?
-                "gui.shop.itemshop.combat.name" :
-                "gui.shop.itemshop.combat.name.selected"
+                "gui.shop.itemshop.combat.name.selected" :
+                "gui.shop.itemshop.combat.name"
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
