@@ -45,7 +45,7 @@ public class BowItem extends AbstractItem {
             }
         }
         return new ItemBuilder(Material.BOW)
-                .setName(display)
+                .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
                         GlobalTranslator.render(enough, viewer.locale())));
