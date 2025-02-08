@@ -8,7 +8,7 @@ public class PotionsGui {
     public final Gui gui() {
         return Gui.normal()
                 .setStructure(
-                        ". a . . . . . . .",
+                        ". . . . . a . . .",
                         ". b c d . . . . .",
                         ". . . . . . . . ."
                 )

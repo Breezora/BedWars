@@ -24,7 +24,7 @@ public class PotionsItem extends AbstractTabGuiBoundItem {
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        final ItemBuilder builder = new ItemBuilder(Material.STONE_PICKAXE)
+        final ItemBuilder builder = new ItemBuilder(Material.BREWING_STAND)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
 
         if(gui.getTab() != 6) {
