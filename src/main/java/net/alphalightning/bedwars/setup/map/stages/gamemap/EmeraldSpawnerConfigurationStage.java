@@ -2,6 +2,8 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerVisualization;
 import net.alphalightning.bedwars.game.SpawnerType;
@@ -84,6 +86,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         locations.add(withOffset);
 
         new ValuableSpawnerRenderer(plugin, withOffset).render(new ValuableSpawnerVisualization(plugin, SpawnerType.EMERALD));
+        new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(0x21de3a));
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         Feedback.success(player);
