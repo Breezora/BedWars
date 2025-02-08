@@ -31,8 +31,6 @@ public class TntItem extends AbstractItem {
                         GlobalTranslator.render(lore, viewer.locale()),
                         GlobalTranslator.render(lore2, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(lore, viewer.locale()),
-                        Component.empty(),
                         GlobalTranslator.render(enough, viewer.locale())
                 ));
     }
