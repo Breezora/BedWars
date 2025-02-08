@@ -10,7 +10,7 @@ public class FastBuyGui {
                 .setStructure(
                         "a . . . . . . . a",
                         ". b d f h j l . .",
-                        ". c e g i k . . ."
+                        ". c e g i k m . ."
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new WoolItem())
@@ -24,6 +24,7 @@ public class FastBuyGui {
                 .addIngredient('j', new InvisPotionItem())
                 .addIngredient('k', new SpeedPotionItem())
                 .addIngredient('l', new TntItem())
+                .addIngredient('m', new GoldenAppleItem())
                 .build();
     }
 
