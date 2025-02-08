@@ -24,7 +24,7 @@ public class SpongeItem extends AbstractItem {
 
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
 
-        return new ItemBuilder(Material.MILK_BUCKET)
+        return new ItemBuilder(Material.SPONGE)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
