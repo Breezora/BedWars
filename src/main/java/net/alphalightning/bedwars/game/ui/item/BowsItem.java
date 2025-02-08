@@ -24,7 +24,7 @@ public class BowsItem extends AbstractTabGuiBoundItem {
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        final ItemBuilder builder = new ItemBuilder(Material.CHAINMAIL_BOOTS)
+        final ItemBuilder builder = new ItemBuilder(Material.BOW)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
 
         if(gui.getTab() != 5) {
