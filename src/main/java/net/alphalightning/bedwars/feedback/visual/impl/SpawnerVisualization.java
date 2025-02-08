@@ -3,7 +3,7 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
-import net.alphalightning.bedwars.utils.BlockUtil;
+import net.alphalightning.bedwars.utils.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,16 +65,7 @@ public class SpawnerVisualization implements Visualization<Location> {
     }
 
     private @NotNull Item spawnItem(@NotNull World world, @NotNull Location spawnLocation, Material material) {
-        final Location centered = spawnLocation.clone();
-        centered.setX(spawnLocation.getBlockX() + 0.5D);
-        centered.setZ(spawnLocation.getBlockZ() + 0.5D);
-
-        if (BlockUtil.isHalfBlock(centered)) { // Is block a half slab
-            centered.setY(0.6D);
-        } else {
-            centered.setY(centered.y() + 0.1D);
-        }
-
+        final Location centered = LocationUtil.adjustedCentered(spawnLocation);
         return world.spawn(centered, Item.class, false, item -> {
             item.setItemStack(new ItemStack(material));
             item.setCanMobPickup(false);
