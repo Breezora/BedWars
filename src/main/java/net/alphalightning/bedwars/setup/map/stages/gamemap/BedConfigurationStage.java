@@ -8,15 +8,18 @@ import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualization;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
+import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.alphalightning.bedwars.utils.BedUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -98,7 +101,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
     private void updateBed(Location bottom) {
         team.bedBottomHalf(bottom);
 
-        Location topHalf = calculateTopHalf(bottom);
+        Location topHalf = BedUtils.calculateHeadLocation(bottom, player.getFacing());
         if (topHalf == null) {
             player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
             Feedback.error(player);
@@ -107,21 +110,10 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         team.bedTopHalf(topHalf);
 
+        new MultiBlockRenderer(plugin, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color()));
+        new FakeBlockRenderer(plugin, bottom).render(new FakeBlockVisualization(player, BedUtils.fromColor(team.color())));
+
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);
-    }
-
-    private @Nullable Location calculateTopHalf(@NotNull Location bottom) {
-        Location top = bottom.clone();
-        switch (player.getFacing()) {
-            case NORTH -> top.add(0, 0, -1);
-            case SOUTH -> top.add(0, 0, 1);
-            case WEST -> top.add(-1, 0, 0);
-            case EAST -> top.add(1, 0, 0);
-            default -> {
-                return null;
-            }
-        }
-        return top;
     }
 }

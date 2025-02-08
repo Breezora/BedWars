@@ -1,42 +1,25 @@
-name: Deploy to personal dev environment
-concurrency: local development
+name: Deploy to staging environment
+concurrency: staging
 
 on:
   push:
     branches:
-      - feature/*
-      - bugfix/*
-      - hotfix/*
+      - development
 
 env:
   host_url: ${{ secrets.PTERODACTYL_HOST }}
   api_key: ${{ secrets.PTERODACTYL_API_KEY }}
-  server_ids: ${{ secrets.PTERODACTYL_SERVER_IDS }}
+  server_id: ${{ secrets.PTERODACTYL_SERVER_ID }}
 
 jobs:
-  evaluate_target:
-    if: "!startsWith(github.event.head_commit.message, 'Merge')" # Only deploy if the push is not triggered by a merge action
-    environment: local development
-    runs-on: ubuntu-latest
-    outputs:
-      server_id: ${{ steps.set-id.outputs.SERVER_ID }}
-    steps:
-      - name: Evaluate target server
-        id: set-id
-        run: |
-          SERVER_ID=$(echo '${{ env.server_ids }}' | jq -r '."${{ github.actor }}"')
-          echo "SERVER_ID=$SERVER_ID"
-          echo "SERVER_ID=$SERVER_ID" >> "$GITHUB_OUTPUT"
-
   stop_server:
-    environment: local development
+    if: "startsWith(github.event.head_commit.message, 'Merge')" # Only deploy if the push is not triggered by a merge action
+    environment: staging
     runs-on: ubuntu-latest
-    needs:
-      - evaluate_target
     steps:
       - name: Stop local server
         run: |
-          curl "${{ env.host_url }}/api/client/servers/${{ needs.evaluate_target.outputs.server_id }}/power" \
+          curl "${{ env.host_url }}/api/client/servers/${{ env.server_id }}/power" \
           -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
           -H 'Authorization: Bearer ${{ env.api_key }}' \
@@ -44,10 +27,9 @@ jobs:
           -d '{"signal":"stop"}'
 
   deploy:
-    environment: local development
+    environment: staging
     runs-on: ubuntu-latest
     needs:
-      - evaluate_target
       - stop_server
     steps:
       - uses: actions/checkout@v4
@@ -70,21 +52,20 @@ jobs:
         with:
           panel-host: ${{ env.host_url }}
           api-key: ${{ env.api_key }}
-          server-id: ${{ needs.evaluate_target.outputs.server_id }}
+          server-id: ${{ env.server_id }}
           source: build/libs/*-deploy.jar
           target: /plugins/
           restart: true
 
   start_server:
-    environment: local development
+    environment: staging
     runs-on: ubuntu-latest
     needs:
-      - evaluate_target
       - deploy
     steps:
       - name: Start local server
         run: |
-          curl "${{ env.host_url }}/api/client/servers/${{ needs.evaluate_target.outputs.server_id }}/power" \
+          curl "${{ env.host_url }}/api/client/servers/${{ env.server_id }}/power" \
           -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
           -H 'Authorization: Bearer ${{ env.api_key }}' \

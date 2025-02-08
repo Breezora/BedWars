@@ -1,0 +1,55 @@
+name: Update Jira time tracking
+on:
+  push:
+    branches:
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+
+jobs:
+  update_jira-time:
+    if: "!startsWith(github.event.head_commit.message, 'Merge')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get last commit message
+        id: commit_message
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ') 
+          echo "message=$COMMIT_MSG" >> $GITHUB_ENV
+
+      - name: Extract time from commit message
+        id: extract_time
+        run: |
+          echo "Commit message: ${{ env.message }}"
+          
+          HOURS=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*hour(s)?)' || echo "0")
+          MINUTES=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*min(ute)?s?)' || echo "0")
+          SECONDS=$(echo "${{ env.message }}" | grep -oP '\d+(?=\s*second(s)?)' || echo "0")
+          
+          TOTAL_SECONDS=$((HOURS * 3600 + MINUTES * 60 + SECONDS))
+          
+          echo "Extracted time: ${TOTAL_SECONDS}s (${HOURS}h ${MINUTES}m ${SECONDS}s)"
+          echo "total_time=${TOTAL_SECONDS}" >> $GITHUB_ENV
+
+      - name: Extract Jira issue key
+        id: extract_issue_key
+        run: |
+          ISSUE_KEY=$(echo "${{ env.message }}" | grep -oE '[A-Z]+-[0-9]+')
+          if [ -z "$ISSUE_KEY" ]; then
+            echo "No Jira issue key found in commit message. Skipping."
+            exit 0
+          fi
+          echo "Jira Issue Key: $ISSUE_KEY"
+          echo "issue_key=$ISSUE_KEY" >> $GITHUB_ENV
+
+      - name: Add worklog to Jira
+        run: |
+          curl --request POST \
+            --url "${{ secrets.JIRA_BASE_URL }}/rest/api/3/issue/${{ env.issue_key }}/worklog" \
+            --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --data "{ \"timeSpentSeconds\": \"${{ env.total_time }}\" }"
