@@ -58,7 +58,17 @@ public class SpawnerVisualization implements Visualization<Location> {
     }
 
     private @NotNull Item spawnItem(@NotNull World world, @NotNull Location spawnLocation, Material material) {
-        return world.dropItem(spawnLocation.toCenterLocation().subtract(0, 0.5D, 0), new ItemStack(material), item -> {
+        final Location centered = spawnLocation.clone();
+        centered.setX(spawnLocation.getBlockX() + 0.5D);
+        centered.setZ(spawnLocation.getBlockZ() + 0.5D);
+
+        if (centered.getY() % 1 == 0.5) { // Is block a half slab
+            centered.setY(0.6D);
+        } else {
+            centered.setY(0.1D);
+        }
+
+        return world.dropItem(centered, new ItemStack(material), item -> {
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
