@@ -26,7 +26,7 @@ public class SpawnerVisualization implements Visualization<Location> {
 
     @Override
     public void show(@NotNull Location location) {
-        final Location spawnLocation = location.clone().add(0, 0.5D, 0);
+        final Location spawnLocation = location.clone().add(0, 0.1D, 0);
         final World world = location.getWorld();
 
         if (world == null) {
@@ -57,8 +57,8 @@ public class SpawnerVisualization implements Visualization<Location> {
         }, 40L);
     }
 
-    private @NotNull Item spawnItem(@NotNull World world, Location spawnLocation, Material material) {
-        return world.dropItem(spawnLocation, new ItemStack(material), item -> {
+    private @NotNull Item spawnItem(@NotNull World world, @NotNull Location spawnLocation, Material material) {
+        return world.dropItem(spawnLocation.toCenterLocation().subtract(0, 0.5D, 0), new ItemStack(material), item -> {
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
