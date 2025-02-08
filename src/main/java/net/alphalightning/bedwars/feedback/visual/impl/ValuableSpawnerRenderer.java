@@ -7,18 +7,18 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public class SpawnerRenderer implements VisualizationRenderer<SpawnerVisualization> {
+public class ValuableSpawnerRenderer implements VisualizationRenderer<ValuableSpawnerVisualization> {
 
     private final BedWarsPlugin plugin;
     private final Location location;
 
-    public SpawnerRenderer(BedWarsPlugin plugin, Location location) {
+    public ValuableSpawnerRenderer(BedWarsPlugin plugin, Location location) {
         this.plugin = plugin;
         this.location = location;
     }
 
     @Override
-    public @NotNull BukkitTask render(@NotNull SpawnerVisualization visualisation) {
+    public @NotNull BukkitTask render(@NotNull ValuableSpawnerVisualization visualisation) {
         return Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.location), 0L, 10L);
     }
 }

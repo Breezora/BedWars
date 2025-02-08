@@ -144,7 +144,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         } else {
             new BoundingBoxRenderer(plugin, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color));
         }
-        new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin, gameMapSetup));
+        new TeamLootSpawnerRenderer(plugin, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
