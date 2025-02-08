@@ -2,16 +2,17 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
     private final int count;
     private int phase;
@@ -85,10 +87,10 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         // Teamchest configuration is not completed
 
         final Location withOffset = location.add(OFFSET);
-
         team.chest(withOffset);
-        new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(team.color()));
-        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualization(player, Material.CHEST));
+
+        this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(team.color())));
+        this.visualizationManager.registerTask(gameMapSetup, new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualization(player, Material.CHEST)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);

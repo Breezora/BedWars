@@ -6,6 +6,7 @@ import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class EmeraldSpawnerConfigurationStage extends Stage implements LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Location> locations = new ArrayList<>();
     private final int count;
     private int phase;
@@ -85,8 +87,8 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        new ValuableSpawnerRenderer(plugin, withOffset).render(new ValuableSpawnerVisualization(plugin, SpawnerType.EMERALD));
-        new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(0x21de3a));
+        this.visualizationManager.registerTask(gameMapSetup, new ValuableSpawnerRenderer(plugin, withOffset).render(new ValuableSpawnerVisualization(plugin, SpawnerType.EMERALD)));
+        this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(0x21de3a)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         Feedback.success(player);

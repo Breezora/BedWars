@@ -70,7 +70,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        UnboundTeamVisuals.renderShop(plugin, player, location, withOffset, Component.translatable("entity.villager.shop.item"));
+        UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.item"));
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
