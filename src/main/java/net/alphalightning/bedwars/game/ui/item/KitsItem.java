@@ -11,18 +11,17 @@ import xyz.xenondevs.invui.item.Click;
 import xyz.xenondevs.invui.item.ItemBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 
-import java.util.List;
 
 public class KitsItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         Component display = Component.translatable("gui.shop.itemshop.kits.name");
-        Component lore = Component.translatable("gui.shop.itemshop.lore");
+        //Component lore = Component.translatable("gui.shop.itemshop.lore");
 
         return new ItemBuilder(Material.CHEST)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
+                .setName(GlobalTranslator.render(display, viewer.locale()));
+                //.setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
 
     @Override
