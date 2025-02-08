@@ -30,8 +30,7 @@ public class CompactTowerItem extends AbstractItem {
                         Component.empty(),
                         GlobalTranslator.render(lore, viewer.locale()),
                         Component.empty(),
-                        GlobalTranslator.render(enough, viewer.locale())))
-                .setAmount(4);
+                        GlobalTranslator.render(enough, viewer.locale())));
     }
 
     @Override
