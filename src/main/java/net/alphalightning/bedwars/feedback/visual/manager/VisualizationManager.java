@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.feedback.visual.manager;
 
 import net.alphalightning.bedwars.provider.ServiceProvider;
 import net.alphalightning.bedwars.setup.map.MapSetup;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -51,12 +52,14 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
 
     public synchronized void removeEntities(@NotNull MapSetup setup) {
         final List<Entity> entities = this.fakeEntities.getOrDefault(setup, new ArrayList<>());
-        for (Entity entity : entities) {
-            if (entity == null) {
-                continue;
+        Bukkit.getScheduler().runTask(setup.plugin(), () -> {
+            for (Entity entity : entities) {
+                if (entity == null) {
+                    continue;
+                }
+                entity.remove();
             }
-            entity.remove();
-        }
+        });
         this.fakeEntities.remove(setup);
     }
 
