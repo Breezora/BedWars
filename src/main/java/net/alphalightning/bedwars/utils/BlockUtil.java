@@ -40,11 +40,17 @@ public final class BlockUtil {
         final double y = location.y();
         final double z = location.z();
 
+        double minY;
+        if (!BlockUtil.isHalfBlock(location)) {
+            minY = (y - 0.5) * scale;
+        } else {
+            minY = y * scale;
+        }
+
+        double maxY = (y + 0.5) * scale;
         double minX = (x - 0.5) * scale;
-        double minY = (y - 0.5) * scale;
         double minZ = (z - 0.5) * scale;
         double maxX = (x + 0.5) * scale;
-        double maxY = (y + 0.5) * scale;
         double maxZ = (z + 0.5) * scale;
 
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
