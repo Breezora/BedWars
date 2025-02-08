@@ -22,6 +22,7 @@ public class ItemShopGui {
     Gui fastBuyGui = new FastBuyGui().gui();
     Gui blocksGui = new BlocksGui().gui();
     Gui weaponsGui = new WeaponsGui().gui();
+    Gui armorGui = new ArmorGui().gui();
 
     private Single createGui() {
         return Window.single()
@@ -43,7 +44,7 @@ public class ItemShopGui {
                         .addIngredient('6', new PotionsItem())
                         .addIngredient('7', new ExtrasItem())
                         .addIngredient('8', new KitsItem())
-                        .setTabs(List.of(fastBuyGui, blocksGui, weaponsGui))
+                        .setTabs(List.of(fastBuyGui, blocksGui, weaponsGui, armorGui))
                         .build()
                 )
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
