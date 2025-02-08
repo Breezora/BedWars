@@ -93,8 +93,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         if (!event.isSneaking()) {
             final List<Block> blocks = List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock());
 
-            this.visualizationManager.registerTask(gameMapSetup, new MultiBlockRenderer(plugin, blocks).render(new MultiBlockVisualization(team.color())));
-            this.visualizationManager.registerTask(gameMapSetup, new SingleLineRenderer(plugin, player).render(new SingleLineVisualization(player)));
+            this.visualizationManager.registerTask(gameMapSetup, new MultiBlockRenderer(plugin, gameMapSetup, blocks).render(new MultiBlockVisualization(team.color())));
+            this.visualizationManager.registerTask(gameMapSetup, new SingleLineRenderer(plugin, gameMapSetup, player).render(new SingleLineVisualization(player)));
         }
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));

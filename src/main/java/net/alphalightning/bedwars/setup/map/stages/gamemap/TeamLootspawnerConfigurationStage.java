@@ -142,11 +142,11 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         final int color = gameMapSetup.hasSlowIron() ? 0x00ff00 : 0xff0000;
         if (!BlockUtil.isHalfBlock(withOffset)) {
-            this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(color)));
+            this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(color)));
         } else {
-            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer(plugin, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color)));
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer(plugin, gameMapSetup, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color)));
         }
-        this.visualizationManager.registerTask(gameMapSetup, new TeamLootSpawnerRenderer(plugin, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup)));
+        this.visualizationManager.registerTask(gameMapSetup, new TeamLootSpawnerRenderer(plugin, setup, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);

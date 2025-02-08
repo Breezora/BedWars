@@ -73,7 +73,7 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
             return;
         }
 
-        this.visualizationManager.registerTask(gameMapSetup, new HeightRenderer(plugin, player).render(new HeightVisualization(buildHeight)));
+        this.visualizationManager.registerTask(gameMapSetup, new HeightRenderer(plugin, gameMapSetup, player).render(new HeightVisualization(buildHeight)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.5.success", Component.text(buildHeight)));
         Feedback.success(player);
