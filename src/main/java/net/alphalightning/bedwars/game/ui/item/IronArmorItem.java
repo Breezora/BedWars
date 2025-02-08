@@ -23,7 +23,7 @@ public class IronArmorItem extends AbstractItem {
 
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.armor.iron.lore");
         Component tooltip2 = Component.translatable("gui.shop.itemshop.buyable.armor.iron.lore.2");
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
         return new ItemBuilder(Material.IRON_BOOTS)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),

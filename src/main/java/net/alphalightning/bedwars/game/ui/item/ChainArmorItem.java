@@ -23,7 +23,7 @@ public class ChainArmorItem extends AbstractItem {
 
         Component tooltip = Component.translatable("gui.shop.itemshop.buyable.armor.chain.lore");
         Component tooltip2 = Component.translatable("gui.shop.itemshop.buyable.armor.chain.lore.2");
-        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold");
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron");
         return new ItemBuilder(Material.CHAINMAIL_BOOTS)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
