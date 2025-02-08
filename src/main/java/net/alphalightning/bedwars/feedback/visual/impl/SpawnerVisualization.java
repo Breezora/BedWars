@@ -58,7 +58,7 @@ public class SpawnerVisualization implements Visualization<Location> {
     }
 
     private @NotNull Item spawnItem(@NotNull World world, Location spawnLocation, Material material) {
-        return world.dropItemNaturally(spawnLocation, new ItemStack(material), item -> {
+        return world.dropItem(spawnLocation, new ItemStack(material), item -> {
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
