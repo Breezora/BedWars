@@ -6,27 +6,40 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.AbstractItem;
-import xyz.xenondevs.invui.item.Click;
-import xyz.xenondevs.invui.item.ItemBuilder;
-import xyz.xenondevs.invui.item.ItemProvider;
+import xyz.xenondevs.invui.gui.TabGui;
+import xyz.xenondevs.invui.item.*;
 
-import java.util.List;
+import java.util.Collections;
 
-public class BowsItem extends AbstractItem {
+public class BowsItem extends AbstractTabGuiBoundItem {
+
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component display = Component.translatable("gui.shop.itemshop.bows.name");
+        TabGui gui = super.getGui();
+
+        Component display = Component.translatable(gui.getTab() == 5 ?
+                "gui.shop.itemshop.bows.name.selected" :
+                "gui.shop.itemshop.bows.name"
+        );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        return new ItemBuilder(Material.BOW)
-                .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
+        final ItemBuilder builder = new ItemBuilder(Material.CHAINMAIL_BOOTS)
+                .setName(GlobalTranslator.render(display, viewer.locale()));
+
+        if(gui.getTab() != 5) {
+            builder.setLore(Collections.singletonList(GlobalTranslator.render(lore, viewer.locale())));
+        }
+
+        return builder;
     }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-
+        if (clickType != ClickType.LEFT) {
+            return;
+        }
+        TabGui gui = super.getGui();
+        gui.setTab(5);
     }
 }
