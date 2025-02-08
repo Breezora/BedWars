@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -13,16 +14,21 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.List;
 
-public class CombatItem extends AbstractItem {
+public class DiamondSwordItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component display = Component.translatable("gui.shop.itemshop.combat.name");
-        Component lore = Component.translatable("gui.shop.itemshop.lore");
+        Component display = Component.translatable("gui.shop.itemshop.buyable.diamondsword.name");
 
-        return new ItemBuilder(Material.GOLDEN_SWORD)
+        Component price = Component.translatable("gui.shop.itemshop.buyable.diamondsword.price");
+
+        Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald");
+        return new ItemBuilder(Material.DIAMOND_SWORD)
                 .setName(GlobalTranslator.render(display, viewer.locale()))
-                .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
+                .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
+                        Component.empty(),
+                        GlobalTranslator.render(enough, viewer.locale())));
     }
 
     @Override

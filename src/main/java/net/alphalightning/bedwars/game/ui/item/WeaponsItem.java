@@ -11,22 +11,22 @@ import xyz.xenondevs.invui.item.*;
 
 import java.util.Collections;
 
-public class BlocksItem extends AbstractTabGuiBoundItem {
+public class WeaponsItem extends AbstractTabGuiBoundItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         TabGui gui = super.getGui();
 
-        Component display = Component.translatable(gui.getTab() == 1 ?
-                "gui.shop.itemshop.blocks.name.selected" :
-                "gui.shop.itemshop.blocks.name"
+        Component display = Component.translatable(gui.getTab() == 2 ?
+                "gui.shop.itemshop.combat.name" :
+                "gui.shop.itemshop.combat.name.selected"
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        final ItemBuilder builder = new ItemBuilder(Material.TERRACOTTA)
+        final ItemBuilder builder = new ItemBuilder(Material.GOLDEN_SWORD)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
 
-        if(gui.getTab() != 1) {
+        if(gui.getTab() != 2) {
             builder.setLore(Collections.singletonList(GlobalTranslator.render(lore, viewer.locale())));
         }
 
@@ -39,6 +39,6 @@ public class BlocksItem extends AbstractTabGuiBoundItem {
             return;
         }
         TabGui gui = super.getGui();
-        gui.setTab(1);
+        gui.setTab(2);
     }
 }
