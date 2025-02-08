@@ -18,8 +18,8 @@ public class BlocksItem extends AbstractTabGuiBoundItem {
         TabGui gui = super.getGui();
 
         Component display = Component.translatable(gui.getTab() == 0 ?
-                "gui.shop.itemshop.blocks.name.selected" :
-                "gui.shop.itemshop.blocks.name"
+                "gui.shop.itemshop.blocks.name" :
+                "gui.shop.itemshop.blocks.name.selected"
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
