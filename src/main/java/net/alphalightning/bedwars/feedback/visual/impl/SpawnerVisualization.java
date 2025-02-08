@@ -6,15 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SpawnerVisualization implements Visualization<Location> {
 
@@ -71,17 +68,11 @@ public class SpawnerVisualization implements Visualization<Location> {
             centered.setY(centered.y() + 0.1D);
         }
 
-        final AtomicReference<Item> item = new AtomicReference<>();
-        world.spawnEntity(centered, EntityType.ITEM, SpawnReason.CUSTOM, entity -> {
-            final Item spawnedItem = (Item) entity;
-            spawnedItem.setItemStack(new ItemStack(material));
-            spawnedItem.setCanMobPickup(false);
-            spawnedItem.setCanPlayerPickup(false);
-            this.spawnedItems.add(spawnedItem);
-
-            item.set(spawnedItem);
+        return world.dropItemNaturally(centered.add(0, 0, 0), new ItemStack(material), item -> { // #add(0, 0, 0) is a bypass to spawn at the exact location and avoid randomness
+            item.setItemStack(new ItemStack(material));
+            item.setCanMobPickup(false);
+            item.setCanPlayerPickup(false);
+            this.spawnedItems.add(item);
         });
-
-        return item.get();
     }
 }
