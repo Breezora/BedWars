@@ -3,6 +3,8 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.SpawnerRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.SpawnerVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -133,7 +135,11 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         // Lootspawner configuration is not completed
 
-        team.lootspawner(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+        team.lootspawner(withOffset);
+
+
+        new SpawnerRenderer(plugin, withOffset).render(new SpawnerVisualization(plugin));
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
 
