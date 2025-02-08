@@ -65,10 +65,8 @@ public class SpawnerVisualization implements Visualization<Location> {
         if (centered.getY() % 1 == 0.5) { // Is block a half slab
             centered.setY(0.6D);
         } else {
-            centered.setY(0.1D);
+            centered.setY(centered.y() + 0.1D);
         }
-
-        Bukkit.getLogger().info("Location: " + centered);
 
         return world.dropItem(centered, new ItemStack(material), item -> {
             item.setCanMobPickup(false);
