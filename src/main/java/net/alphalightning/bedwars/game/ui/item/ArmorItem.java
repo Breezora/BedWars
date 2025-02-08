@@ -24,7 +24,7 @@ public class ArmorItem extends AbstractTabGuiBoundItem {
         );
         Component lore = Component.translatable("gui.shop.itemshop.lore");
 
-        final ItemBuilder builder = new ItemBuilder(Material.TERRACOTTA)
+        final ItemBuilder builder = new ItemBuilder(Material.CHAINMAIL_BOOTS)
                 .setName(GlobalTranslator.render(display, viewer.locale()));
 
         if(gui.getTab() != 3) {
