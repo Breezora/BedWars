@@ -87,7 +87,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        this.visualizationManager.registerTask(gameMapSetup, new ValuableSpawnerRenderer(plugin, gameMapSetup, withOffset).render(new ValuableSpawnerVisualization(plugin, SpawnerType.EMERALD)));
+        this.visualizationManager.registerTask(gameMapSetup, new ValuableSpawnerRenderer(plugin, gameMapSetup, withOffset).render(new ValuableSpawnerVisualization(plugin, setup, SpawnerType.EMERALD)));
         this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(0x21de3a)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));

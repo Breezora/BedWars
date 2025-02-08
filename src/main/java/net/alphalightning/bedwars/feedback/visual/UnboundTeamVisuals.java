@@ -26,7 +26,7 @@ public interface UnboundTeamVisuals {
     }
 
     static void renderShop(BedWarsPlugin plugin, MapSetup setup, Player player, @NotNull Location location, @NotNull Location withOffset, Component name) {
-        MANAGER.registerTask(setup, new EntityRenderer(plugin, setup, location.toCenterLocation().subtract(0, 0.5D, 0)).render(new EntityVisualization(EntityType.VILLAGER, null)));
+        MANAGER.registerTask(setup, new EntityRenderer(plugin, setup, location.toCenterLocation().subtract(0, 0.5D, 0)).render(new EntityVisualization(EntityType.VILLAGER, setup, null)));
         MANAGER.registerTask(setup, new TextRenderer(plugin, setup, withOffset.toCenterLocation().add(0, 1.7D, 0)).render(new TextVisualization(setup, Component.translatable("entity.interact"))));
         MANAGER.registerTask(setup, new TextRenderer(plugin, setup, withOffset.toCenterLocation().add(0, 1.95D, 0)).render(new TextVisualization(setup, name)));
         MANAGER.registerTask(setup, Bukkit.getScheduler().runTaskLater(plugin, () -> UnboundTeamVisuals.renderSpawnpoint(plugin, setup, player, withOffset), 1L)); // Render this later to avoid some stupid collisions with the texts and villager

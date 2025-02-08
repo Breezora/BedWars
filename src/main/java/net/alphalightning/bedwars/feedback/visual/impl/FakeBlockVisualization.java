@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars.feedback.visual.impl;
 
 import net.alphalightning.bedwars.feedback.visual.Visualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
+import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.utils.BedUtils;
 import net.alphalightning.bedwars.utils.BlockUtil;
 import org.bukkit.Location;
@@ -15,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class FakeBlockVisualization implements Visualization<Location> {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
+    private final MapSetup setup;
     private final Player player;
     private final Material material;
 
-    public FakeBlockVisualization(Player player, Material material) {
+    public FakeBlockVisualization(MapSetup setup, Player player, Material material) {
+        this.setup = setup;
         this.player = player;
         this.material = material;
     }
@@ -34,11 +39,11 @@ public class FakeBlockVisualization implements Visualization<Location> {
             location = correctLocation(location, blockFace, false);
         }
 
-        world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
+        this.visualizationManager.trackEntity(this.setup, world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
             blockDisplay.setRotation(BedUtils.yawByBlockFace(this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace()), 0f);
-        });
+        }));
     }
 
     private @NotNull Location correctLocation(Location location, @NotNull BlockFace blockFace, boolean isBed) {
