@@ -68,13 +68,11 @@ public class SpawnerVisualization implements Visualization<Location> {
             centered.setY(centered.y() + 0.1D);
         }
 
-        Item spawnedItem = world.dropItem(centered, new ItemStack(material), item -> {
+        return world.spawn(centered, Item.class, false, item -> {
+            item.setItemStack(new ItemStack(material));
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
             this.spawnedItems.add(item);
         });
-        spawnedItem.teleport(centered);
-
-        return spawnedItem;
     }
 }
