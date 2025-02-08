@@ -5,8 +5,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.Markers;
-import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.TabGui;
+import xyz.xenondevs.invui.item.AbstractTabGuiBoundItem;
 import xyz.xenondevs.invui.window.Window;
 import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
@@ -23,7 +23,14 @@ public class ItemShopGui {
     Gui fastBuyGui = new FastBuyGui().gui();
     Gui blocksGui = new BlocksGui().gui();
 
+    AbstractTabGuiBoundItem fastBuyItem = new FastBuyItem();
+    AbstractTabGuiBoundItem blocksItem = new BlocksItem();
+
     private Single createGui() {
+
+        fastBuyItem.bind(fastBuyGui);
+        blocksItem.bind(blocksGui);
+
         return Window.single()
                 .setGui(TabGui.normal()
                         .setStructure(
@@ -47,6 +54,7 @@ public class ItemShopGui {
                         .build()
                 )
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
+
     }
 
     public void showGui(Player player) {
