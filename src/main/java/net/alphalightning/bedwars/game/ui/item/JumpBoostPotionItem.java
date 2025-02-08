@@ -18,19 +18,19 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.List;
 
-public class SpeedPotionItem extends AbstractItem {
+public class JumpBoostPotionItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        Component display = Component.translatable("gui.shop.itemshop.buyable.potion.speed.name");
-        Component price = Component.translatable("gui.shop.itemshop.buyable.potion.speed.price");
-        Component lore = Component.translatable("gui.shop.itemshop.buyable.potion.speed.lore");
+        Component display = Component.translatable("gui.shop.itemshop.buyable.potion.jumpboost.name");
+        Component price = Component.translatable("gui.shop.itemshop.buyable.potion.jumpboost.price");
+        Component lore = Component.translatable("gui.shop.itemshop.buyable.potion.jumpboost.lore");
         Component enough = Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald");
 
         return new ItemBuilder(Material.POTION)
                 .setCustomName(GlobalTranslator.render(display, viewer.locale()))
-                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.SWIFTNESS)
-                        .addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 45, 1)))
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.WATER_BREATHING)
+                        .addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 20 * 45, 5)))
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(price, viewer.locale()),
                         Component.empty(),
