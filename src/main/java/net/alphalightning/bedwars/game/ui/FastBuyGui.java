@@ -8,7 +8,7 @@ public class FastBuyGui {
     public final Gui gui() {
         return Gui.normal()
                 .setStructure(
-                        "a . . . . . . . a",
+                        "a . . . . . . . .",
                         ". b d f h j l n .",
                         ". c e g i k m o ."
                 )

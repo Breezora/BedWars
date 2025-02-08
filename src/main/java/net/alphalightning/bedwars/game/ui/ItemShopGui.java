@@ -9,7 +9,6 @@ import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.window.Window;
 import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ItemShopGui {
@@ -26,7 +25,7 @@ public class ItemShopGui {
         return Window.single()
                 .setGui(PagedGui.guis()
                         .setStructure(
-                                "a b c d e f g h a",
+                                "a b c d e f g h i",
                                 "x x x x x x x x x",
                                 "x x x x x x x x x",
                                 "x x x x x x x x x",
@@ -41,6 +40,7 @@ public class ItemShopGui {
                         .addIngredient('f', new BowsItem())
                         .addIngredient('g', new PotionsItem())
                         .addIngredient('h', new ExtrasItem())
+                        .addIngredient('i', new KitsItem())
                         .setContent(List.of(fastBuyGui))
                         .build()
                 )
