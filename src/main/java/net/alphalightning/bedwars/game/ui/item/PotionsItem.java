@@ -7,8 +7,6 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
@@ -27,8 +25,7 @@ public class PotionsItem extends AbstractItem {
 
         return new ItemBuilder(Material.POTION)
                 .setCustomName(GlobalTranslator.render(display, viewer.locale()))
-                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.INVISIBILITY)
-                        .addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20 * 30, 0)))
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(PotionType.HEALING))
                 .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 .setLore(List.of(GlobalTranslator.render(lore, viewer.locale())));
     }
