@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.utils;
 
+import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,4 +30,7 @@ public final class BlockUtil {
         }
     }
 
+    public static boolean isHalfBlock(@NotNull Location location) {
+        return location.y() % 1 == 0.5;
+    }
 }
