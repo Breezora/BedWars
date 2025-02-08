@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SpawnerVisualization implements Visualization<Location> {
+public class TeamLootspawnerVisualization implements Visualization<Location> {
 
     private final BedWarsPlugin plugin;
 
@@ -23,7 +23,7 @@ public class SpawnerVisualization implements Visualization<Location> {
     private final Set<Item> spawnedItems = new HashSet<>();
     private int counter;
 
-    public SpawnerVisualization(BedWarsPlugin plugin, GameMapSetup gameMapSetup) {
+    public TeamLootspawnerVisualization(BedWarsPlugin plugin, GameMapSetup gameMapSetup) {
         this.plugin = plugin;
         this.gameMapSetup = gameMapSetup;
     }
