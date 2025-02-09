@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.utils;
+package net.alphalightning.bedwars.util;
 
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -56,6 +56,23 @@ public final class BlockUtil {
         double maxZ = (z + 0.5) * scale;
 
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    public static @NotNull Location correctLocation(Location location, @NotNull BlockFace blockFace, boolean isBed) {
+        if (isBed) {
+            return switch (blockFace) {
+                case NORTH -> location.add(1, 0, 0);
+                case SOUTH -> location.add(0, 0, 1);
+                case EAST -> location.add(1, 0, 1);
+                default -> location;
+            };
+        }
+        return switch (blockFace) {
+            case SOUTH -> location.add(1, 0, 1);
+            case WEST -> location.add(0, 0, 1);
+            case EAST -> location.add(1, 0, 0);
+            default -> location;
+        };
     }
 
 }

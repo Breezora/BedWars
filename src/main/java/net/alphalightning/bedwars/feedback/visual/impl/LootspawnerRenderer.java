@@ -6,25 +6,23 @@ import net.alphalightning.bedwars.feedback.visual.VisualizationRenderer;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public class SingleLineRenderer extends BaseRenderer implements VisualizationRenderer<SingleLineVisualization> {
+public class LootspawnerRenderer extends BaseRenderer implements VisualizationRenderer<LootspawnerVisualization> {
 
-    private final Player player;
+    private final Location location;
 
-    public SingleLineRenderer(BedWarsPlugin plugin, MapSetup setup, Player player) {
+    public LootspawnerRenderer(BedWarsPlugin plugin, MapSetup setup, Location location) {
         super(plugin, setup);
-        this.player = player;
+        this.location = location;
     }
 
     @Override
-    public @NotNull BukkitTask render(@NotNull SingleLineVisualization visualisation) {
-        final Location start = this.player.getEyeLocation();
+    public @NotNull BukkitTask render(@NotNull LootspawnerVisualization visualisation) {
         return super.visualizationManager.registerTask(
                 this.setup,
-                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(start), 0L, 5L)
+                Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.location), 0L, 10L)
         );
     }
 }

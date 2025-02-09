@@ -2,10 +2,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.EntityRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.EntityVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -18,6 +17,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -89,8 +90,12 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         final Location withOffset = location.add(OFFSET);
         team.chest(withOffset);
 
-        this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(team.color())));
-        this.visualizationManager.registerTask(gameMapSetup, new FakeBlockRenderer(plugin, gameMapSetup, withOffset).render(new FakeBlockVisualization(setup, player, Material.CHEST)));
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
+                .render(withOffset.getBlock(), team.color())
+        );
+        this.visualizationManager.registerTask(gameMapSetup, new EntityRenderer(plugin, gameMapSetup, withOffset)
+                .render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null))
+        );
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);

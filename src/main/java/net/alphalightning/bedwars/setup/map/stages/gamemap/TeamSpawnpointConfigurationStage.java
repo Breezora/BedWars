@@ -2,8 +2,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.SingleLineRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.SingleLineVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
@@ -92,8 +91,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         if (!event.isSneaking()) {
             final List<Block> blocks = List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock());
-
-            this.visualizationManager.registerTask(gameMapSetup, new MultiBlockRenderer(plugin, gameMapSetup, blocks).render(new MultiBlockVisualization(team.color())));
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(blocks, team.color()));
             this.visualizationManager.registerTask(gameMapSetup, new SingleLineRenderer(plugin, gameMapSetup, player).render(new SingleLineVisualization(player)));
         }
 

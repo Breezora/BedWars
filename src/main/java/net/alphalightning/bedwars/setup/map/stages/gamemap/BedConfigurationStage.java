@@ -2,10 +2,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.FakeBlockVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.EntityRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.EntityVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -14,10 +13,12 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
-import net.alphalightning.bedwars.utils.BedUtils;
+import net.alphalightning.bedwars.util.BedUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -103,7 +104,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
     private void updateBed(MapSetup setup, Location bottom) {
         team.bedBottomHalf(bottom);
 
-        Location topHalf = BedUtils.calculateHeadLocation(bottom, player.getFacing());
+        Location topHalf = BedUtil.calculateHeadLocation(bottom, player.getFacing());
         if (topHalf == null) {
             player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
             Feedback.error(player);
@@ -112,8 +113,11 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         team.bedTopHalf(topHalf);
 
-        this.visualizationManager.registerTask(setup, new MultiBlockRenderer(plugin, setup, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color())));
-        this.visualizationManager.registerTask(setup, new FakeBlockRenderer(plugin, setup, bottom).render(new FakeBlockVisualization(setup, player, BedUtils.fromColor(team.color()))));
+        final List<Block> blocks = List.of(topHalf.getBlock(), bottom.getBlock());
+        this.visualizationManager.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, team.color()));
+        this.visualizationManager.registerTask(setup, new EntityRenderer(plugin, setup, bottom)
+                .render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null))
+        );
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);
