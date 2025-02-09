@@ -2,8 +2,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.BlockEdgeVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.ValuableSpawnerVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
@@ -14,6 +13,7 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -88,7 +88,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         locations.add(withOffset);
 
         this.visualizationManager.registerTask(gameMapSetup, new ValuableSpawnerRenderer(plugin, gameMapSetup, withOffset).render(new ValuableSpawnerVisualization(plugin, setup, SpawnerType.EMERALD)));
-        this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(0x21de3a)));
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), 0x21de3a));
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         Feedback.success(player);

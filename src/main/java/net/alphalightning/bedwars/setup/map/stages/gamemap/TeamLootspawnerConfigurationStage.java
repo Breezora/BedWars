@@ -3,7 +3,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.*;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.TeamLootSpawnerRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.TeamLootspawnerVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -16,6 +18,7 @@ import net.alphalightning.bedwars.util.BlockUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -142,9 +145,9 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         final int color = gameMapSetup.hasSlowIron() ? 0x00ff00 : 0xff0000;
         if (!BlockUtil.isHalfBlock(withOffset)) {
-            this.visualizationManager.registerTask(gameMapSetup, new BlockEdgeRenderer(plugin, gameMapSetup, withOffset.getBlock()).render(new BlockEdgeVisualization(color)));
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), color));
         } else {
-            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer(plugin, gameMapSetup, withOffset.toCenterLocation()).render(new BoundingBoxVisualization(color)));
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Location>(plugin, gameMapSetup).render(withOffset.toCenterLocation(), color));
         }
         this.visualizationManager.registerTask(gameMapSetup, new TeamLootSpawnerRenderer(plugin, setup, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup)));
 

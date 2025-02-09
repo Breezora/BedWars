@@ -3,10 +3,11 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 import net.alphalightning.bedwars.feedback.visual.BlockVisualization;
 import net.alphalightning.bedwars.util.BlockUtil;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class BoundingBoxVisualization implements BlockVisualization<Location> {
+public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
 
     private final int color;
 
@@ -15,8 +16,17 @@ public class BoundingBoxVisualization implements BlockVisualization<Location> {
     }
 
     @Override
-    public void show(@NotNull Location location) {
-        final BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
-        visualizeBoundingBox(location.getWorld(), boundingBox, this.color);
+    public void show(@NotNull T t) {
+        if (t instanceof Location location) {
+            BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
+            visualizeBoundingBox(location.getWorld(), boundingBox, this.color);
+
+        } else if (t instanceof Block block) {
+            BoundingBox boundingBox = BoundingBox.of(block);
+            visualizeBoundingBox(block.getWorld(), boundingBox, this.color);
+
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 }
