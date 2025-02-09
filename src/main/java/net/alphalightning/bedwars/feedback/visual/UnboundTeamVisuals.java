@@ -21,7 +21,7 @@ public interface UnboundTeamVisuals {
     static void renderSpawnpoint(BedWarsPlugin plugin, MapSetup setup, Player player, @NotNull Location withOffset) {
         final List<Block> blocks = List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock());
 
-        MANAGER.registerTask(setup, new MultiBlockRenderer(plugin, setup, blocks).render(new MultiBlockVisualization(0xecb8f5)));
+        MANAGER.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, 0xecb8f5));
         MANAGER.registerTask(setup, new SingleLineRenderer(plugin, setup, player).render(new SingleLineVisualization(player)));
     }
 

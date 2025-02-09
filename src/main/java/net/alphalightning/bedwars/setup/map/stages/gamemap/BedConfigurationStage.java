@@ -2,10 +2,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.impl.EntityVisualization;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.MultiBlockVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -18,6 +17,7 @@ import net.alphalightning.bedwars.util.BedUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -113,7 +113,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         team.bedTopHalf(topHalf);
 
-        this.visualizationManager.registerTask(setup, new MultiBlockRenderer(plugin, setup, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color())));
+        final List<Block> blocks = List.of(topHalf.getBlock(), bottom.getBlock());
+        this.visualizationManager.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, team.color()));
         this.visualizationManager.registerTask(setup, new EntityRenderer(plugin, setup, bottom).render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));

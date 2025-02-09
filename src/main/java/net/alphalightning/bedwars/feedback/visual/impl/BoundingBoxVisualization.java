@@ -7,6 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
 
     private final int color;
@@ -24,6 +26,22 @@ public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
         } else if (t instanceof Block block) {
             BoundingBox boundingBox = BoundingBox.of(block);
             visualizeBoundingBox(block.getWorld(), boundingBox, this.color);
+
+        }
+        if (t instanceof List<?> blocks) {
+            if (blocks.size() != 2) {
+                throw new IllegalStateException();
+            }
+
+            Object firstObject = blocks.getFirst();
+            Object lastObject = blocks.getLast();
+
+            if (!(firstObject instanceof Block first) || !(lastObject instanceof Block last)) {
+                throw new IllegalArgumentException();
+            }
+
+            BoundingBox boundingBox = BoundingBox.of(first, last);
+            visualizeBoundingBox(first.getWorld(), boundingBox, this.color);
 
         } else {
             throw new UnsupportedOperationException();
