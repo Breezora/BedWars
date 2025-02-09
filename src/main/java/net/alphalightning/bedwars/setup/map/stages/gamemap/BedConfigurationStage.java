@@ -14,7 +14,7 @@ import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
-import net.alphalightning.bedwars.utils.BedUtils;
+import net.alphalightning.bedwars.utils.BedUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
@@ -103,7 +103,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
     private void updateBed(MapSetup setup, Location bottom) {
         team.bedBottomHalf(bottom);
 
-        Location topHalf = BedUtils.calculateHeadLocation(bottom, player.getFacing());
+        Location topHalf = BedUtil.calculateHeadLocation(bottom, player.getFacing());
         if (topHalf == null) {
             player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
             Feedback.error(player);
@@ -113,7 +113,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         team.bedTopHalf(topHalf);
 
         this.visualizationManager.registerTask(setup, new MultiBlockRenderer(plugin, setup, List.of(topHalf.getBlock(), bottom.getBlock())).render(new MultiBlockVisualization(team.color())));
-        this.visualizationManager.registerTask(setup, new FakeBlockRenderer(plugin, setup, bottom).render(new FakeBlockVisualization(setup, player, BedUtils.fromColor(team.color()))));
+        this.visualizationManager.registerTask(setup, new FakeBlockRenderer(plugin, setup, bottom).render(new FakeBlockVisualization(setup, player, BedUtil.fromColor(team.color()))));
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);

@@ -3,7 +3,7 @@ package net.alphalightning.bedwars.feedback.visual.impl;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.utils.BedUtils;
+import net.alphalightning.bedwars.utils.BedUtil;
 import net.alphalightning.bedwars.utils.BlockUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,7 +42,7 @@ public class FakeBlockVisualization implements Visualization<Location> {
         this.visualizationManager.trackEntity(this.setup, world.spawnEntity(location.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
-            blockDisplay.setRotation(BedUtils.yawByBlockFace(this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace()), 0f);
+            blockDisplay.setRotation(BedUtil.yawByBlockFace(this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace()), 0f);
         }));
     }
 
