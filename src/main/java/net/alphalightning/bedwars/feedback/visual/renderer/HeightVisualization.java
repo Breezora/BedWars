@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.feedback.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.renderer;
 
 import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.feedback.visual.Visualization;

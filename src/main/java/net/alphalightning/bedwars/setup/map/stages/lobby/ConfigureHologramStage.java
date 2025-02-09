@@ -2,8 +2,8 @@ package net.alphalightning.bedwars.setup.map.stages.lobby;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.HologramRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.HologramVisualization;
+import net.alphalightning.bedwars.feedback.visual.renderer.HologramRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.HologramVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.LobbyMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
