@@ -4,7 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.visual.Visualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.utils.MathUtil;
+import net.alphalightning.bedwars.util.MathUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;

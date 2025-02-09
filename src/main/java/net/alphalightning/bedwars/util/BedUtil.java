@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.utils;
+package net.alphalightning.bedwars.util;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

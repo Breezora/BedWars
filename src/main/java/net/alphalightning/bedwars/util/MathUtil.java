@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.utils;
+package net.alphalightning.bedwars.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
