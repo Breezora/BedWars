@@ -1,7 +1,7 @@
 package net.alphalightning.bedwars.feedback.visual;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.feedback.visual.impl.*;
+import net.alphalightning.bedwars.feedback.visual.renderer.*;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.kyori.adventure.text.Component;

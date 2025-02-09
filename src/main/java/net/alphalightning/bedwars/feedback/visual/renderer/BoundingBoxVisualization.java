@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.feedback.visual.impl;
+package net.alphalightning.bedwars.feedback.visual.renderer;
 
 import net.alphalightning.bedwars.feedback.visual.BlockVisualization;
 import net.alphalightning.bedwars.util.BlockUtil;

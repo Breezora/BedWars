@@ -2,9 +2,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.SingleLineRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.SingleLineVisualization;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
