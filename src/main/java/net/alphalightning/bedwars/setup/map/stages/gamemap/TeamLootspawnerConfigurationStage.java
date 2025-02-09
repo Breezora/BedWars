@@ -4,8 +4,8 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.impl.BoundingBoxRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.TeamLootSpawnerRenderer;
-import net.alphalightning.bedwars.feedback.visual.impl.TeamLootspawnerVisualization;
+import net.alphalightning.bedwars.feedback.visual.impl.LootspawnerRenderer;
+import net.alphalightning.bedwars.feedback.visual.impl.LootspawnerVisualization;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -149,7 +149,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         } else {
             this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Location>(plugin, gameMapSetup).render(withOffset.toCenterLocation(), color));
         }
-        this.visualizationManager.registerTask(gameMapSetup, new TeamLootSpawnerRenderer(plugin, setup, withOffset).render(new TeamLootspawnerVisualization(plugin, gameMapSetup)));
+        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, withOffset).render(new LootspawnerVisualization(plugin, gameMapSetup, null, true)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
