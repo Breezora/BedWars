@@ -87,8 +87,12 @@ public class DiamondSpawnerConfigurationStage extends Stage implements LocationC
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
-        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, gameMapSetup, withOffset).render(new LootspawnerVisualization(plugin, setup, SpawnerType.DIAMOND, false)));
-        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), 0x5ef2ff));
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
+                .render(withOffset.getBlock(), 0x5ef2ff)
+        );
+        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, gameMapSetup, withOffset)
+                .render(new LootspawnerVisualization(plugin, setup, SpawnerType.DIAMOND, false))
+        );
 
         player.sendMessage(Component.translatable("mapsetup.stage.8.id.success", Component.text(phase)));
         Feedback.success(player);

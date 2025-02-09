@@ -90,8 +90,12 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         final Location withOffset = location.add(OFFSET);
         team.chest(withOffset);
 
-        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), team.color()));
-        this.visualizationManager.registerTask(gameMapSetup, new EntityRenderer(plugin, gameMapSetup, withOffset).render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null)));
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
+                .render(withOffset.getBlock(), team.color())
+        );
+        this.visualizationManager.registerTask(gameMapSetup, new EntityRenderer(plugin, gameMapSetup, withOffset)
+                .render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null))
+        );
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);

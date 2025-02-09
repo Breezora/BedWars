@@ -45,15 +45,35 @@ public class HologramVisualization implements Visualization<Location> {
     public void show(@NotNull Location location) {
         final Location bottom = location.add(0, 0.5D, 0);
 
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 2.25D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.name"))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 2.0D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.all-time"))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.75D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.ranking", Component.text(this.ranking)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.5D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.kills", Component.text(this.kills)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.25D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.deaths", Component.text(this.deaths)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.0D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.kd", Component.text(this.kd)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.75D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.played-games", Component.text(this.playedGames)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.5D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.wins", Component.text(this.wonGames)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.25D, 0)).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.destroyed-beds", Component.text(this.destroyedBeds)))));
-        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom).render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.win-rate", Component.text(this.winRate)))));
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 2.25D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.name")))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 2.0D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.all-time")))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.75D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.ranking", Component.text(this.ranking))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.5D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.kills", Component.text(this.kills))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.25D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.deaths", Component.text(this.deaths))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 1.0D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.kd", Component.text(this.kd))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.75D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.played-games", Component.text(this.playedGames))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.5D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.wins", Component.text(this.wonGames))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom.clone().add(0, 0.25D, 0))
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.destroyed-beds", Component.text(this.destroyedBeds))))
+        );
+        this.visualizationManager.registerTask(this.setup, new EntityRenderer(this.plugin, this.setup, bottom)
+                .render(new EntityVisualization(this.setup, this.player, EntityType.TEXT_DISPLAY, null, Component.translatable("hologram.win-rate", Component.text(this.winRate))))
+        );
     }
 }

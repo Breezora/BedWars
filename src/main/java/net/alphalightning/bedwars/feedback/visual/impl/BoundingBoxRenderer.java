@@ -14,7 +14,10 @@ public class BoundingBoxRenderer<T> extends BaseRenderer {
     }
 
     public @NotNull BukkitTask render(@NotNull T visualization, int color) {
-        return super.visualizationManager.registerTask(this.setup, Bukkit.getScheduler().runTaskTimer(this.plugin, () -> new BoundingBoxVisualization<T>(color).show(visualization), 0L, 5L));
+        return super.visualizationManager.registerTask(
+                this.setup,
+                Bukkit.getScheduler().runTaskTimer(this.plugin, () -> new BoundingBoxVisualization<T>(color).show(visualization), 0L, 5L)
+        );
     }
 
 }

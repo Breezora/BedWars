@@ -20,6 +20,9 @@ public class HologramRenderer extends BaseRenderer implements VisualizationRende
 
     @Override
     public @NotNull BukkitTask render(@NotNull HologramVisualization visualisation) {
-        return super.visualizationManager.registerTask(this.setup, Bukkit.getScheduler().runTask(this.plugin, () -> visualisation.show(this.location)));
+        return super.visualizationManager.registerTask(
+                this.setup,
+                Bukkit.getScheduler().runTask(this.plugin, () -> visualisation.show(this.location))
+        );
     }
 }

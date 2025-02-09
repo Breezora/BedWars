@@ -20,6 +20,9 @@ public class LootspawnerRenderer extends BaseRenderer implements VisualizationRe
 
     @Override
     public @NotNull BukkitTask render(@NotNull LootspawnerVisualization visualisation) {
-        return super.visualizationManager.registerTask(this.setup, Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.location), 0L, 10L));
+        return super.visualizationManager.registerTask(
+                this.setup,
+                Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.location), 0L, 10L)
+        );
     }
 }

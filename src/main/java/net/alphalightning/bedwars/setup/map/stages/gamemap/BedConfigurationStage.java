@@ -115,7 +115,9 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         final List<Block> blocks = List.of(topHalf.getBlock(), bottom.getBlock());
         this.visualizationManager.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, team.color()));
-        this.visualizationManager.registerTask(setup, new EntityRenderer(plugin, setup, bottom).render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null)));
+        this.visualizationManager.registerTask(setup, new EntityRenderer(plugin, setup, bottom)
+                .render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null))
+        );
 
         player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
         Feedback.success(player);

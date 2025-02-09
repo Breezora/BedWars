@@ -20,6 +20,9 @@ public class HeightRenderer extends BaseRenderer implements VisualizationRendere
 
     @Override
     public @NotNull BukkitTask render(@NotNull HeightVisualization visualisation) {
-        return super.visualizationManager.registerTask(this.setup, Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(player.getLocation()), 0L, 5L));
+        return super.visualizationManager.registerTask(
+                this.setup,
+                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(player.getLocation()), 0L, 5L)
+        );
     }
 }

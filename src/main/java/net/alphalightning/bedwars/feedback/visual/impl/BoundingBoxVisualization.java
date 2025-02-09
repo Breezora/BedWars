@@ -21,12 +21,12 @@ public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
     public void show(@NotNull T t) {
         switch (t) {
             case Location location -> {
-                BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
+                final BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
                 visualizeBoundingBox(location.getWorld(), boundingBox, this.color);
 
             }
             case Block block -> {
-                BoundingBox boundingBox = BoundingBox.of(block);
+                final BoundingBox boundingBox = BoundingBox.of(block);
                 visualizeBoundingBox(block.getWorld(), boundingBox, this.color);
 
             }
@@ -35,14 +35,14 @@ public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
                     throw new IllegalStateException();
                 }
 
-                Object firstObject = list.getFirst();
-                Object lastObject = list.getLast();
+                final Object firstObject = list.getFirst();
+                final Object lastObject = list.getLast();
 
                 if (!(firstObject instanceof Block first) || !(lastObject instanceof Block last)) {
                     throw new IllegalArgumentException();
                 }
 
-                BoundingBox boundingBox = BoundingBox.of(first, last);
+                final BoundingBox boundingBox = BoundingBox.of(first, last);
                 visualizeBoundingBox(first.getWorld(), boundingBox, this.color);
 
             }
