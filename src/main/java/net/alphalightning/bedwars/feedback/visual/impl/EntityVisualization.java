@@ -79,7 +79,7 @@ public class EntityVisualization implements Visualization<Location> {
             spawnLocation = BlockUtil.correctLocation(location, blockFace, false);
         }
 
-        this.visualizationManager.trackEntity(this.setup, world.spawnEntity(spawnLocation, EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
+        this.visualizationManager.trackEntity(this.setup, world.spawnEntity(spawnLocation.toBlockLocation(), EntityType.BLOCK_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final BlockDisplay blockDisplay = (BlockDisplay) entity;
             blockDisplay.setBlock(this.material.createBlockData());
             blockDisplay.setRotation(BedUtil.yawByBlockFace(this.material != Material.CHEST ? blockFace : blockFace.getOppositeFace()), 0f);
