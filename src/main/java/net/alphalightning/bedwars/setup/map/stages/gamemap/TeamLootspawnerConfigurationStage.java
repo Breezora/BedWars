@@ -149,7 +149,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         } else {
             this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Location>(plugin, gameMapSetup).render(withOffset.toCenterLocation(), color));
         }
-        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, withOffset).render(new LootspawnerVisualization(plugin, gameMapSetup, null, true)));
+        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, gameMapSetup, withOffset).render(new LootspawnerVisualization(plugin, gameMapSetup, null, true)));
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
         Feedback.success(player);
