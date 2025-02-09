@@ -19,32 +19,34 @@ public class BoundingBoxVisualization<T> implements BlockVisualization<T> {
 
     @Override
     public void show(@NotNull T t) {
-        if (t instanceof Location location) {
-            BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
-            visualizeBoundingBox(location.getWorld(), boundingBox, this.color);
+        switch (t) {
+            case Location location -> {
+                BoundingBox boundingBox = BlockUtil.fromLocation(location, 1);
+                visualizeBoundingBox(location.getWorld(), boundingBox, this.color);
 
-        } else if (t instanceof Block block) {
-            BoundingBox boundingBox = BoundingBox.of(block);
-            visualizeBoundingBox(block.getWorld(), boundingBox, this.color);
-
-        }
-        if (t instanceof List<?> blocks) {
-            if (blocks.size() != 2) {
-                throw new IllegalStateException();
             }
+            case Block block -> {
+                BoundingBox boundingBox = BoundingBox.of(block);
+                visualizeBoundingBox(block.getWorld(), boundingBox, this.color);
 
-            Object firstObject = blocks.getFirst();
-            Object lastObject = blocks.getLast();
-
-            if (!(firstObject instanceof Block first) || !(lastObject instanceof Block last)) {
-                throw new IllegalArgumentException();
             }
+            case List<?> list -> {
+                if (list.size() != 2) {
+                    throw new IllegalStateException();
+                }
 
-            BoundingBox boundingBox = BoundingBox.of(first, last);
-            visualizeBoundingBox(first.getWorld(), boundingBox, this.color);
+                Object firstObject = list.getFirst();
+                Object lastObject = list.getLast();
 
-        } else {
-            throw new UnsupportedOperationException();
+                if (!(firstObject instanceof Block first) || !(lastObject instanceof Block last)) {
+                    throw new IllegalArgumentException();
+                }
+
+                BoundingBox boundingBox = BoundingBox.of(first, last);
+                visualizeBoundingBox(first.getWorld(), boundingBox, this.color);
+
+            }
+            default -> throw new UnsupportedOperationException();
         }
     }
 }
