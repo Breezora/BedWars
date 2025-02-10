@@ -88,7 +88,7 @@ public final class GameMapSetup implements MapSetup {
             case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
             case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
             case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
-            //TODO: Slow Iron in eigene Stage extrahieren
+            case SLOW_IRON_CONFIGURATION_STAGE ->  new SlowIronConfigurationStage(plugin, player, this).run();
             case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
             case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this).run();
             case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
