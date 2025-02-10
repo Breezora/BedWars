@@ -2,7 +2,7 @@ package net.alphalightning.bedwars.game.ui;
 
 import net.alphalightning.bedwars.game.ui.legacy.ArrowItem;
 import net.alphalightning.bedwars.game.ui.legacy.BowItem;
-import net.alphalightning.bedwars.game.ui.legacy.CurrentItem;
+import net.alphalightning.bedwars.game.ui.item.CurrentItem;
 import xyz.xenondevs.invui.gui.Gui;
 
 public class BowsGui {

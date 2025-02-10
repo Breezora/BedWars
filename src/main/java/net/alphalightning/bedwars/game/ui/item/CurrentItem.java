@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.game.ui.legacy;
+package net.alphalightning.bedwars.game.ui.item;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;

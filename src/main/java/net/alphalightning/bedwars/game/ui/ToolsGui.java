@@ -1,6 +1,6 @@
 package net.alphalightning.bedwars.game.ui;
 
-import net.alphalightning.bedwars.game.ui.legacy.CurrentItem;
+import net.alphalightning.bedwars.game.ui.item.CurrentItem;
 import net.alphalightning.bedwars.game.ui.legacy.ShearsItem;
 import net.alphalightning.bedwars.game.ui.legacy.WoodenAxeItem;
 import net.alphalightning.bedwars.game.ui.legacy.WoodenPickaxeItem;

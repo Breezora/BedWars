@@ -1,6 +1,6 @@
 package net.alphalightning.bedwars.game.ui;
 
-import net.alphalightning.bedwars.game.ui.legacy.CurrentItem;
+import net.alphalightning.bedwars.game.ui.item.CurrentItem;
 import net.alphalightning.bedwars.game.ui.legacy.InvisPotionItem;
 import net.alphalightning.bedwars.game.ui.legacy.JumpBoostPotionItem;
 import net.alphalightning.bedwars.game.ui.legacy.SpeedPotionItem;
