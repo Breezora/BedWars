@@ -9,6 +9,11 @@ import xyz.xenondevs.invui.gui.Gui;
 public class FastBuyGui {
 
     public final Gui gui() {
+
+        String iron = "gui.shop.itemshop.buyable.lore.not-enough-iron";
+        String gold = "gui.shop.itemshop.buyable.lore.not-enough-gold";
+        //String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
+
         return Gui.normal()
                 .setStructure(
                         "a . . . . . . . .",
@@ -17,9 +22,26 @@ public class FastBuyGui {
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new WoolItem())
-                .addIngredient('c', new PlanksItem())
-                .addIngredient('d', new GlassItem())
-                .addIngredient('e', new EndstoneItem())
+                .addIngredient('c', new BuyableItem(Material.OAK_PLANKS, "gui.shop.itemshop.buyable.wood.name", 16,
+                        "gui.shop.itemshop.buyable.wood.price",
+                        "",
+                        "gui.shop.itemshop.buyable.wood.lore",
+                        "gui.shop.itemshop.buyable.wood.lore.2",
+                        "",
+                        gold))
+                .addIngredient('d', new BuyableItem(Material.GLASS, "gui.shop.itemshop.buyable.glass.name", 4,
+                "gui.shop.itemshop.buyable.glass.price",
+                "",
+                "gui.shop.itemshop.buyable.glass.lore",
+                "",
+                iron))
+                .addIngredient('e', new BuyableItem(Material.END_STONE, "gui.shop.itemshop.buyable.endstone.name", 12,
+                        "gui.shop.itemshop.buyable.endstone.price",
+                        "",
+                        "gui.shop.itemshop.buyable.endstone.lore",
+                        "gui.shop.itemshop.buyable.endstone.lore.2",
+                        "",
+                        iron))
                 .addIngredient('f', new StoneSwordItem())
                 .addIngredient('g', new IronSwordItem())
                 .addIngredient('h', new WoodenPickaxeItem())
