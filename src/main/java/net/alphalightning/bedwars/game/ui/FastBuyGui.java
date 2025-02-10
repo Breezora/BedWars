@@ -1,9 +1,12 @@
 package net.alphalightning.bedwars.game.ui;
 
 import net.alphalightning.bedwars.game.ui.item.BuyableItem;
+import net.alphalightning.bedwars.game.ui.item.BuyablePotionItem;
 import net.alphalightning.bedwars.game.ui.item.CurrentItem;
 import net.alphalightning.bedwars.game.ui.legacy.*;
 import org.bukkit.Material;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import xyz.xenondevs.invui.gui.Gui;
 
 public class FastBuyGui {
@@ -12,7 +15,7 @@ public class FastBuyGui {
 
         String iron = "gui.shop.itemshop.buyable.lore.not-enough-iron";
         String gold = "gui.shop.itemshop.buyable.lore.not-enough-gold";
-        //String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
+        String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
 
         return Gui.normal()
                 .setStructure(
@@ -52,8 +55,18 @@ public class FastBuyGui {
                 .addIngredient('g', new IronSwordItem())
                 .addIngredient('h', new WoodenPickaxeItem())
                 .addIngredient('i', new WoodenAxeItem())
-                .addIngredient('j', new InvisPotionItem())
-                .addIngredient('k', new SpeedPotionItem())
+                .addIngredient('j',  new BuyablePotionItem("gui.shop.itemshop.buyable.potion.invisibility.name", PotionType.INVISIBILITY, PotionEffectType.INVISIBILITY, 30, 0,
+                        "gui.shop.itemshop.buyable.potion.invisibility.price",
+                        "",
+                        "gui.shop.itemshop.buyable.potion.invisibility.lore",
+                        "",
+                        emerald))
+                .addIngredient('k', new BuyablePotionItem("gui.shop.itemshop.buyable.potion.speed.name", PotionType.SWIFTNESS, PotionEffectType.SPEED, 45, 1,
+                        "gui.shop.itemshop.buyable.potion.speed.price",
+                        "",
+                        "gui.shop.itemshop.buyable.potion.speed.lore",
+                        "",
+                        emerald))
                 .addIngredient('l', new BuyableItem(Material.TNT, "gui.shop.itemshop.buyable.tnt.name", 1,
                         "gui.shop.itemshop.buyable.tnt.price",
                         "",
