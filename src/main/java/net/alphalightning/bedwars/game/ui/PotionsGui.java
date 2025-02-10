@@ -2,9 +2,6 @@ package net.alphalightning.bedwars.game.ui;
 
 import net.alphalightning.bedwars.game.ui.item.BuyablePotionItem;
 import net.alphalightning.bedwars.game.ui.item.CurrentItem;
-import net.alphalightning.bedwars.game.ui.legacy.InvisPotionItem;
-import net.alphalightning.bedwars.game.ui.legacy.JumpBoostPotionItem;
-import net.alphalightning.bedwars.game.ui.legacy.SpeedPotionItem;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import xyz.xenondevs.invui.gui.Gui;
