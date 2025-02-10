@@ -13,6 +13,15 @@ public class FastBuyGui {
 
     public final Gui gui() {
 
+        String level = "gui.shop.itemshop.upgradable.level.1";
+
+        String upgrade = "gui.shop.itemshop.buyable.lore.upgradable";
+        String upgrade2 = "gui.shop.itemshop.buyable.lore.upgradable.2";
+
+        String permrespawn = "gui.shop.itemshop.buyable.lore.permrespawn";
+        String permrespawn2 = "gui.shop.itemshop.buyable.lore.permrespawn.2";
+        String permrespawn3 = "gui.shop.itemshop.buyable.lore.permrespawn.3";
+
         String iron = "gui.shop.itemshop.buyable.lore.not-enough-iron";
         String gold = "gui.shop.itemshop.buyable.lore.not-enough-gold";
         String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
@@ -53,8 +62,30 @@ public class FastBuyGui {
                         iron))
                 .addIngredient('f', new StoneSwordItem())
                 .addIngredient('g', new IronSwordItem())
-                .addIngredient('h', new WoodenPickaxeItem())
-                .addIngredient('i', new WoodenAxeItem())
+                .addIngredient('h', new BuyableItem(Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
+                        "gui.shop.itemshop.buyable.woodpickaxe.price",
+                        level,
+                        "",
+                        upgrade,
+                        upgrade2,
+                        "",
+                        permrespawn,
+                        permrespawn2,
+                        permrespawn3,
+                        "",
+                        iron))
+                .addIngredient('i', new BuyableItem(Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
+                        "gui.shop.itemshop.buyable.woodaxe.price",
+                        level,
+                        "",
+                        upgrade,
+                        upgrade2,
+                        "",
+                        permrespawn,
+                        permrespawn2,
+                        permrespawn3,
+                        "",
+                        iron))
                 .addIngredient('j',  new BuyablePotionItem("gui.shop.itemshop.buyable.potion.invisibility.name", PotionType.INVISIBILITY, PotionEffectType.INVISIBILITY, 30, 0,
                         "gui.shop.itemshop.buyable.potion.invisibility.price",
                         "",
