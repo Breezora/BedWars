@@ -77,7 +77,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(10)) {
+        if (isNotStage(GameMapSetup.TEAM_LOOTSPAWNER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

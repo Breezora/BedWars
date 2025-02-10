@@ -75,7 +75,7 @@ public class DiamondSpawnerConfigurationStage extends Stage implements LocationC
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(8)) {
+        if (isNotStage(GameMapSetup.DIAMOND_SPAWNER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

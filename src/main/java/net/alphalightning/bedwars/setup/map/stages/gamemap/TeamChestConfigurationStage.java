@@ -78,7 +78,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(11)) {
+        if (isNotStage(GameMapSetup.TEAM_CHEST_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

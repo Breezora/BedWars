@@ -79,7 +79,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(14)) {
+        if (isNotStage(GameMapSetup.BED_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

@@ -56,7 +56,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(13)) {
+        if (isNotStage(GameMapSetup.UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

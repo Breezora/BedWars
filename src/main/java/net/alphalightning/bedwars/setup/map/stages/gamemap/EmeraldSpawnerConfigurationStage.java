@@ -75,7 +75,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(7)) {
+        if (isNotStage(GameMapSetup.EMERALD_SPAWNER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

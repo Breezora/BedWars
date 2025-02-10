@@ -77,7 +77,7 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(9)) {
+        if (isNotStage(GameMapSetup.TEAM_SPAWNPOINT_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {

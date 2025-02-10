@@ -34,7 +34,7 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
         if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
-        if (isNotStage(5)) {
+        if (isNotStage(GameMapSetup.MIN_BUILD_HEIGHT_CONFIGURATION_STAGE)) {
             return;
         }
 

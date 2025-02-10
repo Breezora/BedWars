@@ -58,7 +58,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(12)) {
+        if (isNotStage(GameMapSetup.ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
