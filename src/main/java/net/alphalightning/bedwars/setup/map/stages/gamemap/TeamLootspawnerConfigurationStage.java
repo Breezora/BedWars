@@ -49,8 +49,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.10"));
-        player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner"));
+        player.sendMessage(Component.translatable("mapsetup.stage.11"));
     }
 
     private void startPhase(int phase) {
@@ -61,7 +60,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name",
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name",
                 NamedTranslationArgument.numeric("phase", phase),
                 NamedTranslationArgument.component("name", teamName)
         ));
@@ -104,7 +103,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
                 .render(new LootspawnerVisualization(plugin, gameMapSetup, null, true))
         );
 
-        player.sendMessage(Component.translatable("mapsetup.stage.10.name.success", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);
 
         if (phase < size) {
@@ -114,7 +113,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         // Lootspawner are all configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
         gameMapSetup.startStage(GameMapSetup.TEAM_CHEST_CONFIGURATION_STAGE);
     }
 }

@@ -49,7 +49,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.11"));
+        player.sendMessage(Component.translatable("mapsetup.stage.12"));
         startPhase(1);
     }
 
@@ -61,7 +61,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name",
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name",
                 NamedTranslationArgument.numeric("phase", phase),
                 NamedTranslationArgument.component("name", teamName)
         ));
@@ -97,7 +97,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
                 .render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null))
         );
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", teamName));
         Feedback.success(player);
 
         if (phase < count) {
@@ -107,7 +107,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
         // All chests have been configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
         gameMapSetup.startStage(GameMapSetup.ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE);
     }
 }
