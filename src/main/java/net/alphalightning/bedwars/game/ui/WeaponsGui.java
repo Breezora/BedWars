@@ -1,6 +1,6 @@
 package net.alphalightning.bedwars.game.ui;
 
-import net.alphalightning.bedwars.game.ui.item.*;
+import net.alphalightning.bedwars.game.ui.legacy.*;
 import xyz.xenondevs.invui.gui.Gui;
 
 public class WeaponsGui {
