@@ -28,7 +28,6 @@ public class SlowIronConfigurationStage extends Stage {
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.10"));
-        player.sendMessage(Component.translatable("mapsetup.stage.10.tip"));
     }
 
     @EventHandler
@@ -48,7 +47,7 @@ public class SlowIronConfigurationStage extends Stage {
         String message = event.signedMessage().message();
 
         if (!VALID_MESSAGES.contains(message.toLowerCase())) {
-            player.sendMessage(Component.translatable("mapsetup.stage.10.tip"));
+            player.sendMessage(Component.translatable("mapsetup.stage.10.error"));
             Feedback.error(player);
             return;
         }
