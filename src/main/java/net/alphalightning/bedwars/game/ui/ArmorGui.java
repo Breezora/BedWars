@@ -7,8 +7,6 @@ import xyz.xenondevs.invui.gui.Gui;
 
 public class ArmorGui {
 
-
-
     public final Gui gui() {
         return Gui.normal()
                 .setStructure(
@@ -40,5 +38,4 @@ public class ArmorGui {
                         "gui.shop.itemshop.buyable.lore.not-enough-emerald"))
                 .build();
     }
-
 }
