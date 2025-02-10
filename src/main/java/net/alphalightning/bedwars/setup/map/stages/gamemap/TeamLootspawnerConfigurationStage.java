@@ -50,6 +50,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.11"));
+        startPhase(1);
     }
 
     private void startPhase(int phase) {
