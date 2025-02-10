@@ -2,10 +2,10 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -75,7 +75,7 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(7)) {
+        if (isNotStage(GameMapSetup.EMERALD_SPAWNER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -106,6 +106,6 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
         player.sendMessage(Component.translatable("mapsetup.stage.7.success"));
         gameMapSetup.configureEmeraldSpawnerLocations(locations);
-        gameMapSetup.startStage(8);
+        gameMapSetup.startStage(GameMapSetup.DIAMOND_SPAWNER_CONFIGURATION_STAGE);
     }
 }

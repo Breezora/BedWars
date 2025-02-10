@@ -33,7 +33,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.13"));
+        player.sendMessage(Component.translatable("mapsetup.stage.14"));
         startPhase(1);
     }
 
@@ -43,7 +43,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         }
         this.phase = phase;
 
-        player.sendMessage(Component.translatable("mapsetup.stage.13.name", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.14.name", Component.text(phase)));
         Feedback.success(player);
     }
 
@@ -56,7 +56,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(13)) {
+        if (isNotStage(GameMapSetup.UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -70,7 +70,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
         UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.upgrade"));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", Component.text(phase)));
         Feedback.success(player);
 
         if (phase < count) {
@@ -80,8 +80,8 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
         // All villagers are configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
         gameMapSetup.configureUpgradeVillager(locations);
-        gameMapSetup.startStage(14);
+        gameMapSetup.startStage(GameMapSetup.BED_CONFIGURATION_STAGE);
     }
 }
