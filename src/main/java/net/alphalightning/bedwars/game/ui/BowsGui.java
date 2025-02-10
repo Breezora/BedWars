@@ -1,8 +1,6 @@
 package net.alphalightning.bedwars.game.ui;
 
 import net.alphalightning.bedwars.game.ui.item.BuyableItem;
-import net.alphalightning.bedwars.game.ui.legacy.ArrowItem;
-import net.alphalightning.bedwars.game.ui.legacy.BowItem;
 import net.alphalightning.bedwars.game.ui.item.CurrentItem;
 import org.bukkit.Material;
 import xyz.xenondevs.invui.gui.Gui;
@@ -21,7 +19,10 @@ public class BowsGui {
                         ". . . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
-                .addIngredient('b', new ArrowItem())
+                .addIngredient('b', new BuyableItem(Material.ARROW, "gui.shop.itemshop.buyable.arrow.name", 6,
+                        "gui.shop.itemshop.buyable.arrow.price",
+                        "",
+                        gold))
                 .addIngredient('c', new BuyableItem(Material.BOW, "gui.shop.itemshop.buyable.bow.name", 1,
                         "gui.shop.itemshop.buyable.bow.price",
                         "",
