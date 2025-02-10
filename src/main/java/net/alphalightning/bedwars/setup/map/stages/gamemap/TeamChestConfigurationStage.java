@@ -2,21 +2,23 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
-import net.alphalightning.bedwars.setup.visual.impl.BlockEdgeRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.BlockEdgeVisualization;
-import net.alphalightning.bedwars.setup.visual.impl.FakeBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.FakeBlockVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -26,6 +28,7 @@ import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
     private final int count;
     private int phase;
@@ -46,7 +49,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.11"));
+        player.sendMessage(Component.translatable("mapsetup.stage.12"));
         startPhase(1);
     }
 
@@ -58,7 +61,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name",
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name",
                 NamedTranslationArgument.numeric("phase", phase),
                 NamedTranslationArgument.component("name", teamName)
         ));
@@ -75,7 +78,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(11)) {
+        if (isNotStage(GameMapSetup.TEAM_CHEST_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -85,12 +88,16 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         // Teamchest configuration is not completed
 
         final Location withOffset = location.add(OFFSET);
-
         team.chest(withOffset);
-        new BlockEdgeRenderer(plugin, withOffset.getBlock()).render(new BlockEdgeVisualization(team.color()));
-        new FakeBlockRenderer(plugin, withOffset).render(new FakeBlockVisualization(player, Material.CHEST));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
+                .render(withOffset.getBlock(), team.color())
+        );
+        this.visualizationManager.registerTask(gameMapSetup, new EntityRenderer(plugin, gameMapSetup, withOffset)
+                .render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null))
+        );
+
+        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", teamName));
         Feedback.success(player);
 
         if (phase < count) {
@@ -100,7 +107,7 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
 
         // All chests have been configured
 
-        player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
-        gameMapSetup.startStage(12);
+        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
+        gameMapSetup.startStage(GameMapSetup.ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE);
     }
 }

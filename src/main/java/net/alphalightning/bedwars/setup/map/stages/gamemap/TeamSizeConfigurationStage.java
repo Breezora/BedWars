@@ -66,6 +66,6 @@ public class TeamSizeConfigurationStage extends Stage {
         Feedback.success(player);
 
         gameMapSetup.configureTeamSize(size);
-        gameMapSetup.startStage(4);
+        gameMapSetup.startStage(GameMapSetup.MAX_BUILD_HEIGHT_CONFIGURATION_STAGE);
     }
 }

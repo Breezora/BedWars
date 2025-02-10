@@ -41,7 +41,7 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         int stage = setup.stage();
 
-        if (stage == 1) { // Team selection stage
+        if (stage == GameMapSetup.TEAM_SELECTION_STAGE) {
             int size = SelectTeamsGui.selectedTeams().size();
             if (size < 2) {
                 player.sendMessage(Component.translatable("mapsetup.error.invalid-team-configuration", Component.text(size)));
@@ -50,20 +50,20 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
             }
             startNextStage(player, 1);
 
-        } else if (stage == 2) { // Item spawner configuration stage
+        } else if (stage == GameMapSetup.SPAWNER_CONFIGURATION_STAGE) { // Item spawner configuration stage
             super.getGui().findAllWindows().forEach(window -> window.setCloseable(true)); // Make gui closeable to be able to close it
-            startNextStage(player, 2);
+            startNextStage(player, GameMapSetup.SPAWNER_CONFIGURATION_STAGE);
         }
     }
 
     private void startNextStage(Player player, int current) {
-        if (current == 1) {
+        if (current == GameMapSetup.TEAM_SELECTION_STAGE) {
             setup.configureTeams(createTeams());
-            setup.startStage(2);
+            setup.startStage(GameMapSetup.SPAWNER_CONFIGURATION_STAGE);
 
-        } else if (current == 2) {
+        } else if (current == GameMapSetup.SPAWNER_CONFIGURATION_STAGE) {
             player.closeInventory();
-            setup.startStage(3);
+            setup.startStage(GameMapSetup.TEAM_SIZE_CONFIGURATION_STAGE);
         }
         Feedback.success(player);
     }

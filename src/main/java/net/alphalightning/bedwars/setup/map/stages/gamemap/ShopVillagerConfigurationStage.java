@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.UnboundTeamVisuals;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -32,7 +33,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.12"));
+        player.sendMessage(Component.translatable("mapsetup.stage.13"));
         startPhase(1);
     }
 
@@ -42,7 +43,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         }
         this.phase = phase;
 
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name", Component.text(phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name", Component.text(phase)));
         Feedback.success(player);
     }
 
@@ -57,7 +58,7 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(12)) {
+        if (isNotStage(GameMapSetup.ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -66,8 +67,12 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         // Shop villager have not all been configured
 
-        locations.add(location.add(OFFSET));
-        player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
+        final Location withOffset = location.add(OFFSET);
+        locations.add(withOffset);
+
+        UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.item"));
+
+        player.sendMessage(Component.translatable("mapsetup.stage.13.name.success", Component.text(phase)));
         Feedback.success(player);
 
         if (phase < count) {
@@ -77,8 +82,8 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         // Villager configuration is completed
 
-        player.sendMessage(Component.translatable("mapsetup.stage.12.success"));
+        player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
         gameMapSetup.configureShopVillager(locations);
-        gameMapSetup.startStage(13);
+        gameMapSetup.startStage(GameMapSetup.UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE);
     }
 }

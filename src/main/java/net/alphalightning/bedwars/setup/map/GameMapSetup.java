@@ -21,6 +21,24 @@ import java.util.List;
 
 public final class GameMapSetup implements MapSetup {
 
+    public static final int WELCOME_STAGE = 0;
+    public static final int TEAM_SELECTION_STAGE = 1;
+    public static final int SPAWNER_CONFIGURATION_STAGE = 2;
+    public static final int TEAM_SIZE_CONFIGURATION_STAGE = 3;
+    public static final int MAX_BUILD_HEIGHT_CONFIGURATION_STAGE = 4;
+    public static final int MIN_BUILD_HEIGHT_CONFIGURATION_STAGE = 5;
+    public static final int SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE = 6;
+    public static final int EMERALD_SPAWNER_CONFIGURATION_STAGE = 7;
+    public static final int DIAMOND_SPAWNER_CONFIGURATION_STAGE = 8;
+    public static final int TEAM_SPAWNPOINT_CONFIGURATION_STAGE = 9;
+    public static final int SLOW_IRON_CONFIGURATION_STAGE = 10;
+    public static final int TEAM_LOOTSPAWNER_CONFIGURATION_STAGE = 11;
+    public static final int TEAM_CHEST_CONFIGURATION_STAGE = 12;
+    public static final int ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE = 13;
+    public static final int UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE = 14;
+    public static final int BED_CONFIGURATION_STAGE = 15;
+    public static final int COMPLETION_STAGE = 16;
+
     private final CancelStage cancelStage;
 
     // Setup handling
@@ -60,22 +78,23 @@ public final class GameMapSetup implements MapSetup {
     public void startStage(int stage) {
         this.stage = validateStage(this.stage, stage);
         switch (stage) {
-            case 0 -> new WelcomeStage(plugin, player, this, false).run();
-            case 1 -> new TeamSelectionStage(plugin, player, this).run();
-            case 2 -> new SpawnerConfigurationStage(plugin, player, this).run();
-            case 3 -> new TeamSizeConfigurationStage(plugin, player, this).run();
-            case 4 -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
-            case 5 -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
-            case 6 -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
-            case 7 -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
-            case 8 -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
-            case 9 -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
-            case 10 -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
-            case 11 -> new TeamChestConfigurationStage(plugin, player, this).run();
-            case 12 -> new ShopVillagerConfigurationStage(plugin, player, this).run();
-            case 13 -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
-            case 14 -> new BedConfigurationStage(plugin, player, this).run();
-            case 15 -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
+            case WELCOME_STAGE -> new WelcomeStage(plugin, player, this, false).run();
+            case TEAM_SELECTION_STAGE -> new TeamSelectionStage(plugin, player, this).run();
+            case SPAWNER_CONFIGURATION_STAGE -> new SpawnerConfigurationStage(plugin, player, this).run();
+            case TEAM_SIZE_CONFIGURATION_STAGE -> new TeamSizeConfigurationStage(plugin, player, this).run();
+            case MAX_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
+            case MIN_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
+            case SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
+            case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
+            case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
+            case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
+            case SLOW_IRON_CONFIGURATION_STAGE ->  new SlowIronConfigurationStage(plugin, player, this).run();
+            case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
+            case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this).run();
+            case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
+            case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
+            case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
+            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
             default -> cancelStage.run();
         }
     }
@@ -124,6 +143,10 @@ public final class GameMapSetup implements MapSetup {
 
     public int maxBuildHeight() {
         return maxBuildHeight;
+    }
+
+    public boolean hasSlowIron() {
+        return slowIron;
     }
 
     // Start data manipulation logics
