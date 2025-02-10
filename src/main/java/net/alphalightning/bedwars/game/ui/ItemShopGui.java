@@ -1,7 +1,9 @@
 package net.alphalightning.bedwars.game.ui;
 
-import net.alphalightning.bedwars.game.ui.item.*;
+import net.alphalightning.bedwars.game.ui.item.TabChangeItem;
+import net.alphalightning.bedwars.game.ui.legacy.*;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.Markers;
@@ -39,14 +41,14 @@ public class ItemShopGui {
                                 ". . . . . . . . ."
                         )
                         .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
-                        .addIngredient('0', new FastBuyItem())
-                        .addIngredient('1', new BlocksItem())
-                        .addIngredient('2', new WeaponsItem())
-                        .addIngredient('3', new ArmorItem())
-                        .addIngredient('4', new ToolsItem())
-                        .addIngredient('5', new BowsItem())
-                        .addIngredient('6', new PotionsItem())
-                        .addIngredient('7', new ExtrasItem())
+                        .addIngredient('0', new TabChangeItem(Material.NETHER_STAR, "gui.shop.itemshop.fastbuy.name", 0))
+                        .addIngredient('1', new TabChangeItem(Material.TERRACOTTA, "gui.shop.itemshop.blocks.name", 1))
+                        .addIngredient('2', new TabChangeItem(Material.GOLDEN_SWORD, "gui.shop.itemshop.combat.name", 2))
+                        .addIngredient('3', new TabChangeItem(Material.CHAINMAIL_BOOTS, "gui.shop.itemshop.armor.name", 3))
+                        .addIngredient('4', new TabChangeItem(Material.STONE_PICKAXE, "gui.shop.itemshop.tools.name", 4))
+                        .addIngredient('5', new TabChangeItem(Material.BOW, "gui.shop.itemshop.bows.name", 5))
+                        .addIngredient('6', new TabChangeItem(Material.BREWING_STAND, "gui.shop.itemshop.potions.name", 6))
+                        .addIngredient('7', new TabChangeItem(Material.TNT, "gui.shop.itemshop.extras.name", 7))
                         .addIngredient('8', new KitsItem())
                         .setTabs(List.of(fastBuyGui, blocksGui, weaponsGui, armorGui, toolsGui, bowsGui, potionsGui, extrasGui))
                         .build()
