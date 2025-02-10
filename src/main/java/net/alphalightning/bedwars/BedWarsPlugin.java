@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
+import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
@@ -70,6 +71,7 @@ public class BedWarsPlugin extends JavaPlugin {
         if (environment != Environment.PRODUCTION) {
             manager.registerDependency(MapSetupManager.class, setupManager);
             manager.registerCommand(new CreateMapCommand()); // Command to create a new map
+            manager.registerCommand(new TestGuiCommand());
 
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
