@@ -48,6 +48,6 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         Feedback.success(player);
 
         gameMapSetup.configureSpectatorSpawn(withOffset);
-        gameMapSetup.startStage(7);
+        gameMapSetup.startStage(GameMapSetup.EMERALD_SPAWNER_CONFIGURATION_STAGE);
     }
 }

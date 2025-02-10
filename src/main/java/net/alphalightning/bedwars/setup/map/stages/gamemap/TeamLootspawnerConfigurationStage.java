@@ -3,10 +3,10 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -168,7 +168,7 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
         // Lootspawner are all configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
-        gameMapSetup.startStage(11);
+        gameMapSetup.startStage(GameMapSetup.TEAM_CHEST_CONFIGURATION_STAGE);
     }
 
     private boolean isSpawnFast(@NotNull String message) {

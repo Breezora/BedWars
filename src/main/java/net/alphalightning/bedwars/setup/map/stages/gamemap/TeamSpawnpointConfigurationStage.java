@@ -2,10 +2,10 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -106,6 +106,6 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         // All spawnpoints are configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.success"));
-        gameMapSetup.startStage(10);
+        gameMapSetup.startStage(GameMapSetup.SLOW_IRON_CONFIGURATION_STAGE);
     }
 }

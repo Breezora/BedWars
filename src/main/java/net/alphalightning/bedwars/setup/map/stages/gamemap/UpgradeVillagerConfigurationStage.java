@@ -82,6 +82,6 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
         player.sendMessage(Component.translatable("mapsetup.stage.13.success"));
         gameMapSetup.configureUpgradeVillager(locations);
-        gameMapSetup.startStage(14);
+        gameMapSetup.startStage(GameMapSetup.BED_CONFIGURATION_STAGE);
     }
 }

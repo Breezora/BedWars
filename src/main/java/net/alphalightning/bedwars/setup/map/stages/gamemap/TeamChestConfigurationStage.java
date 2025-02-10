@@ -2,10 +2,10 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -108,6 +108,6 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         // All chests have been configured
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.success"));
-        gameMapSetup.startStage(12);
+        gameMapSetup.startStage(GameMapSetup.ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE);
     }
 }

@@ -3,9 +3,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.HeightConfiguration;
@@ -79,6 +79,6 @@ public class MinBuildHeightConfigurationStage extends Stage implements HeightCon
         Feedback.success(player);
 
         gameMapSetup.configureMinBuildHeight(buildHeight);
-        gameMapSetup.startStage(6);
+        gameMapSetup.startStage(GameMapSetup.SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE);
     }
 }
