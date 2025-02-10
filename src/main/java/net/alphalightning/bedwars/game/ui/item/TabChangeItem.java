@@ -18,9 +18,9 @@ public class TabChangeItem extends AbstractTabGuiBoundItem {
 
     private final Material itemMaterial;
     private final String itemNameKey;
-    private final Integer boundToTab;
+    private final int boundToTab;
 
-    public TabChangeItem(Material itemMaterial, String itemNameKey, Integer boundToTab) {
+    public TabChangeItem(Material itemMaterial, String itemNameKey, int boundToTab) {
         this.itemMaterial = itemMaterial;
         this.itemNameKey = itemNameKey;
         this.boundToTab = boundToTab;
