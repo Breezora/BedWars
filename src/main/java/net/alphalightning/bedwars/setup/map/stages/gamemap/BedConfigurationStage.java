@@ -2,10 +2,10 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
@@ -49,8 +49,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable("mapsetup.stage.14"));
-        player.sendMessage(Component.translatable("mapsetup.stage.14.tip"));
+        player.sendMessage(Component.translatable("mapsetup.stage.15"));
+        player.sendMessage(Component.translatable("mapsetup.stage.15.tip"));
         startPhase(1);
     }
 
@@ -62,7 +62,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
-        player.sendMessage(Component.translatable("mapsetup.stage.14.name",
+        player.sendMessage(Component.translatable("mapsetup.stage.15.name",
                 NamedTranslationArgument.numeric("phase", phase),
                 NamedTranslationArgument.component("name", teamName)
         ));
@@ -79,7 +79,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(14)) {
+        if (isNotStage(GameMapSetup.BED_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -97,8 +97,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         // Configuration is completed
 
-        player.sendMessage(Component.translatable("mapsetup.stage.14.success"));
-        setupManager.finishSetup(player, 15);
+        player.sendMessage(Component.translatable("mapsetup.stage.15.success"));
+        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
     }
 
     private void updateBed(MapSetup setup, Location bottom) {
@@ -106,7 +106,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
 
         Location topHalf = BedUtil.calculateHeadLocation(bottom, player.getFacing());
         if (topHalf == null) {
-            player.sendMessage(Component.translatable("mapsetup.stage.14.error.facing"));
+            player.sendMessage(Component.translatable("mapsetup.stage.15.error.facing"));
             Feedback.error(player);
             return;
         }
@@ -119,7 +119,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
                 .render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null))
         );
 
-        player.sendMessage(Component.translatable("mapsetup.stage.14.name.success", teamName));
+        player.sendMessage(Component.translatable("mapsetup.stage.15.name.success", teamName));
         Feedback.success(player);
     }
 }

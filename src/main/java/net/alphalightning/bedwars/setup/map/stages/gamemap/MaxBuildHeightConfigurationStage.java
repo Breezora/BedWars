@@ -3,9 +3,9 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightVisualization;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.HeightConfiguration;
@@ -34,7 +34,7 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
         if (isNotPlayerConfiguring(event.getPlayer())) {
             return;
         }
-        if (isNotStage(4)) {
+        if (isNotStage(GameMapSetup.MAX_BUILD_HEIGHT_CONFIGURATION_STAGE)) {
             return;
         }
 
@@ -70,6 +70,6 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
         Feedback.success(player);
 
         gameMapSetup.configureMaxBuildHeight(buildHeight);
-        gameMapSetup.startStage(5);
+        gameMapSetup.startStage(GameMapSetup.MIN_BUILD_HEIGHT_CONFIGURATION_STAGE);
     }
 }

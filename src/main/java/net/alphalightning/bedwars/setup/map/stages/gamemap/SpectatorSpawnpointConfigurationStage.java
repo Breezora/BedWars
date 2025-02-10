@@ -34,7 +34,7 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         if (isNotOnGround(player, location)) {
             return;
         }
-        if (isNotStage(6)) {
+        if (isNotStage(GameMapSetup.SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE)) {
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -48,6 +48,6 @@ public class SpectatorSpawnpointConfigurationStage extends Stage implements Loca
         Feedback.success(player);
 
         gameMapSetup.configureSpectatorSpawn(withOffset);
-        gameMapSetup.startStage(7);
+        gameMapSetup.startStage(GameMapSetup.EMERALD_SPAWNER_CONFIGURATION_STAGE);
     }
 }
