@@ -1,6 +1,5 @@
 package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
@@ -22,20 +21,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 
 public class TeamLootspawnerConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
-
-    private static final String YES = "yes";
-    private static final String YES_ALIAS = "y";
-    private static final String NO = "no";
-    private static final String NO_ALIAS = "n";
-    private static final Set<String> VALID_MESSAGES = Set.of(YES, YES_ALIAS, NO, NO_ALIAS);
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
@@ -44,7 +35,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
     private TranslatableComponent teamName = null;
     private Team team = null;
-    private boolean isSpawningSpeedConfigured = false;
 
     public TeamLootspawnerConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -79,46 +69,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
     }
 
     @EventHandler
-    public void onChat(AsyncChatEvent event) {
-        if (!isSpawningSpeedConfigured) {
-            if (isNotPlayerConfiguring(player)) {
-                return;
-            }
-            if (isNotStage(10)) {
-                return;
-            }
-            if (!(setup instanceof GameMapSetup gameMapSetup)) {
-                return;
-            }
-
-            event.setCancelled(true); //Nachricht nicht in den Chat senden
-
-            String message = event.signedMessage().message();
-
-            if (!VALID_MESSAGES.contains(message.toLowerCase())) {
-                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.error"));
-                Feedback.error(player);
-                return;
-            }
-
-            isSpawningSpeedConfigured = true;
-
-            boolean isFast = isSpawnFast(message);
-            gameMapSetup.configureSlowIron(isFast);
-
-            if (isFast) {
-                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.fast"));
-            } else {
-                player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.slow"));
-            }
-
-            player.sendMessage(Component.translatable("mapsetup.stage.10.lootspawner.success"));
-            Feedback.success(player);
-            startPhase(1);
-        }
-    }
-
-    @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Location location = player.getLocation();
 
@@ -132,9 +82,6 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
             return;
         }
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
-            return;
-        }
-        if (!isSpawningSpeedConfigured) {
             return;
         }
 
@@ -169,9 +116,5 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         player.sendMessage(Component.translatable("mapsetup.stage.10.success"));
         gameMapSetup.startStage(GameMapSetup.TEAM_CHEST_CONFIGURATION_STAGE);
-    }
-
-    private boolean isSpawnFast(@NotNull String message) {
-        return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
     }
 }
