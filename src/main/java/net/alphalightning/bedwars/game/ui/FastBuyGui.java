@@ -30,11 +30,11 @@ public class FastBuyGui {
                         "",
                         gold))
                 .addIngredient('d', new BuyableItem(Material.GLASS, "gui.shop.itemshop.buyable.glass.name", 4,
-                "gui.shop.itemshop.buyable.glass.price",
-                "",
-                "gui.shop.itemshop.buyable.glass.lore",
-                "",
-                iron))
+                        "gui.shop.itemshop.buyable.glass.price",
+                        "",
+                        "gui.shop.itemshop.buyable.glass.lore",
+                        "",
+                        iron))
                 .addIngredient('e', new BuyableItem(Material.END_STONE, "gui.shop.itemshop.buyable.endstone.name", 12,
                         "gui.shop.itemshop.buyable.endstone.price",
                         "",
@@ -49,21 +49,26 @@ public class FastBuyGui {
                 .addIngredient('j', new InvisPotionItem())
                 .addIngredient('k', new SpeedPotionItem())
                 .addIngredient('l', new TntItem())
-                .addIngredient('m', new GoldenAppleItem())
+                .addIngredient('m', new BuyableItem(Material.GOLDEN_APPLE, "gui.shop.itemshop.buyable.goldapple.name", 1,
+                        "gui.shop.itemshop.buyable.goldapple.price",
+                        "",
+                        "gui.shop.itemshop.buyable.goldapple.lore",
+                        "",
+                        gold))
                 .addIngredient('n', new BuyableItem(Material.CHAINMAIL_BOOTS, "gui.shop.itemshop.buyable.armor.chain.name", 1,
-                "gui.shop.itemshop.buyable.armor.chain.price",
-                "",
-                "gui.shop.itemshop.buyable.armor.chain.lore",
-                "gui.shop.itemshop.buyable.armor.chain.lore.2",
-                "",
-                "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        "gui.shop.itemshop.buyable.armor.chain.price",
+                        "",
+                        "gui.shop.itemshop.buyable.armor.chain.lore",
+                        "gui.shop.itemshop.buyable.armor.chain.lore.2",
+                        "",
+                        iron))
                 .addIngredient('o', new BuyableItem(Material.IRON_BOOTS, "gui.shop.itemshop.buyable.armor.iron.name", 1,
                         "gui.shop.itemshop.buyable.armor.iron.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.iron.lore",
                         "gui.shop.itemshop.buyable.armor.iron.lore.2",
                         "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-gold"))
+                        gold))
                 .build();
     }
 
