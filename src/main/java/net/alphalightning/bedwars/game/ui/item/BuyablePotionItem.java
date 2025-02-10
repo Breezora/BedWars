@@ -5,7 +5,6 @@ import io.papermc.paper.datacomponent.item.PotionContents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.potion.PotionEffect;
@@ -22,15 +21,14 @@ import java.util.List;
 
 public class BuyablePotionItem extends AbstractItem {
 
-    private final Material itemMaterial;
     private final String itemNameKey;
     private final List<String> itemLore;
     private final PotionEffectType potionEffectType;
     private final PotionType potionType;
     private final int duration;
     private final int amplifier;
-    public BuyablePotionItem(Material itemMaterial, String itemNameKey, PotionEffectType potionEffectType, PotionType potionType, int duration, int amplifier, String... itemLore) {
-        this.itemMaterial = itemMaterial;
+
+    public BuyablePotionItem(String itemNameKey, PotionType potionType, PotionEffectType potionEffectType,int duration, int amplifier, String... itemLore) {
         this.itemNameKey = itemNameKey;
         this.potionEffectType = potionEffectType;
         this.potionType = potionType;
@@ -43,14 +41,11 @@ public class BuyablePotionItem extends AbstractItem {
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
         final ItemBuilder builder = new ItemBuilder(Material.POTION);
 
-        if (itemMaterial != Material.POTION) {
-            return new ItemBuilder(Material.BARRIER).setName("§cERROR! YOU MUST USE A POTION WHEN USING POTION BUILDER");
-        } else {
-            builder.setCustomName(GlobalTranslator.render(Component.translatable(itemNameKey), viewer.locale()))
-                    .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(potionType)
+        builder.setCustomName(GlobalTranslator.render(Component.translatable(itemNameKey), viewer.locale()))
+                .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(potionType)
                         .addCustomEffect(new PotionEffect(potionEffectType, 20 * duration, amplifier)))
-                    .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
-        }
+                .set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+
         List<Component> lore = new ArrayList<>();
         for (String s : itemLore) {
             if (s.isEmpty()) {
