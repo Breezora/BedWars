@@ -21,7 +21,13 @@ public class FastBuyGui {
                         ". c e g i k m o ."
                 )
                 .addIngredient('a', new CurrentItem())
-                .addIngredient('b', new WoolItem())
+                .addIngredient('b', new BuyableItem(Material.WHITE_WOOL, "gui.shop.itemshop.buyable.wool.name", 16,
+                        "gui.shop.itemshop.buyable.wool.price",
+                        "",
+                        "gui.shop.itemshop.buyable.wool.lore",
+                        "gui.shop.itemshop.buyable.wool.lore.2",
+                        "gui.shop.itemshop.buyable.wool.lore.3",
+                        iron))
                 .addIngredient('c', new BuyableItem(Material.OAK_PLANKS, "gui.shop.itemshop.buyable.wood.name", 16,
                         "gui.shop.itemshop.buyable.wood.price",
                         "",
@@ -48,7 +54,13 @@ public class FastBuyGui {
                 .addIngredient('i', new WoodenAxeItem())
                 .addIngredient('j', new InvisPotionItem())
                 .addIngredient('k', new SpeedPotionItem())
-                .addIngredient('l', new TntItem())
+                .addIngredient('l', new BuyableItem(Material.TNT, "gui.shop.itemshop.buyable.tnt.name", 1,
+                        "gui.shop.itemshop.buyable.tnt.price",
+                        "",
+                        "gui.shop.itemshop.buyable.tnt.lore",
+                        "gui.shop.itemshop.buyable.tnt.lore.2",
+                        "",
+                        gold))
                 .addIngredient('m', new BuyableItem(Material.GOLDEN_APPLE, "gui.shop.itemshop.buyable.goldapple.name", 1,
                         "gui.shop.itemshop.buyable.goldapple.price",
                         "",
