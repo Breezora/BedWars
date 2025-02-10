@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.UnboundTeamVisuals;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
@@ -66,7 +67,11 @@ public class ShopVillagerConfigurationStage extends Stage implements LocationCon
 
         // Shop villager have not all been configured
 
-        locations.add(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+        locations.add(withOffset);
+
+        UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.item"));
+
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", Component.text(phase)));
         Feedback.success(player);
 

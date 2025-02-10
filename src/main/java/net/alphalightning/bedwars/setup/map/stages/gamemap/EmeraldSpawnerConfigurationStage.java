@@ -2,12 +2,18 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
+import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -17,6 +23,7 @@ import java.util.List;
 
 public class EmeraldSpawnerConfigurationStage extends Stage implements LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Location> locations = new ArrayList<>();
     private final int count;
     private int phase;
@@ -77,7 +84,16 @@ public class EmeraldSpawnerConfigurationStage extends Stage implements LocationC
 
         // Emerald spawner configuration is not completed
 
-        locations.add(location.add(OFFSET));
+        final Location withOffset = location.add(OFFSET);
+        locations.add(withOffset);
+
+        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, gameMapSetup, withOffset)
+                .render(new LootspawnerVisualization(plugin, setup, SpawnerType.EMERALD, false))
+        );
+        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
+                .render(withOffset.getBlock(), 0x21de3a)
+        );
+
         player.sendMessage(Component.translatable("mapsetup.stage.7.id.success", Component.text(phase)));
         Feedback.success(player);
 

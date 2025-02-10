@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.utils;
+package net.alphalightning.bedwars.util;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -6,7 +6,7 @@ import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class BedUtils {
+public final class BedUtil {
 
     public static @Nullable Location calculateHeadLocation(@NotNull Location bottomHalf, @NotNull BlockFace blockFace) {
         final Location topHalf = bottomHalf.clone();

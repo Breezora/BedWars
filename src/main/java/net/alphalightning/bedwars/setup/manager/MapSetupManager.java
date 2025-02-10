@@ -2,12 +2,14 @@ package net.alphalightning.bedwars.setup.manager;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.provider.ServiceProvider;
 import net.alphalightning.bedwars.setup.ConfigurationType;
 import net.alphalightning.bedwars.setup.Setup;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfiguration {
 
     private static MapSetupManager instance;
+
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
 
     private final Map<Player, MapSetup> activeSetups;
     private final Map<String, MapSetup> activeMaps;
@@ -104,7 +108,12 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         }
 
         setup.finish(lastStage);
-        activeMaps.remove(toLowerCase(setup.mapName()));
+        this.activeMaps.remove(toLowerCase(setup.mapName()));
+
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            this.visualizationManager.unregisterAll(setup);
+            this.visualizationManager.removeEntities(setup);
+        }, 30 * 20L);
     }
 
     public synchronized void cancelSetup(Player player) {
@@ -114,7 +123,9 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         }
 
         setup.cancel(false);
-        activeMaps.remove(toLowerCase(setup.mapName()));
+        this.activeMaps.remove(toLowerCase(setup.mapName()));
+        this.visualizationManager.unregisterAll(setup);
+        this.visualizationManager.removeEntities(setup);
     }
 
     public synchronized boolean hasActiveSetup(Player player) {

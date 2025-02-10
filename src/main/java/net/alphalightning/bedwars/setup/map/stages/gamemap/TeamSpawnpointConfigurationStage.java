@@ -2,20 +2,21 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineRenderer;
+import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineVisualization;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.MultiBlockVisualization;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineRenderer;
-import net.alphalightning.bedwars.setup.visual.impl.SingleLineVisualization;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<Team> teams;
     private final int size;
     private int phase;
@@ -85,14 +87,14 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
         // Spawnpoints of teams have not all been configured
 
         final Location withOffset = location.add(OFFSET);
+        team.spawnpoint(withOffset);
 
         if (!event.isSneaking()) {
-            new MultiBlockRenderer(plugin, List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock()))
-                    .render(new MultiBlockVisualization(team.color()));
-            new SingleLineRenderer(plugin, player).render(new SingleLineVisualization(player));
+            final List<Block> blocks = List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock());
+            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(blocks, team.color()));
+            this.visualizationManager.registerTask(gameMapSetup, new SingleLineRenderer(plugin, gameMapSetup, player).render(new SingleLineVisualization(player)));
         }
 
-        team.spawnpoint(withOffset);
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
         Feedback.success(player);
 
