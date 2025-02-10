@@ -60,8 +60,14 @@ public class FastBuyGui {
                         "gui.shop.itemshop.buyable.endstone.lore.2",
                         "",
                         iron))
-                .addIngredient('f', new StoneSwordItem())
-                .addIngredient('g', new IronSwordItem())
+                .addIngredient('f', new BuyableItem(Material.STONE_SWORD, "gui.shop.itemshop.buyable.stonesword.name", 1,
+                        "gui.shop.itemshop.buyable.stonesword.price",
+                        "",
+                        iron))
+                .addIngredient('g', new BuyableItem(Material.IRON_SWORD, "gui.shop.itemshop.buyable.ironsword.name", 1,
+                        "gui.shop.itemshop.buyable.ironsword.price",
+                        "",
+                        gold))
                 .addIngredient('h', new BuyableItem(Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodpickaxe.price",
                         level,
