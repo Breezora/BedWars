@@ -9,7 +9,7 @@ import xyz.xenondevs.invui.item.Click;
 public class QueueItem extends UpgradeItem {
 
     public QueueItem(String translationKey, int itemAmount, String... loreLines) {
-        super(translationKey, Material.GRAY_STAINED_GLASS, itemAmount, loreLines);
+        super(translationKey, Material.LIGHT_GRAY_STAINED_GLASS, itemAmount, loreLines);
     }
 
     @Override
