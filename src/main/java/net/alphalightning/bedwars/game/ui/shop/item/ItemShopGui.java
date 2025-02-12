@@ -1,7 +1,7 @@
-package net.alphalightning.bedwars.game.ui;
+package net.alphalightning.bedwars.game.ui.shop.item;
 
-import net.alphalightning.bedwars.game.ui.legacy.KitsItem;
-import net.alphalightning.bedwars.game.ui.item.TabChangeItem;
+import net.alphalightning.bedwars.game.ui.shop.item.items.TabChangeItem;
+import net.alphalightning.bedwars.game.ui.shop.item.legacy.KitsItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

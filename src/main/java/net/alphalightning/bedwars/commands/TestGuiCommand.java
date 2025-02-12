@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
-import net.alphalightning.bedwars.game.ui.ItemShopGui;
+import net.alphalightning.bedwars.game.ui.shop.item.ItemShopGui;
 import org.bukkit.entity.Player;
 
 @CommandAlias("testgui")
