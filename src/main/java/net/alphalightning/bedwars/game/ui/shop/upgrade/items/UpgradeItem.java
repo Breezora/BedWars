@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.upgrade.items;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -37,6 +38,7 @@ public class UpgradeItem extends AbstractItem {
         final Locale locale = viewer.locale();
 
         return new ItemBuilder(this.material, this.itemAmount)
+                .unset(DataComponentTypes.TOOLTIP_STYLE)
                 .setName(GlobalTranslator.render(name, locale))
                 .setLore(lore);
     }
