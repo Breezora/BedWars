@@ -31,7 +31,7 @@ public class UpgradeShopGui {
                                 ". . . . . . . . ."
                         )
                         .addIngredient('a', new UpgradeItem("gui.shop.upgrade.category.sharpness", Material.IRON_SWORD, 1,
-                                "gui.shop.upgrade.category.sharpness.lore", "gui.shop.upgrade.category.sharpness.lore.price", "gui.shop.upgrade.error.diamonds"))
+                                "gui.shop.upgrade.category.sharpness.lore", "", "gui.shop.upgrade.category.sharpness.lore.price", "", "gui.shop.upgrade.error.diamonds"))
                         .addIngredient('b', new UpgradeItem("gui.shop.upgrade.category.protection", Material.IRON_CHESTPLATE, 1,
                                 "gui.shop.upgrade.category.protection.lore", "gui.shop.upgrade.category.protection.lore.price", "gui.shop.upgrade.error.diamonds"))
                         .addIngredient('c', new UpgradeItem("gui.shop.upgrade.category.haste", Material.GOLDEN_PICKAXE, 1,
