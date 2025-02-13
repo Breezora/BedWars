@@ -38,7 +38,7 @@ public class UpgradeItem extends AbstractItem {
         final Locale locale = viewer.locale();
 
         return new ItemBuilder(this.material, this.itemAmount)
-                .unset(DataComponentTypes.TOOLTIP_STYLE)
+                .unset(DataComponentTypes.TOOL)
                 .setName(GlobalTranslator.render(name, locale))
                 .setLore(lore);
     }
