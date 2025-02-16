@@ -1,8 +1,7 @@
-package net.alphalightning.bedwars.game.ui;
+package net.alphalightning.bedwars.game.ui.shop.item;
 
-import net.alphalightning.bedwars.game.ui.item.BuyableItem;
-import net.alphalightning.bedwars.game.ui.item.CurrentItem;
-import net.alphalightning.bedwars.game.ui.legacy.*;
+import net.alphalightning.bedwars.game.ui.shop.item.items.BuyableItem;
+import net.alphalightning.bedwars.game.ui.shop.item.items.CurrentItem;
 import org.bukkit.Material;
 import xyz.xenondevs.invui.gui.Gui;
 

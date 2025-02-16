@@ -1,7 +1,7 @@
-package net.alphalightning.bedwars.game.ui;
+package net.alphalightning.bedwars.game.ui.shop.item;
 
-import net.alphalightning.bedwars.game.ui.item.BuyablePotionItem;
-import net.alphalightning.bedwars.game.ui.item.CurrentItem;
+import net.alphalightning.bedwars.game.ui.shop.item.items.BuyablePotionItem;
+import net.alphalightning.bedwars.game.ui.shop.item.items.CurrentItem;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import xyz.xenondevs.invui.gui.Gui;
