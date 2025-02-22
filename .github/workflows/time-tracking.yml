@@ -13,24 +13,34 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Force full history
+        run: git fetch --prune --all
 
       - name: Get all commit messages
         id: commit_messages
         run: |
-          COMMIT_MSGS=$(git log --pretty=%B ${{ github.event.before }}..${{ github.event.after }} || tr '\n' ' ') 
-          echo "messages=$COMMIT_MSGS" >> $GITHUB_ENV
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "New branch detected, using only latest commit."
+            COMMIT_MSGS=$(git log -1 --pretty=%B | tr '\n' ' ' | sed 's/[^a-zA-Z0-9 ,.-]//g')
+          else
+            COMMIT_MSGS=$(git log --pretty=%B ${{ github.event.before }}..${{ github.event.after }} | tr '\n' ' ' | sed 's/[^a-zA-Z0-9 ,.-]//g')
+          fi
+          echo "messages=$(echo "$COMMIT_MSGS" | sed 's/\"//g')" >> $GITHUB_ENV
 
       - name: Extract time from commit messages and sum
         id: extract_time
         run: |
           echo "Commit messages: ${{ env.messages }}"
-          
+
           HOURS=$(echo "${{ env.messages }}" | grep -oP '\d+(?=\s*hour(s)?)' | awk '{sum+=$1} END {print sum+0}')
           MINUTES=$(echo "${{ env.messages }}" | grep -oP '\d+(?=\s*min(ute)?s?)' | awk '{sum+=$1} END {print sum+0}')
           SECONDS=$(echo "${{ env.messages }}" | grep -oP '\d+(?=\s*second(s)?)' | awk '{sum+=$1} END {print sum+0}')
-          
+
           TOTAL_SECONDS=$((HOURS * 3600 + MINUTES * 60 + SECONDS))
-          
+
           echo "Extracted time: ${TOTAL_SECONDS}s (${HOURS}h ${MINUTES}m ${SECONDS}s)"
           echo "total_time=${TOTAL_SECONDS}" >> $GITHUB_ENV
 
