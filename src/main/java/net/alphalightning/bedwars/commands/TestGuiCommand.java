@@ -1,5 +1,7 @@
 package net.alphalightning.bedwars.commands;
 
-public class TestGuiCommand {
+import co.aikar.commands.BaseCommand;
+
+public class TestGuiCommand extends BaseCommand {
 
 }
