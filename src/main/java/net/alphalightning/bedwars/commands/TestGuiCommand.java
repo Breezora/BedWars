@@ -26,7 +26,7 @@ public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
                 .commandDescription(RichDescription.translatable("command.testgui.description"))
                 .senderType(PaperPlayerCommandSource.class)
                 .permission("bedwars.*")
-                .optional("gui", stringParser(), RichDescription.translatable("command.testgui.argument"))
+                .optional("gui", stringParser())
                 .handler(this::runCommand)
         );
     }

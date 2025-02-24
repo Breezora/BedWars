@@ -32,7 +32,8 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
         commandManager.command(commandManager.commandBuilder("createmap")
                 .commandDescription(RichDescription.translatable("command.createmap.description"))
                 .senderType(PaperPlayerCommandSource.class)
-                .required("type", stringParser(), RichDescription.translatable("command.createmap.argument"), suggestionProvider())
+                .permission("bedwars.*")
+                .required("type", stringParser(), suggestionProvider())
                 .optional("name", stringParser())
                 .handler(this::runCommand)
         );
@@ -53,8 +54,8 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
 
     private @NotNull SuggestionProvider<PaperCommandSource> suggestionProvider() {
         return SuggestionProvider.suggesting(
-          Suggestion.suggestion("lobby"),
-          Suggestion.suggestion("gamemap")
+                Suggestion.suggestion("lobby"),
+                Suggestion.suggestion("gamemap")
         );
     }
 }
