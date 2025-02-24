@@ -51,6 +51,12 @@ tasks {
         options.forkOptions.executable = System.getProperty("java.home") + "/bin/javac"
     }
 
+    compileTestJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = javaVersion
+        options.forkOptions.executable = System.getProperty("java.home") + "/bin/javac"
+    }
+
     shadowJar {
         val mapping = mapOf(
             "xyz.xenondevs.invui" to "invui",
