@@ -16,10 +16,13 @@ import org.incendo.cloud.suggestion.SuggestionProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
+import java.util.List;
+
 import static org.incendo.cloud.parser.standard.StringParser.stringParser;
 
 public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> implements LobbyConfiguration {
 
+    private final List<String> names = List.of("lobby", "gamemap");
     private final MapSetupManager setupManager;
 
     public CreateMapCommand(@NonNull BedWarsPlugin plugin, @NotNull MapSetupManager setupManager) {
@@ -40,7 +43,7 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
     }
 
     private void runCommand(@NotNull CommandContext<PaperPlayerCommandSource> context) {
-        final String type = context.getOrDefault("type", "lobby");
+        final String type = context.getOrDefault("type", "lobby").toLowerCase();
         final Player player = (Player) context.sender().plattformSender();
 
         if (type.equals("lobby")) {
@@ -53,9 +56,6 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
     }
 
     private @NotNull SuggestionProvider<PaperCommandSource> suggestionProvider() {
-        return SuggestionProvider.suggesting(
-                Suggestion.suggestion("lobby"),
-                Suggestion.suggestion("gamemap")
-        );
+        return SuggestionProvider.suggesting(names.stream().map(Suggestion::suggestion).toList());
     }
 }

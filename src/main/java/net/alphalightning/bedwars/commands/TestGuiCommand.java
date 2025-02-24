@@ -10,11 +10,17 @@ import org.bukkit.entity.Player;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.suggestion.Suggestion;
+import org.incendo.cloud.suggestion.SuggestionProvider;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static org.incendo.cloud.parser.standard.StringParser.stringParser;
 
 public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
+
+    private final List<String> names = List.of("item-shop", "upgrade-shop");
 
     public TestGuiCommand(BedWarsPlugin plugin) {
         super(plugin);
@@ -26,7 +32,7 @@ public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
                 .commandDescription(RichDescription.translatable("command.testgui.description"))
                 .senderType(PaperPlayerCommandSource.class)
                 .permission("bedwars.*")
-                .optional("gui", stringParser())
+                .optional("gui", stringParser(), suggestionProvider())
                 .handler(this::runCommand)
         );
     }
@@ -40,5 +46,9 @@ public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
         } else {
             new UpgradeShopGui(player).showGui();
         }
+    }
+
+    private @NotNull SuggestionProvider<PaperCommandSource> suggestionProvider() {
+        return SuggestionProvider.suggesting(names.stream().map(Suggestion::suggestion).toList());
     }
 }
