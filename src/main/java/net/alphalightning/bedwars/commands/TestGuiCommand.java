@@ -22,7 +22,7 @@ public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
 
     @Override
     public void register(@NotNull CommandManager<PaperCommandSource> commandManager) {
-        commandManager.command(commandManager.commandBuilder("testgui [gui]")
+        commandManager.command(commandManager.commandBuilder("testgui")
                 .commandDescription(RichDescription.translatable("command.testgui.description"))
                 .senderType(PaperPlayerCommandSource.class)
                 .permission("bedwars.*")

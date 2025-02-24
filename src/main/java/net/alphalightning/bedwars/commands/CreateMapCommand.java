@@ -29,7 +29,7 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
 
     @Override
     public void register(@NotNull CommandManager<PaperCommandSource> commandManager) {
-        commandManager.command(commandManager.commandBuilder("createmap <type> [name]")
+        commandManager.command(commandManager.commandBuilder("createmap")
                 .commandDescription(RichDescription.translatable("command.createmap.description"))
                 .senderType(PaperPlayerCommandSource.class)
                 .required("type", stringParser(), RichDescription.translatable("command.createmap.argument"), suggestionProvider())
