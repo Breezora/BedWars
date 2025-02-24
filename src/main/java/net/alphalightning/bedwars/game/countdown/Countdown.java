@@ -13,12 +13,14 @@ public abstract class Countdown {
     protected final BedWarsPlugin plugin;
 
     private final List<CountdownListener> listeners = new ArrayList<>();
+    private final int duration;
     private BukkitTask task;
     private int seconds;
 
     public Countdown(BedWarsPlugin plugin, int seconds) {
         this.plugin = plugin;
         this.seconds = seconds;
+        this.duration = seconds;
     }
 
     public void registerListener(@NonNull CountdownListener listener) {
@@ -48,7 +50,11 @@ public abstract class Countdown {
         }
     }
 
-    protected abstract void onStart();
+    protected int duration() {
+        return duration;
+    }
+
+    protected void onStart() {}
 
     protected abstract void onTick(int timeLeft);
 
