@@ -1,9 +1,10 @@
 package net.alphalightning.bedwars.commands.cloud.sender;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 
-public class PaperCommandSource extends CommandSource<CommandSender> {
+public class PaperCommandSource extends CommandSource<CommandSender> implements Audience {
 
     private final CommandSourceStack commandSourceStack;
 
