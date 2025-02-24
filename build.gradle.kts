@@ -12,7 +12,6 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases")
-    maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://libraries.minecraft.net")
 
     maven("https://repo.breezora.net/intern") {
@@ -26,13 +25,11 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("com.mojang:brigadier:1.0.18")
 
     implementation("xyz.xenondevs.invui:invui:2.0.0-alpha.7")
-    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("de.eldoria.jacksonbukkit:paper:1.2.0")
     implementation("de.eldoria.util:jackson-configuration:2.1.9")
-
-    compileOnly("com.mojang:brigadier:1.0.18")
     implementation("org.incendo:cloud-paper:2.0.0-beta.10")
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.10")
 }
@@ -53,8 +50,6 @@ tasks {
     shadowJar {
         val mapping = mapOf(
             "xyz.xenondevs.invui" to "invui",
-            "co.aikar.commands" to "acf",
-            "co.aikar.locales" to "locales",
             "de.eldoria.jacksonbukkit" to "jacksonbukkit",
             "de.eldoria.eldoutilities.config" to "eldoutilities.config"
         )
