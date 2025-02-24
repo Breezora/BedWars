@@ -48,7 +48,7 @@ public abstract class Countdown {
         }
     }
 
-    protected abstract void onStart();
+    protected void onStart() {}
 
     protected abstract void onTick(int timeLeft);
 
