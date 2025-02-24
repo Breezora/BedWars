@@ -51,7 +51,8 @@ tasks {
         val mapping = mapOf(
             "xyz.xenondevs.invui" to "invui",
             "de.eldoria.jacksonbukkit" to "jacksonbukkit",
-            "de.eldoria.eldoutilities.config" to "eldoutilities.config"
+            "de.eldoria.eldoutilities.config" to "eldoutilities.config",
+            "org.incendo.cloud" to "cloud"
         )
 
         val base = "net.alphalightning.bedwars.libs"
