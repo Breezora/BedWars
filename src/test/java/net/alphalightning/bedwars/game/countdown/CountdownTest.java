@@ -66,6 +66,9 @@ public class CountdownTest {
         assertEquals(expectedListenerEvents, listener.events(), "Die Listener-Ereignisse stimmen nicht mit der erwarteten Sequenz überein");
     }
 
+    /**
+     * Tests if after a manual cancellation no more ticks are proceeded
+     */
     @Test
     public void testCountdownCancellation() {
         BedWarsPlugin plugin = Mockito.mock(BedWarsPlugin.class);
