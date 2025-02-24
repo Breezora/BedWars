@@ -1,4 +1,4 @@
-package net.alphalightning.bedwars.game.ui.item;
+package net.alphalightning.bedwars.game.ui.shop.item.items;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.PotionContents;

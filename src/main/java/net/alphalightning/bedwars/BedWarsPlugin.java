@@ -1,14 +1,16 @@
 package net.alphalightning.bedwars;
 
-import co.aikar.commands.PaperCommandManager;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
+import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
+import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
@@ -19,7 +21,15 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
+import org.incendo.cloud.minecraft.extras.caption.ComponentCaptionFormatter;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Structure;
 
 import java.util.Locale;
@@ -66,12 +76,17 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     public void registerCommands() {
-        PaperCommandManager manager = new PaperCommandManager(this);
+        PaperCommandManager<PaperCommandSource> manager = PaperCommandManager.builder(senderMapper())
+                .executionCoordinator(ExecutionCoordinator.<PaperCommandSource>builder().build())
+                .buildOnEnable(this);
+        MinecraftExceptionHandler.<PaperCommandSource>createNative()
+                .defaultHandlers()
+                .captionFormatter(ComponentCaptionFormatter.miniMessage())
+                .registerTo(manager);
 
         if (environment != Environment.PRODUCTION) {
-            manager.registerDependency(MapSetupManager.class, setupManager);
-            manager.registerCommand(new CreateMapCommand()); // Command to create a new map
-            manager.registerCommand(new TestGuiCommand());
+            new TestGuiCommand(this).register(manager);
+            new CreateMapCommand(this, setupManager).register(manager);
 
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
@@ -90,6 +105,17 @@ public class BedWarsPlugin extends JavaPlugin {
 
         environment = configuration.main().environment();
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
+    }
+
+    private @NotNull SenderMapper<CommandSourceStack, PaperCommandSource> senderMapper() {
+        return SenderMapper.create(commandSourceStack -> {
+            CommandSender sender = commandSourceStack.getSender();
+
+            return sender instanceof Player player ?
+                    new PaperPlayerCommandSource(player, commandSourceStack) :
+                    new PaperCommandSource(sender, commandSourceStack);
+
+        }, PaperCommandSource::commandSourceStack);
     }
 
     public ObjectMapper jsonMapper() {
