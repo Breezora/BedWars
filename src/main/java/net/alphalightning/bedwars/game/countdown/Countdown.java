@@ -48,6 +48,10 @@ public abstract class Countdown {
         }
     }
 
+    protected int seconds() {
+        return seconds;
+    }
+
     protected void onStart() {}
 
     protected abstract void onTick(int timeLeft);
