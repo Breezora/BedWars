@@ -13,6 +13,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases")
     maven("https://repo.aikar.co/content/groups/aikar/")
+    maven("https://libraries.minecraft.net")
 
     maven("https://repo.breezora.net/intern") {
         name = "breezoraRepositoryIntern"
