@@ -40,7 +40,7 @@ public class CreateMapCommand extends PaperCommand<@NonNull BedWarsPlugin> imple
 
     private void runCommand(@NotNull CommandContext<PaperPlayerCommandSource> context) {
         final String type = context.getOrDefault("type", "lobby");
-        final Player player = (Player) context.sender();
+        final Player player = (Player) context.sender().plattformSender();
 
         if (type.equals("lobby")) {
             setupManager.prepareNewSetup(plugin, ConfigurationType.LOBBY, player, LOBBY_MAP_NAME)
