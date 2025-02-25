@@ -35,7 +35,7 @@ public class GameStateManager {
                 //start countdown to sudden death phase
             }
             case IN_GAME_SUDDEN_DEATH -> {
-                //spawn enderdragons
+                //spawn Ender Dragons
                 //disable buying new dragons in item shop
             }
             case GAME_END -> {
