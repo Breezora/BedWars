@@ -13,6 +13,7 @@ import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
+import net.alphalightning.bedwars.game.listener.BlockListener;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
@@ -21,6 +22,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,9 +58,14 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerEvents();
         registerCommands();
         registerGuiIngredients();
         getLogger().info("BedWars has been enabled");
+    }
+
+    private void registerEvents() {
+        Bukkit.getPluginManager().registerEvents(new BlockListener(this), this);
     }
 
     @Override
