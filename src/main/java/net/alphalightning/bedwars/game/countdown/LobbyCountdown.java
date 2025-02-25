@@ -18,11 +18,13 @@ public class LobbyCountdown extends Countdown {
     @Override
     protected void onTick(int timeLeft) {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            player.clearTitle(); // Make sure a title is displayed for only on countdown tick
+
+            if (timeLeft % 5 == 0 || timeLeft == 4) {
+                sendTitle(player, timeLeft, NamedTextColor.YELLOW);
+            }
             switch (timeLeft) {
-                case 5, 4, 3, 2, 1 -> {
-                    player.showTitle(Title.title(Component.text(timeLeft).color(NamedTextColor.YELLOW), Component.empty()));
-                    Feedback.lower(player);
-                }
+                case 3, 2, 1 -> sendTitle(player, timeLeft, NamedTextColor.RED);
             }
             update(player, timeLeft);
         });
@@ -41,5 +43,10 @@ public class LobbyCountdown extends Countdown {
     private void update(@NotNull Player player, int timeLeft) {
         player.setLevel(timeLeft);
         player.setExp((float) timeLeft / super.duration());
+    }
+
+    private void sendTitle(@NotNull Player player, int timeLeft, NamedTextColor color) {
+        player.showTitle(Title.title(Component.text(timeLeft).color(color), Component.empty()));
+        Feedback.lower(player);
     }
 }
