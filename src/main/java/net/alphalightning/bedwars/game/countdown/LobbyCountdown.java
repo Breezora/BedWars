@@ -18,6 +18,8 @@ public class LobbyCountdown extends Countdown {
     @Override
     protected void onTick(int timeLeft) {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            player.clearTitle(); // Make sure a title is displayed for only on countdown tick
+
             if (timeLeft % 5 == 0 || timeLeft == 4) {
                 sendTitle(player, timeLeft, NamedTextColor.YELLOW);
             }
