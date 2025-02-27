@@ -50,6 +50,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
     private Configuration configuration;
     private Environment environment;
+    private GameStateContext gameStateContext;
 
     @Override
     public void onLoad() {
@@ -62,7 +63,8 @@ public class BedWarsPlugin extends JavaPlugin {
         registerCommands();
         registerGuiIngredients();
 
-        new GameStateContext(getComponentLogger()).setGameState(GameState.LOBBY);
+        gameStateContext = new GameStateContext(getComponentLogger());
+        gameStateContext.setGameState(GameState.LOBBY);
 
         getLogger().info("BedWars has been enabled");
     }
@@ -135,5 +137,9 @@ public class BedWarsPlugin extends JavaPlugin {
 
     public MapSetupManager setupManager() {
         return setupManager;
+    }
+
+    public GameStateContext gameStateContext() {
+        return gameStateContext;
     }
 }
