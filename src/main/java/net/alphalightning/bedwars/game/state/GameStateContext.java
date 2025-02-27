@@ -1,14 +1,19 @@
 package net.alphalightning.bedwars.game.state;
 
 import net.alphalightning.bedwars.game.state.states.LobbyState;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 
 public class GameStateContext {
 
-    private GameState current;
-    private final GameState[] states;
+    private final ComponentLogger logger;
 
-    public GameStateContext() {
+    private final GameState[] states;
+    private GameState current;
+
+    public GameStateContext(ComponentLogger logger) {
+        this.logger = logger;
+
         this.states = new GameState[1];
         this.states[0] = new LobbyState(this);
     }
@@ -32,4 +37,7 @@ public class GameStateContext {
         return this.current;
     }
 
+    public @NotNull ComponentLogger logger() {
+        return logger;
+    }
 }
