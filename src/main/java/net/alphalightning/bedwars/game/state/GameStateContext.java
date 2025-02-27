@@ -1,16 +1,23 @@
 package net.alphalightning.bedwars.game.state;
 
+import net.alphalightning.bedwars.game.state.states.LobbyState;
 import org.jetbrains.annotations.NotNull;
 
 public class GameStateContext {
 
     private GameState current;
+    private final GameState[] states;
 
-    public void setGameState(@NotNull GameState state) {
+    public GameStateContext() {
+        this.states = new GameState[1];
+        this.states[0] = new LobbyState(this);
+    }
+
+    public void setGameState(int state) {
         if (this.current != null) {
             this.current.stop();
         }
-        this.current = state;
+        this.current = this.states[state];
         this.current.start();
     }
 
