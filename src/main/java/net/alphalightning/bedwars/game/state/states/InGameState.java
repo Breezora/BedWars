@@ -22,5 +22,6 @@ public class InGameState extends AbstractGameState {
 
     @Override
     public void stop() {
+        context.logger().info(Component.translatable("state.ingame.stop"));
     }
 }
