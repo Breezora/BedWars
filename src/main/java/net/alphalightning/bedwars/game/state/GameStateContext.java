@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.state;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.state.states.LobbyState;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -12,8 +13,8 @@ public class GameStateContext {
     private final GameState[] states;
     private GameState current;
 
-    public GameStateContext(ComponentLogger logger) {
-        this.logger = logger;
+    public GameStateContext(@NotNull BedWarsPlugin plugin) {
+        this.logger = plugin.getComponentLogger();
 
         this.states = new GameState[2];
         this.states[0] = new LobbyState(this);
@@ -21,14 +22,13 @@ public class GameStateContext {
     }
 
     public void setGameState(int state) {
-        if (this.current != null) {
-            this.current.stop();
-        }
+        stopCurrentState();
+
         this.current = this.states[state];
         this.current.start();
     }
 
-    public void stopCurrentState() {
+    private void stopCurrentState() {
         if(this.current != null) {
             this.current.stop();
             this.current = null;

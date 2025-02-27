@@ -63,7 +63,7 @@ public class BedWarsPlugin extends JavaPlugin {
         registerCommands();
         registerGuiIngredients();
 
-        gameStateContext = new GameStateContext(getComponentLogger());
+        gameStateContext = new GameStateContext(this);
         gameStateContext.setGameState(GameState.LOBBY);
 
         getLogger().info("BedWars has been enabled");
