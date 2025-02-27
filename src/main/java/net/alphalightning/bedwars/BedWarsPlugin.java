@@ -14,6 +14,8 @@ import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
+import net.alphalightning.bedwars.game.state.GameState;
+import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
@@ -59,6 +61,9 @@ public class BedWarsPlugin extends JavaPlugin {
     public void onEnable() {
         registerCommands();
         registerGuiIngredients();
+
+        new GameStateContext().setGameState(GameState.LOBBY);
+
         getLogger().info("BedWars has been enabled");
     }
 
