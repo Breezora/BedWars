@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.countdown;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.game.state.GameState;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -37,7 +38,8 @@ public class LobbyCountdown extends Countdown {
             player.clearTitle();
             Feedback.pling(player);
         });
-        Bukkit.broadcast(Component.translatable("countdown.lobby.finish"));
+
+        this.plugin.gameStateContext().setGameState(GameState.INGAME);
     }
 
     private void update(@NotNull Player player, int timeLeft) {
