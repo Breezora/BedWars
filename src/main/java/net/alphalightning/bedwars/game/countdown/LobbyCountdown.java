@@ -48,6 +48,10 @@ public class LobbyCountdown extends Countdown {
 
     @Override
     protected void onAbort() {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            update(player, 0);
+            player.clearTitle();
+        });
         Bukkit.broadcast(Component.translatable("state.lobby.abort"));
     }
 
