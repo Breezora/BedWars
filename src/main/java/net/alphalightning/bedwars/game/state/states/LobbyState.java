@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +22,7 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
 
-    public LobbyState(GameStateContext context, BedWarsPlugin plugin) {
+    public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
