@@ -17,7 +17,7 @@ public class GameStateContext {
         this.logger = plugin.getComponentLogger();
 
         this.states = new GameState[2];
-        this.states[0] = new LobbyState(this);
+        this.states[0] = new LobbyState(plugin);
         this.states[1] = new InGameState(this);
     }
 
@@ -29,7 +29,7 @@ public class GameStateContext {
     }
 
     private void stopCurrentState() {
-        if(this.current != null) {
+        if (this.current != null) {
             this.current.stop();
             this.current = null;
         }
