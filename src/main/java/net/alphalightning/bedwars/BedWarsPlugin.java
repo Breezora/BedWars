@@ -15,6 +15,8 @@ import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
+import net.alphalightning.bedwars.game.state.GameState;
+import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.listener.BlockListener;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
@@ -51,6 +53,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
     private Configuration configuration;
     private Environment environment;
+    private GameStateContext gameStateContext;
 
     @Override
     public void onLoad() {
@@ -63,6 +66,10 @@ public class BedWarsPlugin extends JavaPlugin {
         registerEvents();
         registerCommands();
         registerGuiIngredients();
+
+        gameStateContext = new GameStateContext(this);
+        gameStateContext.setGameState(GameState.LOBBY);
+
         getLogger().info("BedWars has been enabled");
     }
 
@@ -139,5 +146,9 @@ public class BedWarsPlugin extends JavaPlugin {
 
     public MapSetupManager setupManager() {
         return setupManager;
+    }
+
+    public GameStateContext gameStateContext() {
+        return gameStateContext;
     }
 }
