@@ -31,6 +31,7 @@ public class Configuration extends JacksonConfig<Default> {
         }
 
         main().environment(Environment.DEVELOPMENT);
+        main().minPlayers(0.8);
         save();
     }
 }
