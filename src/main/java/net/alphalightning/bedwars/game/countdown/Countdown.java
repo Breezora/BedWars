@@ -57,7 +57,7 @@ public abstract class Countdown {
             transitionToRunningState();
         } else {
             idleTickCounter++;
-            if (idleTickCounter % 15 == 0) {
+            if (idleTickCounter % 30 == 0) {
                 onIdleTick();
             }
         }
