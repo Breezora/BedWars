@@ -32,6 +32,10 @@ dependencies {
     implementation("de.eldoria.util:jackson-configuration:2.1.9")
     implementation("org.incendo:cloud-paper:2.0.0-beta.10")
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.10")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.0.0")
 }
 
 tasks {
@@ -42,6 +46,12 @@ tasks {
     }
 
     compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = javaVersion
+        options.forkOptions.executable = System.getProperty("java.home") + "/bin/javac"
+    }
+
+    compileTestJava {
         options.encoding = Charsets.UTF_8.name()
         options.release = javaVersion
         options.forkOptions.executable = System.getProperty("java.home") + "/bin/javac"
@@ -66,6 +76,10 @@ tasks {
 
     build {
         dependsOn(shadowJar)
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 

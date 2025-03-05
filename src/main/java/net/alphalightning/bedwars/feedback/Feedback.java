@@ -43,4 +43,8 @@ public interface Feedback {
     static void warning(Player player) {
         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_AMBIENT, VOLUME, PITCH);
     }
+
+    static void pling(Player player) {
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, VOLUME, PITCH);
+    }
 }
