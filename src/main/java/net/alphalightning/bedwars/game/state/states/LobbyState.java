@@ -21,10 +21,12 @@ import static net.alphalightning.bedwars.setup.map.LobbyConfiguration.LOBBY_FILE
 public class LobbyState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
+    private final GameStateContext context;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.plugin = plugin;
+        this.context = context;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -40,11 +42,12 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (plugin.gameStateContext().currentState() instanceof LobbyState) {
+        if (context.currentState() instanceof LobbyState) {
             Player player = event.getPlayer();
             try {
                 LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(Path.of("maps/lobby.json").toFile(), LobbyLocations.class);
                 Location spawn = lobbyLocations.get("spawn").asBukkitLocation();
+
                 if (spawn == null) return;
                 player.teleport(spawn);
             } catch (IOException exception) {
