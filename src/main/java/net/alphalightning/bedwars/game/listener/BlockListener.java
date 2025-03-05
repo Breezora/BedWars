@@ -24,9 +24,9 @@ public class BlockListener implements Listener {
         if(enabled) {
             Block block = event.getBlock();
             PersistentDataContainer data = block.getChunk().getPersistentDataContainer();
-            NamespacedKey key = new NamespacedKey(plugin, "block_" + block.getX() + "_" + block.getY() + "_" + block.getZ());
+            NamespacedKey key = new NamespacedKey(plugin, "custom");
 
-            data.set(key, PersistentDataType.BYTE, (byte) 1);
+            data.set(key, PersistentDataType.BOOLEAN, true);
         }
     }
 
@@ -35,9 +35,9 @@ public class BlockListener implements Listener {
         if (enabled) {
             Block block = event.getBlock();
             PersistentDataContainer data = block.getChunk().getPersistentDataContainer();
-            NamespacedKey key = new NamespacedKey(plugin, "block_" + block.getX() + "_" + block.getY() + "_" + block.getZ());
+            NamespacedKey key = new NamespacedKey(plugin, "custom");
 
-            if (data.has(key, PersistentDataType.BYTE)) {
+            if (data.has(key, PersistentDataType.BOOLEAN)) {
                 event.getPlayer().sendMessage("Dieser Block wurde von einem Spieler platziert!");
                 data.remove(key); // Entfernt den Eintrag, falls der Block abgebaut wird
             } else {
