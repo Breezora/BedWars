@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.game.state.states;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
+import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,8 +11,8 @@ public class LobbyState extends AbstractGameState {
 
     private final LobbyCountdown countdown;
 
-    public LobbyState(@NotNull BedWarsPlugin plugin) {
-        super(plugin.gameStateContext());
+    public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
+        super(context);
         this.countdown = new LobbyCountdown(plugin, 30);
     }
 
