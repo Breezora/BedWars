@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class LobbyState extends AbstractGameState implements Listener {
@@ -19,19 +20,20 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
+    private final int minPlayers;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, 30);
+        this.minPlayers = calculateMinPlayers();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void start() {
-        this.countdown.start();
         context.logger().info(Component.translatable("state.lobby.start"));
     }
 
@@ -47,10 +49,26 @@ public class LobbyState extends AbstractGameState implements Listener {
             return;
         }
 
-        final double factor = this.configuration.main().minPlayers();
-        final double calculated = MAX_PLAYERS * factor;
+        int currentPlayers = Bukkit.getServer().getOnlinePlayers().size();
 
-        int minPlayers = (int) Math.floor(calculated);
-        System.out.println("Min Players: " + minPlayers);
+        if (currentPlayers >= this.minPlayers) {
+            this.countdown.start();
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        int currentPlayers = Bukkit.getServer().getOnlinePlayers().size();
+
+        if (currentPlayers < this.minPlayers) {
+            this.countdown.cancel();
+        }
+    }
+
+    private int calculateMinPlayers() {
+        double factor = this.configuration.main().minPlayers();
+        double calculated = MAX_PLAYERS * factor;
+
+        return (int) Math.floor(calculated);
     }
 }
