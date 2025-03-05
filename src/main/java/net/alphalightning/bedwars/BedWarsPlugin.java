@@ -9,7 +9,6 @@ import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.alphalightning.bedwars.commands.CountdownCommand;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
-import net.alphalightning.bedwars.commands.EnableBlockCheckingCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
@@ -101,7 +100,6 @@ public class BedWarsPlugin extends JavaPlugin {
                 .registerTo(manager);
 
         if (environment != Environment.PRODUCTION) {
-            new EnableBlockCheckingCommand(this).register(manager);
             new TestGuiCommand(this).register(manager);
             new CreateMapCommand(this, setupManager).register(manager);
             new CountdownCommand(this).register(manager);
