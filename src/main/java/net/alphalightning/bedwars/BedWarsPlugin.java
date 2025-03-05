@@ -7,16 +7,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.alphalightning.bedwars.commands.CountdownCommand;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
+import net.alphalightning.bedwars.game.listener.BlockListener;
 import net.alphalightning.bedwars.game.state.GameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
-import net.alphalightning.bedwars.game.listener.BlockListener;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
@@ -102,7 +101,6 @@ public class BedWarsPlugin extends JavaPlugin {
         if (environment != Environment.PRODUCTION) {
             new TestGuiCommand(this).register(manager);
             new CreateMapCommand(this, setupManager).register(manager);
-            new CountdownCommand(this).register(manager);
 
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
