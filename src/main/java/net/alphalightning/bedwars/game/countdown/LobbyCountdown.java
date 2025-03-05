@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.game.countdown;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.game.state.GameState;
+import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -12,8 +13,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class LobbyCountdown extends Countdown {
 
-    public LobbyCountdown(BedWarsPlugin plugin, int seconds) {
+    private final GameStateContext context;
+
+    public LobbyCountdown(BedWarsPlugin plugin, GameStateContext context, int seconds) {
         super(plugin, seconds);
+        this.context = context;
     }
 
     @Override
@@ -40,6 +44,21 @@ public class LobbyCountdown extends Countdown {
         });
 
         this.plugin.gameStateContext().setGameState(GameState.INGAME);
+    }
+
+    @Override
+    protected void onAbort() {
+        Bukkit.broadcast(Component.translatable("state.lobby.abort"));
+    }
+
+    @Override
+    protected void onIdleTick() {
+        Bukkit.broadcast(Component.translatable("state.lobby.idle"));
+    }
+
+    @Override
+    protected boolean isStartingConditionMet() {
+        return context.missingPlayers() <= 0;
     }
 
     private void update(@NotNull Player player, int timeLeft) {

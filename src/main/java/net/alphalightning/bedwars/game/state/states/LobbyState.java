@@ -5,6 +5,7 @@ import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -26,8 +27,11 @@ public class LobbyState extends AbstractGameState implements Listener {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
-        this.countdown = new LobbyCountdown(plugin, 30);
+        this.countdown = new LobbyCountdown(plugin, context, 30);
         this.minPlayers = calculateMinPlayers();
+
+        context.requiredPlayers(minPlayers);
+        countdown.start();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -48,21 +52,19 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
-
-        int currentPlayers = Bukkit.getServer().getOnlinePlayers().size();
-
-        if (currentPlayers >= this.minPlayers) {
-            this.countdown.start();
-        }
+        event.joinMessage(Component.translatable("state.lobby.join",
+                NamedTranslationArgument.component("name", event.getPlayer().displayName()),
+                NamedTranslationArgument.numeric("min", this.minPlayers),
+                NamedTranslationArgument.numeric("max", MAX_PLAYERS)
+        ));
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        int currentPlayers = Bukkit.getServer().getOnlinePlayers().size();
-
-        if (currentPlayers < this.minPlayers) {
-            this.countdown.cancel();
+        if (!(this.context.currentState() instanceof LobbyState)) {
+            return;
         }
+        event.quitMessage(null);
     }
 
     private int calculateMinPlayers() {
