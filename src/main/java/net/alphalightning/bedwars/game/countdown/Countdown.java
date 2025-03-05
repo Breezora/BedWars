@@ -109,9 +109,11 @@ public abstract class Countdown {
         listeners.forEach(CountdownListener::onEnd);
     }
 
-    protected int duration() {
+    public int duration() {
         return duration;
     }
+
+    public int remainingTime() { return remainingTime; }
 
     // --------------------- Template Method Hooks ---------------------
 

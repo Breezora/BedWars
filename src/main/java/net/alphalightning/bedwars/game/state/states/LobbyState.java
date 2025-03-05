@@ -6,8 +6,11 @@ import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -50,11 +53,15 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
+
+        Player player = event.getPlayer();
+
         event.joinMessage(Component.translatable("state.lobby.join",
-                NamedTranslationArgument.component("name", event.getPlayer().displayName()),
+                NamedTranslationArgument.component("name", player.displayName()),
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", MAX_PLAYERS)
         ));
+        preparePlayer(player);
     }
 
     @EventHandler
@@ -63,6 +70,16 @@ public class LobbyState extends AbstractGameState implements Listener {
             return;
         }
         event.quitMessage(null);
+    }
+
+    private void preparePlayer(@NotNull Player player) {
+        player.setFoodLevel(20);
+        player.setHealthScale(20.0D);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setGameMode(GameMode.ADVENTURE);
+
+        PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
     }
 
     private int calculateMinPlayers() {

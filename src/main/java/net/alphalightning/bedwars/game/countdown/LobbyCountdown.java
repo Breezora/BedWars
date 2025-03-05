@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.game.state.GameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -31,14 +32,14 @@ public class LobbyCountdown extends Countdown {
             switch (timeLeft) {
                 case 3, 2, 1 -> sendTitle(player, timeLeft, NamedTextColor.RED);
             }
-            update(player, timeLeft);
+            PlayerUtil.updateCountdownInformation(player, super.duration(), timeLeft);
         });
     }
 
     @Override
     protected void onFinish() {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            update(player, 0);
+            PlayerUtil.updateCountdownInformation(player, super.duration(), 0);
             player.clearTitle();
             Feedback.pling(player);
         });
@@ -49,7 +50,7 @@ public class LobbyCountdown extends Countdown {
     @Override
     protected void onAbort() {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            update(player, 0);
+            PlayerUtil.updateCountdownInformation(player, super.duration(), 0);
             player.clearTitle();
         });
         Bukkit.broadcast(Component.translatable("state.lobby.abort"));
@@ -63,11 +64,6 @@ public class LobbyCountdown extends Countdown {
     @Override
     protected boolean isStartingConditionMet() {
         return context.missingPlayers() <= 0;
-    }
-
-    private void update(@NotNull Player player, int timeLeft) {
-        player.setLevel(timeLeft);
-        player.setExp((float) timeLeft / super.duration());
     }
 
     private void sendTitle(@NotNull Player player, int timeLeft, NamedTextColor color) {
