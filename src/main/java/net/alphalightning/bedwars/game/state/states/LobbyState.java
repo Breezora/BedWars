@@ -21,16 +21,14 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
-    private final int minPlayers;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
-        this.minPlayers = calculateMinPlayers();
 
-        context.requiredPlayers(minPlayers);
+        context.requiredPlayers(calculateMinPlayers());
         countdown.start();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -54,7 +52,7 @@ public class LobbyState extends AbstractGameState implements Listener {
         }
         event.joinMessage(Component.translatable("state.lobby.join",
                 NamedTranslationArgument.component("name", event.getPlayer().displayName()),
-                NamedTranslationArgument.numeric("min", this.minPlayers),
+                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", MAX_PLAYERS)
         ));
     }
