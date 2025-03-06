@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.state.states;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -14,7 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static net.alphalightning.bedwars.setup.map.LobbyConfiguration.LOBBY_FILE_NAME;
 
@@ -45,7 +46,10 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (context.currentState() instanceof LobbyState) {
             Player player = event.getPlayer();
             try {
-                LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(Path.of("plugins/BedWars/maps/lobby.json").toFile(), LobbyLocations.class);
+                ObjectMapper mapper = new ObjectMapper();
+
+                LobbyLocations lobbyLocations = mapper.readValue(Paths.get("plugins/BedWars/maps/lobby.json").toFile(), LobbyLocations.class);
+                //LobbyLocations lobbyLocations = plugin.jsonMapper().
                 Location spawn = lobbyLocations.get("spawn").asBukkitLocation();
 
                 if (spawn == null) return;
