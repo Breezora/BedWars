@@ -1,13 +1,33 @@
 package net.alphalightning.bedwars.game.state.states;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
 
-public class LobbyState extends AbstractGameState {
+import java.io.File;
+import java.io.IOException;
 
-    public LobbyState(GameStateContext context) {
+import static net.alphalightning.bedwars.setup.map.LobbyConfiguration.LOBBY_FILE_NAME;
+
+public class LobbyState extends AbstractGameState implements Listener {
+
+    private final BedWarsPlugin plugin;
+    private final GameStateContext context;
+
+    public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
+        this.plugin = plugin;
+        this.context = context;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -19,4 +39,26 @@ public class LobbyState extends AbstractGameState {
     public void stop() {
         context.logger().info(Component.translatable("state.lobby.stop"));
     }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if (context.currentState() instanceof LobbyState) {
+            Player player = event.getPlayer();
+            try {
+                File lobbyFile = plugin.getDataFolder().toPath().resolve("maps").resolve("lobby.json").toFile();
+
+                LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(lobbyFile, LobbyLocations.class);
+                Location spawn = lobbyLocations.get("spawn").asBukkitLocation();
+
+                if (spawn == null) {
+                    return;
+                }
+                player.teleport(spawn);
+
+            } catch (IOException exception) {
+                plugin.getLogger().severe("Could not read file " + LOBBY_FILE_NAME + ": " + exception.getMessage());
+            }
+        }
+    }
+
 }
