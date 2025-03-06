@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.map.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,7 +13,14 @@ public class JacksonLocation extends SimpleJacksonLocation {
     private final float yaw;
 
     @JsonCreator
-    public JacksonLocation(String world, double x, double y, double z, float pitch, float yaw) {
+    public JacksonLocation(
+            @JsonProperty("world") String world,
+            @JsonProperty("x") double x,
+            @JsonProperty("y") double y,
+            @JsonProperty("z") double z,
+            @JsonProperty("pitch") float pitch,
+            @JsonProperty("yaw") float yaw) {
+
         super(world, x, y, z);
         this.pitch = pitch;
         this.yaw = yaw;

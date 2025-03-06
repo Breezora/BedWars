@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.setup.map.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,7 +15,7 @@ public class SimpleJacksonLocation {
     private final double z;
 
     @JsonCreator
-    public SimpleJacksonLocation(String world, double x, double y, double z) {
+    public SimpleJacksonLocation(@JsonProperty("world") String world, @JsonProperty("x") double x, @JsonProperty("y") double y,@JsonProperty("z") double z) {
         this.world = world;
         this.x = x;
         this.y = y;
