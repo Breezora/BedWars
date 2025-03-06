@@ -15,7 +15,7 @@ public class SimpleJacksonLocation {
     private final double z;
 
     @JsonCreator
-    public SimpleJacksonLocation(@JsonProperty String world, @JsonProperty double x, @JsonProperty double y,@JsonProperty double z) {
+    public SimpleJacksonLocation(@JsonProperty("world") String world, @JsonProperty("x") double x, @JsonProperty("y") double y,@JsonProperty("z") double z) {
         this.world = world;
         this.x = x;
         this.y = y;
