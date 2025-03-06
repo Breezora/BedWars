@@ -1,8 +1,8 @@
 package net.alphalightning.bedwars.setup.map;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
-import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
@@ -62,10 +62,10 @@ public final class LobbyMapSetup implements MapSetup, LobbyConfiguration {
         try {
             createDirectory();
 
-            SimpleJacksonLocation spawnLocation = new SimpleJacksonLocation(spawn);
-            SimpleJacksonLocation hologramLocation = new SimpleJacksonLocation(hologram);
+            JacksonLocation spawnLocation = new JacksonLocation(spawn);
+            JacksonLocation hologramLocation = new JacksonLocation(hologram);
 
-            Map<String, SimpleJacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
+            Map<String, JacksonLocation> locationsMap = Map.of("spawn", spawnLocation, "hologram", hologramLocation);
             plugin.jsonMapper().writeValue(mapsDirectory().resolve(LOBBY_FILE_NAME).toFile(), new LobbyLocations(locationsMap));
 
         } catch (IOException exception) {
