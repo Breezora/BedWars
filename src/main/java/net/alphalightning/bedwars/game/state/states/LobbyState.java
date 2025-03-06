@@ -45,7 +45,7 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (context.currentState() instanceof LobbyState) {
             Player player = event.getPlayer();
             try {
-                LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(Path.of("maps/lobby.json").toFile(), LobbyLocations.class);
+                LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(Path.of("plugins/BedWars/maps/lobby.json").toFile(), LobbyLocations.class);
                 Location spawn = lobbyLocations.get("spawn").asBukkitLocation();
 
                 if (spawn == null) return;
