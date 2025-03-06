@@ -53,6 +53,8 @@ public class LobbyState extends AbstractGameState implements Listener {
             } catch (IOException exception) {
                 plugin.getLogger().severe("Could not read file " + LOBBY_FILE_NAME + ": " + exception.getMessage());
             }
+        } else {
+            System.out.println("State is not Lobby. State: " + context.currentState());
         }
     }
 
