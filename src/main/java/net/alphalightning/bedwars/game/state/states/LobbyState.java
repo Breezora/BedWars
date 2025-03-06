@@ -48,16 +48,16 @@ public class LobbyState extends AbstractGameState implements Listener {
                 File lobbyFile = plugin.getDataFolder().toPath().resolve("maps").resolve("lobby.json").toFile();
 
                 LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(lobbyFile, LobbyLocations.class);
-                //LobbyLocations lobbyLocations =
                 Location spawn = lobbyLocations.get("spawn").asBukkitLocation();
 
-                if (spawn == null) return;
+                if (spawn == null) {
+                    return;
+                }
                 player.teleport(spawn);
+
             } catch (IOException exception) {
                 plugin.getLogger().severe("Could not read file " + LOBBY_FILE_NAME + ": " + exception.getMessage());
             }
-        } else {
-            System.out.println("State is not Lobby. State: " + context.currentState());
         }
     }
 
