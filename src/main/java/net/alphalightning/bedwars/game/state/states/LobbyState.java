@@ -6,6 +6,7 @@ import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
@@ -29,13 +30,20 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
+    private final MapManager mapManager;
+    private final GameMap gameMap;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
-        new MapManager(plugin);
+        this.mapManager = new MapManager(plugin);
+
+        this.gameMap = mapManager.selectRandom();
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
+                NamedTranslationArgument.component("map", Component.text(gameMap.name())))
+        );
 
         context.requiredPlayers(calculateMinPlayers());
         countdown.start();
