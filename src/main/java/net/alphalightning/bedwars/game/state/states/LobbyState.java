@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.game.state.states;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
+import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
@@ -28,12 +29,14 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
+    private final MapManager mapManager;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
+        this.mapManager = new MapManager(plugin);
 
         context.requiredPlayers(calculateMinPlayers());
         countdown.start();
@@ -51,6 +54,8 @@ public class LobbyState extends AbstractGameState implements Listener {
         this.countdown.cancel();
         context.logger().info(Component.translatable("state.lobby.stop"));
     }
+
+    // --------------------- State related event logics ---------------------
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -111,6 +116,8 @@ public class LobbyState extends AbstractGameState implements Listener {
             PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
         }
     }
+
+    // --------------------- Private shit ---------------------
 
     private int calculateMinPlayers() {
         double factor = this.configuration.main().minPlayers();
