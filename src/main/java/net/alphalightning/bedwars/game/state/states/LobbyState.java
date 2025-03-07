@@ -85,7 +85,7 @@ public class LobbyState extends AbstractGameState implements Listener {
     }
 
     @EventHandler
-    public void onExplosion (EntityExplodeEvent event) {
+    public void onExplosion(EntityExplodeEvent event) {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
@@ -93,7 +93,7 @@ public class LobbyState extends AbstractGameState implements Listener {
     }
 
     @EventHandler
-    public void onItemDrop (PlayerDropItemEvent event) {
+    public void onItemDrop(PlayerDropItemEvent event) {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
@@ -107,7 +107,9 @@ public class LobbyState extends AbstractGameState implements Listener {
         player.setAllowFlight(false);
         player.setGameMode(GameMode.ADVENTURE);
 
-        PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
+        if (this.countdown.isRunning()) {
+            PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
+        }
     }
 
     private int calculateMinPlayers() {
