@@ -16,21 +16,23 @@ public class Team {
     private SimpleJacksonLocation bedTopHalf;
     private SimpleJacksonLocation lootspawner;
 
+
     @JsonCreator
-    public Team(@JsonProperty("name") String name, int color) {
+    public Team(@JsonProperty("name") String name,
+                @JsonProperty("spawnpoint") JacksonLocation spawnpoint,
+                @JsonProperty("chest") SimpleJacksonLocation chest,
+                @JsonProperty("bedBottomHalf") SimpleJacksonLocation bedBottomHalf,
+                @JsonProperty("bedTopHalf") SimpleJacksonLocation bedTopHalf,
+                @JsonProperty("lootspawner") SimpleJacksonLocation lootspawner) {
+
+        this(name, -1, spawnpoint, chest, bedBottomHalf, bedTopHalf, lootspawner);
+    }
+
+    public Team(String name, int color) {
         this(name, color, null, null, null, null, null);
     }
 
-    @JsonCreator
-    public Team(
-            @JsonProperty("name") String name,
-            int color,
-            @JsonProperty("spawnpoint") JacksonLocation spawnpoint,
-            @JsonProperty("chest") SimpleJacksonLocation chest,
-            @JsonProperty("bedBottomHalf") SimpleJacksonLocation bedBottomHalf,
-            @JsonProperty("bedTopHalf") SimpleJacksonLocation bedTopHalf,
-            @JsonProperty("lootspawner") SimpleJacksonLocation lootspawner) {
-
+    public Team(String name, int color, JacksonLocation spawnpoint, SimpleJacksonLocation chest, SimpleJacksonLocation bedBottomHalf, SimpleJacksonLocation bedTopHalf, SimpleJacksonLocation lootspawner) {
         this.color = color;
         this.name = name;
         this.spawnpoint = spawnpoint;
