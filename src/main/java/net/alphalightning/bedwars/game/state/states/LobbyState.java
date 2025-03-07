@@ -29,7 +29,7 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
-    private final GameMap gameMap;
+    private GameMap gameMap;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
@@ -38,15 +38,8 @@ public class LobbyState extends AbstractGameState implements Listener {
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
 
-        this.gameMap = mapManager.selectRandom();
-        Bukkit.getServer().setMaxPlayers(gameMap.teams().size() * gameMap.teamSize());
-
-        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
-                NamedTranslationArgument.component("map", Component.text(gameMap.name())))
-        );
-
-        context.requiredPlayers(calculateMinPlayers());
-        countdown.start();
+        selectMap(plugin);
+        startCountdown();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -138,6 +131,24 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (location != null) {
             player.teleport(location);
         }
+    }
+
+    private void startCountdown() {
+        this.context.requiredPlayers(calculateMinPlayers());
+        this.countdown.start();
+    }
+
+    private void selectMap(@NotNull BedWarsPlugin plugin) {
+        this.gameMap = mapManager.selectRandom();
+        updateServerInfo();
+
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
+                NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
+    }
+
+    private void updateServerInfo() {
+        Bukkit.getServer().motd(Component.text(this.gameMap.name()));
+        Bukkit.getServer().setMaxPlayers(this.gameMap.teams().size() * this.gameMap.teamSize());
     }
 }
 
