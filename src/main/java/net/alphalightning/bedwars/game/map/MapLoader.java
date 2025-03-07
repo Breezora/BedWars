@@ -24,7 +24,7 @@ public class MapLoader {
         File directory = this.plugin.getDataFolder().toPath().resolve("maps").toFile();
         File[] files = directory.listFiles((_, name) -> {
             String[] parts = name.split("\\.");
-            return parts[1].equalsIgnoreCase("json"); // Find only json files
+            return parts[1].equalsIgnoreCase("json") && !name.equalsIgnoreCase("lobby"); // Find only json files
         });
 
         if (files == null) {
