@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class MapLoader {
 
@@ -20,7 +20,7 @@ public class MapLoader {
         this.matchmaking = matchmaking;
     }
 
-    public Collection<GameMap> loadAll() {
+    public List<GameMap> loadAll() {
         File directory = this.plugin.getDataFolder().toPath().resolve("maps").toFile();
         File[] files = directory.listFiles((_, name) -> {
             String[] parts = name.split("\\.");
@@ -31,7 +31,7 @@ public class MapLoader {
             return Collections.emptyList();
         }
 
-        Collection<GameMap> maps = new ArrayList<>();
+        List<GameMap> maps = new ArrayList<>();
         File tmpFile = null;
         try {
             for (File file : files) {
