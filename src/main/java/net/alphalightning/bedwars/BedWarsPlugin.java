@@ -14,6 +14,7 @@ import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
 import net.alphalightning.bedwars.game.listener.BlockListener;
+import net.alphalightning.bedwars.game.listener.FoodLevelListener;
 import net.alphalightning.bedwars.game.state.GameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
@@ -27,6 +28,7 @@ import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
@@ -72,7 +74,10 @@ public class BedWarsPlugin extends JavaPlugin {
     }
 
     private void registerEvents() {
-        Bukkit.getPluginManager().registerEvents(new BlockListener(this), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new FoodLevelListener(), this);
+        pluginManager.registerEvents(new BlockListener(this), this);
     }
 
     @Override
