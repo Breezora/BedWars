@@ -66,11 +66,7 @@ public class BedWarsPlugin extends JavaPlugin {
         registerEvents();
         registerCommands();
         registerGuiIngredients();
-
-        if (environment != Environment.DEVELOPMENT) {
-            gameStateContext = new GameStateContext(this);
-            gameStateContext.setGameState(GameState.LOBBY);
-        }
+        registerGameMechanics();
 
         getLogger().info("BedWars has been enabled");
     }
@@ -137,6 +133,15 @@ public class BedWarsPlugin extends JavaPlugin {
                     new PaperCommandSource(sender, commandSourceStack);
 
         }, PaperCommandSource::commandSourceStack);
+    }
+
+    private void registerGameMechanics() {
+        if (environment == Environment.DEVELOPMENT) {
+            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
+            return;
+        }
+        gameStateContext = new GameStateContext(this);
+        gameStateContext.setGameState(GameState.LOBBY);
     }
 
     public ObjectMapper jsonMapper() {
