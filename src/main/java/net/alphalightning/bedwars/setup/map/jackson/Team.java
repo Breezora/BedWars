@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.setup.map.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bukkit.Location;
 
 public class Team {
@@ -16,12 +17,20 @@ public class Team {
     private SimpleJacksonLocation lootspawner;
 
     @JsonCreator
-    public Team(String name, int color) {
+    public Team(@JsonProperty("name") String name, int color) {
         this(name, color, null, null, null, null, null);
     }
 
     @JsonCreator
-    public Team(String name, int color,  JacksonLocation spawnpoint, SimpleJacksonLocation chest, SimpleJacksonLocation bedBottomHalf, SimpleJacksonLocation bedTopHalf, SimpleJacksonLocation lootspawner) {
+    public Team(
+            @JsonProperty("name") String name,
+            int color,
+            @JsonProperty("spawnpoint") JacksonLocation spawnpoint,
+            @JsonProperty("chest") SimpleJacksonLocation chest,
+            @JsonProperty("bedBottomHalf") SimpleJacksonLocation bedBottomHalf,
+            @JsonProperty("bedTopHalf") SimpleJacksonLocation bedTopHalf,
+            @JsonProperty("lootspawner") SimpleJacksonLocation lootspawner) {
+
         this.color = color;
         this.name = name;
         this.spawnpoint = spawnpoint;
