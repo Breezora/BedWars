@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
@@ -94,6 +95,14 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onExplosion (EntityExplodeEvent event) {
+        if (!(this.context.currentState() instanceof LobbyState)) {
+            return;
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onItemDrop (PlayerDropItemEvent event) {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
