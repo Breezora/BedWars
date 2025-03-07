@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.map;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,10 @@ public class MapLoader {
             for (File file : files) {
                 tmpFile = file;
                 GameMap gameMap = this.plugin.jsonMapper().readValue(file, GameMap.class);
-                maps.add(gameMap);
+
+                if (isValidMatchmaking(gameMap)) {
+                    maps.add(gameMap);
+                }
             }
             return maps;
 
@@ -45,5 +49,11 @@ public class MapLoader {
         }
 
         return Collections.emptyList();
+    }
+
+    private boolean isValidMatchmaking(@NotNull GameMap gameMap) {
+        int teamSize = gameMap.teamSize();
+        int teams = gameMap.teams().size();
+        return matchmaking.equalsIgnoreCase(teams + "x" + teamSize);
     }
 }
