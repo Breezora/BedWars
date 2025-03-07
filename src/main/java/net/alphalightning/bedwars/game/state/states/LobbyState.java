@@ -25,8 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class LobbyState extends AbstractGameState implements Listener {
 
-    private static final int MAX_PLAYERS = 4; //TODO: Make this dynamic based on selected map
-
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
@@ -41,6 +39,8 @@ public class LobbyState extends AbstractGameState implements Listener {
         this.mapManager = new MapManager(plugin);
 
         this.gameMap = mapManager.selectRandom();
+        Bukkit.getServer().setMaxPlayers(gameMap.teams().size() * gameMap.teamSize());
+
         plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
                 NamedTranslationArgument.component("map", Component.text(gameMap.name())))
         );
@@ -74,7 +74,7 @@ public class LobbyState extends AbstractGameState implements Listener {
         event.joinMessage(Component.translatable("state.lobby.join",
                 NamedTranslationArgument.component("name", player.displayName()),
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
-                NamedTranslationArgument.numeric("max", MAX_PLAYERS)
+                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
         ));
         preparePlayer(player);
         teleportPlayer(player);
@@ -128,7 +128,7 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     private int calculateMinPlayers() {
         double factor = this.configuration.main().minPlayers();
-        double calculated = MAX_PLAYERS * factor;
+        double calculated = Bukkit.getMaxPlayers() * factor;
 
         return (int) Math.floor(calculated);
     }
