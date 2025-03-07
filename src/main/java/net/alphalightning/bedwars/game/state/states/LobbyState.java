@@ -29,14 +29,13 @@ public class LobbyState extends AbstractGameState implements Listener {
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
-    private final MapManager mapManager;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
-        this.mapManager = new MapManager(plugin);
+        new MapManager(plugin);
 
         context.requiredPlayers(calculateMinPlayers());
         countdown.start();
