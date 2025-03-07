@@ -115,6 +115,10 @@ public abstract class Countdown {
 
     public int remainingTime() { return remainingTime; }
 
+    public boolean isRunning() {
+        return this.state == State.RUNNING;
+    }
+
     // --------------------- Template Method Hooks ---------------------
 
     protected void onStart() {
