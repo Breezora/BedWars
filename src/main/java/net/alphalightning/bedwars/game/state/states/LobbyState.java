@@ -9,6 +9,8 @@ import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.PlayerUtil;
+import net.breezora.celestial.DisplayType;
+import net.breezora.celestial.Scoreboard;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -22,6 +24,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class LobbyState extends AbstractGameState implements Listener {
 
@@ -71,6 +75,7 @@ public class LobbyState extends AbstractGameState implements Listener {
         ));
         preparePlayer(player);
         teleportPlayer(player);
+        createScoreboard(player);
     }
 
     @EventHandler
@@ -131,6 +136,21 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (location != null) {
             player.teleport(location);
         }
+    }
+
+    private void createScoreboard(Player player) {
+        Scoreboard scoreboard = Scoreboard.builder(DisplayType.SIDEBAR)
+                .player(player)
+                .title(Component.translatable("state.lobby.scoreboard.title"))
+                .appendLines(List.of(
+                        Component.empty(),
+                        Component.translatable("state.lobby.scoreboard.map"),
+                        Component.translatable("state.lobby.scoreboard.map.current"),
+                        Component.empty()
+                ))
+                .build();
+
+        scoreboard.display();
     }
 
     private void startCountdown() {
