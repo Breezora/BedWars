@@ -3,8 +3,10 @@ package net.alphalightning.bedwars.game.state.states;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
+import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
@@ -23,20 +25,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class LobbyState extends AbstractGameState implements Listener {
 
-    private static final int MAX_PLAYERS = 4; //TODO: Make this dynamic based on selected map
-
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
+    private final MapManager mapManager;
+    private GameMap gameMap;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
+        this.mapManager = new MapManager(plugin);
 
-        context.requiredPlayers(calculateMinPlayers());
-        countdown.start();
+        selectMap(plugin);
+        startCountdown();
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -52,6 +55,8 @@ public class LobbyState extends AbstractGameState implements Listener {
         context.logger().info(Component.translatable("state.lobby.stop"));
     }
 
+    // --------------------- State related event logics ---------------------
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (!(this.context.currentState() instanceof LobbyState)) {
@@ -62,7 +67,7 @@ public class LobbyState extends AbstractGameState implements Listener {
         event.joinMessage(Component.translatable("state.lobby.join",
                 NamedTranslationArgument.component("name", player.displayName()),
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
-                NamedTranslationArgument.numeric("max", MAX_PLAYERS)
+                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
         ));
         preparePlayer(player);
         teleportPlayer(player);
@@ -112,9 +117,11 @@ public class LobbyState extends AbstractGameState implements Listener {
         }
     }
 
+    // --------------------- Private shit ---------------------
+
     private int calculateMinPlayers() {
         double factor = this.configuration.main().minPlayers();
-        double calculated = MAX_PLAYERS * factor;
+        double calculated = Bukkit.getMaxPlayers() * factor;
 
         return (int) Math.floor(calculated);
     }
@@ -124,6 +131,24 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (location != null) {
             player.teleport(location);
         }
+    }
+
+    private void startCountdown() {
+        this.context.requiredPlayers(calculateMinPlayers());
+        this.countdown.start();
+    }
+
+    private void selectMap(@NotNull BedWarsPlugin plugin) {
+        this.gameMap = mapManager.selectRandom();
+        updateServerInfo();
+
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
+                NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
+    }
+
+    private void updateServerInfo() {
+        Bukkit.getServer().motd(Component.text(this.gameMap.name()));
+        Bukkit.getServer().setMaxPlayers(this.gameMap.teams().size() * this.gameMap.teamSize());
     }
 }
 
