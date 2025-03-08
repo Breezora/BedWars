@@ -72,17 +72,12 @@ public class BedWarsPlugin extends JavaPlugin {
         getLogger().info("BedWars has been enabled");
     }
 
-    private void registerEvents() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-
-        pluginManager.registerEvents(new FoodLevelListener(), this);
-        pluginManager.registerEvents(new BlockListener(this), this);
-    }
-
     @Override
     public void onDisable() {
         getLogger().info("BedWars has been disabled");
     }
+
+    // --------------------- Initialization ---------------------
 
     private void loadMessageRegistry() {
         TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("bedwars:messages"));
@@ -93,7 +88,22 @@ public class BedWarsPlugin extends JavaPlugin {
         GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
     }
 
-    public void registerCommands() {
+    private void loadConfiguration() {
+        configuration = new Configuration(this, mapper);
+        configuration.createOrDoNothing();
+
+        environment = configuration.main().environment();
+        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
+    }
+
+    private void registerEvents() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new FoodLevelListener(), this);
+        pluginManager.registerEvents(new BlockListener(this), this);
+    }
+
+    private void registerCommands() {
         PaperCommandManager<PaperCommandSource> manager = PaperCommandManager.builder(senderMapper())
                 .executionCoordinator(ExecutionCoordinator.<PaperCommandSource>builder().build())
                 .buildOnEnable(this);
@@ -112,19 +122,6 @@ public class BedWarsPlugin extends JavaPlugin {
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>map creation"));
     }
 
-    private void registerGuiIngredients() {
-        Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
-        Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
-    }
-
-    private void loadConfiguration() {
-        configuration = new Configuration(this, mapper);
-        configuration.createOrDoNothing();
-
-        environment = configuration.main().environment();
-        getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
-    }
-
     private @NotNull SenderMapper<CommandSourceStack, PaperCommandSource> senderMapper() {
         return SenderMapper.create(commandSourceStack -> {
             CommandSender sender = commandSourceStack.getSender();
@@ -134,6 +131,11 @@ public class BedWarsPlugin extends JavaPlugin {
                     new PaperCommandSource(sender, commandSourceStack);
 
         }, PaperCommandSource::commandSourceStack);
+    }
+
+    private void registerGuiIngredients() {
+        Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
+        Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
     }
 
     private void registerGameMechanics() {
@@ -146,6 +148,8 @@ public class BedWarsPlugin extends JavaPlugin {
         gameStateContext = new GameStateContext(this);
         gameStateContext.setGameState(GameState.LOBBY);
     }
+
+    // --------------------- Exposure---------------------
 
     public ObjectMapper jsonMapper() {
         return mapper;
