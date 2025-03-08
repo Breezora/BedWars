@@ -20,6 +20,7 @@ import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
 import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
+import net.alphalightning.bedwars.util.WorldUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -140,6 +141,8 @@ public class BedWarsPlugin extends JavaPlugin {
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
             return;
         }
+        WorldUtil.prepareWorlds(Bukkit.getWorlds());
+
         gameStateContext = new GameStateContext(this);
         gameStateContext.setGameState(GameState.LOBBY);
     }
