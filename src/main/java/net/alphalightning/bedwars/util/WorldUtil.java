@@ -15,7 +15,7 @@ public final class WorldUtil {
             world.getEntities().forEach(Entity::remove);
             world.setAutoSave(false);
             world.setThundering(false);
-            world.setTime(0L);
+            world.setTime(6000L);
             world.setDifficulty(Difficulty.PEACEFUL);
             world.setGameRule(GameRule.DO_MOB_LOOT, false);
             world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
