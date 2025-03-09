@@ -41,7 +41,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
-    private GameMap gameMap;
+    private GameMap gameMap; // The selected map that was set in the MapManager
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
