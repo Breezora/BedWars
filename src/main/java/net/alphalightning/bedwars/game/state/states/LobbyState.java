@@ -179,6 +179,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
                         ), locale),
+                        Component.empty(),
                         render(!this.countdown.isRunning()
                                 ? Component.translatable("state.lobby.scoreboard.countdown.idle")
                                 : Component.translatable("state.lobby.scoreboard.countdown.running",
