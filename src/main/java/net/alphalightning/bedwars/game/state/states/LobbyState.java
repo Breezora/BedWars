@@ -94,6 +94,8 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         }
         event.quitMessage(null);
         updatePlayerCount();
+
+        this.scoreboards.remove(event.getPlayer());
     }
 
     @EventHandler
@@ -146,9 +148,23 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 continue;
             }
 
-            scoreboard.updateLine(3, render(Component.translatable("state.lobby.scoreboard.countdown.running",
+            scoreboard.updateLine(4, render(Component.translatable("state.lobby.scoreboard.countdown.running",
                     NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
             ), player.locale()));
+        }
+    }
+
+    @Override
+    public void onAbort() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Scoreboard scoreboard = this.scoreboards.get(player);
+
+            if (scoreboard == null) {
+                createScoreboard(player);
+                continue;
+            }
+
+            scoreboard.updateLine(4, render(Component.translatable("state.lobby.scoreboard.countdown.idle"), player.locale()));
         }
     }
 
@@ -199,6 +215,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 .build();
 
         scoreboard.display();
+        this.scoreboards.put(player, scoreboard);
     }
 
     private void updatePlayerCount() {
