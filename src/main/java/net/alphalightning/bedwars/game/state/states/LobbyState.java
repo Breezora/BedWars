@@ -146,8 +146,14 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         return mapManager;
     }
 
-    public @NotNull Map<Player, Scoreboard> scoreboards() {
-        return scoreboards;
+    public void updateSelectedMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
+    public void updateMapName(@NotNull LobbyState lobbyState) {
+        updateScoreboard(1, Component.translatable("state.lobby.scoreboard.map",
+                NamedTranslationArgument.component("name", Component.text(lobbyState.mapManager().selected().name()))
+        ));
     }
 
     // --------------------- Private shit ---------------------

@@ -8,7 +8,6 @@ import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.states.LobbyState;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.context.CommandContext;
@@ -66,20 +65,18 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
             return;
         }
 
-        forceMap(lobbyState.mapManager(), player, name);
-        updateScoreboards(lobbyState);
+        forceMap(lobbyState, player, name);
     }
 
-    private void forceMap(@NotNull MapManager manager, @NotNull Player player, String name) {
+    private void forceMap(@NotNull LobbyState lobbyState, @NotNull Player player, String name) {
+        MapManager manager = lobbyState.mapManager();
+
         if (!(this.isForced = manager.select(name))) {
             return;
         }
-        player.sendMessage(Component.translatable("command.forcemap.success", NamedTranslationArgument.component("name", Component.text(name))));
-    }
 
-    private void updateScoreboards(@NotNull LobbyState lobbyState) {
-        lobbyState.scoreboards().forEach((player, scoreboard) -> scoreboard.updateLine(1, GlobalTranslator.render(Component.translatable("state.lobby.scoreboard.map",
-                NamedTranslationArgument.component("name", Component.text(lobbyState.mapManager().selected().name()))
-        ), player.locale())));
+        lobbyState.updateMapName(lobbyState);
+        lobbyState.updateSelectedMap(manager.selected());
+        player.sendMessage(Component.translatable("command.forcemap.success", NamedTranslationArgument.component("name", Component.text(name))));
     }
 }
