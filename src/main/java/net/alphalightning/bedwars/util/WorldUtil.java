@@ -17,11 +17,20 @@ public final class WorldUtil {
             world.setThundering(false);
             world.setTime(6000L);
             world.setDifficulty(Difficulty.PEACEFUL);
-            world.setGameRule(GameRule.DO_MOB_LOOT, false);
-            world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            flag(world, List.of(
+                    GameRule.DO_MOB_LOOT,
+                    GameRule.DO_MOB_SPAWNING,
+                    GameRule.DO_WEATHER_CYCLE,
+                    GameRule.DO_DAYLIGHT_CYCLE,
+                    GameRule.ANNOUNCE_ADVANCEMENTS,
+                    GameRule.DO_FIRE_TICK,
+                    GameRule.WATER_SOURCE_CONVERSION
+            ));
         }
+    }
+
+    private static void flag(World world, @NotNull List<GameRule<Boolean>> rules) {
+        rules.forEach(rule -> world.setGameRule(rule, false));
     }
 
 }
