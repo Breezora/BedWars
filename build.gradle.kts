@@ -1,3 +1,5 @@
+import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml.PluginLoadOrder
+
 plugins {
     id("java")
     id("com.gradleup.shadow") version "8.3.4"
@@ -88,4 +90,5 @@ bukkitPluginYaml {
     main = "$group.bedwars.BedWarsPlugin"
     authors = listOf("Merry", "Waddle")
     apiVersion = "1.21"
+    load = PluginLoadOrder.POSTWORLD
 }
