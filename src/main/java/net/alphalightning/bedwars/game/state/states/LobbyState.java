@@ -143,7 +143,7 @@ public class LobbyState extends AbstractGameState implements Listener {
                 .player(player)
                 .title(Component.translatable("state.lobby.scoreboard.title"))
                 .appendLines(Arrays.asList(
-                        null,
+                        Component.empty(),
                         Component.text("Test")
                 ))
                 .build();
