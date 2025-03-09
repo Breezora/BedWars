@@ -113,6 +113,9 @@ public class BedWarsPlugin extends JavaPlugin {
                 .captionFormatter(ComponentCaptionFormatter.miniMessage())
                 .registerTo(manager);
 
+        if (environment != Environment.DEVELOPMENT) {
+            new ForceMapCommand(this).register(manager);
+        }
         if (environment != Environment.PRODUCTION) {
             new TestGuiCommand(this).register(manager);
             new CreateMapCommand(this, setupManager).register(manager);
@@ -120,8 +123,6 @@ public class BedWarsPlugin extends JavaPlugin {
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
         }
-
-        new ForceMapCommand(this).register(manager);
 
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>map creation"));
     }
