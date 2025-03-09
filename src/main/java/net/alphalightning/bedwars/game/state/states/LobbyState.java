@@ -12,6 +12,7 @@ import net.alphalightning.bedwars.util.PlayerUtil;
 import net.breezora.celestial.DisplayType;
 import net.breezora.celestial.Scoreboard;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -26,6 +27,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class LobbyState extends AbstractGameState implements Listener {
 
@@ -138,13 +140,17 @@ public class LobbyState extends AbstractGameState implements Listener {
         }
     }
 
-    private void createScoreboard(Player player) {
+    private void createScoreboard(@NotNull Player player) {
+        final Locale locale = player.locale();
+
         Scoreboard scoreboard = Scoreboard.builder(DisplayType.SIDEBAR)
                 .player(player)
                 .title(Component.translatable("state.lobby.scoreboard.title"))
                 .appendLines(Arrays.asList(
                         Component.empty(),
-                        Component.text("Test")
+                        GlobalTranslator.render(Component.translatable("state.lobby.scoreboard.map"), locale),
+                        GlobalTranslator.render(Component.translatable("state.lobby.scoreboard.map.current"), locale),
+                        Component.empty()
                 ))
                 .build();
 
