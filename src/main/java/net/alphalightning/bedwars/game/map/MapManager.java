@@ -6,6 +6,7 @@ import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -22,7 +23,11 @@ public class MapManager {
         printMatchmakingInfo(plugin, matchmaking);
     }
 
-    public @NotNull GameMap selectRandom() {
+    public @Nullable GameMap selectRandom() {
+        if (this.maps.isEmpty()) {
+            return null;
+        }
+
         int index = new Random().nextInt(this.maps.size());
         this.selected = this.maps.get(index);
 

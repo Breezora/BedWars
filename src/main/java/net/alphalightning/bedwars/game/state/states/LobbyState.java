@@ -215,10 +215,10 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     private void selectMap(@NotNull BedWarsPlugin plugin) {
-        this.gameMap = mapManager.selectRandom();
-
-        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
-                NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
+        if ((this.gameMap = mapManager.selectRandom()) == null) {
+            return;
+        }
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map", NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
     }
 
     private @NotNull Component render(TranslatableComponent component, Locale locale) {
