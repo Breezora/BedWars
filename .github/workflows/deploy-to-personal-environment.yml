@@ -50,7 +50,15 @@ jobs:
       - evaluate_target
       - stop_server
     steps:
-      - uses: actions/checkout@v4
+      - name: Restore gradle.properties
+        uses: actions/checkout@v4
+        env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+        shell: bash
+        run: |
+          mkdir -p ~/.gradle/
+          echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
+          echo ${GRADLE_PROPERTIES} > ~/.gradle/gradle.properties
 
       - name: Set up JDK
         uses: actions/setup-java@v4
