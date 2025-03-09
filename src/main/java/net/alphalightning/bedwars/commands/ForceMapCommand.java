@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
+import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.states.LobbyState;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
@@ -57,12 +58,19 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
             return;
         }
 
-        this.isForced = true;
         String name = context.get("name");
-        lobbyState.mapManager().select(name);
 
-        player.sendMessage(Component.translatable("command.forcemap.success",
-                NamedTranslationArgument.component("name", Component.text(name))
-        ));
+        if (lobbyState.mapManager().selected().name().equalsIgnoreCase(name)) {
+            player.sendMessage(Component.translatable("command.forcemap.error.same"));
+            return;
+        }
+        forceMap(lobbyState.mapManager(), player, name);
+    }
+
+    private void forceMap(@NotNull MapManager manager, @NotNull Player player, String name) {
+        if (!(this.isForced = manager.select(name))) {
+            return;
+        }
+        player.sendMessage(Component.translatable("command.forcemap.success", NamedTranslationArgument.component("name", Component.text(name))));
     }
 }

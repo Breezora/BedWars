@@ -32,13 +32,19 @@ public class MapManager {
         return gameMap;
     }
 
-    public void select(String name) {
+    public boolean select(String name) {
         this.selected = this.maps.stream()
                 .filter(map -> map.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
 
         updateServerInfo();
+
+        return this.selected != null;
+    }
+
+    public GameMap selected() {
+        return selected;
     }
 
     public List<GameMap> maps() {
