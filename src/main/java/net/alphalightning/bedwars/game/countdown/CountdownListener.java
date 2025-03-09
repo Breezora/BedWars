@@ -4,6 +4,6 @@ public interface CountdownListener {
 
     void onTick(int timeLeft);
 
-    void onEnd();
+    default void onEnd() {}
 
 }

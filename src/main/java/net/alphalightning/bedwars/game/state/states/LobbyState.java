@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.state.states;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
+import net.alphalightning.bedwars.game.countdown.CountdownListener;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
@@ -12,6 +13,7 @@ import net.alphalightning.bedwars.util.PlayerUtil;
 import net.breezora.celestial.DisplayType;
 import net.breezora.celestial.Scoreboard;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -27,9 +29,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-public class LobbyState extends AbstractGameState implements Listener {
+public class LobbyState extends AbstractGameState implements Listener, CountdownListener {
+
+    private final Map<Player, Scoreboard> scoreboards = new HashMap<>();
 
     private final GameStateContext context;
     private final Configuration configuration;
@@ -124,6 +130,24 @@ public class LobbyState extends AbstractGameState implements Listener {
         }
     }
 
+    // --------------------- Countdown listener hook ---------------------
+
+    @Override
+    public void onTick(int timeLeft) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Scoreboard scoreboard = this.scoreboards.get(player);
+
+            if (scoreboard == null) {
+                createScoreboard(player);
+                continue;
+            }
+
+            scoreboard.updateLine(3, render(Component.translatable("state.lobby.scoreboard.countdown.running",
+                    NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
+            ), player.locale()));
+        }
+    }
+
     // --------------------- Private shit ---------------------
 
     private int calculateMinPlayers() {
@@ -148,9 +172,19 @@ public class LobbyState extends AbstractGameState implements Listener {
                 .title(Component.translatable("state.lobby.scoreboard.title"))
                 .appendLines(Arrays.asList(
                         Component.empty(),
-                        GlobalTranslator.render(Component.translatable("state.lobby.scoreboard.map"), locale),
-                        GlobalTranslator.render(Component.translatable("state.lobby.scoreboard.map.current",
-                                NamedTranslationArgument.component("name", Component.text(this.gameMap.name()))), locale),
+                        render(Component.translatable("state.lobby.scoreboard.map",
+                                NamedTranslationArgument.component("name", Component.text(this.gameMap.name()))
+                        ), locale),
+                        render(Component.translatable("state.lobby.scoreboard.players",
+                                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
+                        ), locale),
+                        render(!this.countdown.isRunning()
+                                ? Component.translatable("state.lobby.scoreboard.countdown.idle")
+                                : Component.translatable("state.lobby.scoreboard.countdown.running",
+                                NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
+                        ), locale),
+
                         Component.empty()
                 ))
                 .build();
@@ -160,6 +194,7 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     private void startCountdown() {
         this.context.requiredPlayers(calculateMinPlayers());
+        this.countdown.registerListener(this);
         this.countdown.start();
     }
 
@@ -174,6 +209,10 @@ public class LobbyState extends AbstractGameState implements Listener {
     private void updateServerInfo() {
         Bukkit.getServer().motd(Component.text(this.gameMap.name()));
         Bukkit.getServer().setMaxPlayers(this.gameMap.teams().size() * this.gameMap.teamSize());
+    }
+
+    private @NotNull Component render(TranslatableComponent component, Locale locale) {
+        return GlobalTranslator.render(component, locale);
     }
 }
 
