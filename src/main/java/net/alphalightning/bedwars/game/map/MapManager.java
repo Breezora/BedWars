@@ -4,8 +4,8 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -27,25 +27,27 @@ public class MapManager {
         GameMap gameMap = this.maps.get(index);
 
         this.selected = gameMap;
+        updateServerInfo();
+
         return gameMap;
     }
 
-    public @Nullable GameMap select(String name) {
-        GameMap gameMap = this.maps.stream()
+    public void select(String name) {
+        this.selected = this.maps.stream()
                 .filter(map -> map.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
 
-        this.selected = gameMap;
-        return gameMap;
-    }
-
-    public GameMap selectedMap() {
-        return selected;
+        updateServerInfo();
     }
 
     public List<GameMap> maps() {
         return this.maps;
+    }
+
+    private void updateServerInfo() {
+        Bukkit.getServer().motd(Component.text(this.selected.name()));
+        Bukkit.getServer().setMaxPlayers(this.selected.teams().size() * this.selected.teamSize());
     }
 
     private void printMatchmakingInfo(BedWarsPlugin plugin, String matchmaking) {
