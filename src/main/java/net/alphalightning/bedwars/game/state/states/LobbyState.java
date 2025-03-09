@@ -123,20 +123,6 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         event.setCancelled(true);
     }
 
-    private void preparePlayer(@NotNull Player player) {
-        player.setFoodLevel(20);
-        player.setLevel(0);
-        player.setExp(0);
-        player.setHealthScale(20.0D);
-        player.setFlying(false);
-        player.setAllowFlight(false);
-        player.setGameMode(GameMode.ADVENTURE);
-
-        if (this.countdown.isRunning()) {
-            PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
-        }
-    }
-
     // --------------------- Countdown listener hook ---------------------
 
     @Override
@@ -151,7 +137,28 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.idle"));
     }
 
+    // --------------------- Exposure ---------------------
+
+    public @NotNull MapManager mapManager() {
+        return mapManager;
+    }
+
+
     // --------------------- Private shit ---------------------
+
+    private void preparePlayer(@NotNull Player player) {
+        player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
+        player.setHealthScale(20.0D);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setGameMode(GameMode.ADVENTURE);
+
+        if (this.countdown.isRunning()) {
+            PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
+        }
+    }
 
     private int calculateMinPlayers() {
         double factor = this.configuration.main().minPlayers();

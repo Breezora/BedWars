@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
+import net.alphalightning.bedwars.commands.ForceMapCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
@@ -119,6 +120,9 @@ public class BedWarsPlugin extends JavaPlugin {
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
         }
+
+        new ForceMapCommand(this).register(manager);
+
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>map creation"));
     }
 
