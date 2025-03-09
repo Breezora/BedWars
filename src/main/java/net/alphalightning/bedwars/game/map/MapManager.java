@@ -24,12 +24,10 @@ public class MapManager {
 
     public @NotNull GameMap selectRandom() {
         int index = new Random().nextInt(this.maps.size());
-        GameMap gameMap = this.maps.get(index);
+        this.selected = this.maps.get(index);
 
-        this.selected = gameMap;
         updateServerInfo();
-
-        return gameMap;
+        return this.selected;
     }
 
     public boolean select(String name) {
@@ -38,9 +36,11 @@ public class MapManager {
                 .findFirst()
                 .orElse(null);
 
+        if (this.selected == null) {
+            return false;
+        }
         updateServerInfo();
-
-        return this.selected != null;
+        return true;
     }
 
     public GameMap selected() {
