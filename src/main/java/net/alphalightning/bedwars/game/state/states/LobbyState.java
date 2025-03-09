@@ -185,7 +185,11 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                                 : Component.translatable("state.lobby.scoreboard.countdown.running",
                                 NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
                         ), locale),
-
+                        Component.empty(),
+                        render(Component.translatable("state.lobby.scoreboard.matchmaking",
+                                NamedTranslationArgument.component("matchmaking", Component.text(this.configuration.main().matchmaking()))
+                        ), locale),
+                        render(Component.translatable("state.lobby.scoreboard.url"), locale),
                         Component.empty()
                 ))
                 .build();
