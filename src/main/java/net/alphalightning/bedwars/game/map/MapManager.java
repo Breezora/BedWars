@@ -48,6 +48,8 @@ public class MapManager {
         return true;
     }
 
+    // --------------------- Exposure ---------------------
+
     public GameMap selected() {
         return selected;
     }
@@ -55,6 +57,8 @@ public class MapManager {
     public List<GameMap> maps() {
         return this.maps;
     }
+
+    // --------------------- Private shit ---------------------
 
     private void updateServerInfo() {
         Bukkit.getServer().motd(Component.text(this.selected.name()));
