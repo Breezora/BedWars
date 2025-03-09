@@ -75,8 +75,8 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
             return;
         }
 
-        lobbyState.updateMapName(lobbyState);
         lobbyState.updateSelectedMap(manager.selected());
+        lobbyState.updateMapName(lobbyState);
         player.sendMessage(Component.translatable("command.forcemap.success", NamedTranslationArgument.component("name", Component.text(name))));
     }
 }
