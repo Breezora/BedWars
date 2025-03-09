@@ -41,7 +41,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
-    private GameMap gameMap; // The selected map that was set in the MapManager
+    private GameMap gameMap;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
@@ -221,10 +221,11 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     private void selectMap(@NotNull BedWarsPlugin plugin) {
-        if ((this.gameMap = mapManager.selectRandom()) == null) {
+        if (this.mapManager.selectRandom() == null) {
             return;
         }
-        plugin.getComponentLogger().info(Component.translatable("state.lobby.map", NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
+        this.gameMap = this.mapManager.selected();
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map", NamedTranslationArgument.component("map", Component.text(this.gameMap.name()))));
     }
 
     private @NotNull Component render(TranslatableComponent component, Locale locale) {
