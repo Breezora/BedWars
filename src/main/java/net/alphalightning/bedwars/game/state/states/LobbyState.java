@@ -58,13 +58,14 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
 
     @Override
     public void start() {
-        context.logger().info(Component.translatable("state.lobby.start"));
+        this.context.logger().info(Component.translatable("state.lobby.start"));
     }
 
     @Override
     public void stop() {
         this.countdown.cancel();
-        context.logger().info(Component.translatable("state.lobby.stop"));
+        this.scoreboards.values().forEach(Scoreboard::destroy);
+        this.context.logger().info(Component.translatable("state.lobby.stop"));
     }
 
     // --------------------- State related event logics ---------------------
