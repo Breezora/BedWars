@@ -52,6 +52,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Restore gradle.properties
+        env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+        shell: bash
+        run: |
+          mkdir -p ~/.gradle/
+          echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
+          echo "${GRADLE_PROPERTIES}" > ~/.gradle/gradle.properties
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:

@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.state.states;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
+import net.alphalightning.bedwars.game.countdown.CountdownListener;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
@@ -9,7 +10,11 @@ import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.PlayerUtil;
+import net.breezora.celestial.DisplayType;
+import net.breezora.celestial.Scoreboard;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,7 +28,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class LobbyState extends AbstractGameState implements Listener {
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+public class LobbyState extends AbstractGameState implements Listener, CountdownListener {
+
+    private final Map<Player, Scoreboard> scoreboards = new HashMap<>();
 
     private final GameStateContext context;
     private final Configuration configuration;
@@ -46,13 +58,14 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     @Override
     public void start() {
-        context.logger().info(Component.translatable("state.lobby.start"));
+        this.context.logger().info(Component.translatable("state.lobby.start"));
     }
 
     @Override
     public void stop() {
         this.countdown.cancel();
-        context.logger().info(Component.translatable("state.lobby.stop"));
+        this.scoreboards.values().forEach(Scoreboard::destroy);
+        this.context.logger().info(Component.translatable("state.lobby.stop"));
     }
 
     // --------------------- State related event logics ---------------------
@@ -71,6 +84,8 @@ public class LobbyState extends AbstractGameState implements Listener {
         ));
         preparePlayer(player);
         teleportPlayer(player);
+        createScoreboard(player);
+        updatePlayerCount();
     }
 
     @EventHandler
@@ -79,6 +94,9 @@ public class LobbyState extends AbstractGameState implements Listener {
             return;
         }
         event.quitMessage(null);
+
+        this.scoreboards.remove(event.getPlayer());
+        Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L);
     }
 
     @EventHandler
@@ -107,6 +125,8 @@ public class LobbyState extends AbstractGameState implements Listener {
 
     private void preparePlayer(@NotNull Player player) {
         player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
         player.setHealthScale(20.0D);
         player.setFlying(false);
         player.setAllowFlight(false);
@@ -115,6 +135,20 @@ public class LobbyState extends AbstractGameState implements Listener {
         if (this.countdown.isRunning()) {
             PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
         }
+    }
+
+    // --------------------- Countdown listener hook ---------------------
+
+    @Override
+    public void onTick(int timeLeft) {
+        updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.running",
+                NamedTranslationArgument.numeric("time", this.countdown.remainingTime()))
+        );
+    }
+
+    @Override
+    public void onAbort() {
+        updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.idle"));
     }
 
     // --------------------- Private shit ---------------------
@@ -133,8 +167,43 @@ public class LobbyState extends AbstractGameState implements Listener {
         }
     }
 
+    private void createScoreboard(@NotNull Player player) {
+        final Locale locale = player.locale();
+
+        Scoreboard scoreboard = Scoreboard.builder(DisplayType.SIDEBAR)
+                .player(player)
+                .title(Component.translatable("state.lobby.scoreboard.title"))
+                .appendLines(Arrays.asList(
+                        Component.empty(),
+                        render(Component.translatable("state.lobby.scoreboard.map",
+                                NamedTranslationArgument.component("name", Component.text(this.gameMap.name()))
+                        ), locale),
+                        render(Component.translatable("state.lobby.scoreboard.players",
+                                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
+                        ), locale),
+                        Component.empty(),
+                        render(!this.countdown.isRunning()
+                                ? Component.translatable("state.lobby.scoreboard.countdown.idle")
+                                : Component.translatable("state.lobby.scoreboard.countdown.running",
+                                NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
+                        ), locale),
+                        Component.empty(),
+                        render(Component.translatable("state.lobby.scoreboard.matchmaking",
+                                NamedTranslationArgument.component("matchmaking", Component.text(this.configuration.main().matchmaking()))
+                        ), locale),
+                        Component.empty(),
+                        render(Component.translatable("state.lobby.scoreboard.url"), locale)
+                ))
+                .build();
+
+        scoreboard.display();
+        this.scoreboards.put(player, scoreboard);
+    }
+
     private void startCountdown() {
         this.context.requiredPlayers(calculateMinPlayers());
+        this.countdown.registerListener(this);
         this.countdown.start();
     }
 
@@ -150,5 +219,28 @@ public class LobbyState extends AbstractGameState implements Listener {
         Bukkit.getServer().motd(Component.text(this.gameMap.name()));
         Bukkit.getServer().setMaxPlayers(this.gameMap.teams().size() * this.gameMap.teamSize());
     }
-}
 
+    private @NotNull Component render(TranslatableComponent component, Locale locale) {
+        return GlobalTranslator.render(component, locale);
+    }
+
+    private void updateScoreboard(int line, TranslatableComponent component) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Scoreboard scoreboard = this.scoreboards.get(player);
+
+            if (scoreboard == null) {
+                createScoreboard(player);
+                continue;
+            }
+
+            scoreboard.updateLine(line, render(component, player.locale()));
+        }
+    }
+
+    private void updatePlayerCount() {
+        updateScoreboard(2, Component.translatable("state.lobby.scoreboard.players",
+                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
+        );
+    }
+}

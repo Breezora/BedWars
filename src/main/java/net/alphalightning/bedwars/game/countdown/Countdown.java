@@ -66,6 +66,7 @@ public abstract class Countdown {
     private void handleRunningState() {
         if (!isStartingConditionMet()) {
             onAbort();
+            notifyAbort();
             resetCountdown();
             return;
         }
@@ -108,6 +109,8 @@ public abstract class Countdown {
     private void notifyEnd() {
         listeners.forEach(CountdownListener::onEnd);
     }
+
+    private void notifyAbort() { listeners.forEach(CountdownListener::onAbort); }
 
     public int duration() {
         return duration;
