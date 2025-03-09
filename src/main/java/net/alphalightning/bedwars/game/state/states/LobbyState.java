@@ -120,6 +120,8 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
 
     private void preparePlayer(@NotNull Player player) {
         player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
         player.setHealthScale(20.0D);
         player.setFlying(false);
         player.setAllowFlight(false);
@@ -189,8 +191,8 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                         render(Component.translatable("state.lobby.scoreboard.matchmaking",
                                 NamedTranslationArgument.component("matchmaking", Component.text(this.configuration.main().matchmaking()))
                         ), locale),
-                        render(Component.translatable("state.lobby.scoreboard.url"), locale),
-                        Component.empty()
+                        Component.empty(),
+                        render(Component.translatable("state.lobby.scoreboard.url"), locale)
                 ))
                 .build();
 
