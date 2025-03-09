@@ -200,13 +200,6 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.scoreboards.put(player, scoreboard);
     }
 
-    private void updatePlayerCount() {
-        updateScoreboard(2, Component.translatable("state.lobby.scoreboard.players",
-                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
-                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
-        );
-    }
-
     private void startCountdown() {
         this.context.requiredPlayers(calculateMinPlayers());
         this.countdown.registerListener(this);
@@ -241,5 +234,12 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
 
             scoreboard.updateLine(line, render(component, player.locale()));
         }
+    }
+
+    private void updatePlayerCount() {
+        updateScoreboard(2, Component.translatable("state.lobby.scoreboard.players",
+                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
+        );
     }
 }
