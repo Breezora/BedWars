@@ -65,10 +65,10 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerGameMechanics();
         registerEvents();
         registerCommands();
         registerGuiIngredients();
-        registerGameMechanics();
 
         getLogger().info("BedWars has been enabled");
     }
@@ -95,6 +95,17 @@ public class BedWarsPlugin extends JavaPlugin {
 
         environment = configuration.main().environment();
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
+    }
+
+    private void registerGameMechanics() {
+        if (environment == Environment.DEVELOPMENT) {
+            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
+            return;
+        }
+        WorldUtil.prepareWorlds(Bukkit.getWorlds());
+
+        gameStateContext = new GameStateContext(this);
+        gameStateContext.setGameState(GameState.LOBBY);
     }
 
     private void registerEvents() {
@@ -141,17 +152,6 @@ public class BedWarsPlugin extends JavaPlugin {
     private void registerGuiIngredients() {
         Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
         Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
-    }
-
-    private void registerGameMechanics() {
-        if (environment == Environment.DEVELOPMENT) {
-            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
-            return;
-        }
-        WorldUtil.prepareWorlds(Bukkit.getWorlds());
-
-        gameStateContext = new GameStateContext(this);
-        gameStateContext.setGameState(GameState.LOBBY);
     }
 
     // --------------------- Exposure---------------------
