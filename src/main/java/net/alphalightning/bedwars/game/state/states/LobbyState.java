@@ -95,7 +95,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         event.quitMessage(null);
 
         this.scoreboards.remove(event.getPlayer());
-        Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L );
+        Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L);
     }
 
     @EventHandler
@@ -140,32 +140,14 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
 
     @Override
     public void onTick(int timeLeft) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Scoreboard scoreboard = this.scoreboards.get(player);
-
-            if (scoreboard == null) {
-                createScoreboard(player);
-                continue;
-            }
-
-            scoreboard.updateLine(4, render(Component.translatable("state.lobby.scoreboard.countdown.running",
-                    NamedTranslationArgument.numeric("time", this.countdown.remainingTime())
-            ), player.locale()));
-        }
+        updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.running",
+                NamedTranslationArgument.numeric("time", this.countdown.remainingTime()))
+        );
     }
 
     @Override
     public void onAbort() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Scoreboard scoreboard = this.scoreboards.get(player);
-
-            if (scoreboard == null) {
-                createScoreboard(player);
-                continue;
-            }
-
-            scoreboard.updateLine(4, render(Component.translatable("state.lobby.scoreboard.countdown.idle"), player.locale()));
-        }
+        updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.idle"));
     }
 
     // --------------------- Private shit ---------------------
@@ -219,19 +201,10 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     private void updatePlayerCount() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Scoreboard scoreboard = this.scoreboards.get(player);
-
-            if (scoreboard == null) {
-                createScoreboard(player);
-                continue;
-            }
-
-            scoreboard.updateLine(2, render(Component.translatable("state.lobby.scoreboard.players",
-                    NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
-                    NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
-            ), player.locale()));
-        }
+        updateScoreboard(2, Component.translatable("state.lobby.scoreboard.players",
+                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
+        );
     }
 
     private void startCountdown() {
@@ -256,5 +229,17 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private @NotNull Component render(TranslatableComponent component, Locale locale) {
         return GlobalTranslator.render(component, locale);
     }
-}
 
+    private void updateScoreboard(int line, TranslatableComponent component) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Scoreboard scoreboard = this.scoreboards.get(player);
+
+            if (scoreboard == null) {
+                createScoreboard(player);
+                continue;
+            }
+
+            scoreboard.updateLine(line, render(component, player.locale()));
+        }
+    }
+}
