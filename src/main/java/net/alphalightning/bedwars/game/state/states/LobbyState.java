@@ -143,6 +143,9 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         return mapManager;
     }
 
+    public @NotNull Map<Player, Scoreboard> scoreboards() {
+        return scoreboards;
+    }
 
     // --------------------- Private shit ---------------------
 
