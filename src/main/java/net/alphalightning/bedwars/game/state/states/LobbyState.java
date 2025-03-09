@@ -93,9 +93,9 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
             return;
         }
         event.quitMessage(null);
-        updatePlayerCount();
 
         this.scoreboards.remove(event.getPlayer());
+        Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L );
     }
 
     @EventHandler
