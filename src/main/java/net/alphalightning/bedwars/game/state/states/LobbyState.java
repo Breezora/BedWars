@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class LobbyState extends AbstractGameState implements Listener {
 
@@ -142,8 +142,9 @@ public class LobbyState extends AbstractGameState implements Listener {
         Scoreboard scoreboard = Scoreboard.builder(DisplayType.SIDEBAR)
                 .player(player)
                 .title(Component.translatable("state.lobby.scoreboard.title"))
-                .appendLines(List.of(
-                        Component.empty()
+                .appendLines(Arrays.asList(
+                        null,
+                        Component.text("Test")
                 ))
                 .build();
 
