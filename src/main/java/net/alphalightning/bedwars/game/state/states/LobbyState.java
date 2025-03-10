@@ -156,7 +156,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         ));
     }
 
-    // --------------------- Private shit ---------------------
+    // --------------------- Internal logic ---------------------
 
     private void preparePlayer(@NotNull Player player) {
         player.setFoodLevel(20);

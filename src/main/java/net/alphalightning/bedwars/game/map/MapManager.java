@@ -58,7 +58,7 @@ public class MapManager {
         return this.maps;
     }
 
-    // --------------------- Private shit ---------------------
+    // --------------------- Internal logic ---------------------
 
     private void updateServerInfo() {
         Bukkit.getServer().motd(Component.text(this.selected.name()));
