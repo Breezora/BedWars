@@ -109,19 +109,29 @@ public abstract class Countdown {
         listeners.forEach(CountdownListener::onEnd);
     }
 
-    private void notifyAbort() { listeners.forEach(CountdownListener::onAbort); }
+    private void notifyAbort() {
+        listeners.forEach(CountdownListener::onAbort);
+    }
 
     public int duration() {
         return duration;
     }
 
-    public int remainingTime() { return remainingTime; }
+    public int remainingTime() {
+        return remainingTime;
+    }
 
     public boolean isRunning() {
         return this.state == State.RUNNING;
     }
 
     // --------------------- Template Method Hooks ---------------------
+
+    public void remainingTime(int timeLeft) {
+        if (remainingTime >= 0) {
+            this.remainingTime = timeLeft;
+        }
+    }
 
     protected void onStart() {
     }

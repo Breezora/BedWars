@@ -5,17 +5,28 @@ public class Default {
     private Environment environment;
     private String matchmaking;
     private double minPlayers;
+    private double forceStartFactor;
+    private int forceStartTime;
 
     public Environment environment() {
         return environment;
+    }
+
+
+    public String matchmaking() {
+        return matchmaking;
     }
 
     public double minPlayers() {
         return minPlayers;
     }
 
-    public String matchmaking() {
-        return matchmaking;
+    public double forceStartFactor() {
+        return forceStartFactor;
+    }
+
+    public int forceStartTime() {
+        return forceStartTime;
     }
 
     public void environment(Environment environment) {
@@ -28,5 +39,13 @@ public class Default {
 
     public void matchmaking(String matchmaking) {
         this.matchmaking = matchmaking;
+    }
+
+    public void forceStartFactor(double forceStartFactor) {
+        this.forceStartFactor = forceStartFactor;
+    }
+
+    public void forceStartTime(int forceStartTime) {
+        this.forceStartTime = forceStartTime;
     }
 }
