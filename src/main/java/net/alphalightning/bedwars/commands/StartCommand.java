@@ -97,6 +97,10 @@ public class StartCommand extends PaperCommand<@NotNull BedWarsPlugin> {
             return;
         }
 
+        if (countdown.isIdling()) {
+            countdown.forceStart();
+        }
+
         countdown.remainingTime(time);
         player.sendMessage(Component.translatable("command.start.success"));
     }

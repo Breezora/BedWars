@@ -113,6 +113,16 @@ public abstract class Countdown {
         listeners.forEach(CountdownListener::onAbort);
     }
 
+    public void remainingTime(int timeLeft) {
+        if (remainingTime >= 0) {
+            this.remainingTime = timeLeft;
+        }
+    }
+
+    public void forceStart() {
+        this.state = State.RUNNING;
+    }
+
     public int duration() {
         return duration;
     }
@@ -125,13 +135,11 @@ public abstract class Countdown {
         return this.state == State.RUNNING;
     }
 
-    // --------------------- Template Method Hooks ---------------------
-
-    public void remainingTime(int timeLeft) {
-        if (remainingTime >= 0) {
-            this.remainingTime = timeLeft;
-        }
+    public boolean isIdling() {
+        return this.state == State.IDLE;
     }
+
+    // --------------------- Template Method Hooks ---------------------
 
     protected void onStart() {
     }
