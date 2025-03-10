@@ -20,6 +20,7 @@ public abstract class Countdown {
 
     private State state = State.IDLE;
     private int idleTickCounter = 0;
+    private boolean isForceStart;
 
     public Countdown(BedWarsPlugin plugin, int duration) {
         this.plugin = plugin;
@@ -64,7 +65,7 @@ public abstract class Countdown {
     }
 
     private void handleRunningState() {
-        if (!isStartingConditionMet()) {
+        if (!isStartingConditionMet() && !this.isForceStart) {
             onAbort();
             notifyAbort();
             resetCountdown();
@@ -120,6 +121,7 @@ public abstract class Countdown {
     }
 
     public void forceStart() {
+        this.isForceStart = true;
         this.state = State.RUNNING;
     }
 
