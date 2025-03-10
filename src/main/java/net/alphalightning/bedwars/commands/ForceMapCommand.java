@@ -53,7 +53,7 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
             player.sendMessage(Component.translatable("command.forcemap.error.gamestate"));
             return;
         }
-        if (this.isForced) {
+        if (this.isForced && !player.hasPermission("bedwars.admin")) {
             player.sendMessage(Component.translatable("command.forcemap.error.used"));
             return;
         }
