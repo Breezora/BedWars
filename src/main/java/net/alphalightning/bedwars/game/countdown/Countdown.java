@@ -93,7 +93,6 @@ public abstract class Countdown {
         state = State.IDLE;
         remainingTime = duration;
         idleTickCounter = 0;
-        onIdleTick();
     }
 
     private void tick() {
