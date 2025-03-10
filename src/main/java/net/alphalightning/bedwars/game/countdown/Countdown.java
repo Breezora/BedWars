@@ -20,6 +20,7 @@ public abstract class Countdown {
 
     private State state = State.IDLE;
     private int idleTickCounter = 0;
+    private boolean isForceStart;
 
     public Countdown(BedWarsPlugin plugin, int duration) {
         this.plugin = plugin;
@@ -64,7 +65,7 @@ public abstract class Countdown {
     }
 
     private void handleRunningState() {
-        if (!isStartingConditionMet()) {
+        if (!isStartingConditionMet() && !this.isForceStart) {
             onAbort();
             notifyAbort();
             resetCountdown();
@@ -109,16 +110,35 @@ public abstract class Countdown {
         listeners.forEach(CountdownListener::onEnd);
     }
 
-    private void notifyAbort() { listeners.forEach(CountdownListener::onAbort); }
+    private void notifyAbort() {
+        listeners.forEach(CountdownListener::onAbort);
+    }
+
+    public void remainingTime(int timeLeft) {
+        if (remainingTime >= 0) {
+            this.remainingTime = timeLeft;
+        }
+    }
+
+    public void forceStart() {
+        this.isForceStart = true;
+        this.state = State.RUNNING;
+    }
 
     public int duration() {
         return duration;
     }
 
-    public int remainingTime() { return remainingTime; }
+    public int remainingTime() {
+        return remainingTime;
+    }
 
     public boolean isRunning() {
         return this.state == State.RUNNING;
+    }
+
+    public boolean isIdling() {
+        return this.state == State.IDLE;
     }
 
     // --------------------- Template Method Hooks ---------------------

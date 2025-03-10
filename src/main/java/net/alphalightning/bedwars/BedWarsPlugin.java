@@ -9,6 +9,7 @@ import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
 import net.alphalightning.bedwars.commands.ForceMapCommand;
+import net.alphalightning.bedwars.commands.StartCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
@@ -126,6 +127,7 @@ public class BedWarsPlugin extends JavaPlugin {
 
         if (environment != Environment.DEVELOPMENT) {
             new ForceMapCommand(this).register(manager);
+            new StartCommand(this).register(manager);
         }
         if (environment != Environment.PRODUCTION) {
             new TestGuiCommand(this).register(manager);
