@@ -33,6 +33,7 @@ public class Configuration extends JacksonConfig<Default> {
         main().environment(Environment.DEVELOPMENT);
         main().matchmaking("8x1");
         main().minPlayers(0.8);
+        main().forceStartFactor(0.25);
         save();
     }
 }
