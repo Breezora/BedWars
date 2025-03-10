@@ -90,7 +90,14 @@ public class StartCommand extends PaperCommand<@NotNull BedWarsPlugin> {
     }
 
     private void forceStart(@NotNull Player player, @NotNull LobbyCountdown countdown) {
-        countdown.remainingTime(this.configuration.main().forceStartTime());
+        int time = this.configuration.main().forceStartTime();
+
+        if (time < 0) {
+            super.plugin.getComponentLogger().error(Component.translatable("command.start.error.time"));
+            return;
+        }
+
+        countdown.remainingTime(time);
         player.sendMessage(Component.translatable("command.start.success"));
     }
 }
