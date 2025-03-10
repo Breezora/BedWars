@@ -146,6 +146,10 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         return mapManager;
     }
 
+    public @NotNull LobbyCountdown countdown() {
+        return countdown;
+    }
+
     public void updateSelectedMap(GameMap gameMap) {
         this.gameMap = gameMap;
     }
