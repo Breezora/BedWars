@@ -69,11 +69,21 @@ public class StartCommand extends PaperCommand<@NotNull BedWarsPlugin> {
     }
 
     private boolean canRoundStart() {
-        return Bukkit.getOnlinePlayers().size() >= calculateRequiredPlayers();
+        int requiredPlayers = calculateRequiredPlayers();
+
+        if (requiredPlayers == -1) {
+            super.plugin.getComponentLogger().error(Component.translatable("command.start.error.factor"));
+            return false;
+        }
+        return Bukkit.getOnlinePlayers().size() >= requiredPlayers;
     }
 
     private int calculateRequiredPlayers() {
         double factor = this.configuration.main().forceStartFactor();
+        if (factor <= 0 || factor > 1) {
+            return -1;
+        }
+
         double calculated = Bukkit.getMaxPlayers() * factor;
 
         return (int) Math.floor(calculated);
