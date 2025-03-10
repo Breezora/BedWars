@@ -12,14 +12,22 @@ import org.bukkit.entity.Player;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.permission.Permission;
 import org.incendo.cloud.suggestion.Suggestion;
 import org.incendo.cloud.suggestion.SuggestionProvider;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static org.incendo.cloud.parser.standard.StringParser.stringParser;
 
 public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
 
+    private static final List<Permission> PERMISSIONS = List.of(
+            Permission.of("bedwars.command.forcemap"),
+            Permission.of("bedwars.admin"),
+            Permission.of("bedwars.*")
+    );
     private boolean isForced = false;
 
     public ForceMapCommand(BedWarsPlugin plugin) {
@@ -31,7 +39,7 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
         commandManager.command(commandManager.commandBuilder("forcemap")
                 .commandDescription(RichDescription.translatable("command.forcemap.description"))
                 .senderType(PaperPlayerCommandSource.class)
-                .permission("bedwars.command.forcemap")
+                .permission(Permission.anyOf(PERMISSIONS))
                 .required("name", stringParser(), suggestions())
                 .handler(this::runCommand)
         );
