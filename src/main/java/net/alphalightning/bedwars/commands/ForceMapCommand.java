@@ -58,7 +58,7 @@ public class ForceMapCommand extends PaperCommand<@NotNull BedWarsPlugin> {
         Player player = (Player) context.sender().plattformSender();
 
         if (!(this.plugin.gameStateContext().currentState() instanceof LobbyState lobbyState)) {
-            player.sendMessage(Component.translatable("command.forcemap.error.gamestate"));
+            player.sendMessage(Component.translatable("command.error.gamestate"));
             return;
         }
         if (this.isForced && !player.hasPermission("bedwars.admin")) {
