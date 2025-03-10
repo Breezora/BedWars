@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.alphalightning.bedwars.commands.CreateMapCommand;
+import net.alphalightning.bedwars.commands.ForceMapCommand;
 import net.alphalightning.bedwars.commands.TestGuiCommand;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
@@ -64,10 +65,10 @@ public class BedWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerGameMechanics();
         registerEvents();
         registerCommands();
         registerGuiIngredients();
-        registerGameMechanics();
 
         getLogger().info("BedWars has been enabled");
     }
@@ -96,6 +97,17 @@ public class BedWarsPlugin extends JavaPlugin {
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("Using the environment " + Environment.colored(environment)));
     }
 
+    private void registerGameMechanics() {
+        if (environment == Environment.DEVELOPMENT) {
+            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
+            return;
+        }
+        WorldUtil.prepareWorlds(Bukkit.getWorlds());
+
+        gameStateContext = new GameStateContext(this);
+        gameStateContext.setGameState(GameState.LOBBY);
+    }
+
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
 
@@ -112,6 +124,9 @@ public class BedWarsPlugin extends JavaPlugin {
                 .captionFormatter(ComponentCaptionFormatter.miniMessage())
                 .registerTo(manager);
 
+        if (environment != Environment.DEVELOPMENT) {
+            new ForceMapCommand(this).register(manager);
+        }
         if (environment != Environment.PRODUCTION) {
             new TestGuiCommand(this).register(manager);
             new CreateMapCommand(this, setupManager).register(manager);
@@ -119,6 +134,7 @@ public class BedWarsPlugin extends JavaPlugin {
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
             return;
         }
+
         getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>map creation"));
     }
 
@@ -136,17 +152,6 @@ public class BedWarsPlugin extends JavaPlugin {
     private void registerGuiIngredients() {
         Structure.addGlobalIngredient('.', new BackgroundGuiItem(false));
         Structure.addGlobalIngredient('#', new BackgroundGuiItem(true));
-    }
-
-    private void registerGameMechanics() {
-        if (environment == Environment.DEVELOPMENT) {
-            getComponentLogger().info(MiniMessage.miniMessage().deserialize("<red>Disabled <reset>game mechanics!"));
-            return;
-        }
-        WorldUtil.prepareWorlds(Bukkit.getWorlds());
-
-        gameStateContext = new GameStateContext(this);
-        gameStateContext.setGameState(GameState.LOBBY);
     }
 
     // --------------------- Exposure---------------------

@@ -93,9 +93,12 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
-        event.quitMessage(null);
 
-        this.scoreboards.remove(event.getPlayer());
+        Player player = event.getPlayer();
+
+        event.quitMessage(null);
+        this.scoreboards.get(player).destroy();
+        this.scoreboards.remove(player);
         Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L);
     }
 
@@ -123,20 +126,6 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         event.setCancelled(true);
     }
 
-    private void preparePlayer(@NotNull Player player) {
-        player.setFoodLevel(20);
-        player.setLevel(0);
-        player.setExp(0);
-        player.setHealthScale(20.0D);
-        player.setFlying(false);
-        player.setAllowFlight(false);
-        player.setGameMode(GameMode.ADVENTURE);
-
-        if (this.countdown.isRunning()) {
-            PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
-        }
-    }
-
     // --------------------- Countdown listener hook ---------------------
 
     @Override
@@ -151,7 +140,37 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         updateScoreboard(4, Component.translatable("state.lobby.scoreboard.countdown.idle"));
     }
 
-    // --------------------- Private shit ---------------------
+    // --------------------- Exposure ---------------------
+
+    public @NotNull MapManager mapManager() {
+        return mapManager;
+    }
+
+    public void updateSelectedMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
+    public void updateMapName(@NotNull LobbyState lobbyState) {
+        updateScoreboard(1, Component.translatable("state.lobby.scoreboard.map",
+                NamedTranslationArgument.component("name", Component.text(lobbyState.mapManager().selected().name()))
+        ));
+    }
+
+    // --------------------- Internal logic ---------------------
+
+    private void preparePlayer(@NotNull Player player) {
+        player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
+        player.setHealthScale(20.0D);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setGameMode(GameMode.ADVENTURE);
+
+        if (this.countdown.isRunning()) {
+            PlayerUtil.updateCountdownInformation(player, this.countdown.duration(), this.countdown.remainingTime());
+        }
+    }
 
     private int calculateMinPlayers() {
         double factor = this.configuration.main().minPlayers();
@@ -168,8 +187,11 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     private void createScoreboard(@NotNull Player player) {
-        final Locale locale = player.locale();
+        if (this.gameMap == null) {
+            return;
+        }
 
+        final Locale locale = player.locale();
         Scoreboard scoreboard = Scoreboard.builder(DisplayType.SIDEBAR)
                 .player(player)
                 .title(Component.translatable("state.lobby.scoreboard.title"))
@@ -208,16 +230,10 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     private void selectMap(@NotNull BedWarsPlugin plugin) {
-        this.gameMap = mapManager.selectRandom();
-        updateServerInfo();
-
-        plugin.getComponentLogger().info(Component.translatable("state.lobby.map",
-                NamedTranslationArgument.component("map", Component.text(gameMap.name()))));
-    }
-
-    private void updateServerInfo() {
-        Bukkit.getServer().motd(Component.text(this.gameMap.name()));
-        Bukkit.getServer().setMaxPlayers(this.gameMap.teams().size() * this.gameMap.teamSize());
+        if ((this.gameMap = this.mapManager.selectRandom()) == null) {
+            return;
+        }
+        plugin.getComponentLogger().info(Component.translatable("state.lobby.map", NamedTranslationArgument.component("map", Component.text(this.gameMap.name()))));
     }
 
     private @NotNull Component render(TranslatableComponent component, Locale locale) {
