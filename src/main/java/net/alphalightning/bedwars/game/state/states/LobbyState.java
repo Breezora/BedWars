@@ -34,12 +34,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class LobbyState extends AbstractGameState implements Listener, CountdownListener {
 
     private final Map<Player, Scoreboard> scoreboards = new HashMap<>();
-    private final List<StatisticHologram> holograms = new ArrayList<>();
+    private final Map<Player, StatisticHologram> holograms = new HashMap<>();
 
     private final BedWarsPlugin plugin;
     private final GameStateContext context;
@@ -73,6 +76,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     public void stop() {
         this.countdown.cancel();
         this.scoreboards.values().forEach(Scoreboard::destroy);
+        this.holograms.values().forEach(StatisticHologram::destroy);
         this.context.logger().info(Component.translatable("state.lobby.stop"));
     }
 
@@ -108,6 +112,8 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         event.quitMessage(null);
         this.scoreboards.get(player).destroy();
         this.scoreboards.remove(player);
+        this.holograms.get(player).destroy();
+        this.holograms.remove(player);
         Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L);
     }
 
@@ -280,7 +286,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private void spawnStatisticsHologram(Player player) {
         StatisticHologram hologram = new StatisticHologram(this.plugin, this, player);
         if (hologram.spawn() != null) {
-            this.holograms.add(hologram);
+            this.holograms.put(player, hologram);
         }
     }
 
