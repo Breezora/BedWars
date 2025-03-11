@@ -18,7 +18,7 @@ public class DynamicTeamAllocator implements TeamAllocator {
     }
 
     @Override
-    public @NotNull List<Team> allocateTeams(@NotNull List<Player> players, int maxTeams, int maxTeamSize) {
+    public @NotNull List<Team> allocateTeams(@NotNull List<? extends Player> players, int maxTeams, int maxTeamSize) {
         Collections.shuffle(players); // Randomize players to avoid knowing the teams during the lobby phase
 
         TeamConfig config = calculateOptimalConfig(players.size(), maxTeams, maxTeamSize); // Calculate optimal config

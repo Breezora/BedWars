@@ -16,6 +16,6 @@ public interface TeamAllocator {
      * @param maxTeamSize Maximale Spieleranzahl pro Team.
      * @return Liste der Teams mit zugeordneten Spielern.
      */
-    @NotNull List<Team> allocateTeams(@NotNull List<Player> players, int maxTeams, int maxTeamSize);
+    @NotNull List<Team> allocateTeams(@NotNull List<? extends Player> players, int maxTeams, int maxTeamSize);
 
 }
