@@ -7,7 +7,9 @@ import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
+import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.PlayerUtil;
 import net.breezora.celestial.DisplayType;
@@ -27,7 +29,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -37,18 +42,22 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
 
     private final Map<Player, Scoreboard> scoreboards = new HashMap<>();
 
+    private final BedWarsPlugin plugin;
     private final GameStateContext context;
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
+    private final Location hologramLocation;
     private GameMap gameMap;
 
     public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
         super(context);
+        this.plugin = plugin;
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
+        this.hologramLocation = loadHologramLocation();
 
         selectMap(plugin);
         startCountdown();
@@ -143,11 +152,15 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     // --------------------- Exposure ---------------------
 
     public @NotNull MapManager mapManager() {
-        return mapManager;
+        return this.mapManager;
     }
 
     public @NotNull LobbyCountdown countdown() {
-        return countdown;
+        return this.countdown;
+    }
+
+    public @Nullable Location hologramLocation() {
+        return this.hologramLocation;
     }
 
     public void updateSelectedMap(GameMap gameMap) {
@@ -262,5 +275,18 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
         );
+    }
+
+    private @Nullable Location loadHologramLocation() {
+        try {
+            File file = this.plugin.getDataFolder().toPath().resolve("maps").resolve(LobbyConfiguration.LOBBY_FILE_NAME).toFile();
+            LobbyLocations lobbyLocations = plugin.jsonMapper().readValue(file, LobbyLocations.class);
+
+            return lobbyLocations.get("hologram").asBukkitLocation();
+
+        } catch (IOException exception) {
+            plugin.getLogger().severe("Could not read file " + LobbyConfiguration.LOBBY_FILE_NAME + ": " + exception.getMessage());
+        }
+        return null;
     }
 }
