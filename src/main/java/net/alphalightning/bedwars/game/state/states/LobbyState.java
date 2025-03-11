@@ -95,11 +95,13 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
         ));
         hideCurrentHolograms(player);
-        spawnStatisticsHologram(player);
         createScoreboard(player);
         teleportPlayer(player);
         preparePlayer(player);
         updatePlayerCount();
+
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> spawnStatisticsHologram(player), 5L);
+
     }
 
     @EventHandler
