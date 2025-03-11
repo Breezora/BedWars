@@ -63,7 +63,7 @@ public class StatisticHologram {
     }
 
     private void createLine(@NotNull Location location, double offset, Component component) {
-        this.displays.add(location.getWorld().spawnEntity(location.add(0D, offset, 0D), EntityType.TEXT_DISPLAY, SpawnReason.CUSTOM, entity -> {
+        this.displays.add(location.getWorld().spawnEntity(location.clone().add(0D, offset, 0D), EntityType.TEXT_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final TextDisplay textDisplay = (TextDisplay) entity;
             textDisplay.text(component);
             textDisplay.setShadowed(true);
