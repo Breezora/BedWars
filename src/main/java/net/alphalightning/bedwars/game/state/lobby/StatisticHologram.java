@@ -65,6 +65,10 @@ public class StatisticHologram {
         this.displays.forEach(Entity::remove);
     }
 
+    public @NotNull List<Entity> displays() {
+        return this.displays;
+    }
+
     private void createLine(@NotNull Location location, double offset, Component component) {
         this.displays.add(location.getWorld().spawnEntity(location.clone().add(0D, offset, 0D), EntityType.TEXT_DISPLAY, SpawnReason.CUSTOM, entity -> {
             final TextDisplay textDisplay = (TextDisplay) entity;

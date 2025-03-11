@@ -94,6 +94,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
         ));
+        hideCurrentHolograms(player);
         spawnStatisticsHologram(player);
         createScoreboard(player);
         teleportPlayer(player);
@@ -287,6 +288,12 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         StatisticHologram hologram = new StatisticHologram(this.plugin, this, player);
         if (hologram.spawn() != null) {
             this.holograms.put(player, hologram);
+        }
+    }
+
+    private void hideCurrentHolograms(Player player) {
+        for (StatisticHologram hologram : this.holograms.values()) {
+            hologram.displays().forEach(entity -> player.hideEntity(this.plugin, entity));
         }
     }
 
