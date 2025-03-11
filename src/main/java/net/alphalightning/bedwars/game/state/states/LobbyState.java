@@ -7,6 +7,7 @@ import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.game.state.lobby.StatisticHologram;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
@@ -33,14 +34,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class LobbyState extends AbstractGameState implements Listener, CountdownListener {
 
     private final Map<Player, Scoreboard> scoreboards = new HashMap<>();
+    private final List<StatisticHologram> holograms = new ArrayList<>();
 
     private final BedWarsPlugin plugin;
     private final GameStateContext context;
@@ -91,9 +90,10 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())
         ));
-        preparePlayer(player);
-        teleportPlayer(player);
+        spawnStatisticsHologram(player);
         createScoreboard(player);
+        teleportPlayer(player);
+        preparePlayer(player);
         updatePlayerCount();
     }
 
@@ -275,6 +275,13 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
                 NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
                 NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers()))
         );
+    }
+
+    private void spawnStatisticsHologram(Player player) {
+        StatisticHologram hologram = new StatisticHologram(this.plugin, this, player);
+        if (hologram.spawn() != null) {
+            this.holograms.add(hologram);
+        }
     }
 
     private @Nullable Location loadHologramLocation() {
