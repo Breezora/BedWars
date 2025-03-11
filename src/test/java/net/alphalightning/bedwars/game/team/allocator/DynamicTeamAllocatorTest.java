@@ -111,4 +111,24 @@ class DynamicTeamAllocatorTest {
         int totalPlayers = teams.stream().mapToInt(team -> team.players().size()).sum();
         assertEquals(playerCount, totalPlayers, "Alle Spieler müssen korrekt zugewiesen werden.");
     }
+
+    @Test
+    void testMoreTeamsThanPlayers() {
+        List<PlayerMock> players = createPlayerMocks(4);
+        int maxTeams = 4;
+        int maxTeamSize = 2;
+
+        TeamAllocator allocator = new DynamicTeamAllocator(createTeamMocks(maxTeams));
+
+        List<Team> teams = allocator.allocateTeams(players, maxTeams, maxTeamSize);
+        assertEquals(4, teams.size(), "Es sollten vier Teams erstellt sein, auch wenn einige leer sein könnten.");
+
+        int playerCount = 0;
+        for (Team team : teams) {
+            if (!team.players().isEmpty()) {
+                playerCount += team.players().size();
+            }
+        }
+        assertEquals(4, playerCount, "Alle Spieler sollten korrekt in die Teams aufgeteilt sein.");
+    }
 }
