@@ -62,7 +62,7 @@ public final class LobbyMapSetup implements MapSetup, LobbyConfiguration {
         try {
             createDirectory();
 
-            hologram.setPitch(90.0F);
+            hologram.setPitch(0F);
             JacksonLocation spawnLocation = new JacksonLocation(spawn);
             JacksonLocation hologramLocation = new JacksonLocation(hologram);
 
