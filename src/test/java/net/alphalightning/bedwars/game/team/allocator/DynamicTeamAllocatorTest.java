@@ -86,4 +86,15 @@ class DynamicTeamAllocatorTest {
         assertTrue(maxSize - minSize <= 1, "Der Unterschied zwischen Teamgrößen darf maximal 1 sein.");
     }
 
+    @Test
+    void testPerfectMatch() {
+        List<PlayerMock> players = createPlayerMocks(12);
+        int maxTeams = 4;
+        int maxTeamSize = 3;
+
+        TeamAllocator allocator = new DynamicTeamAllocator(createTeamMocks(maxTeams));
+        List<Team> teams = allocator.allocateTeams(players, maxTeams, maxTeamSize);
+        teams.forEach(team -> assertEquals(3, team.players().size(), "Jedes Team sollte genau 3 Spieler haben."));
+    }
+
 }
