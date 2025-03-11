@@ -8,7 +8,7 @@ import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.setup.map.jackson.Team;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
@@ -27,12 +27,12 @@ import java.util.List;
 public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
-    private final List<Team> teams;
+    private final List<JacksonTeam> teams;
     private final int size;
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team = null;
+    private JacksonTeam team = null;
 
     public TeamSpawnpointConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);

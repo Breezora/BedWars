@@ -4,8 +4,8 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.SpawnerType;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
-import net.alphalightning.bedwars.setup.map.jackson.Team;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
@@ -49,7 +49,7 @@ public final class GameMapSetup implements MapSetup {
 
     // Configuration
     private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
-    private final List<Team> teams = new ArrayList<>();
+    private final List<JacksonTeam> teams = new ArrayList<>();
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
     private JacksonLocation spectatorSpawn;
@@ -129,7 +129,7 @@ public final class GameMapSetup implements MapSetup {
         return stage;
     }
 
-    public List<Team> teams() {
+    public List<JacksonTeam> teams() {
         return teams;
     }
 
@@ -151,7 +151,7 @@ public final class GameMapSetup implements MapSetup {
 
     // Start data manipulation logics
 
-    public void configureTeams(List<Team> teams) {
+    public void configureTeams(List<JacksonTeam> teams) {
         this.teams.addAll(teams);
     }
 
