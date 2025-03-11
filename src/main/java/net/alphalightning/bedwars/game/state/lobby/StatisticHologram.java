@@ -40,9 +40,12 @@ public class StatisticHologram {
 
         // Values and randoms are dummy data and have to be replaced witch actual statistics when they're implemented
         int kills = randomInt();
-        int deaths = randomInt();
         int playedGames = randomInt();
-        int wonGames = randomInt();
+        int deaths;
+        do {
+            deaths = randomInt();
+        } while (deaths <= playedGames);
+        int wonGames = playedGames - deaths;
 
         createLine(location, 2.25, Component.translatable("hologram.name"));
         createLine(location, 2, Component.translatable("hologram.all-time"));
@@ -84,7 +87,4 @@ public class StatisticHologram {
         return new Random().nextInt(100);
     }
 
-    private double randomDouble() {
-        return new Random().nextDouble(20);
-    }
 }
