@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars.game.team.allocator;
 
 import net.alphalightning.bedwars.game.team.Team;
+import net.alphalightning.bedwars.game.team.TeamFactory;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,12 +11,25 @@ import java.util.List;
 
 public class DynamicTeamAllocator implements TeamAllocator {
 
+    private final List<JacksonTeam> jacksonTeams;
+
+    public DynamicTeamAllocator(List<JacksonTeam> jacksonTeams) {
+        this.jacksonTeams = jacksonTeams;
+    }
+
     @Override
     public @NotNull List<Team> allocateTeams(@NotNull List<Player> players, int maxTeams, int maxTeamSize) {
-        Collections.shuffle(players);
-        TeamConfig config = calculateOptimalConfig(players.size(), maxTeams, maxTeamSize);
+        Collections.shuffle(players); // Randomize players to avoid knowing the teams during the lobby phase
 
-        return List.of();
+        TeamConfig config = calculateOptimalConfig(players.size(), maxTeams, maxTeamSize); // Calculate optimal config
+        List<Team> teams = TeamFactory.createTeams(this.jacksonTeams); // Create actual teams from backed jackson team
+
+        for (int i = 0; i < players.size(); i++) {
+            int index = i % config.teamCount();
+            teams.get(index).addPlayer(players.get(i));
+        }
+
+        return teams;
     }
 
     /**
@@ -63,7 +78,7 @@ public class DynamicTeamAllocator implements TeamAllocator {
      * @return true, wenn die neue Konfiguration besser ist, sonst false.
      */
     private boolean isBetterConfig(@NotNull TeamConfig current, @NotNull TeamConfig best) {
-        return current.teamSize > best.teamSize || (current.teamSize == best.teamSize && current.teamCount < best.teamCount);
+        return current.teamSize() > best.teamSize() || (current.teamSize() == best.teamSize() && current.teamCount() < best.teamCount());
     }
 
     /**
