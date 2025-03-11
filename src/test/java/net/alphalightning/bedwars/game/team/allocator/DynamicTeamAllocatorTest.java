@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -97,4 +98,17 @@ class DynamicTeamAllocatorTest {
         teams.forEach(team -> assertEquals(3, team.players().size(), "Jedes Team sollte genau 3 Spieler haben."));
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {50, 75, 100})
+    void testHighPlayerCounts(int playerCount) {
+        List<PlayerMock> players = createPlayerMocks(playerCount);
+        int maxTeams = 16;
+        int maxTeamSize = 10;
+
+        TeamAllocator allocator = new DynamicTeamAllocator(createTeamMocks(maxTeams));
+        List<Team> teams = allocator.allocateTeams(players, maxTeams, maxTeamSize);
+
+        int totalPlayers = teams.stream().mapToInt(team -> team.players().size()).sum();
+        assertEquals(playerCount, totalPlayers, "Alle Spieler müssen korrekt zugewiesen werden.");
+    }
 }
