@@ -44,7 +44,7 @@ public class StatisticHologram {
         int deaths;
         do {
             deaths = randomInt();
-        } while (deaths <= playedGames);
+        } while (deaths > playedGames);
         int wonGames = playedGames - deaths;
 
         createLine(location, 2.25, Component.translatable("hologram.name"));
