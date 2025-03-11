@@ -41,8 +41,11 @@ public class StatisticHologram {
         // Values and randoms are dummy data and have to be replaced witch actual statistics when they're implemented
         int kills = randomInt();
         int playedGames = randomInt();
-        int deaths = randomInt();
-        int wonGames = randomInt();
+        int deaths;
+        do {
+            deaths = randomInt();
+        } while (deaths <= playedGames);
+        int wonGames = playedGames - deaths;
 
         createLine(location, 2.25, Component.translatable("hologram.name"));
         createLine(location, 2, Component.translatable("hologram.all-time"));
@@ -50,8 +53,8 @@ public class StatisticHologram {
         createLine(location, 1.5, Component.translatable("hologram.kills", Component.text(kills)));
         createLine(location, 1.25, Component.translatable("hologram.deaths", Component.text(deaths)));
         createLine(location, 1, Component.translatable("hologram.kd", Component.text(MathUtil.round((double) kills / deaths, 2))));
-        createLine(location, 0.75, Component.translatable("hologram.played-games", Component.text(randomInt())));
-        createLine(location, 0.5, Component.translatable("hologram.wins", Component.text(randomInt())));
+        createLine(location, 0.75, Component.translatable("hologram.played-games", Component.text(playedGames)));
+        createLine(location, 0.5, Component.translatable("hologram.wins", Component.text(wonGames)));
         createLine(location, 0.25, Component.translatable("hologram.destroyed-beds", Component.text(randomInt())));
         createLine(location, 0, Component.translatable("hologram.win-rate", Component.text(MathUtil.toPercentage((double) wonGames / playedGames, 2))));
 
