@@ -8,7 +8,7 @@ import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
-import net.alphalightning.bedwars.setup.map.jackson.Team;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.stages.LocationConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
@@ -29,12 +29,12 @@ import java.util.List;
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
-    private final List<Team> teams;
+    private final List<JacksonTeam> teams;
     private final int count;
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private Team team = null;
+    private JacksonTeam team = null;
 
     public TeamChestConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);

@@ -3,7 +3,7 @@ package net.alphalightning.bedwars.setup.ui.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
-import net.alphalightning.bedwars.setup.map.jackson.Team;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.ui.SelectTeamsGui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -68,12 +68,12 @@ public class SaveConfigurationGuiItem extends AbstractBoundItem {
         Feedback.success(player);
     }
 
-    private @NotNull List<Team> createTeams() {
-        List<Team> teams = new ArrayList<>();
+    private @NotNull List<JacksonTeam> createTeams() {
+        List<JacksonTeam> teams = new ArrayList<>();
         for (TeamGuiItem teamGuiItem : selectedTeams) {
             int color = teamGuiItem.color();
 
-            Team team = new Team(fromColor(color), color);
+            JacksonTeam team = new JacksonTeam(fromColor(color), color);
             teams.add(team);
         }
 

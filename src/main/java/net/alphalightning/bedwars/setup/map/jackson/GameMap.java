@@ -7,7 +7,7 @@ import net.alphalightning.bedwars.game.SpawnerType;
 import java.util.HashMap;
 import java.util.List;
 
-public record GameMap(String name, int teamSize, int minBuildHeight, int maxBuildHeight, boolean slowIron, JacksonLocation spectatorSpawn, List<Team> teams, List<SimpleJacksonLocation> shopVillager, List<SimpleJacksonLocation> upgradeVillager, HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner) {
+public record GameMap(String name, int teamSize, int minBuildHeight, int maxBuildHeight, boolean slowIron, JacksonLocation spectatorSpawn, List<JacksonTeam> teams, List<SimpleJacksonLocation> shopVillager, List<SimpleJacksonLocation> upgradeVillager, HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner) {
 
     @JsonCreator
     public GameMap(
@@ -17,7 +17,7 @@ public record GameMap(String name, int teamSize, int minBuildHeight, int maxBuil
             @JsonProperty("maxBuildHeight") int maxBuildHeight,
             @JsonProperty("slowIron") boolean slowIron,
             @JsonProperty("spectatorSpawn") JacksonLocation spectatorSpawn,
-            @JsonProperty("teams") List<Team> teams,
+            @JsonProperty("teams") List<JacksonTeam> teams,
             @JsonProperty("shopVillager") List<SimpleJacksonLocation> shopVillager,
             @JsonProperty("upgradeVillager") List<SimpleJacksonLocation> upgradeVillager,
             @JsonProperty("spawner") HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner) {
