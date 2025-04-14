@@ -90,7 +90,7 @@ public abstract class Countdown {
         tick();
     }
 
-    private void resetCountdown() {
+    public void resetCountdown() {
         state = State.IDLE;
         remainingTime = duration;
         idleTickCounter = 0;
@@ -110,7 +110,7 @@ public abstract class Countdown {
         listeners.forEach(CountdownListener::onEnd);
     }
 
-    private void notifyAbort() {
+    public void notifyAbort() {
         listeners.forEach(CountdownListener::onAbort);
     }
 
@@ -131,6 +131,10 @@ public abstract class Countdown {
 
     public int remainingTime() {
         return remainingTime;
+    }
+
+    public boolean isForceStarted() {
+        return this.isForceStart;
     }
 
     public boolean isRunning() {

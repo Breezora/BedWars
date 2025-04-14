@@ -23,6 +23,14 @@ public class LobbyCountdown extends Countdown {
 
     @Override
     protected void onTick(int timeLeft) {
+        if (super.isForceStarted()) {
+            if (!(Bukkit.getOnlinePlayers().size() >= 2)) {
+                onAbort();
+                notifyAbort();
+                resetCountdown();
+                return;
+            }
+        }
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             player.clearTitle(); // Make sure a title is displayed for only on countdown tick
 
