@@ -58,7 +58,9 @@ public class LobbyCountdown extends Countdown {
 
     @Override
     protected void onIdleTick() {
-        Bukkit.broadcast(Component.translatable("state.lobby.idle"));
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
+            Bukkit.broadcast(Component.translatable("state.lobby.idle"));
+        }
     }
 
     @Override
