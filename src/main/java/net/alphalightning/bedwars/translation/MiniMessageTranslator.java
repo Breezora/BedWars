@@ -18,11 +18,6 @@ public abstract class MiniMessageTranslator implements Translator {
 
     private final MiniMessage miniMessage;
 
-
-    public MiniMessageTranslator() {
-        this(MiniMessage.miniMessage());
-    }
-
     public MiniMessageTranslator(MiniMessage miniMessage) {
         this.miniMessage = requireNonNull(miniMessage, "miniMessage");
     }
@@ -62,10 +57,10 @@ public abstract class MiniMessageTranslator implements Translator {
     }
 
     private Component translateRecursively(Component component, Locale locale, int depth) {
-        if (component instanceof TranslatableComponent translatable) { // Translate recursively if component is translatable
+        if (component instanceof TranslatableComponent translatable) { // Translate recursively if the component is translatable
             Component translated = this.translate(translatable, locale, depth);
 
-            if (translated != null) { // Adopt children from original component
+            if (translated != null) { // Adopt children from an original component
                 List<Component> mergedChildren = new ArrayList<>(translated.children());
                 mergedChildren.addAll(translatable.children());
 
