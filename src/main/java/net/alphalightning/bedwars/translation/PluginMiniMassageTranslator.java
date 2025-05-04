@@ -2,7 +2,7 @@ package net.alphalightning.bedwars.translation;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.translation.MiniMessageTranslationStore;
+import net.kyori.adventure.translation.TranslationStore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,9 +11,9 @@ import java.util.Locale;
 
 public class PluginMiniMassageTranslator extends MiniMessageTranslator {
 
-    private final MiniMessageTranslationStore store;
+    private final TranslationStore.StringBased<MessageFormat> store;
 
-    public PluginMiniMassageTranslator(MiniMessage miniMessage, MiniMessageTranslationStore store) {
+    public PluginMiniMassageTranslator(MiniMessage miniMessage, TranslationStore.StringBased<MessageFormat> store) {
         super(miniMessage);
         this.store = store;
     }

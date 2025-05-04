@@ -25,8 +25,8 @@ import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
 import net.alphalightning.bedwars.util.WorldUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.translation.MiniMessageTranslationStore;
 import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationStore;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -41,6 +41,7 @@ import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Structure;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -82,7 +83,7 @@ public class BedWarsPlugin extends JavaPlugin {
     // --------------------- Initialization ---------------------
 
     private void loadMessageRegistry() {
-        MiniMessageTranslationStore store = MiniMessageTranslationStore.create(Key.key("bedwars:messages"));
+        TranslationStore.StringBased<MessageFormat> store = TranslationStore.messageFormat(Key.key("bedwars:messages"));
         store.defaultLocale(Locale.GERMAN);
         store.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
