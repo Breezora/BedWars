@@ -26,7 +26,7 @@ import net.alphalightning.bedwars.util.WorldUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
-import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.translation.TranslationStore;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -41,6 +41,7 @@ import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Structure;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -82,12 +83,14 @@ public class BedWarsPlugin extends JavaPlugin {
     // --------------------- Initialization ---------------------
 
     private void loadMessageRegistry() {
-        TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("bedwars:messages"));
-        translationRegistry.defaultLocale(Locale.GERMAN);
-        translationRegistry.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
+        TranslationStore.StringBased<MessageFormat> store = TranslationStore.messageFormat(Key.key("bedwars:messages"));
+        store.defaultLocale(Locale.GERMAN);
+        store.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
-        GlobalTranslator.translator().addSource(translationRegistry);
-        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(translationRegistry));
+        MiniMessage miniMessage = MiniMessage.builder().build(); // Use this instance to register custom tags such as prefix
+
+        GlobalTranslator.translator().addSource(store);
+        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(miniMessage, store));
     }
 
     private void loadConfiguration() {

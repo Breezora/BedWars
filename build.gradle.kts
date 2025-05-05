@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.alphalightning"
-version = "1.0.0-alpha.5"
+version = "1.0.0-alpha.6"
 description = "Simple BedWars plugin to demonstrate jira"
 
 repositories {
