@@ -2,12 +2,13 @@ package net.alphalightning.bedwars.game.state.states;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
+import net.alphalightning.bedwars.config.PremiumJoinModus;
 import net.alphalightning.bedwars.game.countdown.CountdownListener;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
-import net.alphalightning.bedwars.game.state.lobby.StatisticHologram;
+import net.alphalightning.bedwars.game.state.lobby.*;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
@@ -28,6 +29,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +51,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
+    private final PremiumJoin premiumJoin;
     private final Location hologramLocation;
     private GameMap gameMap;
 
@@ -59,6 +62,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
+        this.premiumJoin = loadPremiumJoin();
         this.hologramLocation = loadHologramLocation();
 
         selectMap(plugin);
@@ -83,10 +87,17 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     // --------------------- State related event logics ---------------------
 
     @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        premiumJoin.onLogin(event);
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
+        this.premiumJoin.onJoin(event);
+
         Player player = event.getPlayer();
 
         event.joinMessage(Component.translatable("state.lobby.join",
@@ -109,11 +120,14 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
+        this.premiumJoin.onQuit(event);
+      
         int current = Bukkit.getOnlinePlayers().size() -1;
         Player player = event.getPlayer();
 
         if (Bukkit.getOnlinePlayers().size() <= 1) {
             event.quitMessage(null);
+          
         } else {
             event.quitMessage(Component.translatable("state.lobby.quit",
                     NamedTranslationArgument.component("name", player.displayName()),
@@ -190,6 +204,16 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     // --------------------- Internal logic ---------------------
+
+    private PremiumJoin loadPremiumJoin() {
+        PremiumJoinModus premiumJoin = plugin.configuration().main().premiumJoin();
+
+        return switch (premiumJoin) {
+            case STACKED -> new StackedPremiumJoin();
+            case QUEUED -> new QueuedPremiumJoin();
+            case RANDOM -> new RandomizedPremiumJoin();
+        };
+    }
 
     private void preparePlayer(@NotNull Player player) {
         player.setFoodLevel(20);

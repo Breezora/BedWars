@@ -7,11 +7,11 @@ public class Default {
     private double minPlayers;
     private double forceStartFactor;
     private int forceStartTime;
+    private PremiumJoinModus premiumJoin;
 
     public Environment environment() {
         return environment;
     }
-
 
     public String matchmaking() {
         return matchmaking;
@@ -27,6 +27,10 @@ public class Default {
 
     public int forceStartTime() {
         return forceStartTime;
+    }
+
+    public PremiumJoinModus premiumJoin() {
+        return premiumJoin;
     }
 
     public void environment(Environment environment) {
@@ -47,5 +51,9 @@ public class Default {
 
     public void forceStartTime(int forceStartTime) {
         this.forceStartTime = forceStartTime;
+    }
+
+    public void premiumJoin(PremiumJoinModus premiumJoin) {
+        this.premiumJoin = premiumJoin;
     }
 }
