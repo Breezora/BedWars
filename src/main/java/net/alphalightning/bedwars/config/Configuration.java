@@ -35,6 +35,7 @@ public class Configuration extends JacksonConfig<Default> {
         main().minPlayers(0.8);
         main().forceStartFactor(0.25);
         main().forceStartTime(10);
+        main().premiumJoin(PremiumJoinModus.STACKED);
         save();
     }
 }
