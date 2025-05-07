@@ -8,7 +8,7 @@ import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.state.lobby.PremiumJoin;
-import net.alphalightning.bedwars.game.state.lobby.StackedPremiumJoin;
+import net.alphalightning.bedwars.game.state.lobby.RandomizedPremiumJoin;
 import net.alphalightning.bedwars.game.state.lobby.StatisticHologram;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
@@ -63,7 +63,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
-        this.premiumJoin = new StackedPremiumJoin();
+        this.premiumJoin = new RandomizedPremiumJoin();
         this.hologramLocation = loadHologramLocation();
 
         selectMap(plugin);
