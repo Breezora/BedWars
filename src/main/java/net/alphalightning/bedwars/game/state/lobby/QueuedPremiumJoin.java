@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.state.lobby;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,6 +16,10 @@ public final class QueuedPremiumJoin extends PremiumJoin {
         queue.add(event.getPlayer());
     }
 
+    @Override
+    public void onQuit(PlayerQuitEvent event) {
+        queue.remove(event.getPlayer());
+    }
 
     @Override
     public Player findKickablePlayer() {

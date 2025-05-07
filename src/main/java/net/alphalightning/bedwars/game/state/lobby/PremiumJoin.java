@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public abstract sealed class PremiumJoin
         implements Listener
@@ -14,6 +15,8 @@ public abstract sealed class PremiumJoin
     protected static final String PREMIUM_PERMISSION = "bedwars.join.premium";
 
     public abstract void onJoin(PlayerJoinEvent event);
+
+    public abstract void onQuit(PlayerQuitEvent event);
 
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
