@@ -15,7 +15,10 @@ public abstract sealed class PremiumJoin
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
 
-        if (!isServerFull()) return;
+        if (!isServerFull()) {
+            event.allow();
+            return;
+        }
         if (!player.hasPermission(PREMIUM_PERMISSION)) return;
 
         Player kickable = findKickablePlayer();
