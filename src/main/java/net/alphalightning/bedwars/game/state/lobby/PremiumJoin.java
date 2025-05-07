@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.game.state.lobby;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -30,7 +31,7 @@ public abstract sealed class PremiumJoin
         Player kickable = findKickablePlayer();
         if (kickable == null) return;
 
-        kickable.kick(Component.translatable("state.lobby.kick"));
+        kickable.kick(GlobalTranslator.render(Component.translatable("state.lobby.kick"), player.locale()));
         event.allow();
     }
 
