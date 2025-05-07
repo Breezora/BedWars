@@ -20,14 +20,11 @@ public final class StackedPremiumJoin extends PremiumJoin {
 
     @Override
     public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (!player.hasPermission(PREMIUM_PERMISSION)) {
-            stack.remove(player);
-        }
+        stack.remove(event.getPlayer());
     }
 
     @Override
     public Player findKickablePlayer() {
-        return stack.isEmpty() ? null : stack.pop();
+        return stack.isEmpty() ? null : stack.peek();
     }
 }

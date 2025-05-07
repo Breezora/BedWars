@@ -13,7 +13,10 @@ public final class QueuedPremiumJoin extends PremiumJoin {
 
     @Override
     public void onJoin(PlayerJoinEvent event) {
-        queue.add(event.getPlayer());
+        Player player = event.getPlayer();
+        if (!player.hasPermission(PREMIUM_PERMISSION)) {
+            queue.add(event.getPlayer());
+        }
     }
 
     @Override
@@ -23,18 +26,6 @@ public final class QueuedPremiumJoin extends PremiumJoin {
 
     @Override
     public Player findKickablePlayer() {
-        int queueSize = queue.size();
-
-        for (int i = 0; i < queueSize; i++) {
-            Player kickable = queue.poll();
-
-            if (isPlayerKickable(kickable)) {
-                return kickable;
-            }
-            if (kickable != null) {
-                queue.add(kickable);
-            }
-        }
-        return null;
+        return queue.isEmpty() ? null : queue.peek();
     }
 }

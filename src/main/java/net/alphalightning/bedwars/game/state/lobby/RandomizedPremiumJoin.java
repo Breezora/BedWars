@@ -15,8 +15,9 @@ public final class RandomizedPremiumJoin extends PremiumJoin {
 
     @Override
     public void onJoin(PlayerJoinEvent event) {
-        if (!event.getPlayer().hasPermission(PREMIUM_PERMISSION)) {
-            list.add(event.getPlayer());
+        Player player = event.getPlayer();
+        if (!player.hasPermission(PREMIUM_PERMISSION)) {
+            list.add(player);
         }
     }
 
