@@ -7,6 +7,8 @@ import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.game.state.lobby.PremiumJoin;
+import net.alphalightning.bedwars.game.state.lobby.QueuedPremiumJoin;
 import net.alphalightning.bedwars.game.state.lobby.StatisticHologram;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
@@ -28,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +52,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private final Configuration configuration;
     private final LobbyCountdown countdown;
     private final MapManager mapManager;
+    private final PremiumJoin premiumJoin;
     private final Location hologramLocation;
     private GameMap gameMap;
 
@@ -59,6 +63,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
+        this.premiumJoin = new QueuedPremiumJoin();
         this.hologramLocation = loadHologramLocation();
 
         selectMap(plugin);
@@ -81,6 +86,11 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     // --------------------- State related event logics ---------------------
+
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        premiumJoin.onLogin(event);
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
