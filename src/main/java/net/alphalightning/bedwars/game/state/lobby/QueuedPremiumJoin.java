@@ -1,6 +1,5 @@
 package net.alphalightning.bedwars.game.state.lobby;
 
-import net.alphalightning.bedwars.BedWarsPlugin;
 import org.bukkit.entity.Player;
 
 import java.util.Queue;
@@ -9,10 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public final class QueuedPremiumJoin extends PremiumJoin {
 
     private final Queue<Player> queue = new ConcurrentLinkedQueue<>();
-
-    public QueuedPremiumJoin(BedWarsPlugin plugin) {
-        super(plugin);
-    }
 
     @Override
     public Player findKickablePlayer() {

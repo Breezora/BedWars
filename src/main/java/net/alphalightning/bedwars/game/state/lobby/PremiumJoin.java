@@ -1,10 +1,8 @@
 package net.alphalightning.bedwars.game.state.lobby;
 
-import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
@@ -14,14 +12,6 @@ public abstract sealed class PremiumJoin
 
     protected static final String PREMIUM_PERMISSION = "bedwars.join.premium";
 
-    protected final BedWarsPlugin plugin;
-
-    public PremiumJoin(BedWarsPlugin plugin) {
-        this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
-    @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
 
