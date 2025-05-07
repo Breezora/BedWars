@@ -121,10 +121,19 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
             return;
         }
         this.premiumJoin.onQuit(event);
-
+      
+        int current = Bukkit.getOnlinePlayers().size() -1;
         Player player = event.getPlayer();
 
-        event.quitMessage(null);
+        if (Bukkit.getOnlinePlayers().size() <= 1) {
+            event.quitMessage(null);
+          
+        } else {
+            event.quitMessage(Component.translatable("state.lobby.quit",
+                    NamedTranslationArgument.component("name", player.displayName()),
+                    NamedTranslationArgument.numeric("current", current),
+                    NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())));
+        }
         this.scoreboards.get(player).destroy();
         this.scoreboards.remove(player);
         this.holograms.get(player).destroy();
