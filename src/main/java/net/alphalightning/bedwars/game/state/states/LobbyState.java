@@ -117,11 +117,14 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.holograms.get(player).destroy();
         this.holograms.remove(player);
         Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), this::updatePlayerCount, 1L);
+        Bukkit.getScheduler().runTaskLater(this.configuration.plugin(), () ->
+            event.quitMessage(Component.translatable("state.lobby.quit",
+                    NamedTranslationArgument.component("name", player.displayName()),
+                    NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
+                    NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())))
+        , 1L);
 
-        event.quitMessage(Component.translatable("state.lobby.quit",
-                NamedTranslationArgument.component("name", player.displayName()),
-                NamedTranslationArgument.numeric("current", Bukkit.getOnlinePlayers().size()),
-                NamedTranslationArgument.numeric("max", Bukkit.getMaxPlayers())));
+
     }
 
     @EventHandler
