@@ -12,7 +12,6 @@ public final class RandomizedPremiumJoin extends PremiumJoin {
 
     private final List<Player> list = new ArrayList<>();
 
-
     @Override
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
