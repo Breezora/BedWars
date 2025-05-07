@@ -2,14 +2,13 @@ package net.alphalightning.bedwars.game.state.states;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.config.Configuration;
+import net.alphalightning.bedwars.config.PremiumJoinModus;
 import net.alphalightning.bedwars.game.countdown.CountdownListener;
 import net.alphalightning.bedwars.game.countdown.LobbyCountdown;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
-import net.alphalightning.bedwars.game.state.lobby.PremiumJoin;
-import net.alphalightning.bedwars.game.state.lobby.RandomizedPremiumJoin;
-import net.alphalightning.bedwars.game.state.lobby.StatisticHologram;
+import net.alphalightning.bedwars.game.state.lobby.*;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
 import net.alphalightning.bedwars.setup.map.jackson.GameMap;
 import net.alphalightning.bedwars.setup.map.jackson.LobbyLocations;
@@ -63,7 +62,7 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
         this.mapManager = new MapManager(plugin);
-        this.premiumJoin = new RandomizedPremiumJoin();
+        this.premiumJoin = loadPremiumJoin();
         this.hologramLocation = loadHologramLocation();
 
         selectMap(plugin);
@@ -196,6 +195,16 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     }
 
     // --------------------- Internal logic ---------------------
+
+    private PremiumJoin loadPremiumJoin() {
+        PremiumJoinModus premiumJoin = plugin.configuration().main().premiumJoin();
+
+        return switch (premiumJoin) {
+            case STACKED -> new StackedPremiumJoin();
+            case QUEUED -> new QueuedPremiumJoin();
+            case RANDOM -> new RandomizedPremiumJoin();
+        };
+    }
 
     private void preparePlayer(@NotNull Player player) {
         player.setFoodLevel(20);
