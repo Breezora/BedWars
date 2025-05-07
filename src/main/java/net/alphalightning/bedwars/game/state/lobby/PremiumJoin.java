@@ -37,7 +37,7 @@ public abstract sealed class PremiumJoin
     public abstract Player findKickablePlayer();
 
     public boolean isPlayerKickable(Player player) {
-        return player != null && player.hasPermission(PREMIUM_PERMISSION);
+        return player != null && !player.hasPermission(PREMIUM_PERMISSION);
     }
 
     private boolean isServerFull() {
