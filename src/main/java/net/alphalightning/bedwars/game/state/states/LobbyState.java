@@ -97,6 +97,8 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
         if (!(this.context.currentState() instanceof LobbyState)) {
             return;
         }
+        this.premiumJoin.onJoin(event);
+
         Player player = event.getPlayer();
 
         event.joinMessage(Component.translatable("state.lobby.join",

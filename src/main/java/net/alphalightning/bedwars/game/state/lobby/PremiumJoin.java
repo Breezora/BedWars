@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 public abstract sealed class PremiumJoin
@@ -11,6 +12,8 @@ public abstract sealed class PremiumJoin
         permits QueuedPremiumJoin, RandomizedPremiumJoin, StackedPremiumJoin {
 
     protected static final String PREMIUM_PERMISSION = "bedwars.join.premium";
+
+    public abstract void onJoin(PlayerJoinEvent event);
 
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
