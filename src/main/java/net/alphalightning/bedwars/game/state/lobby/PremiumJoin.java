@@ -30,15 +30,11 @@ public abstract sealed class PremiumJoin
         Player kickable = findKickablePlayer();
         if (kickable == null) return;
 
-        kickable.kick(Component.translatable("lobby.kick.premium"));
+        kickable.kick(Component.translatable("state.lobby.kick"));
         event.allow();
     }
 
     public abstract Player findKickablePlayer();
-
-    public boolean isPlayerKickable(Player player) {
-        return player != null && !player.hasPermission(PREMIUM_PERMISSION);
-    }
 
     private boolean isServerFull() {
         return Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers();
