@@ -94,10 +94,12 @@ public class InGameState extends AbstractGameState implements Listener {
                     .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
                     .build();
 
+            ItemStack woodSword = new ItemBuilder(Material.WOODEN_SWORD).build();
             for (Player player : team.players()) {
                 player.getInventory().setArmorContents(new ItemStack[]{
                         boots, leggings, chestplate, helmet
                 });
+                player.getInventory().setItem(0, woodSword);
             }
         }
     }
