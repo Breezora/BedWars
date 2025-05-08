@@ -146,7 +146,7 @@ public class InGameState extends AbstractGameState implements Listener {
         for (Team team : teams) {
             Location spawn = team.spawnpoint();
             for (Player player : respawningPlayer) {
-                player.teleport(spawn);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
     }
