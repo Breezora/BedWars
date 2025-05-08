@@ -9,6 +9,7 @@ import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class InGameState extends AbstractGameState {
         Bukkit.broadcast(component);
         context.logger().info(component);
         allocateTeams();
+        teleportPlayers();
     }
 
     @Override
@@ -46,5 +48,14 @@ public class InGameState extends AbstractGameState {
         int teamSize = mapManager.selected().teamSize();
 
         teams = teamAllocator.allocateTeams(players, maxTeams, teamSize);
+    }
+
+    private void teleportPlayers() {
+        for (Team team : teams) {
+            Location spawn = team.spawnpoint();
+            for (Player player : team.players()) {
+                player.teleport(spawn);
+            }
+        }
     }
 }
