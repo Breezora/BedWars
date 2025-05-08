@@ -32,9 +32,19 @@ public class Team {
     public Location spawnpoint() {
        return this.backed.spawnpoint().asBukkitLocation();
     }
+
     public int color() {
         return this.backed.color();
     }
+
+    public Location bedBottomHalf() {
+        return this.backed.bedBottomHalf().asBukkitLocation();
+    }
+
+    public Location bedTopHalf() {
+        return this.backed.bedTopHalf().asBukkitLocation();
+    }
+
     @Override
     public String toString() {
         return "Team{" +
