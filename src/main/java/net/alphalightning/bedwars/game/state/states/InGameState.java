@@ -16,6 +16,8 @@ public class InGameState extends AbstractGameState {
     public void start() {
         TranslatableComponent component = Component.translatable("state.ingame.start");
 
+        Bukkit.broadcast(Component.text("Test"));
+
         Bukkit.broadcast(component);
         context.logger().info(component);
     }
