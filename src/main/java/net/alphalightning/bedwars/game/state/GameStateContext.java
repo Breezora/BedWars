@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.game.state;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.state.states.LobbyState;
 import net.alphalightning.bedwars.setup.map.LobbyConfiguration;
@@ -29,14 +30,15 @@ public class GameStateContext {
     public GameStateContext(@NotNull BedWarsPlugin plugin) {
         this.logger = plugin.getComponentLogger();
         this.lobbySpawn = loadLobbySpawn(plugin);
+        MapManager mapManager = new MapManager(plugin);
 
         if (lobbySpawn == null) {
             logger.warn(Component.translatable("state.lobby.spawn"));
         }
 
         this.states = new GameState[2];
-        this.states[0] = new LobbyState(plugin, this);
-        this.states[1] = new InGameState(this);
+        this.states[0] = new LobbyState(plugin, this, mapManager);
+        this.states[1] = new InGameState(this, mapManager);
     }
 
     public void setGameState(int state) {
