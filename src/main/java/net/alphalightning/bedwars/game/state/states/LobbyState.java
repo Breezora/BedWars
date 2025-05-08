@@ -55,13 +55,13 @@ public class LobbyState extends AbstractGameState implements Listener, Countdown
     private final Location hologramLocation;
     private GameMap gameMap;
 
-    public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context) {
+    public LobbyState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
         this.plugin = plugin;
         this.context = context;
         this.configuration = plugin.configuration();
         this.countdown = new LobbyCountdown(plugin, context, 30);
-        this.mapManager = new MapManager(plugin);
+        this.mapManager = mapManager;
         this.premiumJoin = loadPremiumJoin();
         this.hologramLocation = loadHologramLocation();
 
