@@ -46,6 +46,6 @@ public class InGameState extends AbstractGameState {
         int teamSize = mapManager.selected().teamSize();
 
         teams = teamAllocator.allocateTeams(players, maxTeams, teamSize);
-        Bukkit.broadcast(Component.text(teams.get(1).players().get(1).getName() +" "+ teams.get(1).name()));
+        System.out.println(teams.toString());
     }
 }

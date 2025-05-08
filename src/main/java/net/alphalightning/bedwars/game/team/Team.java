@@ -27,4 +27,12 @@ public class Team {
     public @NotNull List<Player> players() {
         return this.players;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "players=" + players +
+                ", backed=" + backed +
+                '}';
+    }
 }
