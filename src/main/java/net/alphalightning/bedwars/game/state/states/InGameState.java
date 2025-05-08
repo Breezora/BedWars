@@ -16,9 +16,11 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
@@ -28,11 +30,13 @@ import java.util.List;
 
 public class InGameState extends AbstractGameState implements Listener {
 
+    private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private List<Team> teams;
 
     public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
+        this.plugin = plugin;
         this.mapManager = mapManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
@@ -124,6 +128,26 @@ public class InGameState extends AbstractGameState implements Listener {
 
         if (slotType == InventoryType.SlotType.ARMOR) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+
+        Bukkit.getScheduler().runTaskLater(plugin, () ->
+            player.spigot().respawn(),1L);
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        List<Player> respawningPlayer = new ArrayList<>();
+        respawningPlayer.add(event.getPlayer());
+        for (Team team : teams) {
+            Location spawn = team.spawnpoint();
+            for (Player player : respawningPlayer) {
+                player.teleport(spawn);
+            }
         }
     }
 
