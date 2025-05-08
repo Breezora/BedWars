@@ -16,6 +16,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -96,7 +99,7 @@ public class InGameState extends AbstractGameState implements Listener {
             Location spawn = team.spawnpoint();
 
             if (team.players().contains(player)) {
-               Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
     }
@@ -155,49 +158,65 @@ public class InGameState extends AbstractGameState implements Listener {
     private void prepareMap() {
         for (Team team : teams) {
             Location bedBottomHalf = team.bedBottomHalf();
-            switch (team.name()) {
-                case "white" ->
-                    bedBottomHalf.getBlock().setType(Material.WHITE_BED);
-                case "light_gray" ->
-                    bedBottomHalf.getBlock().setType(Material.LIGHT_GRAY_BED);
-                case "dark_gray" ->
-                    bedBottomHalf.getBlock().setType(Material.GRAY_BED);
-                case "black" ->
-                    bedBottomHalf.getBlock().setType(Material.BLACK_BED);
-                case "brown" ->
-                    bedBottomHalf.getBlock().setType(Material.BROWN_BED);
-                case "red" ->
-                    bedBottomHalf.getBlock().setType(Material.RED_BED);
-                case "orange" ->
-                    bedBottomHalf.getBlock().setType(Material.ORANGE_BED);
-                case "yellow" ->
-                    bedBottomHalf.getBlock().setType(Material.YELLOW_BED);
-                case "light_green" ->
-                    bedBottomHalf.getBlock().setType(Material.LIME_BED);
-                case "green" ->
-                    bedBottomHalf.getBlock().setType(Material.GREEN_BED);
-                case "cyan" ->
-                    bedBottomHalf.getBlock().setType(Material.CYAN_BED);
-                case "light_blue" ->
-                    bedBottomHalf.getBlock().setType(Material.LIGHT_BLUE_BED);
-                case "blue" ->
-                    bedBottomHalf.getBlock().setType(Material.BLUE_BED);
-                case "purple" ->
-                    bedBottomHalf.getBlock().setType(Material.PURPLE_BED);
-                case "magenta" ->
-                    bedBottomHalf.getBlock().setType(Material.MAGENTA_BED);
-                case "pink" ->
-                    bedBottomHalf.getBlock().setType(Material.PINK_BED);
-            }
-            //bedBottomHalf.getBlock().setType(Material.BED);
+            Location bedTopHalf = team.bedTopHalf();
+
+            Material bedMaterial = switch (team.name()) {
+                case "white" -> Material.WHITE_BED;
+                case "light_gray" -> Material.LIGHT_GRAY_BED;
+                case "dark_gray" -> Material.GRAY_BED;
+                case "black" -> Material.BLACK_BED;
+                case "brown" -> Material.BROWN_BED;
+                case "red" -> Material.RED_BED;
+                case "orange" -> Material.ORANGE_BED;
+                case "yellow" -> Material.YELLOW_BED;
+                case "light_green" -> Material.LIME_BED;
+                case "green" -> Material.GREEN_BED;
+                case "cyan" -> Material.CYAN_BED;
+                case "light_blue" -> Material.LIGHT_BLUE_BED;
+                case "blue" -> Material.BLUE_BED;
+                case "purple" -> Material.PURPLE_BED;
+                case "magenta" -> Material.MAGENTA_BED;
+                case "pink" -> Material.PINK_BED;
+                default -> throw new IllegalArgumentException("Unknown team color: " + team.name());
+            };
+
+            BlockFace facing = getBedFacing(bedBottomHalf, bedTopHalf);
+
+            // Fußteil setzen
+            Block bottomBlock = bedBottomHalf.getBlock();
+            bottomBlock.setType(bedMaterial, false);
+            Bed bottomData = (Bed) bottomBlock.getBlockData();
+            bottomData.setPart(Bed.Part.FOOT);
+            bottomData.setFacing(facing);
+            bottomBlock.setBlockData(bottomData, false);
+
+            // Kopfteil setzen
+            Block topBlock = bedTopHalf.getBlock();
+            topBlock.setType(bedMaterial, false);
+            Bed topData = (Bed) topBlock.getBlockData();
+            topData.setPart(Bed.Part.HEAD);
+            topData.setFacing(facing);
+            topBlock.setBlockData(topData, false);
         }
     }
 
     private boolean isArmor(ItemStack item) {
         return switch (item.getType()) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS, CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
+                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
             default -> false;
         };
     }
 
+    public static BlockFace getBedFacing(Location bottom, Location top) {
+        int dx = top.getBlockX() - bottom.getBlockX();
+        int dz = top.getBlockZ() - bottom.getBlockZ();
+
+        if (dx == 1) return BlockFace.EAST;
+        if (dx == -1) return BlockFace.WEST;
+        if (dz == 1) return BlockFace.SOUTH;
+        if (dz == -1) return BlockFace.NORTH;
+
+        throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
+    }
 }
