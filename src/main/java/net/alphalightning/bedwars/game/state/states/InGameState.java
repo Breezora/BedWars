@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.state.states;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -18,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.util.ArrayList;
@@ -28,9 +30,11 @@ public class InGameState extends AbstractGameState implements Listener {
     private final MapManager mapManager;
     private List<Team> teams;
 
-    public InGameState(GameStateContext context, MapManager mapManager) {
+    public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
         this.mapManager = mapManager;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+
     }
 
 
