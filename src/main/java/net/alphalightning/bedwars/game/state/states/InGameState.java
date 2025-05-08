@@ -156,9 +156,21 @@ public class InGameState extends AbstractGameState implements Listener {
     }
 
     private void prepareMap() {
+        placeBeds();
+    }
+
+    private boolean isArmor(ItemStack item) {
+        return switch (item.getType()) {
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
+                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
+            default -> false;
+        };
+    }
+
+    private void placeBeds() {
         for (Team team : teams) {
-            Location bedBottomHalf = team.bedBottomHalf();
-            Location bedTopHalf = team.bedTopHalf();
+            Location bottomHalfLocation = team.bedBottomHalf();
+            Location topHalfLocation = team.bedTopHalf();
 
             Material bedMaterial = switch (team.name()) {
                 case "white" -> Material.WHITE_BED;
@@ -180,35 +192,27 @@ public class InGameState extends AbstractGameState implements Listener {
                 default -> throw new IllegalArgumentException("Unknown team color: " + team.name());
             };
 
-            BlockFace facing = getBedFacing(bedBottomHalf, bedTopHalf);
+            BlockFace blockFace = getBedFacing(bottomHalfLocation, topHalfLocation);
 
             // Fußteil setzen
-            Block bottomBlock = bedBottomHalf.getBlock();
+            Block bottomBlock = bottomHalfLocation.getBlock();
             bottomBlock.setType(bedMaterial, false);
             Bed bottomData = (Bed) bottomBlock.getBlockData();
             bottomData.setPart(Bed.Part.FOOT);
-            bottomData.setFacing(facing);
+            bottomData.setFacing(blockFace);
             bottomBlock.setBlockData(bottomData, false);
 
             // Kopfteil setzen
-            Block topBlock = bedTopHalf.getBlock();
+            Block topBlock = topHalfLocation.getBlock();
             topBlock.setType(bedMaterial, false);
             Bed topData = (Bed) topBlock.getBlockData();
             topData.setPart(Bed.Part.HEAD);
-            topData.setFacing(facing);
+            topData.setFacing(blockFace);
             topBlock.setBlockData(topData, false);
         }
     }
 
-    private boolean isArmor(ItemStack item) {
-        return switch (item.getType()) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
-                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
-            default -> false;
-        };
-    }
-
-    public static BlockFace getBedFacing(Location bottom, Location top) {
+    private BlockFace getBedFacing(Location bottom, Location top) {
         int dx = top.getBlockX() - bottom.getBlockX();
         int dz = top.getBlockZ() - bottom.getBlockZ();
 
