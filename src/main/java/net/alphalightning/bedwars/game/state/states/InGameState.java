@@ -111,6 +111,10 @@ public class InGameState extends AbstractGameState implements Listener {
         ItemStack item = event.getItemDrop().getItemStack();
         if (isArmor(item)) {
             event.setCancelled(true);
+            return;
+        }
+        if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) {
+            event.setCancelled(true);
         }
     }
 
