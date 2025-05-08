@@ -16,6 +16,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,6 +57,7 @@ public class InGameState extends AbstractGameState implements Listener {
         context.logger().info(component);
 
         allocateTeams();
+        placeBeds();
         teleportPlayers();
         preparePlayers();
     }
