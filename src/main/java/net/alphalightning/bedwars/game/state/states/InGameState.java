@@ -158,4 +158,56 @@ public class InGameState extends AbstractGameState implements Listener {
         };
     }
 
+    private void placeBeds() {
+        for (Team team : teams) {
+            Location bottomHalfLocation = team.bedBottomHalf();
+            Location topHalfLocation = team.bedTopHalf();
+            BlockFace blockFace = getBedFacing(bottomHalfLocation, topHalfLocation);
+            Material bedMaterial = switch (team.name().toLowerCase()) {
+                case "white" -> Material.WHITE_BED;
+                case "light_gray" -> Material.LIGHT_GRAY_BED;
+                case "dark_gray" -> Material.GRAY_BED;
+                case "black" -> Material.BLACK_BED;
+                case "brown" -> Material.BROWN_BED;
+                case "red" -> Material.RED_BED;
+                case "orange" -> Material.ORANGE_BED;
+                case "yellow" -> Material.YELLOW_BED;
+                case "light_green" -> Material.LIME_BED;
+                case "green" -> Material.GREEN_BED;
+                case "cyan" -> Material.CYAN_BED;
+                case "light_blue" -> Material.LIGHT_BLUE_BED;
+                case "blue" -> Material.BLUE_BED;
+                case "purple" -> Material.PURPLE_BED;
+                case "magenta" -> Material.MAGENTA_BED;
+                case "pink" -> Material.PINK_BED;
+                default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
+            };
+
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace);
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace);
+        }
+    }
+
+    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace) {
+        Block block = location.getBlock();
+        block.setType(material);
+
+        Bed bed = (Bed) block.getBlockData();
+        bed.setPart(part);
+        bed.setFacing(blockFace);
+        block.setBlockData(bed);
+    }
+
+    private BlockFace getBedFacing(Location bottom, Location top) {
+        int dx = top.getBlockX() - bottom.getBlockX();
+        int dz = top.getBlockZ() - bottom.getBlockZ();
+
+        if (dx == 1) return BlockFace.EAST;
+        if (dx == -1) return BlockFace.WEST;
+        if (dz == 1) return BlockFace.SOUTH;
+        if (dz == -1) return BlockFace.NORTH;
+
+        throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
+    }
+  
 }
