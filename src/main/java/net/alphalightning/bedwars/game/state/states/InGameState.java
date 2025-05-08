@@ -171,8 +171,8 @@ public class InGameState extends AbstractGameState implements Listener {
         for (Team team : teams) {
             Location bottomHalfLocation = team.bedBottomHalf();
             Location topHalfLocation = team.bedTopHalf();
-
-            Material bedMaterial = switch (team.name()) {
+            BlockFace blockFace = getBedFacing(bottomHalfLocation, topHalfLocation);
+            Material bedMaterial = switch (team.name().toLowerCase()) {
                 case "white" -> Material.WHITE_BED;
                 case "light_gray" -> Material.LIGHT_GRAY_BED;
                 case "dark_gray" -> Material.GRAY_BED;
@@ -189,27 +189,22 @@ public class InGameState extends AbstractGameState implements Listener {
                 case "purple" -> Material.PURPLE_BED;
                 case "magenta" -> Material.MAGENTA_BED;
                 case "pink" -> Material.PINK_BED;
-                default -> throw new IllegalArgumentException("Unknown team color: " + team.name());
+                default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
 
-            BlockFace blockFace = getBedFacing(bottomHalfLocation, topHalfLocation);
-
-            // Fußteil setzen
-            Block bottomBlock = bottomHalfLocation.getBlock();
-            bottomBlock.setType(bedMaterial, false);
-            Bed bottomData = (Bed) bottomBlock.getBlockData();
-            bottomData.setPart(Bed.Part.FOOT);
-            bottomData.setFacing(blockFace);
-            bottomBlock.setBlockData(bottomData, false);
-
-            // Kopfteil setzen
-            Block topBlock = topHalfLocation.getBlock();
-            topBlock.setType(bedMaterial, false);
-            Bed topData = (Bed) topBlock.getBlockData();
-            topData.setPart(Bed.Part.HEAD);
-            topData.setFacing(blockFace);
-            topBlock.setBlockData(topData, false);
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace);
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace);
         }
+    }
+
+    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace) {
+        Block block = location.getBlock();
+        block.setType(material);
+
+        Bed bed = (Bed) block.getBlockData();
+        bed.setPart(part);
+        bed.setFacing(blockFace);
+        block.setBlockData(bed);
     }
 
     private BlockFace getBedFacing(Location bottom, Location top) {
