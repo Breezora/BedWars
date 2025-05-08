@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.state.states;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
+import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
@@ -78,14 +79,18 @@ public class InGameState extends AbstractGameState implements Listener {
 
             ItemStack helmet = new ItemBuilder(Material.LEATHER_HELMET)
                     .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
                     .build();
             ItemStack chestplate = new ItemBuilder(Material.LEATHER_CHESTPLATE)
                     .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
                     .build();
             ItemStack leggings = new ItemBuilder(Material.LEATHER_LEGGINGS)
                     .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
                     .build();
             ItemStack boots = new ItemBuilder(Material.LEATHER_BOOTS)
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
                     .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
                     .build();
 
