@@ -6,9 +6,9 @@ import org.bukkit.Location;
 
 public class JacksonTeam {
 
-    private final int color;
 
     private final String name;
+    private final int color;
     private JacksonLocation spawnpoint;
     private SimpleJacksonLocation chest;
     private SimpleJacksonLocation bedBottomHalf;
