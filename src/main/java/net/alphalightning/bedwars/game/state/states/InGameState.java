@@ -16,9 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,7 +54,6 @@ public class InGameState extends AbstractGameState implements Listener {
         context.logger().info(component);
 
         allocateTeams();
-        prepareMap();
         teleportPlayers();
         preparePlayers();
     }
@@ -99,7 +95,7 @@ public class InGameState extends AbstractGameState implements Listener {
             Location spawn = team.spawnpoint();
 
             if (team.players().contains(player)) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
+               Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
     }
@@ -155,14 +151,9 @@ public class InGameState extends AbstractGameState implements Listener {
         }
     }
 
-    private void prepareMap() {
-        placeBeds();
-    }
-
     private boolean isArmor(ItemStack item) {
         return switch (item.getType()) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
-                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS, CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
             default -> false;
         };
     }
@@ -218,4 +209,5 @@ public class InGameState extends AbstractGameState implements Listener {
 
         throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
     }
+  
 }
