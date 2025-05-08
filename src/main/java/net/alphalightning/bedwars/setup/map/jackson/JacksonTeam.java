@@ -1,13 +1,12 @@
 package net.alphalightning.bedwars.setup.map.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bukkit.Location;
 
 public class JacksonTeam {
 
-    @JsonIgnore private final int color;
+    private final int color;
 
     private final String name;
     private JacksonLocation spawnpoint;
