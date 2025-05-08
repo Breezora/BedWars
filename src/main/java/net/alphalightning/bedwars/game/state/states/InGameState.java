@@ -16,9 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,7 +54,6 @@ public class InGameState extends AbstractGameState implements Listener {
         context.logger().info(component);
 
         allocateTeams();
-        prepareMap();
         teleportPlayers();
         preparePlayers();
     }
@@ -99,7 +95,7 @@ public class InGameState extends AbstractGameState implements Listener {
             Location spawn = team.spawnpoint();
 
             if (team.players().contains(player)) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
+               Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
     }
@@ -155,72 +151,11 @@ public class InGameState extends AbstractGameState implements Listener {
         }
     }
 
-    private void prepareMap() {
-        placeBeds();
-    }
-
     private boolean isArmor(ItemStack item) {
         return switch (item.getType()) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
-                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS, CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
             default -> false;
         };
     }
 
-    private void placeBeds() {
-        for (Team team : teams) {
-            Location bottomHalfLocation = team.bedBottomHalf();
-            Location topHalfLocation = team.bedTopHalf();
-
-            Material bedMaterial = switch (team.name()) {
-                case "white" -> Material.WHITE_BED;
-                case "light_gray" -> Material.LIGHT_GRAY_BED;
-                case "dark_gray" -> Material.GRAY_BED;
-                case "black" -> Material.BLACK_BED;
-                case "brown" -> Material.BROWN_BED;
-                case "red" -> Material.RED_BED;
-                case "orange" -> Material.ORANGE_BED;
-                case "yellow" -> Material.YELLOW_BED;
-                case "light_green" -> Material.LIME_BED;
-                case "green" -> Material.GREEN_BED;
-                case "cyan" -> Material.CYAN_BED;
-                case "light_blue" -> Material.LIGHT_BLUE_BED;
-                case "blue" -> Material.BLUE_BED;
-                case "purple" -> Material.PURPLE_BED;
-                case "magenta" -> Material.MAGENTA_BED;
-                case "pink" -> Material.PINK_BED;
-                default -> throw new IllegalArgumentException("Unknown team color: " + team.name());
-            };
-
-            BlockFace blockFace = getBedFacing(bottomHalfLocation, topHalfLocation);
-
-            // Fußteil setzen
-            Block bottomBlock = bottomHalfLocation.getBlock();
-            bottomBlock.setType(bedMaterial, false);
-            Bed bottomData = (Bed) bottomBlock.getBlockData();
-            bottomData.setPart(Bed.Part.FOOT);
-            bottomData.setFacing(blockFace);
-            bottomBlock.setBlockData(bottomData, false);
-
-            // Kopfteil setzen
-            Block topBlock = topHalfLocation.getBlock();
-            topBlock.setType(bedMaterial, false);
-            Bed topData = (Bed) topBlock.getBlockData();
-            topData.setPart(Bed.Part.HEAD);
-            topData.setFacing(blockFace);
-            topBlock.setBlockData(topData, false);
-        }
-    }
-
-    private BlockFace getBedFacing(Location bottom, Location top) {
-        int dx = top.getBlockX() - bottom.getBlockX();
-        int dz = top.getBlockZ() - bottom.getBlockZ();
-
-        if (dx == 1) return BlockFace.EAST;
-        if (dx == -1) return BlockFace.WEST;
-        if (dz == 1) return BlockFace.SOUTH;
-        if (dz == -1) return BlockFace.NORTH;
-
-        throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
-    }
 }
