@@ -54,6 +54,7 @@ public class InGameState extends AbstractGameState implements Listener {
         context.logger().info(component);
 
         allocateTeams();
+        prepareMap();
         teleportPlayers();
         preparePlayers();
     }
@@ -148,6 +149,47 @@ public class InGameState extends AbstractGameState implements Listener {
                 player.getInventory().setArmorContents(new ItemStack[]{boots, leggings, chestplate, helmet});
                 player.getInventory().setItem(0, woodSword);
             }
+        }
+    }
+
+    private void prepareMap() {
+        for (Team team : teams) {
+            Location bedBottomHalf = team.bedBottomHalf();
+            switch (team.name()) {
+                case "white" ->
+                    bedBottomHalf.getBlock().setType(Material.WHITE_BED);
+                case "light_gray" ->
+                    bedBottomHalf.getBlock().setType(Material.LIGHT_GRAY_BED);
+                case "dark_gray" ->
+                    bedBottomHalf.getBlock().setType(Material.GRAY_BED);
+                case "black" ->
+                    bedBottomHalf.getBlock().setType(Material.BLACK_BED);
+                case "brown" ->
+                    bedBottomHalf.getBlock().setType(Material.BROWN_BED);
+                case "red" ->
+                    bedBottomHalf.getBlock().setType(Material.RED_BED);
+                case "orange" ->
+                    bedBottomHalf.getBlock().setType(Material.ORANGE_BED);
+                case "yellow" ->
+                    bedBottomHalf.getBlock().setType(Material.YELLOW_BED);
+                case "light_green" ->
+                    bedBottomHalf.getBlock().setType(Material.LIME_BED);
+                case "green" ->
+                    bedBottomHalf.getBlock().setType(Material.GREEN_BED);
+                case "cyan" ->
+                    bedBottomHalf.getBlock().setType(Material.CYAN_BED);
+                case "light_blue" ->
+                    bedBottomHalf.getBlock().setType(Material.LIGHT_BLUE_BED);
+                case "blue" ->
+                    bedBottomHalf.getBlock().setType(Material.BLUE_BED);
+                case "purple" ->
+                    bedBottomHalf.getBlock().setType(Material.PURPLE_BED);
+                case "magenta" ->
+                    bedBottomHalf.getBlock().setType(Material.MAGENTA_BED);
+                case "pink" ->
+                    bedBottomHalf.getBlock().setType(Material.PINK_BED);
+            }
+            //bedBottomHalf.getBlock().setType(Material.BED);
         }
     }
 
