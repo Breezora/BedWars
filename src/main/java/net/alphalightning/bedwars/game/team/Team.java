@@ -32,7 +32,9 @@ public class Team {
     public Location spawnpoint() {
        return this.backed.spawnpoint().asBukkitLocation();
     }
-
+    public int color() {
+        return this.backed.color();
+    }
     @Override
     public String toString() {
         return "Team{" +

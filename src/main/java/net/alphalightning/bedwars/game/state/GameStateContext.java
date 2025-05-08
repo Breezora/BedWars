@@ -38,7 +38,7 @@ public class GameStateContext {
 
         this.states = new GameState[2];
         this.states[0] = new LobbyState(plugin, this, mapManager);
-        this.states[1] = new InGameState(this, mapManager);
+        this.states[1] = new InGameState(plugin, this, mapManager);
     }
 
     public void setGameState(int state) {
