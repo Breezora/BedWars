@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.game.team;
 
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +27,10 @@ public class Team {
 
     public @NotNull List<Player> players() {
         return this.players;
+    }
+
+    public Location spawnpoint() {
+       return this.backed.spawnpoint().asBukkitLocation();
     }
 
     @Override
