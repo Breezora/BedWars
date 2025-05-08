@@ -1,5 +1,7 @@
 package net.alphalightning.bedwars.game.state.states;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.DyedItemColor;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -8,13 +10,10 @@ import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
+import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,27 +64,26 @@ public class InGameState extends AbstractGameState {
     }
 
     private void preparePlayers() {
-        ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
-        ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-        ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
-        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-
-        LeatherArmorMeta helmetItemMeta = (LeatherArmorMeta) helmet.getItemMeta();
-        LeatherArmorMeta chestplateItemMeta = (LeatherArmorMeta) chestplate.getItemMeta();
-        LeatherArmorMeta leggingsItemMeta = (LeatherArmorMeta) leggings.getItemMeta();
-        LeatherArmorMeta bootsItemMeta = (LeatherArmorMeta) boots.getItemMeta();
 
         for (Team team : teams) {
             int color = team.color();
 
-            helmetItemMeta.setColor(Color.fromRGB(color));
-            chestplateItemMeta.setColor(Color.fromRGB(color));
-            leggingsItemMeta.setColor(Color.fromRGB(color));
-            bootsItemMeta.setColor(Color.fromRGB(color));
+            ItemStack helmet = new ItemBuilder(Material.LEATHER_HELMET)
+                    .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .build();
+            ItemStack chestplate = new ItemBuilder(Material.LEATHER_CHESTPLATE)
+                    .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .build();
+            ItemStack leggings = new ItemBuilder(Material.LEATHER_LEGGINGS)
+                    .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .build();
+            ItemStack boots = new ItemBuilder(Material.LEATHER_BOOTS)
+                    .set(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+                    .build();
 
             for (Player player : team.players()) {
                 player.getInventory().setArmorContents(new ItemStack[]{
-                        helmet, chestplate, leggings, boots
+                        boots, leggings, chestplate, helmet
                 });
             }
         }
