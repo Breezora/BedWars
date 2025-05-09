@@ -22,11 +22,13 @@ import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -108,6 +110,22 @@ public class InGameState extends AbstractGameState implements Listener {
     @EventHandler
     public void onPlayerBed(PlayerBedEnterEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        Block clicked = event.getClickedBlock();
+        if (clicked == null) {
+            return;
+        }
+
+        if (clicked.getType().name().endsWith("_BED")) {
+            event.setCancelled(true);
+        }
     }
 
     private void allocateTeams() {
