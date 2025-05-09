@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -102,6 +103,11 @@ public class InGameState extends AbstractGameState implements Listener {
                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerBed(PlayerBedEnterEvent event) {
+        event.setCancelled(true);
     }
 
     private void allocateTeams() {
