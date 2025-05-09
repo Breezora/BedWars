@@ -242,8 +242,8 @@ public class InGameState extends AbstractGameState implements Listener {
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
 
-            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.hexColorTag());
-            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.hexColorTag());
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.name());
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.name());
         }
     }
 
@@ -264,7 +264,7 @@ public class InGameState extends AbstractGameState implements Listener {
         Component destroyedByText = Component.text(destroyedBy);
         //Send all players message
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5F, 1.0F);
             player.sendMessage(Component.translatable("state.ingame.destroy.bed",
                     NamedTranslationArgument.component("destroyed", destroyedTeamName),
                     //Spielerfarbe+Spielername
