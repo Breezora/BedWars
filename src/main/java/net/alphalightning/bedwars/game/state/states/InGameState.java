@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -122,6 +123,24 @@ public class InGameState extends AbstractGameState implements Listener {
 
         if (clicked.getType().name().endsWith("_BED")) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+
+        Location breakLocation = event.getBlock().getLocation();
+        Player player = event.getPlayer();
+        for (Team team : teams) {
+            Location bedBottomHalf = team.bedBottomHalf();
+            Location bedTopHalf = team.bedTopHalf();
+
+            if (team.players().contains(player)) {
+                if (breakLocation == bedBottomHalf || breakLocation == bedTopHalf) {
+                    player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
+                }
+            }
+
         }
     }
 
