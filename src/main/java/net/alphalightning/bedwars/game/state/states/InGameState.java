@@ -135,28 +135,30 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        Block breakBlock = event.getBlock();
         Player player = event.getPlayer();
+        Block block = event.getBlock();
 
-        for (Team team : teams) {
-            if (team.players().contains(player)) {
-                if (breakBlock.hasMetadata("team")) {
-                    List<MetadataValue> metadata = breakBlock.getMetadata("team");
-                    for (MetadataValue value : metadata) {
-                        if (value.getOwningPlugin() == plugin) {
-                            String metadataValue = value.asString();
-                            if (metadataValue.equals(team.name())) {
-                                player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
-                                event.setCancelled(true);
-                            } else {
-                                sendDestruction(player, team);
-                                event.getBlock().getDrops().clear();
-                            }
-                        }
-                    }
-                }
-            }
+        if (!(context.currentState() instanceof InGameState)) return;
+
+        List<MetadataValue> metadataValues = block.getMetadata("team");
+        if (metadataValues.isEmpty()) return;
+
+        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
+        if (value.getOwningPlugin() == null) return;
+        if (!value.getOwningPlugin().equals(plugin)) return;
+
+        value.invalidate();
+        event.setCancelled(true);
+        event.getBlock().getDrops().clear();
+
+        Team destroyedTeam = (Team) value.value();
+        Team destroyerTeam = findTeamByPlayer(player);
+
+        if (destroyerTeam == null) {
+            throw new IllegalStateException("Player " + player.getName() + " is not on a team");
         }
+
+        sendDestruction(player, destroyerTeam, destroyedTeam);
     }
 
     private void allocateTeams() {
@@ -166,6 +168,14 @@ public class InGameState extends AbstractGameState implements Listener {
         int teamSize = mapManager.selected().teamSize();
 
         teams = teamAllocator.allocateTeams(players, maxTeams, teamSize);
+    }
+
+    private Team findTeamByPlayer(Player player) {
+        for (Team team : teams) {
+            if (!team.players().contains(player)) continue;
+            return team;
+        }
+        return null;
     }
 
     private void teleportPlayers() {
@@ -245,12 +255,12 @@ public class InGameState extends AbstractGameState implements Listener {
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
 
-            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.name());
-            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.name());
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team);
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team);
         }
     }
 
-    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace, String teamName) {
+    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace, Team team) {
         Block block = location.getBlock();
         block.setType(material);
 
@@ -258,11 +268,11 @@ public class InGameState extends AbstractGameState implements Listener {
         bed.setPart(part);
         bed.setFacing(blockFace);
         block.setBlockData(bed);
-        block.setMetadata("team", new FixedMetadataValue(plugin, teamName));
+        block.setMetadata("team", new FixedMetadataValue(plugin, team));
     }
 
-    private void sendDestruction(Player breaker, Team destroyed) {
-        Component coloredPlayerName = Component.text(breaker.getName()).style(Style.style().color(TextColor.color(destroyed.color())).build());
+    private void sendDestruction(Player breaker, Team destroyer, Team destroyed) {
+        Component coloredPlayerName = Component.text(breaker.getName()).style(Style.style().color(TextColor.color(destroyer.color())).build());
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5F, 1.0F);
