@@ -140,6 +140,8 @@ public class InGameState extends AbstractGameState implements Listener {
 
         if (!(context.currentState() instanceof InGameState)) return;
 
+        event.getBlock().getDrops().clear();
+
         List<MetadataValue> metadataValues = block.getMetadata("team");
         if (metadataValues.isEmpty()) return;
 
@@ -149,6 +151,10 @@ public class InGameState extends AbstractGameState implements Listener {
 
         Team destroyedTeam = (Team) value.value();
         Team destroyerTeam = findTeamByPlayer(player);
+
+        if (destroyedTeam == null) {
+            throw new IllegalStateException("Block " + block.getLocation() + " has no team metadata");
+        }
 
         if (destroyerTeam == null) {
             event.setCancelled(true);
@@ -161,10 +167,30 @@ public class InGameState extends AbstractGameState implements Listener {
             return;
         }
 
-        event.getBlock().getDrops().clear();
-        block.removeMetadata("team", plugin);
-
+        deleteBed(destroyedTeam);
         sendDestruction(player, destroyerTeam, destroyedTeam);
+    }
+
+    private void deleteBed(Team team) {
+        Location bottom = team.bedBottomHalf();
+        Location top = team.bedTopHalf();
+
+        Block bottomBlock = bottom.getBlock();
+        Block topBlock = top.getBlock();
+
+        removeMetadata(topBlock);
+        removeMetadata(bottomBlock);
+    }
+
+    private void removeMetadata(Block block) {
+        List<MetadataValue> metadataValues = block.getMetadata("team");
+        if (metadataValues.isEmpty()) return;
+
+        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
+        if (value.getOwningPlugin() == null) return;
+        if (!value.getOwningPlugin().equals(plugin)) return;
+
+        block.removeMetadata("team", plugin);
     }
 
     private void allocateTeams() {
