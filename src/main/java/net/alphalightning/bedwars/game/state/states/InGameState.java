@@ -12,10 +12,7 @@ import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
@@ -173,6 +170,8 @@ public class InGameState extends AbstractGameState implements Listener {
                     .build();
 
             for (Player player : team.players()) {
+                player.setGameMode(GameMode.SURVIVAL);
+
                 player.getInventory().setArmorContents(new ItemStack[]{boots, leggings, chestplate, helmet});
                 player.getInventory().setItem(0, woodSword);
             }
