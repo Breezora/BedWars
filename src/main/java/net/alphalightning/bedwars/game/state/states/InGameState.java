@@ -147,16 +147,22 @@ public class InGameState extends AbstractGameState implements Listener {
         if (value.getOwningPlugin() == null) return;
         if (!value.getOwningPlugin().equals(plugin)) return;
 
-        value.invalidate();
-        event.setCancelled(true);
-        event.getBlock().getDrops().clear();
-
         Team destroyedTeam = (Team) value.value();
         Team destroyerTeam = findTeamByPlayer(player);
 
         if (destroyerTeam == null) {
+            event.setCancelled(true);
             throw new IllegalStateException("Player " + player.getName() + " is not on a team");
         }
+
+        if (destroyerTeam.equals(destroyedTeam)) {
+            player.sendMessage(Component.translatable("state.ingame.break.own"));
+            event.setCancelled(true);
+            return;
+        }
+
+        event.getBlock().getDrops().clear();
+        block.removeMetadata("team", plugin);
 
         sendDestruction(player, destroyerTeam, destroyedTeam);
     }
