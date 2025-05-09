@@ -258,8 +258,8 @@ public class InGameState extends AbstractGameState implements Listener {
         block.setMetadata("team", new FixedMetadataValue(plugin, teamName));
     }
 
-    private void sendDestruction(String destroyedBy, String destroyedTeam, String hexColorTag) {
-        Component destroyedTeamName = Component.text("team." + destroyedTeam);
+    private void sendDestruction(String destroyedBy, String destroyed, String hexColorTag) {
+        Component destroyedTeamName = Component.text("team." + destroyed);
 
         Component destroyedByText = Component.text(destroyedBy);
         //Send all players message
@@ -274,7 +274,7 @@ public class InGameState extends AbstractGameState implements Listener {
         // Send title to players that bed got destroyed
         for (Team team : teams) {
             for (Player player : team.players()) {
-                if (team.name().equals(destroyedTeam)) {
+                if (team.name().equals(destroyed)) {
                     Title title = Title.title(Component.translatable("state.ingame.destroy.ownbed"), Component.empty());
                     player.showTitle(title);
                 }
