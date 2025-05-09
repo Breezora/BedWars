@@ -29,6 +29,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
@@ -100,7 +102,7 @@ public class InGameState extends AbstractGameState implements Listener {
             Location spawn = team.spawnpoint();
 
             if (team.players().contains(player)) {
-               Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(spawn), 1L);
             }
         }
     }
@@ -128,19 +130,23 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-
-        Location breakLocation = event.getBlock().getLocation();
+        Block breakBlock = event.getBlock();
         Player player = event.getPlayer();
-        for (Team team : teams) {
-            Location bedBottomHalf = team.bedBottomHalf();
-            Location bedTopHalf = team.bedTopHalf();
 
+        for (Team team : teams) {
             if (team.players().contains(player)) {
-                if (breakLocation == bedBottomHalf || breakLocation == bedTopHalf) {
-                    player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
+                if (breakBlock.hasMetadata("team")) {
+                    List<MetadataValue> metadata = breakBlock.getMetadata("team");
+                    for (MetadataValue value : metadata) {
+                        if (value.getOwningPlugin() == plugin) {
+                            String metadataValue = value.asString();
+                            if (metadataValue.equals(team.name())) {
+                                player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
+                            }
+                        }
+                    }
                 }
             }
-
         }
     }
 
@@ -199,7 +205,8 @@ public class InGameState extends AbstractGameState implements Listener {
 
     private boolean isArmor(ItemStack item) {
         return switch (item.getType()) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS, CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, DIAMOND_BOOTS, DIAMOND_LEGGINGS,
+                 CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, IRON_BOOTS, IRON_LEGGINGS -> true;
             default -> false;
         };
     }
@@ -229,12 +236,12 @@ public class InGameState extends AbstractGameState implements Listener {
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
 
-            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace);
-            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace);
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.name());
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.name());
         }
     }
 
-    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace) {
+    private void createBed(Location location, Material material, Bed.Part part, BlockFace blockFace, String teamName) {
         Block block = location.getBlock();
         block.setType(material);
 
@@ -242,6 +249,7 @@ public class InGameState extends AbstractGameState implements Listener {
         bed.setPart(part);
         bed.setFacing(blockFace);
         block.setBlockData(bed);
+        block.setMetadata("team", new FixedMetadataValue(plugin, teamName));
     }
 
     private BlockFace getBedFacing(Location bottom, Location top) {
@@ -255,5 +263,5 @@ public class InGameState extends AbstractGameState implements Listener {
 
         throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
     }
-  
+
 }
