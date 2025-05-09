@@ -10,8 +10,10 @@ import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -143,6 +145,9 @@ public class InGameState extends AbstractGameState implements Listener {
                             if (metadataValue.equals(team.name())) {
                                 player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
                                 event.setCancelled(true);
+                            } else {
+                                sendDestruction(player.getName(), metadataValue, team.hexColorTag());
+                                event.getBlock().getDrops().clear();
                             }
                         }
                     }
@@ -237,8 +242,8 @@ public class InGameState extends AbstractGameState implements Listener {
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
 
-            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.name());
-            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.name());
+            createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team.hexColorTag());
+            createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team.hexColorTag());
         }
     }
 
@@ -251,6 +256,30 @@ public class InGameState extends AbstractGameState implements Listener {
         bed.setFacing(blockFace);
         block.setBlockData(bed);
         block.setMetadata("team", new FixedMetadataValue(plugin, teamName));
+    }
+
+    private void sendDestruction(String destroyedBy, String destroyedTeam, String hexColorTag) {
+        Component destroyedTeamName = Component.text("team." + destroyedTeam);
+
+        Component destroyedByText = Component.text(destroyedBy);
+        //Send all players message
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 1.0F, 1.0F);
+            player.sendMessage(Component.translatable("state.ingame.destroy.bed",
+                    NamedTranslationArgument.component("destroyed", destroyedTeamName),
+                    //Spielerfarbe+Spielername
+                    NamedTranslationArgument.component("team_color", Component.text(hexColorTag)),
+                    NamedTranslationArgument.component("name", destroyedByText)));
+        }
+        // Send title to players that bed got destroyed
+        for (Team team : teams) {
+            for (Player player : team.players()) {
+                if (team.name().equals(destroyedTeam)) {
+                    Title title = Title.title(Component.translatable("state.ingame.destroy.ownbed"), Component.empty());
+                    player.showTitle(title);
+                }
+            }
+        }
     }
 
     private BlockFace getBedFacing(Location bottom, Location top) {

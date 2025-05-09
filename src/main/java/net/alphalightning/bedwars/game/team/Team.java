@@ -44,4 +44,9 @@ public class Team {
     public Location bedTopHalf() {
         return backed.bedTopHalf().asBukkitLocation();
     }
+
+    public String hexColorTag() {
+        String hexColor  = String.format("#%06X", color() & 0xFFFFFF);
+        return "color:"+hexColor;
+    }
 }
