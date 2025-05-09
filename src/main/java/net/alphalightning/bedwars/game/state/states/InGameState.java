@@ -142,6 +142,7 @@ public class InGameState extends AbstractGameState implements Listener {
                             String metadataValue = value.asString();
                             if (metadataValue.equals(team.name())) {
                                 player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
+                                event.setCancelled(true);
                             }
                         }
                     }
