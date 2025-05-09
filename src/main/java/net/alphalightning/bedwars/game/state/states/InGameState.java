@@ -140,8 +140,6 @@ public class InGameState extends AbstractGameState implements Listener {
 
         if (!(context.currentState() instanceof InGameState)) return;
 
-        event.getBlock().getDrops().clear();
-
         List<MetadataValue> metadataValues = block.getMetadata("team");
         if (metadataValues.isEmpty()) return;
 
@@ -166,6 +164,8 @@ public class InGameState extends AbstractGameState implements Listener {
             event.setCancelled(true);
             return;
         }
+
+        event.setDropItems(false);
 
         deleteBed(destroyedTeam);
         sendDestruction(player, destroyerTeam, destroyedTeam);
