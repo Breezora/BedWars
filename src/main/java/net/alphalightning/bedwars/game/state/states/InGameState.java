@@ -13,6 +13,8 @@ import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -36,6 +38,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +149,7 @@ public class InGameState extends AbstractGameState implements Listener {
                                 player.sendMessage(Component.translatable("state.ingame.break.ownbed"));
                                 event.setCancelled(true);
                             } else {
-                                sendDestruction(player.getName(), metadataValue, team.hexColorTag());
+                                sendDestruction(player, team);
                                 event.getBlock().getDrops().clear();
                             }
                         }
@@ -258,31 +261,29 @@ public class InGameState extends AbstractGameState implements Listener {
         block.setMetadata("team", new FixedMetadataValue(plugin, teamName));
     }
 
-    private void sendDestruction(String destroyedBy, String destroyed, String hexColorTag) {
-        Component destroyedTeamName = Component.text("team." + destroyed);
+    private void sendDestruction(Player breaker, Team destroyed) {
+        Component coloredPlayerName = Component.text(breaker.getName()).style(Style.style().color(TextColor.color(destroyed.color())).build());
 
-        Component destroyedByText = Component.text(destroyedBy);
-        //Send all players message
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5F, 1.0F);
             player.sendMessage(Component.translatable("state.ingame.destroy.bed",
-                    NamedTranslationArgument.component("destroyed", destroyedTeamName),
-                    //Spielerfarbe+Spielername
-                    NamedTranslationArgument.component("team_color", Component.text(hexColorTag)),
-                    NamedTranslationArgument.component("name", destroyedByText)));
+                    NamedTranslationArgument.component("destroyed", Component.translatable("team." + destroyed.name())),
+                    NamedTranslationArgument.component("name", coloredPlayerName))
+            );
         }
-        // Send title to players that bed got destroyed
+        //Send title to team players of the destroyed bed
         for (Team team : teams) {
+            if (!destroyed.equals(team)) continue;
+
             for (Player player : team.players()) {
-                if (team.name().equals(destroyed)) {
-                    Title title = Title.title(Component.translatable("state.ingame.destroy.ownbed"), Component.empty());
-                    player.showTitle(title);
-                }
+                Title.Times times = Title.Times.times(Duration.ofSeconds(0), Duration.ofSeconds(2), Duration.ofSeconds(1));
+                Title title = Title.title(Component.translatable("state.ingame.destroy.own"), Component.empty(), times);
+                player.showTitle(title);
             }
         }
     }
 
-    private BlockFace getBedFacing(Location bottom, Location top) {
+    private BlockFace getBedFacing(@NotNull Location bottom, @NotNull Location top) {
         int dx = top.getBlockX() - bottom.getBlockX();
         int dz = top.getBlockZ() - bottom.getBlockZ();
 
