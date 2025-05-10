@@ -49,6 +49,8 @@ public final class SelectionWandTool implements Listener {
         if (block == null) return;
         if (!player.getInventory().getItemInMainHand().equals(tool)) return;
 
+        event.setCancelled(true);
+
         switch (event.getAction()) {
             case LEFT_CLICK_BLOCK -> first(block.getLocation());
             case RIGHT_CLICK_BLOCK -> second(block.getLocation());
