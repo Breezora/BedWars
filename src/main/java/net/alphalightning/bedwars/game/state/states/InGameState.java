@@ -4,12 +4,15 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.game.entity.VillagerManager;
+import net.alphalightning.bedwars.game.entity.VillagerType;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
+import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -47,11 +50,13 @@ public class InGameState extends AbstractGameState implements Listener {
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private List<Team> teams;
+    private final VillagerManager villagerManager;
 
-    public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
+    public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager, VillagerManager villagerManager) {
         super(context);
         this.plugin = plugin;
         this.mapManager = mapManager;
+        this.villagerManager = villagerManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
     }
@@ -66,9 +71,16 @@ public class InGameState extends AbstractGameState implements Listener {
 
         allocateTeams();
         placeBeds();
-        createVillagers();
-        teleportPlayers();
+        //Spawn Villager Item and Upgrade Shop Villagers
+        for (JacksonLocation villager: mapManager.selected().shopVillager()) {
+            villagerManager.createVillagers(villager, VillagerType.SHOP);
+        }
+        for (JacksonLocation villager: mapManager.selected().upgradeVillager()) {
+            villagerManager.createVillagers(villager, VillagerType.UPGRADE);
+        }
+
         preparePlayers();
+        teleportPlayers();
     }
 
     @Override
@@ -328,9 +340,7 @@ public class InGameState extends AbstractGameState implements Listener {
         }
     }
 
-    private void createVillagers() {
 
-    }
 
     private BlockFace getBedFacing(@NotNull Location bottom, @NotNull Location top) {
         int dx = top.getBlockX() - bottom.getBlockX();
