@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.eldoria.jacksonbukkit.JacksonPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.alphalightning.bedwars.commands.CreateMapCommand;
-import net.alphalightning.bedwars.commands.ForceMapCommand;
-import net.alphalightning.bedwars.commands.StartCommand;
-import net.alphalightning.bedwars.commands.TestGuiCommand;
+import net.alphalightning.bedwars.commands.*;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
@@ -133,6 +130,8 @@ public class BedWarsPlugin extends JavaPlugin {
         }
         if (environment != Environment.PRODUCTION) {
             new TestGuiCommand(this).register(manager);
+            new TestWandCommand(this).register(manager);
+
             new CreateMapCommand(this, setupManager).register(manager);
 
             getComponentLogger().info(MiniMessage.miniMessage().deserialize("<green>Enabled <reset>map creation"));
