@@ -18,7 +18,7 @@ public class TestWandCommand extends PaperCommand<@NotNull BedWarsPlugin> {
 
     @Override
     public void register(@NotNull CommandManager<PaperCommandSource> commandManager) {
-        commandManager.command(commandManager.commandBuilder("testgui")
+        commandManager.command(commandManager.commandBuilder("testwand")
                 .senderType(PaperPlayerCommandSource.class)
                 .handler(this::runCommand)
         );
