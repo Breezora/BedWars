@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.util;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
@@ -62,12 +63,23 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void first(Location first) {
+       assertNotSame();
+
         this.first = first;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
     }
 
     private void second(Location second) {
+        assertNotSame();
+
         this.second = second;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
+    }
+
+    private void assertNotSame() {
+        if (first.equals(second)) {
+            Feedback.error(owner);
+            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
+        }
     }
 }
