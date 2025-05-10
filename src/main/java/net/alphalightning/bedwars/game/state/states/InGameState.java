@@ -50,13 +50,11 @@ public class InGameState extends AbstractGameState implements Listener {
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private List<Team> teams;
-    private final VillagerManager villagerManager;
 
-    public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager, VillagerManager villagerManager) {
+    public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
         this.plugin = plugin;
         this.mapManager = mapManager;
-        this.villagerManager = villagerManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
     }
@@ -64,6 +62,9 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void start() {
+
+        VillagerManager villagerManager = new VillagerManager();
+
         TranslatableComponent component = Component.translatable("state.ingame.start");
 
         Bukkit.broadcast(component);
