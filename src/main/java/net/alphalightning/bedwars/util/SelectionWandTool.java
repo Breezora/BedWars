@@ -64,7 +64,7 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void first(Location first) {
-       assertNotSame();
+        assertNotSame();
 
         this.first = first;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
@@ -78,6 +78,7 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void assertNotSame() {
+        if (first == null || second == null) return;
         if (first.equals(second)) {
             Feedback.error(owner);
             owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
