@@ -13,25 +13,22 @@ public class VillagerManager {
 
         if (villagerLocation == null) return;
 
-        Villager shopVillager = villagerLocation.getWorld().spawn(villagerLocation, Villager.class);
+        Villager shopVillager = villagerLocation.getWorld().spawn(villagerLocation.toCenterLocation().subtract(0, 0.5D, 0), Villager.class);
         shopVillager.setAI(false);
         shopVillager.setSilent(true);
         shopVillager.setGravity(false);
         shopVillager.setNoPhysics(true);
         shopVillager.setInvulnerable(true);
 
-        TextDisplay textDisplayTop = villagerLocation.getWorld().spawn(villagerLocation.add(0, 1.95D, 0), TextDisplay.class);
-        TextDisplay textDisplayBottom = villagerLocation.getWorld().spawn(villagerLocation.add(0, 1.7D, 0), TextDisplay.class);
+        TextDisplay textDisplayTop = villagerLocation.getWorld().spawn(villagerLocation.toCenterLocation().add(0, 1.95D, 0), TextDisplay.class);
+        TextDisplay textDisplayBottom = villagerLocation.getWorld().spawn(villagerLocation.toCenterLocation().add(0, 1.7D, 0), TextDisplay.class);
 
         String key = switch (villagerType) {
             case SHOP -> "entity.villager.shop.item";
             case UPGRADE -> "entity.villager.shop.upgrade";
-            default -> null;
         };
 
-        if (key != null) {
-            textDisplayTop.text(Component.translatable(key));
-        }
+        textDisplayTop.text(Component.translatable(key));
         textDisplayBottom.text(Component.translatable("entity.interact"));
 
     }
