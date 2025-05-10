@@ -50,7 +50,7 @@ public final class GameMapSetup implements MapSetup {
     // Configuration
     private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<JacksonTeam> teams = new ArrayList<>();
-    private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
+    private final List<JacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
     private JacksonLocation spectatorSpawn;
     private final String name;
@@ -192,7 +192,7 @@ public final class GameMapSetup implements MapSetup {
     }
 
     public void configureShopVillager(@NotNull List<Location> locations) {
-        this.shopVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+        this.shopVillagerLocations.addAll(locations.stream().map(JacksonLocation::new).toList());
     }
 
     public void configureUpgradeVillager(@NotNull List<Location> locations) {

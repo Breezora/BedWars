@@ -66,6 +66,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
         allocateTeams();
         placeBeds();
+        createVillagers();
         teleportPlayers();
         preparePlayers();
     }
@@ -325,6 +326,10 @@ public class InGameState extends AbstractGameState implements Listener {
                 player.showTitle(title);
             }
         }
+    }
+
+    private void createVillagers() {
+
     }
 
     private BlockFace getBedFacing(@NotNull Location bottom, @NotNull Location top) {
