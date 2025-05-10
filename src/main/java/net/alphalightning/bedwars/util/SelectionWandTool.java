@@ -64,26 +64,26 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void first(Location first) {
-        if(checkNotSame()) return;
+        if (checkSame()) return;
 
         this.first = first;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
     }
 
     private void second(Location second) {
-        if(checkNotSame()) return;
+        if (checkSame()) return;
 
         this.second = second;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
     }
 
-    private boolean checkNotSame() {
-        if (first == null || second == null) return true;
+    private boolean checkSame() {
+        if (first == null || second == null) return false;
         if (first.equals(second)) {
             owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
             Feedback.error(owner);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
