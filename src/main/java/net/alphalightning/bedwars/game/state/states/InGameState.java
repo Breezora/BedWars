@@ -308,10 +308,12 @@ public class InGameState extends AbstractGameState implements Listener {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5F, 1.0F);
+            player.sendMessage(Component.empty());
             player.sendMessage(Component.translatable("state.ingame.destroy.bed",
                     NamedTranslationArgument.component("team", Component.translatable("team." + destroyed.name().replace("_", "-"))),
                     NamedTranslationArgument.component("player", coloredPlayerName))
             );
+            player.sendMessage(Component.empty());
         }
         //Send title to team players of the destroyed bed
         for (Team team : teams) {
