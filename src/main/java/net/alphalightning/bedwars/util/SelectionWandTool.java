@@ -1,6 +1,7 @@
 package net.alphalightning.bedwars.util;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
@@ -63,32 +64,23 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void first(Location first) {
-        if (this.first == null || second == null) {
-            updateFirst(first);
+        if (second != null && second.equals(first)) {
+            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
+            Feedback.error(owner);
             return;
         }
-        if (first.equals(second)) {
-            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
-        }
+        owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
+        this.first = first;
     }
 
     private void second(Location second) {
-        if (this.first == null || second == null) {
-            updateSecond(second);
+        if (first != null && first.equals(second)) {
+            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
+            Feedback.error(owner);
             return;
         }
-        if (first.equals(second)) {
-            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
-        }
-    }
-
-    private void updateFirst(Location first) {
-        this.first = first;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
+        this.second = second;
     }
 
-    private void updateSecond(Location second) {
-        this.second = second;
-        owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
-    }
 }
