@@ -28,7 +28,7 @@ public final class SelectionWandTool implements Listener {
                 .addLoreLines(
                         GlobalTranslator.render(Component.translatable("item.selection_wand.left"), owner.locale()),
                         GlobalTranslator.render(Component.translatable("item.selection_wand.right"), owner.locale()))
-                .hideTooltip(true)
+                .hideTooltip(false)
                 .build();
 
         owner.getInventory().clear();
@@ -45,6 +45,7 @@ public final class SelectionWandTool implements Listener {
         return second;
     }
 
+    //TODO: Das hier nicht als Listener haben, sondern als Methode useWand() haben und im Setup ausführen
     @EventHandler
     public void onToolUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
