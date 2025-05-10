@@ -26,6 +26,6 @@ public class TestWandCommand extends PaperCommand<@NotNull BedWarsPlugin> {
 
     private void runCommand(@NotNull CommandContext<PaperPlayerCommandSource> context) {
         final Player player = (Player) context.sender().plattformSender();
-        new SelectionWandTool(player);
+        new SelectionWandTool(plugin, player);
     }
 }

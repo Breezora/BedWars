@@ -1,7 +1,9 @@
 package net.alphalightning.bedwars.util;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,7 +20,7 @@ public final class SelectionWandTool implements Listener {
     private final ItemStack tool;
     private Location first, second;
 
-    public SelectionWandTool(Player owner) {
+    public SelectionWandTool(BedWarsPlugin plugin, Player owner) {
         this.owner = owner;
         this.tool = new ItemBuilder(Material.ARROW)
                 .setCustomName(GlobalTranslator.render(Component.translatable("item.selection_wand"), owner.locale()))
@@ -30,6 +32,8 @@ public final class SelectionWandTool implements Listener {
 
         owner.getInventory().clear();
         owner.getInventory().setItem(0, tool);
+
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public Location first() {
