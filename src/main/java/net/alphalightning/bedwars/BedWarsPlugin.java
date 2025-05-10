@@ -15,7 +15,6 @@ import net.alphalightning.bedwars.commands.cloud.sender.PaperCommandSource;
 import net.alphalightning.bedwars.commands.cloud.sender.PaperPlayerCommandSource;
 import net.alphalightning.bedwars.config.Configuration;
 import net.alphalightning.bedwars.config.Environment;
-import net.alphalightning.bedwars.game.listener.BlockListener;
 import net.alphalightning.bedwars.game.listener.FoodLevelListener;
 import net.alphalightning.bedwars.game.state.GameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -116,7 +115,7 @@ public class BedWarsPlugin extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
 
         pluginManager.registerEvents(new FoodLevelListener(), this);
-        pluginManager.registerEvents(new BlockListener(this), this);
+        //pluginManager.registerEvents(new BlockListener(this), this);
     }
 
     private void registerCommands() {

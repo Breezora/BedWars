@@ -32,14 +32,21 @@ public class Team {
     public Location spawnpoint() {
        return this.backed.spawnpoint().asBukkitLocation();
     }
+
     public int color() {
         return this.backed.color();
     }
-    @Override
-    public String toString() {
-        return "Team{" +
-                "players=" + players +
-                ", backed=" + backed +
-                '}';
+
+    public Location bedBottomHalf() {
+        return backed.bedBottomHalf().asBukkitLocation();
+    }
+
+    public Location bedTopHalf() {
+        return backed.bedTopHalf().asBukkitLocation();
+    }
+
+    public String hexColorTag() {
+        String hexColor  = String.format("#%06X", color() & 0xFFFFFF);
+        return "<color:"+hexColor+">";
     }
 }
