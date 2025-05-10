@@ -79,7 +79,7 @@ public final class SelectionWandTool implements Listener {
             Feedback.error(owner);
             return;
         }
-        owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
+        owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
         this.second = second;
     }
 
