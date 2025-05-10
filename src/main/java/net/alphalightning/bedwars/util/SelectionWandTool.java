@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars.util;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.feedback.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
@@ -64,26 +63,32 @@ public final class SelectionWandTool implements Listener {
     }
 
     private void first(Location first) {
-        if (checkSame()) return;
+        if (this.first == null || second == null) {
+            updateFirst(first);
+            return;
+        }
+        if (first.equals(second)) {
+            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
+        }
+    }
 
+    private void second(Location second) {
+        if (this.first == null || second == null) {
+            updateSecond(second);
+            return;
+        }
+        if (first.equals(second)) {
+            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
+        }
+    }
+
+    private void updateFirst(Location first) {
         this.first = first;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
     }
 
-    private void second(Location second) {
-        if (checkSame()) return;
-
+    private void updateSecond(Location second) {
         this.second = second;
         owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
-    }
-
-    private boolean checkSame() {
-        if (first == null || second == null) return false;
-        if (first.equals(second)) {
-            owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
-            Feedback.error(owner);
-            return true;
-        }
-        return false;
     }
 }
