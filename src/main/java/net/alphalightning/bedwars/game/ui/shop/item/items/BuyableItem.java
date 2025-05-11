@@ -56,12 +56,12 @@ public class BuyableItem extends AbstractItem {
         return Objects.requireNonNull(plugin.translator().getMiniMessageString(itemLore.getFirst(), viewer.locale()));
     }
 
-    private String getCurrency(String toCheck) {
-        Map<String, String> COLOR_TO_CURRENCY = Map.of(
-                "white", "IRON",
-                "gold", "GOLD",
-                "dark_green", "EMERALD",
-                "aqua", "DIAMOND"
+    private ItemStack getCurrency(String toCheck) {
+        Map<String, ItemStack> COLOR_TO_CURRENCY = Map.of(
+                "white", new ItemStack(Material.IRON_INGOT),
+                "gold", new ItemStack(Material.GOLD_INGOT),
+                "dark_green", new ItemStack(Material.EMERALD),
+                "aqua", new ItemStack(Material.DIAMOND)
         );
 
         String color = toCheck.split("<")[2].split(">")[0];
@@ -75,7 +75,26 @@ public class BuyableItem extends AbstractItem {
     }
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        System.out.println("Dieses Item kostet: " + getCurrency(getPriceTag(player)) + " " + extractAmount(getPriceTag(player)));
+        System.out.println("Dieses Item kostet: " + getCurrency(getPriceTag(player)).getType().name() + " " + extractAmount(getPriceTag(player)));
+
+        if (hasEnoughCurrency(player, getCurrency(getPriceTag(player)), extractAmount(getPriceTag(player)))) {
+            System.out.println("Player has enough!");
+        } else {
+            System.out.println("Player has not enough!");
+        }
+    }
+
+    private boolean hasEnoughCurrency(Player player, ItemStack currency, int itemAmount) {
+        int count = 0;
+
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.isSimilar(currency)) {
+                count += item.getAmount();
+                if (count >= itemAmount) return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean hasNotEnoughSpace(Player player) {
