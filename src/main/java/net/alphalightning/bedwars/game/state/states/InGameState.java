@@ -62,8 +62,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void start() {
-
-        VillagerManager villagerManager = new VillagerManager();
+        VillagerManager villagerManager = new VillagerManager(plugin);
 
         TranslatableComponent component = Component.translatable("state.ingame.start");
 
