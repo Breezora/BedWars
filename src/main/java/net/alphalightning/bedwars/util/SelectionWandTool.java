@@ -40,6 +40,10 @@ public final class SelectionWandTool {
         return second;
     }
 
+    public boolean isComplete() {
+        return first != null && second != null;
+    }
+
     public void reset() {
         first = null;
         second = null;

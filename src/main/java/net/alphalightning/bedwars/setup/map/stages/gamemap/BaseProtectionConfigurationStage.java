@@ -75,6 +75,9 @@ public class BaseProtectionConfigurationStage extends Stage implements TeamConfi
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
         tool.onToolUse(event);
+
+        if (!tool.isComplete()) return;
+
         visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(List.of(tool.first().getBlock(), tool.second().getBlock()), team.color()));
 
         if (phase < count) {
