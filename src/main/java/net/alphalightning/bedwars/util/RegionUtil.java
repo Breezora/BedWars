@@ -4,13 +4,13 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 
 public final class RegionUtil {
 
@@ -26,13 +26,7 @@ public final class RegionUtil {
 
                 outputStream.write(1); // Version der Dateiformat-Version für den Fall, dass sich die Struktur mal ändert
 
-                for(JacksonTeam team : setup.teams()) {
-                    String teamName = team.name();
-
-                    // Schreibe Name vom Team
-                    byte[] teamBytes = teamName.getBytes(StandardCharsets.UTF_8);
-                    outputStream.writeInt(teamBytes.length);
-                    outputStream.write(teamBytes);
+                for (JacksonTeam team : setup.teams()) {
 
                     // Schreibe Informationen über die Dimensionen des Quaders
                     outputStream.writeInt(information.width());
@@ -52,6 +46,45 @@ public final class RegionUtil {
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save region file: " + exception.getMessage());
         }
+    }
+
+    public List<RegionInformation> loadRegions(BedWarsPlugin plugin, String mapName) {
+        List<RegionInformation> regions = new ArrayList<>();
+        Path path = plugin.getDataFolder().toPath()
+                .resolve("maps")
+                .resolve(mapName + ".bin");
+
+        if (!Files.exists(path)) return regions;
+
+        try (DataInputStream inputStream = new DataInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
+            while (inputStream.available() > 0) {
+                int version = inputStream.readInt();
+                if (version != 1) {
+                    plugin.getLogger().warning("Unknown region file version: " + version);
+                    continue;
+                }
+
+                // Lese Dimensionen
+                int width = inputStream.readInt();
+                int height = inputStream.readInt();
+                int depth = inputStream.readInt();
+                int minX = inputStream.readInt();
+                int minY = inputStream.readInt();
+                int minZ = inputStream.readInt();
+
+                // Lese BitSet
+                int bitSetLength = inputStream.readInt();
+                byte[] bitSetBytes = new byte[bitSetLength];
+                inputStream.readFully(bitSetBytes);
+                BitSet bitSet = BitSet.valueOf(bitSetBytes);
+
+                regions.add(new RegionInformation(width, height, depth, minX, minY, minZ, bitSet));
+            }
+
+        } catch (IOException exception) {
+            plugin.getLogger().severe("Could not read region file: " + exception.getMessage());
+        }
+        return regions;
     }
 
 }
