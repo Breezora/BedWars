@@ -81,13 +81,11 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotOnGround(player, location)) return;
         if (isNotStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE)) return;
-        if (isNotPlayerInSelection()) {
-            System.out.println(1);
-            return;
-        }
+        if (isNotPlayerInSelection()) return;
+
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
-        FloodFill floodFill = new FloodFill(location.add(0, 1, 0));
+        FloodFill floodFill = new FloodFill(location.add(OFFSET));
 
         System.out.println(2);
 
@@ -123,7 +121,11 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
 
     private boolean isNotPlayerInSelection() {
         CuboidSelection selection = selections.get(phase - 1);
-        return !selection.allBetween().contains(player.getLocation().add(OFFSET));
+        List<Location> locations = selection.allBetween();
+
+        locations.forEach(System.out::println);
+
+        return !locations.contains(player.getLocation());
     }
 
     private boolean isSelectionValid(Set<Location> locations) {
