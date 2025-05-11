@@ -25,7 +25,6 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,9 +123,23 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
 
     private boolean isSelectionValid(Set<Location> floodFillLocations) {
         CuboidSelection selection = selections.get(phase - 1);
-        List<Location> cuboidLocations = selection.allBetween();
 
-        return new HashSet<>(cuboidLocations).containsAll(floodFillLocations);
+        int minX = Math.min(selection.first().getBlockX(), selection.second().getBlockX());
+        int maxX = Math.max(selection.first().getBlockX(), selection.second().getBlockX());
+        int minY = Math.min(selection.first().getBlockY(), selection.second().getBlockY());
+        int maxY = Math.max(selection.first().getBlockY(), selection.second().getBlockY());
+        int minZ = Math.min(selection.first().getBlockZ(), selection.second().getBlockZ());
+        int maxZ = Math.max(selection.first().getBlockZ(), selection.second().getBlockZ());
+
+        for (Location location : floodFillLocations) {
+            int x = location.getBlockX();
+            int y = location.getBlockY();
+            int z = location.getBlockZ();
+
+            if (x < minX || x > maxX || y < minY || y > maxY || z < minZ || z > maxZ) return false;
+        }
+
+        return true;
     }
 
     private void createParticle(Location location) {
