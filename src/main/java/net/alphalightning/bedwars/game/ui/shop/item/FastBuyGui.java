@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.ui.shop.item.items.BuyableItem;
 import net.alphalightning.bedwars.game.ui.shop.item.items.BuyablePotionItem;
 import net.alphalightning.bedwars.game.ui.shop.item.items.CurrentItem;
@@ -10,7 +11,16 @@ import xyz.xenondevs.invui.gui.Gui;
 
 public class FastBuyGui {
 
-    public final Gui gui() {
+    private final BedWarsPlugin plugin;
+    private final Gui gui;
+
+
+    public FastBuyGui(BedWarsPlugin plugin) {
+        this.plugin = plugin;
+        this.gui = createGui();
+    }
+
+    private Gui createGui() {
 
         String level = "gui.shop.itemshop.upgradable.level.1";
 
@@ -32,42 +42,42 @@ public class FastBuyGui {
                         ". c e g i k m o ."
                 )
                 .addIngredient('a', new CurrentItem())
-                .addIngredient('b', new BuyableItem(Material.WHITE_WOOL, "gui.shop.itemshop.buyable.wool.name", 16,
+                .addIngredient('b', new BuyableItem(plugin, Material.WHITE_WOOL, "gui.shop.itemshop.buyable.wool.name", 16,
                         "gui.shop.itemshop.buyable.wool.price",
                         "",
                         "gui.shop.itemshop.buyable.wool.lore",
                         "gui.shop.itemshop.buyable.wool.lore.2",
                         "gui.shop.itemshop.buyable.wool.lore.3",
                         iron))
-                .addIngredient('c', new BuyableItem(Material.OAK_PLANKS, "gui.shop.itemshop.buyable.wood.name", 16,
+                .addIngredient('c', new BuyableItem(plugin, Material.OAK_PLANKS, "gui.shop.itemshop.buyable.wood.name", 16,
                         "gui.shop.itemshop.buyable.wood.price",
                         "",
                         "gui.shop.itemshop.buyable.wood.lore",
                         "gui.shop.itemshop.buyable.wood.lore.2",
                         "",
                         gold))
-                .addIngredient('d', new BuyableItem(Material.GLASS, "gui.shop.itemshop.buyable.glass.name", 4,
+                .addIngredient('d', new BuyableItem(plugin, Material.GLASS, "gui.shop.itemshop.buyable.glass.name", 4,
                         "gui.shop.itemshop.buyable.glass.price",
                         "",
                         "gui.shop.itemshop.buyable.glass.lore",
                         "",
                         iron))
-                .addIngredient('e', new BuyableItem(Material.END_STONE, "gui.shop.itemshop.buyable.endstone.name", 12,
+                .addIngredient('e', new BuyableItem(plugin, Material.END_STONE, "gui.shop.itemshop.buyable.endstone.name", 12,
                         "gui.shop.itemshop.buyable.endstone.price",
                         "",
                         "gui.shop.itemshop.buyable.endstone.lore",
                         "gui.shop.itemshop.buyable.endstone.lore.2",
                         "",
                         iron))
-                .addIngredient('f', new BuyableItem(Material.STONE_SWORD, "gui.shop.itemshop.buyable.stonesword.name", 1,
+                .addIngredient('f', new BuyableItem(plugin, Material.STONE_SWORD, "gui.shop.itemshop.buyable.stonesword.name", 1,
                         "gui.shop.itemshop.buyable.stonesword.price",
                         "",
                         iron))
-                .addIngredient('g', new BuyableItem(Material.IRON_SWORD, "gui.shop.itemshop.buyable.ironsword.name", 1,
+                .addIngredient('g', new BuyableItem(plugin, Material.IRON_SWORD, "gui.shop.itemshop.buyable.ironsword.name", 1,
                         "gui.shop.itemshop.buyable.ironsword.price",
                         "",
                         gold))
-                .addIngredient('h', new BuyableItem(Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
+                .addIngredient('h', new BuyableItem(plugin, Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodpickaxe.price",
                         level,
                         "",
@@ -79,7 +89,7 @@ public class FastBuyGui {
                         permrespawn3,
                         "",
                         iron))
-                .addIngredient('i', new BuyableItem(Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
+                .addIngredient('i', new BuyableItem(plugin, Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodaxe.price",
                         level,
                         "",
@@ -103,27 +113,27 @@ public class FastBuyGui {
                         "gui.shop.itemshop.buyable.potion.speed.lore",
                         "",
                         emerald))
-                .addIngredient('l', new BuyableItem(Material.TNT, "gui.shop.itemshop.buyable.tnt.name", 1,
+                .addIngredient('l', new BuyableItem(plugin, Material.TNT, "gui.shop.itemshop.buyable.tnt.name", 1,
                         "gui.shop.itemshop.buyable.tnt.price",
                         "",
                         "gui.shop.itemshop.buyable.tnt.lore",
                         "gui.shop.itemshop.buyable.tnt.lore.2",
                         "",
                         gold))
-                .addIngredient('m', new BuyableItem(Material.GOLDEN_APPLE, "gui.shop.itemshop.buyable.goldapple.name", 1,
+                .addIngredient('m', new BuyableItem(plugin, Material.GOLDEN_APPLE, "gui.shop.itemshop.buyable.goldapple.name", 1,
                         "gui.shop.itemshop.buyable.goldapple.price",
                         "",
                         "gui.shop.itemshop.buyable.goldapple.lore",
                         "",
                         gold))
-                .addIngredient('n', new BuyableItem(Material.CHAINMAIL_BOOTS, "gui.shop.itemshop.buyable.armor.chain.name", 1,
+                .addIngredient('n', new BuyableItem(plugin, Material.CHAINMAIL_BOOTS, "gui.shop.itemshop.buyable.armor.chain.name", 1,
                         "gui.shop.itemshop.buyable.armor.chain.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.chain.lore",
                         "gui.shop.itemshop.buyable.armor.chain.lore.2",
                         "",
                         iron))
-                .addIngredient('o', new BuyableItem(Material.IRON_BOOTS, "gui.shop.itemshop.buyable.armor.iron.name", 1,
+                .addIngredient('o', new BuyableItem(plugin, Material.IRON_BOOTS, "gui.shop.itemshop.buyable.armor.iron.name", 1,
                         "gui.shop.itemshop.buyable.armor.iron.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.iron.lore",
@@ -132,5 +142,7 @@ public class FastBuyGui {
                         gold))
                 .build();
     }
-
+    public Gui gui() {
+        return this.gui;
+    }
 }

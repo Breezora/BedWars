@@ -58,6 +58,8 @@ public class BedWarsPlugin extends JavaPlugin {
     private Environment environment;
     private GameStateContext gameStateContext;
 
+    private PluginMiniMessageTranslator translator;
+
     @Override
     public void onLoad() {
         loadMessageRegistry();
@@ -87,9 +89,10 @@ public class BedWarsPlugin extends JavaPlugin {
         store.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         MiniMessage miniMessage = MiniMessage.builder().build(); // Use this instance to register custom tags such as prefix
+        translator = new PluginMiniMessageTranslator(miniMessage, store);
 
         GlobalTranslator.translator().addSource(store);
-        GlobalTranslator.translator().addSource(new PluginMiniMessageTranslator(miniMessage, store));
+        GlobalTranslator.translator().addSource(translator);
     }
 
     private void loadConfiguration() {
@@ -175,4 +178,9 @@ public class BedWarsPlugin extends JavaPlugin {
     public GameStateContext gameStateContext() {
         return gameStateContext;
     }
+
+    public PluginMiniMessageTranslator translator() {
+        return translator;
+    }
+
 }

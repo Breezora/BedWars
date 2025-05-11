@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item.items;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
@@ -13,15 +14,19 @@ import xyz.xenondevs.invui.item.ItemProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BuyableItem extends AbstractItem {
+
+    private final BedWarsPlugin plugin;
 
     private final Material itemMaterial;
     private final String itemNameKey;
     private final List<String> itemLore;
     private final int itemAmount;
 
-    public BuyableItem(Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
+    public BuyableItem(BedWarsPlugin plugin, Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
+        this.plugin = plugin;
         this.itemMaterial = itemMaterial;
         this.itemNameKey = itemNameKey;
         this.itemLore = List.of(itemLore);
@@ -44,9 +49,11 @@ public class BuyableItem extends AbstractItem {
         }
         return builder.setLore(lore);
     }
-
+    private String getPrice(@NotNull Player viewer) {
+        return Objects.requireNonNull(plugin.translator().translate(itemLore.getFirst(), viewer.locale())).toPattern();
+    }
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-
+        System.out.println(getPrice(player));
     }
 }

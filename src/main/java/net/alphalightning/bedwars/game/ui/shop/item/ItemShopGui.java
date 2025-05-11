@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.ui.shop.item.items.TabChangeItem;
 import net.alphalightning.bedwars.game.ui.shop.item.legacy.KitsItem;
 import net.kyori.adventure.text.Component;
@@ -17,18 +18,30 @@ public class ItemShopGui {
 
     private final Single gui;
 
-    public ItemShopGui() {
+    Gui fastBuyGui;
+    Gui blocksGui;
+    Gui weaponsGui;
+    Gui armorGui;
+    Gui toolsGui;
+    Gui bowsGui;
+    Gui potionsGui;
+    Gui extrasGui;
+
+    public ItemShopGui(BedWarsPlugin plugin) {
         this.gui = createGui();
+
+        fastBuyGui = new FastBuyGui(plugin).gui();
+        blocksGui = new BlocksGui(plugin).gui();
+        weaponsGui = new WeaponsGui(plugin).gui();
+        armorGui = new ArmorGui(plugin).gui();
+        toolsGui = new ToolsGui(plugin).gui();
+        bowsGui = new BowsGui(plugin).gui();
+        potionsGui = new PotionsGui().gui();
+        extrasGui = new ExtrasGui(plugin).gui();
+
     }
 
-    Gui fastBuyGui = new FastBuyGui().gui();
-    Gui blocksGui = new BlocksGui().gui();
-    Gui weaponsGui = new WeaponsGui().gui();
-    Gui armorGui = new ArmorGui().gui();
-    Gui toolsGui = new ToolsGui().gui();
-    Gui bowsGui = new BowsGui().gui();
-    Gui potionsGui = new PotionsGui().gui();
-    Gui extrasGui = new ExtrasGui().gui();
+
 
     private Single createGui() {
         return Window.single()

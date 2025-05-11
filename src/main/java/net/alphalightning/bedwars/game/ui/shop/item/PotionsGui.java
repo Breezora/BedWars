@@ -8,7 +8,14 @@ import xyz.xenondevs.invui.gui.Gui;
 
 public class PotionsGui {
 
-    public final Gui gui() {
+    private final Gui gui;
+
+    public PotionsGui() {
+        this.gui = createGui();
+    }
+
+
+    private Gui createGui() {
 
         String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
 
@@ -40,4 +47,7 @@ public class PotionsGui {
                 .build();
     }
 
+    public Gui gui() {
+        return this.gui;
+    }
 }

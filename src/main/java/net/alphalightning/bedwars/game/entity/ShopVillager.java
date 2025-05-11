@@ -4,7 +4,6 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.state.states.InGameState;
-import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.ui.shop.item.ItemShopGui;
 import net.alphalightning.bedwars.game.ui.shop.upgrade.UpgradeShopGui;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
@@ -57,10 +56,10 @@ public class ShopVillager implements Listener {
         
         if (!(villager instanceof Villager)) return;
         
-        List<MetadataValue> metadataValuesvalues = villager.getMetadata("type");
-        if (metadataValuesvalues.isEmpty()) return;
+        List<MetadataValue> metadataValues = villager.getMetadata("type");
+        if (metadataValues.isEmpty()) return;
         
-        FixedMetadataValue value = (FixedMetadataValue) metadataValuesvalues.getFirst();
+        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
         
         if (value.getOwningPlugin() == null) return;
         if (!value.getOwningPlugin().equals(plugin)) return;
