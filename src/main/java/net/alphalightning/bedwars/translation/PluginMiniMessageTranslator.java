@@ -19,7 +19,7 @@ public class PluginMiniMessageTranslator extends MiniMessageTranslator {
     }
 
     @Override
-    protected @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
+    public @Nullable String getMiniMessageString(@NotNull String key, @NotNull Locale locale) {
         if (!store.contains(key)) {
             return null;
         }

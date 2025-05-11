@@ -50,7 +50,7 @@ public class BuyableItem extends AbstractItem {
         return builder.setLore(lore);
     }
     private String getPrice(@NotNull Player viewer) {
-        return Objects.requireNonNull(plugin.translator().translate(itemLore.getFirst(), viewer.locale())).toPattern();
+        return Objects.requireNonNull(plugin.translator().getMiniMessageString(itemLore.getFirst(), viewer.locale()));
     }
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
