@@ -122,6 +122,8 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
             return;
         }
 
+        player.getInventory().clear();
+
         setup.cancel(false);
         this.activeMaps.remove(toLowerCase(setup.mapName()));
         this.visualizationManager.unregisterAll(setup);

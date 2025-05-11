@@ -47,7 +47,7 @@ public final class GameMapSetup implements MapSetup {
 
     // Setup handling
     private final BedWarsPlugin plugin;
-    private final String fileName;
+    private final String fileName, binaryFileName;
     private Player player;
     private int stage;
 
@@ -71,6 +71,7 @@ public final class GameMapSetup implements MapSetup {
         this.player = player;
         this.name = name;
         this.fileName = name + ".json";
+        this.binaryFileName = name + ".bin";
         this.cancelStage = new CancelStage(plugin, player, this, false);
     }
 
@@ -101,7 +102,7 @@ public final class GameMapSetup implements MapSetup {
             case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
             case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this).run();
             case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this).run();
-            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
+            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false).run();
             default -> cancelStage.run();
         }
     }

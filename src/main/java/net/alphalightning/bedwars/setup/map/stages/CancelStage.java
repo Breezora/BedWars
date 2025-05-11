@@ -43,6 +43,8 @@ public class CancelStage extends Stage {
             return;
         }
 
+        player.getInventory().clear();
+
         event.setCancelled(true);
         setupManager.cancelSetup(player);
     }
