@@ -15,11 +15,9 @@ import java.util.List;
 
 public class ItemShopGui {
 
-    private final Player player;
     private final Single gui;
 
-    public ItemShopGui(Player player) {
-        this.player = player;
+    public ItemShopGui() {
         this.gui = createGui();
     }
 
@@ -59,8 +57,8 @@ public class ItemShopGui {
 
     }
 
-    public void showGui() {
-        this.gui.open(this.player);
+    public void showGui(Player player) {
+        this.gui.open(player);
     }
 
 }

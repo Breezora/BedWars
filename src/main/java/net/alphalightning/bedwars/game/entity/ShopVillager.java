@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.state.states.InGameState;
+import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.ui.shop.item.ItemShopGui;
 import net.alphalightning.bedwars.game.ui.shop.upgrade.UpgradeShopGui;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
@@ -13,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
@@ -24,11 +27,16 @@ public class ShopVillager implements Listener {
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private final GameStateContext context;
+    private final ItemShopGui itemShopGui;
+    private final UpgradeShopGui upgradeShopGui;
 
-    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context) {
+    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context, ItemShopGui itemShopGui, UpgradeShopGui upgradeShopGui, Team team) {
         this.plugin = plugin;
         this.mapManager = mapManager;
         this.context = context;
+        this.itemShopGui = itemShopGui;
+        this.upgradeShopGui = upgradeShopGui;
+        this.team = team;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     
@@ -63,11 +71,9 @@ public class ShopVillager implements Listener {
         VillagerType type = (VillagerType) value.value();
 
         switch (type) {
-            case SHOP -> new ItemShopGui(player).showGui();
-            case UPGRADE -> new UpgradeShopGui(player).showGui();
+            case SHOP -> itemShopGui.showGui(player);
+            case UPGRADE -> upgradeShopGui.showGui(player);
             case null -> {}
         }
-        
     }
-    
 }
