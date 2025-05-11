@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -121,8 +122,11 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         return selection.allBetween().contains(player.getLocation().getBlock().getLocation());
     }
 
-    private boolean isSelectionValid(Set<Location> locations) {
-        return true;
+    private boolean isSelectionValid(Set<Location> floodFillLocations) {
+        CuboidSelection selection = selections.get(phase - 1);
+        List<Location> cuboidLocations = selection.allBetween();
+
+        return new HashSet<>(cuboidLocations).containsAll(floodFillLocations);
     }
 
     private void createParticle(Location location) {
