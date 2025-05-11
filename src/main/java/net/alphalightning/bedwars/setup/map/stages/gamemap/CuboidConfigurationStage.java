@@ -82,6 +82,12 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         if (!tool.isComplete()) return;
 
+        if (!tool.first().getWorld().equals(tool.second().getWorld())) {
+            player.sendMessage(Component.translatable("mapsetup.stage.16.world"));
+            Feedback.error(player);
+            return;
+        }
+
         CuboidSelection selection = new CuboidSelection(team, tool.first(), tool.second());
         selections.add(selection);
         visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color()));
