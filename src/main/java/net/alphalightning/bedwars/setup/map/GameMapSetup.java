@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
+import net.alphalightning.bedwars.util.CuboidSelection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class GameMapSetup implements MapSetup {
 
@@ -50,10 +52,11 @@ public final class GameMapSetup implements MapSetup {
     private int stage;
 
     // Configuration
-    private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
+    private final Map<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<JacksonTeam> teams = new ArrayList<>();
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
+    private final List<CuboidSelection> selections = new ArrayList<>();
     private JacksonLocation spectatorSpawn;
     private final String name;
     private boolean slowIron;
@@ -201,6 +204,10 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureUpgradeVillager(@NotNull List<Location> locations) {
         this.upgradeVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+    }
+
+    public void configureSelections(@NotNull List<CuboidSelection> selections) {
+        this.selections.addAll(selections);
     }
 }
 
