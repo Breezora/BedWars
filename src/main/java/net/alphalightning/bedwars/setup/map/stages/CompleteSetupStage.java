@@ -21,7 +21,11 @@ public class CompleteSetupStage extends Stage {
 
     @Override
     public void run() {
-        player.sendMessage(Component.translatable(isLobbySetup ? "lobbysetup.finish" : "mapsetup.finish", Component.text(fileName), Component.text(binaryFileName)));
+        if (isLobbySetup) {
+            player.sendMessage(Component.translatable("lobbysetup.finish", Component.text(fileName)));
+        } else {
+            player.sendMessage(Component.translatable("mapsetup.finish", Component.text(fileName), Component.text(binaryFileName)));
+        }
         Feedback.complete(player);
     }
 }
