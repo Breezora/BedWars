@@ -28,8 +28,6 @@ public class ItemShopGui {
     Gui extrasGui;
 
     public ItemShopGui(BedWarsPlugin plugin) {
-        this.gui = createGui();
-
         fastBuyGui = new FastBuyGui(plugin).gui();
         blocksGui = new BlocksGui(plugin).gui();
         weaponsGui = new WeaponsGui(plugin).gui();
@@ -39,6 +37,7 @@ public class ItemShopGui {
         potionsGui = new PotionsGui().gui();
         extrasGui = new ExtrasGui(plugin).gui();
 
+        this.gui = createGui();
     }
 
     private Single createGui() {
