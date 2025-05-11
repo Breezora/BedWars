@@ -4,6 +4,7 @@ import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
@@ -19,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -80,6 +82,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotOnGround(player, location)) return;
         if (isNotStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE)) return;
+        if (isNotPlayerInSelection()) return;
 
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
@@ -101,21 +104,25 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
                 visualizationManager.registerTask(gameMapSetup, Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current.toCenterLocation()), 0L, 10L));
             }
 
-//            if (phase < count) {
-//                startPhase(++phase);
-//                return;
-//            }
-//
-//            player.sendMessage(Component.translatable("mapsetup.stage.17.name.success",
-//                    NamedTranslationArgument.numeric("phase", phase),
-//                    NamedTranslationArgument.component("team", teamName)
-//            ));
-//            Feedback.success(player);
-//            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+            if (phase < count) {
+                startPhase(++phase);
+                return;
+            }
+
+            player.sendMessage(Component.translatable("mapsetup.stage.17.name.success",
+                    NamedTranslationArgument.numeric("phase", phase),
+                    NamedTranslationArgument.component("team", teamName)
+            ));
+            Feedback.success(player);
+            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
         });
     }
 
     private boolean isNotPlayerInSelection() {
+        CuboidSelection selection = selections.get(phase - 1);
+
+        new BoundingBoxRenderer<Block>(plugin, setup).render(player.getLocation().getBlock(), Color.OLIVE.asRGB());
+
         return false;
     }
 
