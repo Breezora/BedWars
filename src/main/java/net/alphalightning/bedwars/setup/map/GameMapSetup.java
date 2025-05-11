@@ -152,6 +152,10 @@ public final class GameMapSetup implements MapSetup {
         return selections;
     }
 
+    public List<SimpleJacksonLocation> spawner() {
+        return spawner.values().stream().flatMap(List::stream).toList();
+    }
+
     public int emeraldSpawnerCount() {
         return emeraldSpawnerCount;
     }
