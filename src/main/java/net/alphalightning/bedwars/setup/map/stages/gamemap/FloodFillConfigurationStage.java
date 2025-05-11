@@ -123,7 +123,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
 
     private boolean isNotPlayerInSelection() {
         CuboidSelection selection = selections.get(phase - 1);
-        return !selection.allBetween().contains(player.getLocation());
+        return !selection.allBetween().contains(player.getLocation().add(OFFSET));
     }
 
     private boolean isSelectionValid(Set<Location> locations) {
