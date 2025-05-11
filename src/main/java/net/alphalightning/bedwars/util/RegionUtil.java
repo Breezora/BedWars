@@ -9,15 +9,19 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class RegionUtil {
 
-
     public static RegionInformation createRegionInformation(Set<Location> floodFillLocations, CuboidSelection selection) {
+        return fromLists(selection, floodFillLocations);
+    }
+
+    public static RegionInformation createRegionInformation(CuboidSelection selection) {
+        return fromLists(selection, new HashSet<>(selection.allBetween()));
+    }
+
+    private static RegionInformation fromLists(CuboidSelection selection, Set<Location> locations) {
         // Berechne die Dimensionen der Region
         int minX = Math.min(selection.first().getBlockX(), selection.second().getBlockX());
         int maxX = Math.max(selection.first().getBlockX(), selection.second().getBlockX());
@@ -32,7 +36,7 @@ public final class RegionUtil {
 
         BitSet bitSet = new BitSet(width * height * depth);
 
-        for (Location location : floodFillLocations) {
+        for (Location location : locations) {
             int x = location.getBlockX() - minX;
             int y = location.getBlockY() - minY;
             int z = location.getBlockZ() - minZ;
