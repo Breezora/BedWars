@@ -84,7 +84,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         if (isNotStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE)) return;
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
-        FloodFill floodFill = new FloodFill(location);
+        FloodFill floodFill = new FloodFill(location.add(0, 1, 0));
 
         floodFill.fill().whenComplete((locations, throwable) -> {
             if (throwable != null) {
@@ -103,7 +103,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             }
 
             if (phase < count) {
-                startPhase(phase++);
+                startPhase(++phase);
                 return;
             }
 
