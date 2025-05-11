@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
@@ -53,6 +54,7 @@ public final class SelectionWandTool implements Listener {
 
         if (player != this.owner) return;
         if (block == null) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
         if (!player.getInventory().getItemInMainHand().equals(tool)) return;
 
         event.setCancelled(true);
