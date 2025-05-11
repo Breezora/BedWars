@@ -92,7 +92,8 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         }
 
         player.sendMessage(Component.translatable("mapsetup.stage.16.name.success", NamedTranslationArgument.component("team", teamName)));
-        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+        gameMapSetup.configureSelections(selections);
+        gameMapSetup.startStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE);
     }
 
 }
