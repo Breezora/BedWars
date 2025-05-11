@@ -1,28 +1,24 @@
 package net.alphalightning.bedwars.util;
 
-import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
-public final class SelectionWandTool implements Listener {
+public final class SelectionWandTool {
 
     private final Player owner;
     private final ItemStack tool;
     private Location first, second;
 
-    public SelectionWandTool(BedWarsPlugin plugin, Player owner) {
+    public SelectionWandTool(Player owner) {
         this.owner = owner;
         this.tool = new ItemBuilder(Material.ARROW)
                 .setCustomName(GlobalTranslator.render(Component.translatable("item.selection_wand"), owner.locale()))
@@ -34,8 +30,6 @@ public final class SelectionWandTool implements Listener {
 
         owner.getInventory().clear();
         owner.getInventory().setItem(0, tool);
-
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public Location first() {
@@ -46,8 +40,15 @@ public final class SelectionWandTool implements Listener {
         return second;
     }
 
-    //TODO: Das hier nicht als Listener haben, sondern als Methode useWand() haben und im Setup ausführen
-    @EventHandler
+    public boolean isComplete() {
+        return first != null && second != null;
+    }
+
+    public void reset() {
+        first = null;
+        second = null;
+    }
+
     public void onToolUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();

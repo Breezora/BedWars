@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
+import net.alphalightning.bedwars.util.CuboidSelection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class GameMapSetup implements MapSetup {
 
@@ -37,7 +39,9 @@ public final class GameMapSetup implements MapSetup {
     public static final int ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE = 13;
     public static final int UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE = 14;
     public static final int BED_CONFIGURATION_STAGE = 15;
-    public static final int COMPLETION_STAGE = 16;
+    public static final int CUBOID_SELECTION_CONFIGURATION_STAGE = 16;
+    public static final int FLOOD_FILL_CONFIGURATION_STAGE = 17;
+    public static final int COMPLETION_STAGE = 18;
 
     private final CancelStage cancelStage;
 
@@ -48,10 +52,11 @@ public final class GameMapSetup implements MapSetup {
     private int stage;
 
     // Configuration
-    private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
+    private final Map<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<JacksonTeam> teams = new ArrayList<>();
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
+    private final List<CuboidSelection> selections = new ArrayList<>();
     private JacksonLocation spectatorSpawn;
     private final String name;
     private boolean slowIron;
@@ -88,12 +93,14 @@ public final class GameMapSetup implements MapSetup {
             case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
             case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
             case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
-            case SLOW_IRON_CONFIGURATION_STAGE ->  new SlowIronConfigurationStage(plugin, player, this).run();
+            case SLOW_IRON_CONFIGURATION_STAGE -> new SlowIronConfigurationStage(plugin, player, this).run();
             case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
             case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this).run();
             case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
+            case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this).run();
+            case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this).run();
             case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
             default -> cancelStage.run();
         }
@@ -131,6 +138,10 @@ public final class GameMapSetup implements MapSetup {
 
     public List<JacksonTeam> teams() {
         return teams;
+    }
+
+    public List<CuboidSelection> selections() {
+        return selections;
     }
 
     public int emeraldSpawnerCount() {
@@ -197,6 +208,10 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureUpgradeVillager(@NotNull List<Location> locations) {
         this.upgradeVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+    }
+
+    public void configureSelections(@NotNull List<CuboidSelection> selections) {
+        this.selections.addAll(selections);
     }
 }
 

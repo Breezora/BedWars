@@ -1,8 +1,8 @@
 package net.alphalightning.bedwars.util;
 
-import com.destroystokyo.paper.ParticleBuilder;
-import net.alphalightning.bedwars.BedWarsPlugin;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,14 +14,12 @@ public class FloodFill {
     private static final int MAX_BLOCKS = 5_000;
 
     private final Set<Location> visited = new HashSet<>();
-    private final BedWarsPlugin plugin;
     private final Location start;
     private final World world;
 
 
-    public FloodFill(BedWarsPlugin plugin, @NotNull Location start) {
-        this.plugin = plugin;
-        this.start = start;
+    public FloodFill(@NotNull Location start) {
+       this.start = start;
         this.world = start.getWorld();
     }
 
@@ -46,9 +44,7 @@ public class FloodFill {
                 Block block = world.getBlockAt(current);
                 if (block.getType() != Material.AIR) continue;
 
-                spawnParticle(current);
-
-                visited.add(current);
+               visited.add(current);
                 filled++;
 
                 for (Location neighbor : neighbors(current)) {
@@ -61,17 +57,6 @@ public class FloodFill {
         });
 
         return future;
-    }
-
-    private void spawnParticle(Location current) {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> createParticle(current), 0L, 10L);
-    }
-
-    private void createParticle(Location current) {
-        new ParticleBuilder(Particle.DUST)
-                .location(current.toCenterLocation())
-                .color(Color.fromRGB(0xE3197C), 0.75F)
-                .spawn();
     }
 
     private List<Location> neighbors(Location loc) {
