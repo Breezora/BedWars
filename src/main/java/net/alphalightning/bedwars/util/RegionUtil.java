@@ -15,7 +15,9 @@ import java.util.List;
 public final class RegionUtil {
 
     public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, RegionInformation information) {
-        Path directory = plugin.getDataFolder().toPath().resolve("maps");
+        Path directory = plugin.getDataFolder().toPath()
+                .resolve("maps")
+                .resolve("bin");
 
         try {
             Files.createDirectories(directory);
@@ -26,8 +28,7 @@ public final class RegionUtil {
 
                 outputStream.write(1); // Version der Dateiformat-Version für den Fall, dass sich die Struktur mal ändert
 
-                for (JacksonTeam team : setup.teams()) {
-
+                for (JacksonTeam _ : setup.teams()) {
                     // Schreibe Informationen über die Dimensionen des Quaders
                     outputStream.writeInt(information.width());
                     outputStream.writeInt(information.height());
@@ -52,6 +53,7 @@ public final class RegionUtil {
         List<RegionInformation> regions = new ArrayList<>();
         Path path = plugin.getDataFolder().toPath()
                 .resolve("maps")
+                .resolve("bin")
                 .resolve(mapName + ".bin");
 
         if (!Files.exists(path)) return regions;
