@@ -77,7 +77,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        Location location = player.getLocation();
+        Location location = player.getLocation().add(OFFSET);
 
         if (isNotPlayerConfiguring(player)) return;
         if (isNotOnGround(player, location)) return;
