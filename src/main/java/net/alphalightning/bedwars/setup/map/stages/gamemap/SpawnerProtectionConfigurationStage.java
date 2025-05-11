@@ -59,6 +59,8 @@ public class SpawnerProtectionConfigurationStage extends Stage {
         if (phase > count) return;
 
         this.phase = phase;
+        tool.reset();
+
         Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.18.name", NamedTranslationArgument.numeric("phase", phase)));
     }
