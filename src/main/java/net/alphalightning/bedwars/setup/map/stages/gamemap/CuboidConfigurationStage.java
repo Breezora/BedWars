@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.alphalightning.bedwars.util.CuboidSelection;
 import net.alphalightning.bedwars.util.SelectionWandTool;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -19,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,9 +28,11 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
-    private final SelectionWandTool tool;
     private final int count;
     private int phase;
+
+    private final List<CuboidSelection> selections = new ArrayList<>();
+    private final SelectionWandTool tool;
 
     private TranslatableComponent teamName = null;
     private JacksonTeam team = null;
@@ -78,7 +82,9 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         if (!tool.isComplete()) return;
 
-        visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(List.of(tool.first().getBlock(), tool.second().getBlock()), team.color()));
+        CuboidSelection selection = new CuboidSelection(team, tool.first(), tool.second());
+        selections.add(selection);
+        visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.blocks(), team.color()));
 
         if (phase < count) {
             startPhase(++phase);
