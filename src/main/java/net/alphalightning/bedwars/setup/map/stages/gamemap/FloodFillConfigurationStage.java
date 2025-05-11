@@ -76,16 +76,20 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
-        Location location = player.getLocation().add(OFFSET);
+        Location location = player.getLocation();
 
-        if (isNotPlayerConfiguring(player)) return;
+        if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotOnGround(player, location)) return;
         if (isNotStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE)) return;
-        if (isNotPlayerInSelection()) return;
+        if (isNotPlayerInSelection()) {
+            System.out.println(1);
+            return;
+        }
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
         FloodFill floodFill = new FloodFill(location.add(0, 1, 0));
+
+        System.out.println(2);
 
         floodFill.fill().whenComplete((locations, throwable) -> {
             if (throwable != null) {
