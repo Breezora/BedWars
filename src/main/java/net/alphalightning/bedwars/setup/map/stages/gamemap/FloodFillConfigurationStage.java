@@ -14,6 +14,7 @@ import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.CuboidSelection;
 import net.alphalightning.bedwars.util.FloodFill;
 import net.alphalightning.bedwars.util.RegionInformation;
+import net.alphalightning.bedwars.util.RegionUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Bukkit;
@@ -25,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -116,9 +116,10 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             ));
             Feedback.success(player);
 
-            createAndSave3dBitSet(locations, selections.get(phase - 1));
+            RegionInformation information = RegionUtil.createRegionInformation(locations, selections.get(phase - 1));
+            gameMapSetup.configureRegionInformation(List.of(information));
 
-            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+            gameMapSetup.startStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE);
         });
     }
 
@@ -153,33 +154,5 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
                 .location(location)
                 .color(Color.fromRGB(0xE3197C), 0.75F)
                 .spawn();
-    }
-
-    private void createAndSave3dBitSet(Set<Location> floodFillLocations, CuboidSelection selection) {
-        // Berechne die Dimensionen der Region
-        int minX = Math.min(selection.first().getBlockX(), selection.second().getBlockX());
-        int maxX = Math.max(selection.first().getBlockX(), selection.second().getBlockX());
-        int minY = Math.min(selection.first().getBlockY(), selection.second().getBlockY());
-        int maxY = Math.max(selection.first().getBlockY(), selection.second().getBlockY());
-        int minZ = Math.min(selection.first().getBlockZ(), selection.second().getBlockZ());
-        int maxZ = Math.max(selection.first().getBlockZ(), selection.second().getBlockZ());
-
-        int width = maxX - minX + 1;
-        int height = maxY - minY + 1;
-        int depth = maxZ - minZ + 1;
-
-        BitSet bitSet = new BitSet(width * height * depth);
-
-        for (Location location : floodFillLocations) {
-            int x = location.getBlockX() - minX;
-            int y = location.getBlockY() - minY;
-            int z = location.getBlockZ() - minZ;
-
-            int index = x + (y * width) + (z * width * height);
-            bitSet.set(index, true);
-        }
-
-        RegionInformation information = new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
-        ((GameMapSetup) setup).configureRegionInformation(List.of(information));
     }
 }

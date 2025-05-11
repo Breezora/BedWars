@@ -3,6 +3,7 @@ package net.alphalightning.bedwars.util;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
+import org.bukkit.Location;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -11,8 +12,37 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Set;
 
 public final class RegionUtil {
+
+
+    public static RegionInformation createRegionInformation(Set<Location> floodFillLocations, CuboidSelection selection) {
+        // Berechne die Dimensionen der Region
+        int minX = Math.min(selection.first().getBlockX(), selection.second().getBlockX());
+        int maxX = Math.max(selection.first().getBlockX(), selection.second().getBlockX());
+        int minY = Math.min(selection.first().getBlockY(), selection.second().getBlockY());
+        int maxY = Math.max(selection.first().getBlockY(), selection.second().getBlockY());
+        int minZ = Math.min(selection.first().getBlockZ(), selection.second().getBlockZ());
+        int maxZ = Math.max(selection.first().getBlockZ(), selection.second().getBlockZ());
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+        int depth = maxZ - minZ + 1;
+
+        BitSet bitSet = new BitSet(width * height * depth);
+
+        for (Location location : floodFillLocations) {
+            int x = location.getBlockX() - minX;
+            int y = location.getBlockY() - minY;
+            int z = location.getBlockZ() - minZ;
+
+            int index = x + (y * width) + (z * width * height);
+            bitSet.set(index, true);
+        }
+
+        return new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
+    }
 
     public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, List<RegionInformation> informationList) {
         Path directory = plugin.getDataFolder().toPath()
