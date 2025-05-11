@@ -61,7 +61,7 @@ public class ItemShopGui {
                         .addIngredient('6', new TabChangeItem(Material.BREWING_STAND, "gui.shop.itemshop.potions.name", 6))
                         .addIngredient('7', new TabChangeItem(Material.TNT, "gui.shop.itemshop.extras.name", 7))
                         .addIngredient('8', new KitsItem())
-                        .setTabs(List.of(fastBuyGui, blocksGui, weaponsGui, armorGui, toolsGui, bowsGui, potionsGui, extrasGui))
+                        .setTabs(List.of(this.fastBuyGui, this.blocksGui, this.weaponsGui, this.armorGui, this.toolsGui, this.bowsGui, this.potionsGui, this.extrasGui))
                         .build()
                 )
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
