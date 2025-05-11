@@ -37,7 +37,8 @@ public final class GameMapSetup implements MapSetup {
     public static final int ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE = 13;
     public static final int UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE = 14;
     public static final int BED_CONFIGURATION_STAGE = 15;
-    public static final int COMPLETION_STAGE = 16;
+    public static final int BASE_PROTECTION_STAGE = 16;
+    public static final int COMPLETION_STAGE = 17;
 
     private final CancelStage cancelStage;
 
@@ -94,6 +95,7 @@ public final class GameMapSetup implements MapSetup {
             case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
             case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
             case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
+            case BASE_PROTECTION_STAGE -> new BaseProtectionConfigurationStage(plugin, player, this).run();
             case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
             default -> cancelStage.run();
         }
