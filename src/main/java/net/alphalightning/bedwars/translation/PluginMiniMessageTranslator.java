@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-public class PluginMiniMassageTranslator extends MiniMessageTranslator {
+public class PluginMiniMessageTranslator extends MiniMessageTranslator {
 
     private final TranslationStore.StringBased<MessageFormat> store;
 
-    public PluginMiniMassageTranslator(MiniMessage miniMessage, TranslationStore.StringBased<MessageFormat> store) {
+    public PluginMiniMessageTranslator(MiniMessage miniMessage, TranslationStore.StringBased<MessageFormat> store) {
         super(miniMessage);
         this.store = store;
     }
