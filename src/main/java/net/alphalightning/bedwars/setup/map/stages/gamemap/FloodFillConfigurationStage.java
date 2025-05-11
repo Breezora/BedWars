@@ -4,7 +4,6 @@ import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
-import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
@@ -20,7 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -82,7 +80,10 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotOnGround(player, location)) return;
         if (isNotStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE)) return;
-        if (isNotPlayerInSelection()) return;
+        if (!isPlayerInSelection()) {
+            System.out.println(0);
+            return;
+        }
 
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
@@ -118,12 +119,9 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         });
     }
 
-    private boolean isNotPlayerInSelection() {
+    private boolean isPlayerInSelection() {
         CuboidSelection selection = selections.get(phase - 1);
-
-        new BoundingBoxRenderer<Block>(plugin, setup).render(player.getLocation().getBlock(), Color.OLIVE.asRGB());
-
-        return false;
+        return selection.allBetween().contains(player.getLocation());
     }
 
     private boolean isSelectionValid(Set<Location> locations) {
