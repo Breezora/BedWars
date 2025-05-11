@@ -24,7 +24,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -86,8 +85,6 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
 
         FloodFill floodFill = new FloodFill(location.add(OFFSET));
 
-        System.out.println(2);
-
         floodFill.fill().whenComplete((locations, throwable) -> {
             if (throwable != null) {
                 plugin.getLogger().severe("There was an error while flood filling the space: " + throwable.getMessage());
@@ -104,39 +101,26 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
                 visualizationManager.registerTask(gameMapSetup, Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current), 0L, 10L));
             }
 
-            if (phase < count) {
-                startPhase(++phase);
-                return;
-            }
-
-            player.sendMessage(Component.translatable("mapsetup.stage.17.name.success",
-                    NamedTranslationArgument.numeric("phase", phase),
-                    NamedTranslationArgument.component("team", teamName)
-            ));
-            Feedback.success(player);
-            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+//            if (phase < count) {
+//                startPhase(++phase);
+//                return;
+//            }
+//
+//            player.sendMessage(Component.translatable("mapsetup.stage.17.name.success",
+//                    NamedTranslationArgument.numeric("phase", phase),
+//                    NamedTranslationArgument.component("team", teamName)
+//            ));
+//            Feedback.success(player);
+//            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
         });
     }
 
     private boolean isNotPlayerInSelection() {
-        CuboidSelection selection = selections.get(phase - 1);
-        return !selection.allBetween().contains(player.getLocation());
+        return false;
     }
 
     private boolean isSelectionValid(Set<Location> locations) {
-        CuboidSelection selection = selections.get(phase - 1);
-        List<Location> cuboidLocations = selection.allBetween();
-
-        List<Location> copiedLocations = new ArrayList<>(locations);
-        for (Location location : locations) {
-            if (cuboidLocations.contains(location)) {
-                copiedLocations.remove(location);
-            }
-        }
-
-        copiedLocations.forEach(System.out::println);
-
-        return copiedLocations.isEmpty();
+        return true;
     }
 
     private void createParticle(Location location) {
