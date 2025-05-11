@@ -4,15 +4,13 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.game.entity.VillagerManager;
-import net.alphalightning.bedwars.game.entity.VillagerType;
+import net.alphalightning.bedwars.game.entity.ShopVillager;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
-import net.alphalightning.bedwars.setup.map.jackson.JacksonLocation;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -56,28 +54,21 @@ public class InGameState extends AbstractGameState implements Listener {
         this.plugin = plugin;
         this.mapManager = mapManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-
     }
 
 
     @Override
     public void start() {
-        VillagerManager villagerManager = new VillagerManager(plugin);
+        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context);
 
         TranslatableComponent component = Component.translatable("state.ingame.start");
-
         Bukkit.broadcast(component);
         context.logger().info(component);
 
         allocateTeams();
         placeBeds();
-        //Spawn Villager Item and Upgrade Shop Villagers
-        for (JacksonLocation villager: mapManager.selected().shopVillager()) {
-            villagerManager.createVillagers(villager, VillagerType.SHOP);
-        }
-        for (JacksonLocation villager: mapManager.selected().upgradeVillager()) {
-            villagerManager.createVillagers(villager, VillagerType.UPGRADE);
-        }
+
+        shopVillager.createVillagers();
 
         preparePlayers();
         teleportPlayers();
