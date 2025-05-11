@@ -84,7 +84,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         CuboidSelection selection = new CuboidSelection(team, tool.first(), tool.second());
         selections.add(selection);
-        visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.blocks(), team.color()));
+        visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color()));
 
         if (phase < count) {
             startPhase(++phase);

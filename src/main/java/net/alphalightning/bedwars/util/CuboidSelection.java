@@ -10,8 +10,9 @@ import java.util.List;
 
 public record CuboidSelection(JacksonTeam owner, Location first, Location second) {
 
-    public @NotNull @Unmodifiable List<Block> blocks() {
+    public @NotNull @Unmodifiable List<Block> corners() {
         return List.of(first.getBlock(), second.getBlock());
     }
+
 
 }
