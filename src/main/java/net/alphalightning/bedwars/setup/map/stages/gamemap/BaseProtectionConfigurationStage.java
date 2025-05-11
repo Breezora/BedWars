@@ -3,6 +3,8 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,5 +16,6 @@ public class BaseProtectionConfigurationStage extends Stage {
 
     @Override
     public void run() {
+        player.sendMessage(Component.translatable("mapsetup.stage.16", NamedTranslationArgument.component("tool", Component.translatable("item.selection_wand"))));
     }
 }
