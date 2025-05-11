@@ -42,9 +42,9 @@ public class TestGuiCommand extends PaperCommand<@NotNull BedWarsPlugin> {
         final Player player = (Player) context.sender().plattformSender();
 
         if (gui.equals("item-shop")) {
-            new ItemShopGui(player).showGui();
+            new ItemShopGui().showGui(player);
         } else {
-            new UpgradeShopGui(player).showGui();
+            new UpgradeShopGui().showGui(player);
         }
     }
 
