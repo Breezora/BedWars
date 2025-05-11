@@ -11,6 +11,8 @@ import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import net.alphalightning.bedwars.util.CuboidSelection;
+import net.alphalightning.bedwars.util.RegionInformation;
+import net.alphalightning.bedwars.util.RegionUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +43,8 @@ public final class GameMapSetup implements MapSetup {
     public static final int BED_CONFIGURATION_STAGE = 15;
     public static final int CUBOID_SELECTION_CONFIGURATION_STAGE = 16;
     public static final int FLOOD_FILL_CONFIGURATION_STAGE = 17;
-    public static final int COMPLETION_STAGE = 18;
+    public static final int SPAWNER_PROTECTION_CONFIGURATION_STAGE = 18;
+    public static final int COMPLETION_STAGE = 19;
 
     private final CancelStage cancelStage;
 
@@ -57,8 +60,9 @@ public final class GameMapSetup implements MapSetup {
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
     private final List<CuboidSelection> selections = new ArrayList<>();
-    private JacksonLocation spectatorSpawn;
+    private final List<RegionInformation> regionInformation = new ArrayList<>();
     private final String name;
+    private JacksonLocation spectatorSpawn;
     private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
@@ -102,6 +106,7 @@ public final class GameMapSetup implements MapSetup {
             case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
             case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this).run();
             case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this).run();
+            case SPAWNER_PROTECTION_CONFIGURATION_STAGE -> new SpawnerProtectionConfigurationStage(plugin, player, this).run();
             case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false).run();
             default -> cancelStage.run();
         }
@@ -119,6 +124,8 @@ public final class GameMapSetup implements MapSetup {
 
             GameMap gameMap = new GameMap(name, teamSize, minBuildHeight, maxBuildHeight, slowIron, spectatorSpawn, teams, shopVillagerLocations, upgradeVillagerLocations, spawner);
             plugin.jsonMapper().writeValue(mapsDirectory().resolve(fileName).toFile(), gameMap);
+
+            RegionUtil.saveRegions(plugin, this, regionInformation);
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
@@ -143,6 +150,10 @@ public final class GameMapSetup implements MapSetup {
 
     public List<CuboidSelection> selections() {
         return selections;
+    }
+
+    public List<SimpleJacksonLocation> spawner() {
+        return spawner.values().stream().flatMap(List::stream).toList();
     }
 
     public int emeraldSpawnerCount() {
@@ -213,6 +224,10 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureSelections(@NotNull List<CuboidSelection> selections) {
         this.selections.addAll(selections);
+    }
+
+    public void configureRegionInformation(@NotNull List<RegionInformation> regionInformation) {
+        this.regionInformation.addAll(regionInformation);
     }
 }
 

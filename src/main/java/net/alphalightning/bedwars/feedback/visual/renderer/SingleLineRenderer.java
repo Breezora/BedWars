@@ -24,7 +24,7 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
         final Location start = this.player.getEyeLocation();
         return super.visualizationManager.registerTask(
                 this.setup,
-                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(start), 0L, 5L)
+                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(start), 0L, 10L)
         );
     }
 }

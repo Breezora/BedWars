@@ -3,18 +3,52 @@ package net.alphalightning.bedwars.util;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
+import org.bukkit.Location;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
+import java.util.*;
 
 public final class RegionUtil {
 
-    public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, RegionInformation information) {
+    public static RegionInformation createRegionInformation(Set<Location> floodFillLocations, CuboidSelection selection) {
+        return fromLists(selection, floodFillLocations);
+    }
+
+    public static RegionInformation createRegionInformation(CuboidSelection selection) {
+        return fromLists(selection, new HashSet<>(selection.allBetween()));
+    }
+
+    private static RegionInformation fromLists(CuboidSelection selection, Set<Location> locations) {
+        // Berechne die Dimensionen der Region
+        int minX = Math.min(selection.first().getBlockX(), selection.second().getBlockX());
+        int maxX = Math.max(selection.first().getBlockX(), selection.second().getBlockX());
+        int minY = Math.min(selection.first().getBlockY(), selection.second().getBlockY());
+        int maxY = Math.max(selection.first().getBlockY(), selection.second().getBlockY());
+        int minZ = Math.min(selection.first().getBlockZ(), selection.second().getBlockZ());
+        int maxZ = Math.max(selection.first().getBlockZ(), selection.second().getBlockZ());
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+        int depth = maxZ - minZ + 1;
+
+        BitSet bitSet = new BitSet(width * height * depth);
+
+        for (Location location : locations) {
+            int x = location.getBlockX() - minX;
+            int y = location.getBlockY() - minY;
+            int z = location.getBlockZ() - minZ;
+
+            int index = x + (y * width) + (z * width * height);
+            bitSet.set(index, true);
+        }
+
+        return new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
+    }
+
+    public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, List<RegionInformation> informationList) {
         Path directory = plugin.getDataFolder().toPath()
                 .resolve("maps")
                 .resolve("bin");
@@ -28,19 +62,21 @@ public final class RegionUtil {
 
                 outputStream.write(1); // Version der Dateiformat-Version für den Fall, dass sich die Struktur mal ändert
 
-                for (JacksonTeam _ : setup.teams()) {
-                    // Schreibe Informationen über die Dimensionen des Quaders
-                    outputStream.writeInt(information.width());
-                    outputStream.writeInt(information.height());
-                    outputStream.writeInt(information.depth());
-                    outputStream.writeInt(information.minX());
-                    outputStream.writeInt(information.minY());
-                    outputStream.writeInt(information.minZ());
+                for (RegionInformation information : informationList) {
+                    for (JacksonTeam _ : setup.teams()) {
+                        // Schreibe Informationen über die Dimensionen des Quaders
+                        outputStream.writeInt(information.width());
+                        outputStream.writeInt(information.height());
+                        outputStream.writeInt(information.depth());
+                        outputStream.writeInt(information.minX());
+                        outputStream.writeInt(information.minY());
+                        outputStream.writeInt(information.minZ());
 
-                    // Schreibe BitSet
-                    byte[] bits = information.bitSet().toByteArray();
-                    outputStream.writeInt(bits.length);
-                    outputStream.write(bits);
+                        // Schreibe BitSet
+                        byte[] bits = information.bitSet().toByteArray();
+                        outputStream.writeInt(bits.length);
+                        outputStream.write(bits);
+                    }
                 }
             }
 
