@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-public class BaseProtectionConfigurationStage extends Stage implements TeamConfiguration {
+public class CuboidConfigurationStage extends Stage implements TeamConfiguration {
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
@@ -33,7 +33,7 @@ public class BaseProtectionConfigurationStage extends Stage implements TeamConfi
     private TranslatableComponent teamName = null;
     private JacksonTeam team = null;
 
-    public BaseProtectionConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
+    public CuboidConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
             this.teams = Collections.emptyList();
@@ -71,7 +71,7 @@ public class BaseProtectionConfigurationStage extends Stage implements TeamConfi
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (isNotPlayerConfiguring(event.getPlayer())) return;
-        if (isNotStage(GameMapSetup.BASE_PROTECTION_STAGE)) return;
+        if (isNotStage(GameMapSetup.CUBOID_SELECTION_CONFIGURATION_STAGE)) return;
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
 
         tool.onToolUse(event);
