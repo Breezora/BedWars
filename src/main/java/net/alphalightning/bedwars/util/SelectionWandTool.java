@@ -63,24 +63,24 @@ public final class SelectionWandTool implements Listener {
         }
     }
 
-    private void first(Location first) {
-        if (second != null && second.equals(first)) {
+    private void first(Location clicked) {
+        if (second != null && second.equals(clicked)) {
             owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
             Feedback.error(owner);
             return;
         }
         owner.sendMessage(Component.translatable("mapsetup.stage.16.first"));
-        this.first = first;
+        first = clicked;
     }
 
-    private void second(Location second) {
-        if (first != null && first.equals(second)) {
+    private void second(Location clicked) {
+        if (first != null && first.equals(clicked)) {
             owner.sendMessage(Component.translatable("mapsetup.stage.16.same"));
             Feedback.error(owner);
             return;
         }
         owner.sendMessage(Component.translatable("mapsetup.stage.16.second"));
-        this.second = second;
+        second = clicked;
     }
 
 }
