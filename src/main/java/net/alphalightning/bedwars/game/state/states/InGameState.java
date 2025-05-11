@@ -61,7 +61,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void start() {
-        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context, new ItemShopGui(), new UpgradeShopGui());
+        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context, new ItemShopGui(plugin), new UpgradeShopGui());
 
         TranslatableComponent component = Component.translatable("state.ingame.start");
         Bukkit.broadcast(component);
