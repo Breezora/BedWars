@@ -11,8 +11,6 @@ import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.game.team.allocator.DynamicTeamAllocator;
 import net.alphalightning.bedwars.game.team.allocator.TeamAllocator;
-import net.alphalightning.bedwars.game.ui.shop.item.ItemShopGui;
-import net.alphalightning.bedwars.game.ui.shop.upgrade.UpgradeShopGui;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -61,7 +59,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void start() {
-        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context, new ItemShopGui(plugin), new UpgradeShopGui());
+        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context);
 
         TranslatableComponent component = Component.translatable("state.ingame.start");
         Bukkit.broadcast(component);

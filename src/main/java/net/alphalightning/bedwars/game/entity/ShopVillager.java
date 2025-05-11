@@ -24,15 +24,11 @@ public class ShopVillager implements Listener {
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private final GameStateContext context;
-    private final ItemShopGui itemShopGui;
-    private final UpgradeShopGui upgradeShopGui;
 
-    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context, ItemShopGui itemShopGui, UpgradeShopGui upgradeShopGui) {
+    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context) {
         this.plugin = plugin;
         this.mapManager = mapManager;
         this.context = context;
-        this.itemShopGui = itemShopGui;
-        this.upgradeShopGui = upgradeShopGui;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     
@@ -65,10 +61,15 @@ public class ShopVillager implements Listener {
         if (!value.getOwningPlugin().equals(plugin)) return;
         
         VillagerType type = (VillagerType) value.value();
-
         switch (type) {
-            case SHOP -> itemShopGui.showGui(player);
-            case UPGRADE -> upgradeShopGui.showGui(player);
+            case SHOP -> {
+                ItemShopGui itemShopGui = new ItemShopGui(plugin);
+                itemShopGui.showGui(player);
+            }
+            case UPGRADE -> {
+                UpgradeShopGui upgradeShopGui = new UpgradeShopGui();
+                upgradeShopGui.showGui(player);
+            }
             case null -> {}
         }
     }
