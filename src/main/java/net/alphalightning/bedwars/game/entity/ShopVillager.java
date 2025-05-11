@@ -28,7 +28,7 @@ public class ShopVillager implements Listener {
     private final ItemShopGui itemShopGui;
     private final UpgradeShopGui upgradeShopGui;
 
-    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context, ItemShopGui itemShopGui, UpgradeShopGui upgradeShopGui, Team team) {
+    public ShopVillager(BedWarsPlugin plugin, MapManager mapManager, GameStateContext context, ItemShopGui itemShopGui, UpgradeShopGui upgradeShopGui) {
         this.plugin = plugin;
         this.mapManager = mapManager;
         this.context = context;
