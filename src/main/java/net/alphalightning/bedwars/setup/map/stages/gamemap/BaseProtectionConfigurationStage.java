@@ -18,4 +18,6 @@ public class BaseProtectionConfigurationStage extends Stage {
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.16", NamedTranslationArgument.component("tool", Component.translatable("item.selection_wand"))));
     }
+
+    // setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
 }

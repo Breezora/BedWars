@@ -98,7 +98,7 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         // Configuration is completed
 
         player.sendMessage(Component.translatable("mapsetup.stage.15.success"));
-        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+        gameMapSetup.startStage(GameMapSetup.BASE_PROTECTION_STAGE);
     }
 
     private void updateBed(MapSetup setup, Location bottom) {
