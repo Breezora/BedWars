@@ -36,7 +36,6 @@ public class ShopVillager implements Listener {
         this.context = context;
         this.itemShopGui = itemShopGui;
         this.upgradeShopGui = upgradeShopGui;
-        this.team = team;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     
