@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class RegionUtil {
 
-    public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, RegionInformation information) {
+    public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, List<RegionInformation> informationList) {
         Path directory = plugin.getDataFolder().toPath()
                 .resolve("maps")
                 .resolve("bin");
@@ -28,19 +28,21 @@ public final class RegionUtil {
 
                 outputStream.write(1); // Version der Dateiformat-Version für den Fall, dass sich die Struktur mal ändert
 
-                for (JacksonTeam _ : setup.teams()) {
-                    // Schreibe Informationen über die Dimensionen des Quaders
-                    outputStream.writeInt(information.width());
-                    outputStream.writeInt(information.height());
-                    outputStream.writeInt(information.depth());
-                    outputStream.writeInt(information.minX());
-                    outputStream.writeInt(information.minY());
-                    outputStream.writeInt(information.minZ());
+                for (RegionInformation information : informationList) {
+                    for (JacksonTeam _ : setup.teams()) {
+                        // Schreibe Informationen über die Dimensionen des Quaders
+                        outputStream.writeInt(information.width());
+                        outputStream.writeInt(information.height());
+                        outputStream.writeInt(information.depth());
+                        outputStream.writeInt(information.minX());
+                        outputStream.writeInt(information.minY());
+                        outputStream.writeInt(information.minZ());
 
-                    // Schreibe BitSet
-                    byte[] bits = information.bitSet().toByteArray();
-                    outputStream.writeInt(bits.length);
-                    outputStream.write(bits);
+                        // Schreibe BitSet
+                        byte[] bits = information.bitSet().toByteArray();
+                        outputStream.writeInt(bits.length);
+                        outputStream.write(bits);
+                    }
                 }
             }
 

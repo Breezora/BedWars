@@ -11,6 +11,8 @@ import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import net.alphalightning.bedwars.util.CuboidSelection;
+import net.alphalightning.bedwars.util.RegionInformation;
+import net.alphalightning.bedwars.util.RegionUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -58,8 +60,9 @@ public final class GameMapSetup implements MapSetup {
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
     private final List<CuboidSelection> selections = new ArrayList<>();
-    private JacksonLocation spectatorSpawn;
+    private final List<RegionInformation> regionInformation = new ArrayList<>();
     private final String name;
+    private JacksonLocation spectatorSpawn;
     private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
@@ -121,6 +124,8 @@ public final class GameMapSetup implements MapSetup {
 
             GameMap gameMap = new GameMap(name, teamSize, minBuildHeight, maxBuildHeight, slowIron, spectatorSpawn, teams, shopVillagerLocations, upgradeVillagerLocations, spawner);
             plugin.jsonMapper().writeValue(mapsDirectory().resolve(fileName).toFile(), gameMap);
+
+            RegionUtil.saveRegions(plugin, this, regionInformation);
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
@@ -215,6 +220,10 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureSelections(@NotNull List<CuboidSelection> selections) {
         this.selections.addAll(selections);
+    }
+
+    public void configureRegionInformation(@NotNull List<RegionInformation> regionInformation) {
+        this.regionInformation.addAll(regionInformation);
     }
 }
 

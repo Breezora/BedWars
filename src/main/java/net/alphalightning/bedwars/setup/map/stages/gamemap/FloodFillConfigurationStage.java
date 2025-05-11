@@ -14,7 +14,6 @@ import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.CuboidSelection;
 import net.alphalightning.bedwars.util.FloodFill;
 import net.alphalightning.bedwars.util.RegionInformation;
-import net.alphalightning.bedwars.util.RegionUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.Bukkit;
@@ -181,6 +180,6 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         }
 
         RegionInformation information = new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
-        RegionUtil.saveRegions(plugin, (GameMapSetup) setup, information);
+        ((GameMapSetup) setup).configureRegionInformation(List.of(information));
     }
 }
