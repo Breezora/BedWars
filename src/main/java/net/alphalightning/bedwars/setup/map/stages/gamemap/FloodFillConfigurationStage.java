@@ -98,7 +98,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             }
 
             for (Location current : locations) {
-                visualizationManager.registerTask(gameMapSetup, Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current), 0L, 10L));
+                visualizationManager.registerTask(gameMapSetup, Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current.toCenterLocation()), 0L, 10L));
             }
 
 //            if (phase < count) {
