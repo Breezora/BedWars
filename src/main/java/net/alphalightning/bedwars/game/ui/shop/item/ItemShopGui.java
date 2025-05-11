@@ -41,8 +41,6 @@ public class ItemShopGui {
 
     }
 
-
-
     private Single createGui() {
         return Window.single()
                 .setGui(TabGui.normal()
