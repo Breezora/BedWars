@@ -181,6 +181,6 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         }
 
         RegionInformation information = new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
-        RegionUtil.saveRegion(plugin, (GameMapSetup) setup, information);
+        RegionUtil.saveRegions(plugin, (GameMapSetup) setup, information);
     }
 }

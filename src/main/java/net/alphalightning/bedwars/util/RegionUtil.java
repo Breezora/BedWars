@@ -14,7 +14,7 @@ import java.nio.file.StandardOpenOption;
 
 public final class RegionUtil {
 
-    public static void saveRegion(BedWarsPlugin plugin, GameMapSetup setup, RegionInformation information) {
+    public static void saveRegions(BedWarsPlugin plugin, GameMapSetup setup, RegionInformation information) {
         Path directory = plugin.getDataFolder().toPath().resolve("maps");
 
         try {
