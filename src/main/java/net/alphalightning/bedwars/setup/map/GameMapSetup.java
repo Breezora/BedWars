@@ -41,7 +41,8 @@ public final class GameMapSetup implements MapSetup {
     public static final int BED_CONFIGURATION_STAGE = 15;
     public static final int CUBOID_SELECTION_CONFIGURATION_STAGE = 16;
     public static final int FLOOD_FILL_CONFIGURATION_STAGE = 17;
-    public static final int COMPLETION_STAGE = 18;
+    public static final int SPAWNER_PROTECTION_CONFIGURATION_STAGE = 18;
+    public static final int COMPLETION_STAGE = 19;
 
     private final CancelStage cancelStage;
 
@@ -102,6 +103,7 @@ public final class GameMapSetup implements MapSetup {
             case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
             case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this).run();
             case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this).run();
+            case SPAWNER_PROTECTION_CONFIGURATION_STAGE -> new SpawnerProtectionConfigurationStage(plugin, player, this).run();
             case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false).run();
             default -> cancelStage.run();
         }
