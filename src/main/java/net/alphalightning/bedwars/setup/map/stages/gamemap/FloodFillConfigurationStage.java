@@ -134,6 +134,8 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             }
         }
 
+        copiedLocations.forEach(System.out::println);
+
         return copiedLocations.isEmpty();
     }
 
