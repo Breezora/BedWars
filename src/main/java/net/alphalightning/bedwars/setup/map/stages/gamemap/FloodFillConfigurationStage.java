@@ -41,7 +41,6 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
     private int phase;
 
     private TranslatableComponent teamName = null;
-    private JacksonTeam team;
 
     public FloodFillConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -67,7 +66,8 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
         if (phase > count) return;
 
         this.phase = phase;
-        this.team = teams.get(phase - 1);
+
+        JacksonTeam team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
         player.sendMessage(Component.translatable("mapsetup.stage.17.name",
@@ -180,7 +180,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             bitSet.set(index, true);
         }
 
-        RegionInformation information = new RegionInformation(team.name(), width, height, depth, minX, minY, minZ, bitSet);
+        RegionInformation information = new RegionInformation(width, height, depth, minX, minY, minZ, bitSet);
         RegionUtil.saveRegion(plugin, (GameMapSetup) setup, information);
     }
 }
