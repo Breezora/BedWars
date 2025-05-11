@@ -6,6 +6,8 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
 import xyz.xenondevs.invui.item.Click;
@@ -74,5 +76,34 @@ public class BuyableItem extends AbstractItem {
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         System.out.println("Dieses Item kostet: " + getCurrency(getPriceTag(player)) + " " + extractAmount(getPriceTag(player)));
+    }
+
+    private boolean hasNotEnoughSpace(Player player) {
+        ItemStack itemStack = getItemProvider(player).get();
+        Inventory inventory = player.getInventory();
+
+        int remainingAmount = itemStack.getAmount();
+        int maxStackSize = itemStack.getMaxStackSize();
+
+        if (inventory.firstEmpty() != -1) { // Check if we have minimum one empty slot
+            remainingAmount -= maxStackSize;
+            if (remainingAmount <= 0) {
+                return false; // We have enough space to add the reward
+            }
+        }
+
+        for (ItemStack slotItem : inventory.getContents()) {
+            if (remainingAmount <= 0) {
+                return false; // Since we have nothing more to add we have enough space
+            }
+
+            if (slotItem != null && slotItem.isSimilar(itemStack)) { // Check slots that have the same stack
+                int spaceLeft = maxStackSize - slotItem.getAmount();
+                remainingAmount -= Math.min(spaceLeft, remainingAmount);
+            }
+        }
+
+        // If we have more than one item left to add we do not have enough space for the reward in that inventory
+        return remainingAmount > 0;
     }
 }
