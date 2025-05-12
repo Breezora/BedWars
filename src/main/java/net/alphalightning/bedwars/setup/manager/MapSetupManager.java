@@ -11,6 +11,7 @@ import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
 
+    private final Map<Player, Inventory> playerInventories;
     private final Map<Player, MapSetup> activeSetups;
     private final Map<String, MapSetup> activeMaps;
 
@@ -37,11 +39,12 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
     prevent duplications in map names or in active player setups.
      */
 
-    // Start singleton instance
+    // Start a singleton instance
 
     private MapSetupManager() {
         this.activeSetups = new ConcurrentHashMap<>();
         this.activeMaps = new ConcurrentHashMap<>();
+        this.playerInventories = new ConcurrentHashMap<>();
     }
 
     public static synchronized MapSetupManager instance() {
@@ -62,7 +65,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
     }
 
     @Override
-    public @NotNull MapSetup get() { // Create fresh setup instance
+    public @NotNull MapSetup get() { // Create a fresh setup instance
         MapSetup.Builder builder = Setup.mapBuilder(this.configurationType)
                 .plugin(this.plugin)
                 .executor(this.executor);
@@ -83,7 +86,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         final MapSetup setup = get();
         final String name = setup.mapName();
 
-        if (activeMaps.containsKey(toLowerCase(name))) { // A map with that is currently configured by someone else
+        if (activeMaps.containsKey(toLowerCase(name))) { // Someone else currently configures a map with that name
             if (name.equalsIgnoreCase(LOBBY_MAP_NAME)) {
                 this.executor.sendMessage(Component.translatable("error.setup.running.lobby"));
             } else {
@@ -96,6 +99,10 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
 
         // Start map configuration
 
+        // Save player inventory so we're able to restore it after the setup in case some item from other plugins is held
+        playerInventories.put(executor, executor.getInventory());
+        executor.getInventory().clear();
+
         activeMaps.put(toLowerCase(name), setup);
         activeSetups.put(this.executor, setup);
         setup.start();
@@ -106,6 +113,8 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
         if (setup == null) {
             return;
         }
+
+        restoreInventory(player);
 
         setup.finish(lastStage);
         this.activeMaps.remove(toLowerCase(setup.mapName()));
@@ -122,7 +131,7 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
             return;
         }
 
-        player.getInventory().clear();
+        restoreInventory(player);
 
         setup.cancel(false);
         this.activeMaps.remove(toLowerCase(setup.mapName()));
@@ -136,5 +145,12 @@ public class MapSetupManager implements ServiceProvider<MapSetup>, LobbyConfigur
 
     private @NotNull String toLowerCase(@NotNull String string) {
         return string.toLowerCase();
+    }
+
+    private void restoreInventory(Player player) {
+        player.getInventory().clear();
+
+        Inventory saved = playerInventories.remove(player);
+        player.getInventory().setContents(saved.getContents());
     }
 }
