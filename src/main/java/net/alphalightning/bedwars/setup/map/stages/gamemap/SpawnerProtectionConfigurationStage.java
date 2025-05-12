@@ -80,8 +80,10 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
-        if (informationList.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
-
+        if (informationList.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
+            event.setCancelled(true);
+            return;
+        }
         tool.onToolUse(event);
 
         if (!tool.isComplete()) return;
