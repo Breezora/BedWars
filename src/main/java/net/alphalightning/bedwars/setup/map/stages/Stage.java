@@ -5,6 +5,7 @@ import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +35,11 @@ public abstract class Stage implements Listener {
 
     public void invalidate() {
         player = null;
+    }
+
+    public void unregister() {
+        HandlerList.unregisterAll(this);
+        invalidate();
     }
 
     public abstract void run();

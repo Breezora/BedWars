@@ -8,6 +8,7 @@ import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
+import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
 import net.alphalightning.bedwars.util.CuboidSelection;
@@ -52,6 +53,8 @@ public final class GameMapSetup implements MapSetup {
     private final BedWarsPlugin plugin;
     private final String fileName, binaryFileName;
     private Player player;
+
+    private Stage currentStage;
     private int stage;
 
     // Configuration
@@ -86,29 +89,37 @@ public final class GameMapSetup implements MapSetup {
 
     @Override
     public void startStage(int stage) {
+        if (currentStage != null) {
+            currentStage.unregister();
+        }
+
         this.stage = validateStage(this.stage, stage);
-        switch (stage) {
-            case WELCOME_STAGE -> new WelcomeStage(plugin, player, this, false).run();
-            case TEAM_SELECTION_STAGE -> new TeamSelectionStage(plugin, player, this).run();
-            case SPAWNER_CONFIGURATION_STAGE -> new SpawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_SIZE_CONFIGURATION_STAGE -> new TeamSizeConfigurationStage(plugin, player, this).run();
-            case MAX_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
-            case MIN_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
-            case SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
-            case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
-            case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
-            case SLOW_IRON_CONFIGURATION_STAGE -> new SlowIronConfigurationStage(plugin, player, this).run();
-            case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this).run();
-            case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
-            case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
-            case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
-            case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this).run();
-            case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this).run();
-            case SPAWNER_PROTECTION_CONFIGURATION_STAGE -> new SpawnerProtectionConfigurationStage(plugin, player, this).run();
-            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false).run();
-            default -> cancelStage.run();
+        this.currentStage = switch (stage) {
+            case WELCOME_STAGE -> new WelcomeStage(plugin, player, this, false);
+            case TEAM_SELECTION_STAGE -> new TeamSelectionStage(plugin, player, this);
+            case SPAWNER_CONFIGURATION_STAGE -> new SpawnerConfigurationStage(plugin, player, this);
+            case TEAM_SIZE_CONFIGURATION_STAGE -> new TeamSizeConfigurationStage(plugin, player, this);
+            case MAX_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MaxBuildHeightConfigurationStage(plugin, player, this);
+            case MIN_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MinBuildHeightConfigurationStage(plugin, player, this);
+            case SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE -> new SpectatorSpawnpointConfigurationStage(plugin, player, this);
+            case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this);
+            case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this);
+            case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this);
+            case SLOW_IRON_CONFIGURATION_STAGE -> new SlowIronConfigurationStage(plugin, player, this);
+            case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this);
+            case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this);
+            case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this);
+            case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this);
+            case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this);
+            case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this);
+            case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this);
+            case SPAWNER_PROTECTION_CONFIGURATION_STAGE -> new SpawnerProtectionConfigurationStage(plugin, player, this);
+            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false);
+            default -> cancelStage;
+        };
+
+        if (currentStage != null) {
+            currentStage.run();
         }
     }
 
