@@ -79,7 +79,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     public void onInteract(PlayerInteractEvent event) {
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
-        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+        if (!(setup instanceof GameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         if (informationList.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
