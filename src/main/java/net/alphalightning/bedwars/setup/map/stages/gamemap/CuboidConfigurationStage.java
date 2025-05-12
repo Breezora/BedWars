@@ -59,6 +59,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
     @Override
     public void run() {
         player.sendMessage(Component.translatable("mapsetup.stage.16", NamedTranslationArgument.component("tool", Component.translatable("item.selection_wand"))));
+        player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
         startPhase(1);
     }
 
