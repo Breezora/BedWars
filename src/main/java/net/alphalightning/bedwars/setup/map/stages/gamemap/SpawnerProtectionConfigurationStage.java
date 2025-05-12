@@ -36,7 +36,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     private final SelectionWandTool tool;
     private final int count;
     private int phase;
-    private BukkitTask currentVisualization;
+    private BukkitTask tmpVisualization;
 
     private boolean undoUsed = false;
 
@@ -91,12 +91,12 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         tool.onToolUse(event);
 
         if (!tool.isComplete()) {
-            if (currentVisualization != null) {
+            if (tmpVisualization != null) {
                 visualizationManager.removeLastTask(setup);
             }
 
             Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
-            currentVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
+            tmpVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
             return;
         }
 
@@ -105,8 +105,12 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
             Feedback.error(player);
             return;
         }
-        visualizationManager.removeLastTask(setup); // Remove single block rendering
 
+        // Remove single block rendering
+        tmpVisualization = null;
+        visualizationManager.removeLastTask(setup);
+
+        // Save selection
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 

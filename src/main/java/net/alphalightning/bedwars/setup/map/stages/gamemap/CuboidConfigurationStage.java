@@ -110,9 +110,11 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
             return;
         }
 
+        // Remove single block rendering
         tmpVisualization = null;
-        visualizationManager.removeLastTask(setup); // Remove single block rendering
+        visualizationManager.removeLastTask(setup);
 
+        // Save selection
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
 
         undoUsed = false;
