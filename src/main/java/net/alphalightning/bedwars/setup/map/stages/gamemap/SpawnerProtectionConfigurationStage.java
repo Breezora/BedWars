@@ -89,6 +89,8 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
             return;
         }
 
+        if (informationList.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
+
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
