@@ -81,7 +81,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
     public void onInteract(PlayerInteractEvent event) {
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.CUBOID_SELECTION_CONFIGURATION_STAGE)) return;
-        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+        if (!(setup instanceof GameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         if (selections.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
@@ -91,19 +91,25 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         tool.onToolUse(event);
 
-        if (!tool.isComplete()) return;
+        if (!tool.isComplete()) {
+            Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
+            new BoundingBoxRenderer<Block>(plugin, setup).render(block, team.color());
+            return;
+        }
+
         if (!tool.first().getWorld().equals(tool.second().getWorld())) {
             player.sendMessage(Component.translatable("mapsetup.stage.16.world"));
             Feedback.error(player);
             return;
         }
+        visualizationManager.removeLastTask(setup); // Remove single block rendering
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
 
         undoUsed = false;
         selections.add(selection);
 
-        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color());
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(selection.corners(), team.color());
     }
 
     @EventHandler

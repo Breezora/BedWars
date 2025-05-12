@@ -28,6 +28,8 @@ import java.util.List;
 
 public class SpawnerProtectionConfigurationStage extends Stage implements ApprovableConfiguration {
 
+    private static final int COLOR = Color.fromRGB(0xF06562).asRGB();
+
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<RegionInformation> informationList = new ArrayList<>();
     private final SelectionWandTool tool;
@@ -86,19 +88,26 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         }
         tool.onToolUse(event);
 
-        if (!tool.isComplete()) return;
+        if (!tool.isComplete()) {
+            Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
+            new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
+            return;
+        }
+
         if (!tool.first().getWorld().equals(tool.second().getWorld())) {
             player.sendMessage(Component.translatable("mapsetup.stage.18.error.world"));
             Feedback.error(player);
             return;
         }
+        visualizationManager.removeLastTask(setup); // Remove single block rendering
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
         undoUsed = false;
         informationList.add(information);
-        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB());
+
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(selection.corners(), COLOR);
     }
 
     @EventHandler
