@@ -19,22 +19,24 @@ public class BoundingBoxRenderer<T> extends BaseRenderer {
         System.out.println("=== BoundingBoxRenderer.render() ===");
         System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
 
-        // Wenn es einen vorherigen Task gibt, diesen zuerst canceln
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
         }
 
-        // Neuen Task erstellen und speichern
+        BoundingBoxVisualization<T> boxVisualization = new BoundingBoxVisualization<>(color);
+
+        // Task erstellen aber NICHT registrieren
         this.currentTask = Bukkit.getScheduler().runTaskTimer(
                 this.plugin,
-                () -> new BoundingBoxVisualization<T>(color).show(visualization),
+                () -> boxVisualization.show(visualization),
                 0L,
                 10L
         );
 
         System.out.println("New Task ID: " + currentTask.getTaskId());
+
+        // Nur EINMAL registrieren
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
-
 }
