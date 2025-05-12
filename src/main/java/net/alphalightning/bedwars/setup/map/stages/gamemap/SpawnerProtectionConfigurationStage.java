@@ -70,7 +70,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.18.name", NamedTranslationArgument.numeric("phase", phase)));
-        player.sendMessage(Component.translatable("mapsetup.stage.18.tip"));
+        player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
     }
 
     @EventHandler
@@ -108,7 +108,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         String message = event.signedMessage().message();
 
         if (!VALID_MESSAGES.contains(message.toLowerCase())) {
-            player.sendMessage(Component.translatable("mapsetup.stage.18.tip"));
+            player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
             Feedback.error(player);
             return;
         }
@@ -117,7 +117,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         if (!isApproved) {
             if (undoUsed) {
-                player.sendMessage(Component.translatable("mapsetup.stage.18.error.undo"));
+                player.sendMessage(Component.translatable("mapsetup.stage.error.undo"));
                 Feedback.error(player);
                 return;
             }
