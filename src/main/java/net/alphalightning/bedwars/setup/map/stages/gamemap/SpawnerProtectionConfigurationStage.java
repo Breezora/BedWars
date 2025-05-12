@@ -34,6 +34,8 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     private final int count;
     private int phase;
 
+    private boolean undoUsed = false;
+
     public SpawnerProtectionConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
         if (!(setup instanceof GameMapSetup gameMapSetup)) {
@@ -75,6 +77,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
+
         tool.onToolUse(event);
 
         if (!tool.isComplete()) return;
@@ -87,6 +90,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
+        undoUsed = true;
         informationList.add(information);
         new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB());
     }
@@ -110,8 +114,15 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         boolean isApproved = isApproved(message);
 
         if (!isApproved) {
+            if (undoUsed) {
+                player.sendMessage(Component.translatable("mapsetup.stage.18.error.undo"));
+                Feedback.error(player);
+                return;
+            }
+
             player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
             visualizationManager.removeLastTask(setup);
+            undoUsed = true;
             tool.reset();
             return;
         }
