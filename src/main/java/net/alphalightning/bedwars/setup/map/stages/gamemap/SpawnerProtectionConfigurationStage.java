@@ -115,6 +115,12 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         boolean isApproved = isApproved(message);
 
+        if (informationList.size() < phase) {
+            player.sendMessage(Component.translatable("mapsetup.state.error.missing-selection"));
+            Feedback.error(player);
+            return;
+        }
+
         if (!isApproved) {
             if (undoUsed) {
                 player.sendMessage(Component.translatable("mapsetup.stage.error.undo"));
@@ -124,6 +130,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
             player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
             visualizationManager.removeLastTask(setup);
+            informationList.removeLast();
             undoUsed = true;
             tool.reset();
             return;

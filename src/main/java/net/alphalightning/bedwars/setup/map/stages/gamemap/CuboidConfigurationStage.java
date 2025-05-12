@@ -120,6 +120,12 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         boolean isApproved = isApproved(message);
 
+        if (selections.size() < phase) {
+            player.sendMessage(Component.translatable("mapsetup.state.error.missing-selection"));
+            Feedback.error(player);
+            return;
+        }
+
         if (!isApproved) {
             if (undoUsed) {
                 player.sendMessage(Component.translatable("mapsetup.stage.error.undo"));
@@ -129,6 +135,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
             player.sendMessage(Component.translatable("mapsetup.stage.16.undo", NamedTranslationArgument.component("team", teamName)));
             visualizationManager.removeLastTask(setup);
+            selections.removeLast();
             undoUsed = true;
             tool.reset();
             return;
