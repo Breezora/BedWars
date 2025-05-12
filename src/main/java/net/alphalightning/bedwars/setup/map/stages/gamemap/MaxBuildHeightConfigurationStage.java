@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.HeightVisualization;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
@@ -17,8 +16,6 @@ import org.bukkit.event.EventHandler;
 import java.time.temporal.ValueRange;
 
 public class MaxBuildHeightConfigurationStage extends Stage implements HeightConfiguration {
-
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
 
     public MaxBuildHeightConfigurationStage(BedWarsPlugin plugin, Player player, MapSetup setup) {
         super(plugin, player, setup);
@@ -64,7 +61,7 @@ public class MaxBuildHeightConfigurationStage extends Stage implements HeightCon
             return;
         }
 
-        this.visualizationManager.registerTask(gameMapSetup, new HeightRenderer(plugin, gameMapSetup, player).render(new HeightVisualization(buildHeight)));
+        new HeightRenderer(plugin, gameMapSetup, player).render(new HeightVisualization(buildHeight));
 
         player.sendMessage(Component.translatable("mapsetup.stage.4.success", Component.text(buildHeight)));
         Feedback.success(player);

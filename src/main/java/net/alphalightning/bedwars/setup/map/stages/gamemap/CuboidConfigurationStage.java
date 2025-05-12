@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
@@ -26,7 +25,6 @@ import java.util.List;
 
 public class CuboidConfigurationStage extends Stage implements TeamConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int count;
     private int phase;
@@ -90,7 +88,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         selections.add(selection);
-        visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color()));
+        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color());
 
         if (phase < count) {
             startPhase(++phase);

@@ -3,7 +3,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 import com.destroystokyo.paper.ParticleBuilder;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
@@ -32,7 +31,6 @@ import java.util.Set;
 
 public class FloodFillConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<CuboidSelection> selections;
     private final List<JacksonTeam> teams;
 
@@ -102,7 +100,7 @@ public class FloodFillConfigurationStage extends Stage implements TeamConfigurat
             }
 
             for (Location current : locations) {
-                visualizationManager.registerTask(gameMapSetup, Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current.toCenterLocation()), 0L, 10L));
+                Bukkit.getScheduler().runTaskTimer(plugin, () -> createParticle(current.toCenterLocation()), 0L, 10L);
             }
 
             if (phase < count) {

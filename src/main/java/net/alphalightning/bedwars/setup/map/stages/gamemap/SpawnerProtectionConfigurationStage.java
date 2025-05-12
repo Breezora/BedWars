@@ -87,7 +87,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
         informationList.add(information);
-        visualizationManager.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB()));
+        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB());
     }
 
     @EventHandler

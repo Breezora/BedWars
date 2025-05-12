@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
@@ -28,7 +27,6 @@ import java.util.List;
 
 public class BedConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int count;
     private int phase;
@@ -114,10 +112,8 @@ public class BedConfigurationStage extends Stage implements TeamConfiguration, L
         team.bedTopHalf(topHalf);
 
         final List<Block> blocks = List.of(topHalf.getBlock(), bottom.getBlock());
-        this.visualizationManager.registerTask(setup, new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, team.color()));
-        this.visualizationManager.registerTask(setup, new EntityRenderer(plugin, setup, bottom)
-                .render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null))
-        );
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(blocks, team.color());
+        new EntityRenderer(plugin, setup, bottom).render(new EntityVisualization(setup, player, EntityType.BLOCK_DISPLAY, BedUtil.fromColor(team.color()), null));
 
         player.sendMessage(Component.translatable("mapsetup.stage.15.name.success", teamName));
         Feedback.success(player);
