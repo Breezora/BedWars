@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class LootspawnerRenderer extends BaseRenderer implements VisualizationRenderer<LootspawnerVisualization> {
 
     private final Location location;
+    private BukkitTask currentTask;
 
     public LootspawnerRenderer(BedWarsPlugin plugin, MapSetup setup, Location location) {
         super(plugin, setup);
@@ -20,9 +21,17 @@ public class LootspawnerRenderer extends BaseRenderer implements VisualizationRe
 
     @Override
     public @NotNull BukkitTask render(@NotNull LootspawnerVisualization visualisation) {
-        return super.visualizationManager.registerTask(
-                this.setup,
-                Bukkit.getScheduler().runTaskTimer(this.plugin, () -> visualisation.show(this.location), 0L, 10L)
+        if (currentTask != null && !currentTask.isCancelled()) {
+            currentTask.cancel();
+            super.visualizationManager.removeLastTask(this.setup);
+        }
+
+        this.currentTask = Bukkit.getScheduler().runTaskTimer(
+                this.plugin,
+                () -> visualisation.show(this.location),
+                0L,
+                10L
         );
+        return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }
