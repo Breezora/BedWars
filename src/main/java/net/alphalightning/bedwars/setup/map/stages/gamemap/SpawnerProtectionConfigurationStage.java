@@ -110,7 +110,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         if (!isApproved) {
             player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
-            visualizationManager.removeLastTask(gameMapSetup);
+            visualizationManager.removeLastTask(setup);
             tool.reset();
             return;
         }
