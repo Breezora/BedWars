@@ -68,9 +68,10 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
         if (!tasks.isEmpty()) {
             BukkitTask lastTask = tasks.removeLast();
             System.out.println("Task Id: " + lastTask.getTaskId());
-            System.out.println("Canceled: " + lastTask.isCancelled());
 
             Bukkit.getScheduler().cancelTask(lastTask.getTaskId());
+
+            System.out.println("Canceled: " + lastTask.isCancelled());
 
             if (tasks.isEmpty()) {
                 this.activeRenderings.remove(setup);
