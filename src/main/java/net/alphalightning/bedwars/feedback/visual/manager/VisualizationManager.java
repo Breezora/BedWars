@@ -66,12 +66,12 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
     public synchronized void removeLastTask(@NotNull MapSetup setup) {
         List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
         if (!tasks.isEmpty()) {
-            // Letzten Task aus der Liste holen und abbrechen
             BukkitTask lastTask = tasks.removeLast();
-            Bukkit.getScheduler().runTask(setup.plugin(), lastTask::cancel);
+            System.out.println("Task Id: " + lastTask.getTaskId());
+            System.out.println("Canceled: " + lastTask.isCancelled());
 
+            Bukkit.getScheduler().cancelTask(lastTask.getTaskId());
 
-            // Aktualisierte Liste zurück in die Map setzen
             if (tasks.isEmpty()) {
                 this.activeRenderings.remove(setup);
             } else {
