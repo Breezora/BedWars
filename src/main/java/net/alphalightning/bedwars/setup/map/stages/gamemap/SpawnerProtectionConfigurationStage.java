@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     private final SelectionWandTool tool;
     private final int count;
     private int phase;
+    private BukkitTask currentVisualization;
 
     private boolean undoUsed = false;
 
@@ -89,8 +91,12 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         tool.onToolUse(event);
 
         if (!tool.isComplete()) {
+            if (currentVisualization != null) {
+                visualizationManager.removeLastTask(setup);
+            }
+
             Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
-            new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
+            currentVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
             return;
         }
 
