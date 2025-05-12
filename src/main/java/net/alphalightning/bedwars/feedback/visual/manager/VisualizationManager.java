@@ -63,29 +63,22 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
         this.fakeEntities.remove(setup);
     }
 
-    public synchronized void cancelVisualization(MapSetup setup, BukkitTask task) {
-        if (setup == null || task == null) return;
+    public synchronized void removeLastTask(@NotNull MapSetup setup) {
+        List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
+        if (!tasks.isEmpty()) {
+            // Letzten Task aus der Liste holen und abbrechen
+            BukkitTask lastTask = tasks.removeLast();
+            lastTask.cancel();
 
-        List<BukkitTask> tasks = find(setup);
-        if (tasks == null || tasks.isEmpty()) return;
-        if (!tasks.contains(task)) return;
-
-        tasks.remove(task);
-        task.cancel();
+            // Aktualisierte Liste zurück in die Map setzen
+            if (tasks.isEmpty()) {
+                this.activeRenderings.remove(setup);
+            } else {
+                this.activeRenderings.put(setup, tasks);
+            }
+        }
     }
 
-    public synchronized BukkitTask findLastTask(MapSetup setup) {
-        if (setup == null) return null;
-
-        List<BukkitTask> tasks = find(setup);
-        if (tasks == null || tasks.isEmpty()) return null;
-
-        return tasks.getLast();
-    }
-
-    public synchronized List<BukkitTask> find(MapSetup setup) {
-        return this.activeRenderings.get(setup);
-    }
 
     @Override
     public @NotNull BukkitTask get() {
