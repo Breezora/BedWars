@@ -95,7 +95,10 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         }
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
+
+        undoUsed = false;
         selections.add(selection);
+
         new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color());
     }
 
@@ -116,7 +119,6 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         }
 
         boolean isApproved = isApproved(message);
-        Component teamName = Component.translatable("team." + convertName(team.name()));
 
         if (!isApproved) {
             if (undoUsed) {
