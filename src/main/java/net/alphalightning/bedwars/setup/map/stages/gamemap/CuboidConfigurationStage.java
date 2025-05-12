@@ -1,11 +1,14 @@
 package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
+import net.alphalightning.bedwars.setup.map.stages.ApprovableConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.TeamConfiguration;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
@@ -24,11 +27,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CuboidConfigurationStage extends Stage implements TeamConfiguration {
+public class CuboidConfigurationStage extends Stage implements TeamConfiguration, ApprovableConfiguration {
 
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int count;
     private int phase;
+    private boolean undoUsed = false;
 
     private final List<CuboidSelection> selections = new ArrayList<>();
     private final SelectionWandTool tool;
@@ -59,6 +64,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         if (phase > count) return;
 
         this.phase = phase;
+        this.undoUsed = false;
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
@@ -91,15 +97,54 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         selections.add(selection);
         new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color());
+    }
+
+    @EventHandler
+    public void onChat(AsyncChatEvent event) {
+        if (isNotPlayerConfiguring(event.getPlayer())) return;
+        if (isNotStage(GameMapSetup.CUBOID_SELECTION_CONFIGURATION_STAGE)) return;
+        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+
+        event.setCancelled(true);
+
+        String message = event.signedMessage().message();
+
+        if (!VALID_MESSAGES.contains(message.toLowerCase())) {
+            player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
+            Feedback.error(player);
+            return;
+        }
+
+        boolean isApproved = isApproved(message);
+        Component teamName = Component.translatable("team." + convertName(team.name()));
+
+        if (!isApproved) {
+            if (undoUsed) {
+                player.sendMessage(Component.translatable("mapsetup.stage.error.undo"));
+                Feedback.error(player);
+                return;
+            }
+
+            player.sendMessage(Component.translatable("mapsetup.stage.16.undo", NamedTranslationArgument.component("team", teamName)));
+            visualizationManager.removeLastTask(setup);
+            undoUsed = true;
+            tool.reset();
+            return;
+        }
+
+        player.sendMessage(Component.translatable("mapsetup.stage.16.name.success", NamedTranslationArgument.component("team", teamName)));
+        Feedback.success(player);
 
         if (phase < count) {
             startPhase(++phase);
             return;
         }
 
-        player.sendMessage(Component.translatable("mapsetup.stage.16.name.success", NamedTranslationArgument.component("team", teamName)));
         gameMapSetup.configureSelections(selections);
         gameMapSetup.startStage(GameMapSetup.FLOOD_FILL_CONFIGURATION_STAGE);
     }
 
+    private boolean isApproved(String message) {
+        return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
+    }
 }
