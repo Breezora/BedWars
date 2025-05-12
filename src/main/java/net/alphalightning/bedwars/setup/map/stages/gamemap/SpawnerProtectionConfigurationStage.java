@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         if (!isApproved) {
             player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
-            visualizationManager.findLast(gameMapSetup).cancel(); // Stop rendering of invalid bounding box
+            cancelVisualization(gameMapSetup);
             tool.reset();
             return;
         }
@@ -129,5 +130,10 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
     private boolean isApproved(String message) {
         return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
+    }
+
+    private void cancelVisualization(GameMapSetup gameMapSetup) {
+        BukkitTask lastTask = visualizationManager.findLastTask(gameMapSetup);
+        visualizationManager.cancelVisualization(gameMapSetup, lastTask);
     }
 }
