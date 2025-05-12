@@ -31,10 +31,7 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
     }
 
     public synchronized BukkitTask registerTask(@NotNull MapSetup setup, @NotNull BukkitTask task) {
-        System.out.println("=== VisualizationManager.registerTask() ===");
-        System.out.println("Registering task ID: " + task.getTaskId());
-
-        final List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
+       final List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
         tasks.add(task);
 
         this.activeRenderings.put(setup, tasks);

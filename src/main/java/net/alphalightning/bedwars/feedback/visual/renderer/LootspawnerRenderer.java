@@ -21,9 +21,6 @@ public class LootspawnerRenderer extends BaseRenderer implements VisualizationRe
 
     @Override
     public @NotNull BukkitTask render(@NotNull LootspawnerVisualization visualisation) {
-        System.out.println("=== LootspawnerRenderer.render() ===");
-        System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
-
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
@@ -35,8 +32,6 @@ public class LootspawnerRenderer extends BaseRenderer implements VisualizationRe
                 0L,
                 10L
         );
-
-        System.out.println("New Task ID: " + currentTask.getTaskId());
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }
