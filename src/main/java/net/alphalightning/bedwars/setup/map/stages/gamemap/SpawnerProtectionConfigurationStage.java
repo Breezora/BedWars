@@ -31,7 +31,6 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     private final List<RegionInformation> informationList = new ArrayList<>();
     private final SelectionWandTool tool;
     private final int count;
-    private boolean approved;
     private int phase;
 
     public SpawnerProtectionConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
@@ -62,7 +61,6 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (phase > count) return;
 
         this.phase = phase;
-        this.approved = false;
         tool.reset();
 
         Feedback.success(player);
@@ -90,14 +88,6 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         informationList.add(information);
         visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB()));
-
-        if (phase < count && approved) {
-            startPhase(++phase);
-            return;
-        }
-
-        gameMapSetup.configureRegionInformation(informationList);
-        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
     }
 
     @EventHandler
@@ -118,16 +108,23 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
 
         boolean isApproved = isApproved(message);
 
-        if (isApproved) {
-            this.approved = true;
-            player.sendMessage(Component.translatable("mapsetup.stage.18.approve", NamedTranslationArgument.numeric("phase", phase)));
-            Feedback.success(player);
-
-        } else {
-            tool.reset();
-            visualizationManager.findLast(gameMapSetup).cancel(); // Stop rendering of invalid bounding box
+        if (!isApproved) {
             player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
+            visualizationManager.findLast(gameMapSetup).cancel(); // Stop rendering of invalid bounding box
+            tool.reset();
+            return;
         }
+
+        player.sendMessage(Component.translatable("mapsetup.stage.18.approve", NamedTranslationArgument.numeric("phase", phase)));
+        Feedback.success(player);
+
+        if (phase < count) {
+            startPhase(++phase);
+            return;
+        }
+
+        gameMapSetup.configureRegionInformation(informationList);
+        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
     }
 
     private boolean isApproved(String message) {
