@@ -5,6 +5,7 @@ import net.alphalightning.bedwars.feedback.visual.BaseRenderer;
 import net.alphalightning.bedwars.feedback.visual.VisualizationRenderer;
 import net.alphalightning.bedwars.setup.map.MapSetup;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,8 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
 
     @Override
     public @NotNull BukkitTask render(@NotNull SingleLineVisualization visualisation) {
+        Location location = player.getEyeLocation();
+
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
@@ -28,7 +31,7 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
 
         this.currentTask = Bukkit.getScheduler().runTaskTimer(
                 this.plugin,
-                () -> visualisation.show(player.getEyeLocation()),
+                () -> visualisation.show(location),
                 0L,
                 10L
         );
