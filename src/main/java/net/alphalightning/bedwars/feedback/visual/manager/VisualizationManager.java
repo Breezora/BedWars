@@ -63,6 +63,10 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
         this.fakeEntities.remove(setup);
     }
 
+    public synchronized BukkitTask findLast(MapSetup setup) {
+        return this.activeRenderings.get(setup).getLast();
+    }
+
     @Override
     public @NotNull BukkitTask get() {
         throw new UnsupportedOperationException();
