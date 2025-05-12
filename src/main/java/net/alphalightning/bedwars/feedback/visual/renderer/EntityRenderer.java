@@ -21,6 +21,9 @@ public class EntityRenderer extends BaseRenderer implements VisualizationRendere
 
     @Override
     public @NotNull BukkitTask render(@NotNull EntityVisualization visualisation) {
+        System.out.println("=== EntityRenderer.render() ===");
+        System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
+
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
@@ -30,6 +33,8 @@ public class EntityRenderer extends BaseRenderer implements VisualizationRendere
                 this.plugin,
                 () -> visualisation.show(location)
         );
+
+        System.out.println("New Task ID: " + currentTask.getTaskId());
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

@@ -24,6 +24,9 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
     public @NotNull BukkitTask render(@NotNull SingleLineVisualization visualisation) {
         Location location = player.getEyeLocation();
 
+        System.out.println("=== SingleLineRenderer.render() ===");
+        System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
+
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
@@ -35,6 +38,8 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
                 0L,
                 10L
         );
+
+        System.out.println("New Task ID: " + currentTask.getTaskId());
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

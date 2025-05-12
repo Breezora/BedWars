@@ -21,6 +21,9 @@ public class HologramRenderer extends BaseRenderer implements VisualizationRende
 
     @Override
     public @NotNull BukkitTask render(@NotNull HologramVisualization visualisation) {
+        System.out.println("=== HologramRenderer.render() ===");
+        System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
+
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
             super.visualizationManager.removeLastTask(this.setup);
@@ -30,6 +33,8 @@ public class HologramRenderer extends BaseRenderer implements VisualizationRende
                 this.plugin,
                 () -> visualisation.show(this.location)
         );
+
+        System.out.println("New Task ID: " + currentTask.getTaskId());
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

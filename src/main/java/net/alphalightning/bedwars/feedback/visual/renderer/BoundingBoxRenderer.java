@@ -16,6 +16,9 @@ public class BoundingBoxRenderer<T> extends BaseRenderer {
     }
 
     public @NotNull BukkitTask render(@NotNull T visualization, int color) {
+        System.out.println("=== BoundingBoxRenderer.render() ===");
+        System.out.println("Current Task: " + (currentTask != null ? currentTask.getTaskId() : "null"));
+
         // Wenn es einen vorherigen Task gibt, diesen zuerst canceln
         if (currentTask != null && !currentTask.isCancelled()) {
             currentTask.cancel();
@@ -29,6 +32,8 @@ public class BoundingBoxRenderer<T> extends BaseRenderer {
                 0L,
                 10L
         );
+
+        System.out.println("New Task ID: " + currentTask.getTaskId());
         return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 
