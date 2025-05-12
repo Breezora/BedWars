@@ -35,7 +35,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
     private final int count;
     private int phase;
     private boolean undoUsed = false;
-    private BukkitTask currentVisualization;
+    private BukkitTask tmpVisualization;
 
     private final List<CuboidSelection> selections = new ArrayList<>();
     private final SelectionWandTool tool;
@@ -67,6 +67,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         this.phase = phase;
         this.undoUsed = false;
+
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
@@ -94,12 +95,12 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         tool.onToolUse(event);
 
         if (!tool.isComplete()) {
-            if (currentVisualization != null) {
+            if (tmpVisualization != null) {
                 visualizationManager.removeLastTask(setup);
             }
 
             Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
-            currentVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, team.color());
+            tmpVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, team.color());
             return;
         }
 
@@ -108,6 +109,8 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
             Feedback.error(player);
             return;
         }
+
+        tmpVisualization = null;
         visualizationManager.removeLastTask(setup); // Remove single block rendering
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
