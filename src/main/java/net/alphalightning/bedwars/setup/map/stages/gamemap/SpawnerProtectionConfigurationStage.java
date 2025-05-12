@@ -80,6 +80,8 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
+        if (informationList.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
+
         tool.onToolUse(event);
 
         if (!tool.isComplete()) return;
@@ -88,8 +90,6 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
             Feedback.error(player);
             return;
         }
-
-        if (informationList.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
 
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);

@@ -84,11 +84,11 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
+        if (selections.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
+
         tool.onToolUse(event);
 
         if (!tool.isComplete()) return;
-        if (selections.size() >= phase) return; // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
-
         if (!tool.first().getWorld().equals(tool.second().getWorld())) {
             player.sendMessage(Component.translatable("mapsetup.stage.16.world"));
             Feedback.error(player);
