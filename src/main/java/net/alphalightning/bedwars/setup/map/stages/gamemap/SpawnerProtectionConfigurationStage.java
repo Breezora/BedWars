@@ -64,6 +64,8 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (phase > count) return;
 
         this.phase = phase;
+        this.undoUsed = false;
+
         tool.reset();
 
         Feedback.success(player);
@@ -90,7 +92,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
-        undoUsed = true;
+        undoUsed = false;
         informationList.add(information);
         new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB());
     }
