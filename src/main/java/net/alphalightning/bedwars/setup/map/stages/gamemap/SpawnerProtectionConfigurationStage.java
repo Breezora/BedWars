@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
-
+        if (event.getHand() != EquipmentSlot.HAND) return;
         tool.onToolUse(event);
 
         if (!tool.isComplete()) return;

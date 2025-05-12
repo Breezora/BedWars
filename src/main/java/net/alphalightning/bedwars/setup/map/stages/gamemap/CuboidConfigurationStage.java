@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.CUBOID_SELECTION_CONFIGURATION_STAGE)) return;
         if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
 
         tool.onToolUse(event);
 
