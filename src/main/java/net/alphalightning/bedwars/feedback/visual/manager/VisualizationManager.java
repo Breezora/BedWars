@@ -31,7 +31,7 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
     }
 
     public synchronized BukkitTask registerTask(@NotNull MapSetup setup, @NotNull BukkitTask task) {
-       final List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
+        final List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
         tasks.add(task);
 
         this.activeRenderings.put(setup, tasks);
@@ -67,11 +67,7 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
         List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
         if (!tasks.isEmpty()) {
             BukkitTask lastTask = tasks.removeLast();
-            System.out.println("Task Id: " + lastTask.getTaskId());
-
             Bukkit.getScheduler().cancelTask(lastTask.getTaskId());
-
-            System.out.println("Canceled: " + lastTask.isCancelled());
 
             if (tasks.isEmpty()) {
                 this.activeRenderings.remove(setup);
