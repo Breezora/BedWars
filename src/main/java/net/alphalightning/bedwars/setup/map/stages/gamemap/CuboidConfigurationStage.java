@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
     private final int count;
     private int phase;
     private boolean undoUsed = false;
+    private BukkitTask tmpVisualization;
 
     private final List<CuboidSelection> selections = new ArrayList<>();
     private final SelectionWandTool tool;
@@ -65,6 +67,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         this.phase = phase;
         this.undoUsed = false;
+
         this.team = teams.get(phase - 1);
         this.teamName = Component.translatable("team." + convertName(team.name()));
 
@@ -81,7 +84,7 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
     public void onInteract(PlayerInteractEvent event) {
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.CUBOID_SELECTION_CONFIGURATION_STAGE)) return;
-        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+        if (!(setup instanceof GameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         if (selections.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
@@ -91,19 +94,33 @@ public class CuboidConfigurationStage extends Stage implements TeamConfiguration
 
         tool.onToolUse(event);
 
-        if (!tool.isComplete()) return;
+        if (!tool.isComplete()) {
+            if (tmpVisualization != null) {
+                visualizationManager.removeLastTask(setup);
+            }
+
+            Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
+            tmpVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, team.color());
+            return;
+        }
+
         if (!tool.first().getWorld().equals(tool.second().getWorld())) {
             player.sendMessage(Component.translatable("mapsetup.stage.16.world"));
             Feedback.error(player);
             return;
         }
 
+        // Remove single block rendering
+        tmpVisualization = null;
+        visualizationManager.removeLastTask(setup);
+
+        // Save selection
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
 
         undoUsed = false;
         selections.add(selection);
 
-        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), team.color());
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(selection.corners(), team.color());
     }
 
     @EventHandler

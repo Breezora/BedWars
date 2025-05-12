@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,11 +29,14 @@ import java.util.List;
 
 public class SpawnerProtectionConfigurationStage extends Stage implements ApprovableConfiguration {
 
+    private static final int COLOR = Color.fromRGB(0xF06562).asRGB();
+
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<RegionInformation> informationList = new ArrayList<>();
     private final SelectionWandTool tool;
     private final int count;
     private int phase;
+    private BukkitTask tmpVisualization;
 
     private boolean undoUsed = false;
 
@@ -77,7 +81,7 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
     public void onInteract(PlayerInteractEvent event) {
         if (isNotPlayerConfiguring(event.getPlayer())) return;
         if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
-        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+        if (!(setup instanceof GameMapSetup)) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         if (informationList.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
@@ -86,19 +90,34 @@ public class SpawnerProtectionConfigurationStage extends Stage implements Approv
         }
         tool.onToolUse(event);
 
-        if (!tool.isComplete()) return;
+        if (!tool.isComplete()) {
+            if (tmpVisualization != null) {
+                visualizationManager.removeLastTask(setup);
+            }
+
+            Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
+            tmpVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
+            return;
+        }
+
         if (!tool.first().getWorld().equals(tool.second().getWorld())) {
             player.sendMessage(Component.translatable("mapsetup.stage.18.error.world"));
             Feedback.error(player);
             return;
         }
 
+        // Remove single block rendering
+        tmpVisualization = null;
+        visualizationManager.removeLastTask(setup);
+
+        // Save selection
         CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
         RegionInformation information = RegionUtil.createRegionInformation(selection);
 
         undoUsed = false;
         informationList.add(information);
-        new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB());
+
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(selection.corners(), COLOR);
     }
 
     @EventHandler
