@@ -1,11 +1,13 @@
 package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
 import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.setup.map.GameMapSetup;
 import net.alphalightning.bedwars.setup.map.MapSetup;
+import net.alphalightning.bedwars.setup.map.stages.ApprovableConfiguration;
 import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.translation.NamedTranslationArgument;
 import net.alphalightning.bedwars.util.CuboidSelection;
@@ -23,12 +25,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpawnerProtectionConfigurationStage extends Stage {
+public class SpawnerProtectionConfigurationStage extends Stage implements ApprovableConfiguration {
 
     private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<RegionInformation> informationList = new ArrayList<>();
     private final SelectionWandTool tool;
     private final int count;
+    private boolean approved;
     private int phase;
 
     public SpawnerProtectionConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
@@ -59,10 +62,12 @@ public class SpawnerProtectionConfigurationStage extends Stage {
         if (phase > count) return;
 
         this.phase = phase;
+        this.approved = false;
         tool.reset();
 
         Feedback.success(player);
         player.sendMessage(Component.translatable("mapsetup.stage.18.name", NamedTranslationArgument.numeric("phase", phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.18.tip"));
     }
 
     @EventHandler
@@ -86,12 +91,46 @@ public class SpawnerProtectionConfigurationStage extends Stage {
         informationList.add(information);
         visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(selection.corners(), Color.fromRGB(0xF06562).asRGB()));
 
-        if (phase < count) {
+        if (phase < count && approved) {
             startPhase(++phase);
             return;
         }
 
         gameMapSetup.configureRegionInformation(informationList);
         setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+    }
+
+    @EventHandler
+    public void onChat(AsyncChatEvent event) {
+        if (isNotPlayerConfiguring(event.getPlayer())) return;
+        if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
+        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+
+        event.setCancelled(true);
+
+        String message = event.signedMessage().message();
+
+        if (!VALID_MESSAGES.contains(message.toLowerCase())) {
+            player.sendMessage(Component.translatable("mapsetup.stage.18.tip"));
+            Feedback.error(player);
+            return;
+        }
+
+        boolean isApproved = isApproved(message);
+
+        if (isApproved) {
+            this.approved = true;
+            player.sendMessage(Component.translatable("mapsetup.stage.18.approve", NamedTranslationArgument.numeric("phase", phase)));
+            Feedback.success(player);
+
+        } else {
+            tool.reset();
+            visualizationManager.findLast(gameMapSetup).cancel(); // Stop rendering of invalid bounding box
+            player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
+        }
+    }
+
+    private boolean isApproved(String message) {
+        return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
     }
 }
