@@ -63,6 +63,21 @@ public class VisualizationManager implements ServiceProvider<BukkitTask> {
         this.fakeEntities.remove(setup);
     }
 
+    public synchronized void removeLastTask(@NotNull MapSetup setup) {
+        List<BukkitTask> tasks = this.activeRenderings.getOrDefault(setup, new ArrayList<>());
+        if (!tasks.isEmpty()) {
+            BukkitTask lastTask = tasks.removeLast();
+            Bukkit.getScheduler().cancelTask(lastTask.getTaskId());
+
+            if (tasks.isEmpty()) {
+                this.activeRenderings.remove(setup);
+            } else {
+                this.activeRenderings.put(setup, tasks);
+            }
+        }
+    }
+
+
     @Override
     public @NotNull BukkitTask get() {
         throw new UnsupportedOperationException();

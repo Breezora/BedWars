@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class SingleLineRenderer extends BaseRenderer implements VisualizationRenderer<SingleLineVisualization> {
 
     private final Player player;
+    private BukkitTask currentTask;
 
     public SingleLineRenderer(BedWarsPlugin plugin, MapSetup setup, Player player) {
         super(plugin, setup);
@@ -21,10 +22,19 @@ public class SingleLineRenderer extends BaseRenderer implements VisualizationRen
 
     @Override
     public @NotNull BukkitTask render(@NotNull SingleLineVisualization visualisation) {
-        final Location start = this.player.getEyeLocation();
-        return super.visualizationManager.registerTask(
-                this.setup,
-                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(start), 0L, 5L)
+        Location location = player.getEyeLocation();
+
+        if (currentTask != null && !currentTask.isCancelled()) {
+            currentTask.cancel();
+            super.visualizationManager.removeLastTask(this.setup);
+        }
+
+        this.currentTask = Bukkit.getScheduler().runTaskTimer(
+                this.plugin,
+                () -> visualisation.show(location),
+                0L,
+                10L
         );
+        return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

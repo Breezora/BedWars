@@ -9,15 +9,24 @@ import org.jetbrains.annotations.NotNull;
 
 public class BoundingBoxRenderer<T> extends BaseRenderer {
 
+    private BukkitTask currentTask;
+
     public BoundingBoxRenderer(BedWarsPlugin plugin, MapSetup setup) {
         super(plugin, setup);
     }
 
     public @NotNull BukkitTask render(@NotNull T visualization, int color) {
-        return super.visualizationManager.registerTask(
-                this.setup,
-                Bukkit.getScheduler().runTaskTimer(this.plugin, () -> new BoundingBoxVisualization<T>(color).show(visualization), 0L, 5L)
-        );
-    }
+        if (currentTask != null && !currentTask.isCancelled()) {
+            currentTask.cancel();
+            super.visualizationManager.removeLastTask(this.setup);
+        }
 
+        this.currentTask = Bukkit.getScheduler().runTaskTimer(
+                this.plugin,
+                () -> new BoundingBoxVisualization<>(color).show(visualization),
+                0L,
+                10L
+        );
+        return super.visualizationManager.registerTask(this.setup, currentTask);
+    }
 }

@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.EntityVisualization;
@@ -28,7 +27,6 @@ import java.util.List;
 
 public class TeamChestConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int count;
     private int phase;
@@ -90,12 +88,8 @@ public class TeamChestConfigurationStage extends Stage implements TeamConfigurat
         final Location withOffset = location.add(OFFSET);
         team.chest(withOffset);
 
-        this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
-                .render(withOffset.getBlock(), team.color())
-        );
-        this.visualizationManager.registerTask(gameMapSetup, new EntityRenderer(plugin, gameMapSetup, withOffset)
-                .render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null))
-        );
+        new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), team.color());
+        new EntityRenderer(plugin, gameMapSetup, withOffset).render(new EntityVisualization(gameMapSetup, player, EntityType.BLOCK_DISPLAY, Material.CHEST, null));
 
         player.sendMessage(Component.translatable("mapsetup.stage.12.name.success", teamName));
         Feedback.success(player);

@@ -8,8 +8,12 @@ import net.alphalightning.bedwars.setup.map.jackson.JacksonTeam;
 import net.alphalightning.bedwars.setup.map.jackson.SimpleJacksonLocation;
 import net.alphalightning.bedwars.setup.map.stages.CancelStage;
 import net.alphalightning.bedwars.setup.map.stages.CompleteSetupStage;
+import net.alphalightning.bedwars.setup.map.stages.Stage;
 import net.alphalightning.bedwars.setup.map.stages.WelcomeStage;
 import net.alphalightning.bedwars.setup.map.stages.gamemap.*;
+import net.alphalightning.bedwars.util.CuboidSelection;
+import net.alphalightning.bedwars.util.RegionInformation;
+import net.alphalightning.bedwars.util.RegionUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class GameMapSetup implements MapSetup {
 
@@ -37,23 +42,30 @@ public final class GameMapSetup implements MapSetup {
     public static final int ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE = 13;
     public static final int UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE = 14;
     public static final int BED_CONFIGURATION_STAGE = 15;
-    public static final int COMPLETION_STAGE = 16;
+    public static final int CUBOID_SELECTION_CONFIGURATION_STAGE = 16;
+    public static final int FLOOD_FILL_CONFIGURATION_STAGE = 17;
+    public static final int SPAWNER_PROTECTION_CONFIGURATION_STAGE = 18;
+    public static final int COMPLETION_STAGE = 19;
 
     private final CancelStage cancelStage;
 
     // Setup handling
     private final BedWarsPlugin plugin;
-    private final String fileName;
+    private final String fileName, binaryFileName;
     private Player player;
+
+    private Stage currentStage;
     private int stage;
 
     // Configuration
-    private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
+    private final Map<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<JacksonTeam> teams = new ArrayList<>();
     private final List<SimpleJacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<SimpleJacksonLocation> upgradeVillagerLocations = new ArrayList<>();
-    private JacksonLocation spectatorSpawn;
+    private final List<CuboidSelection> selections = new ArrayList<>();
+    private final List<RegionInformation> regionInformation = new ArrayList<>();
     private final String name;
+    private JacksonLocation spectatorSpawn;
     private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
@@ -66,6 +78,7 @@ public final class GameMapSetup implements MapSetup {
         this.player = player;
         this.name = name;
         this.fileName = name + ".json";
+        this.binaryFileName = name + ".bin";
         this.cancelStage = new CancelStage(plugin, player, this, false);
     }
 
@@ -76,26 +89,37 @@ public final class GameMapSetup implements MapSetup {
 
     @Override
     public void startStage(int stage) {
+        if (currentStage != null) {
+            currentStage.unregister();
+        }
+
         this.stage = validateStage(this.stage, stage);
-        switch (stage) {
-            case WELCOME_STAGE -> new WelcomeStage(plugin, player, this, false).run();
-            case TEAM_SELECTION_STAGE -> new TeamSelectionStage(plugin, player, this).run();
-            case SPAWNER_CONFIGURATION_STAGE -> new SpawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_SIZE_CONFIGURATION_STAGE -> new TeamSizeConfigurationStage(plugin, player, this).run();
-            case MAX_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MaxBuildHeightConfigurationStage(plugin, player, this).run();
-            case MIN_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MinBuildHeightConfigurationStage(plugin, player, this).run();
-            case SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE -> new SpectatorSpawnpointConfigurationStage(plugin, player, this).run();
-            case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this).run();
-            case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this).run();
-            case SLOW_IRON_CONFIGURATION_STAGE ->  new SlowIronConfigurationStage(plugin, player, this).run();
-            case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this).run();
-            case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this).run();
-            case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this).run();
-            case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this).run();
-            case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this).run();
-            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, false).run();
-            default -> cancelStage.run();
+        this.currentStage = switch (stage) {
+            case WELCOME_STAGE -> new WelcomeStage(plugin, player, this, false);
+            case TEAM_SELECTION_STAGE -> new TeamSelectionStage(plugin, player, this);
+            case SPAWNER_CONFIGURATION_STAGE -> new SpawnerConfigurationStage(plugin, player, this);
+            case TEAM_SIZE_CONFIGURATION_STAGE -> new TeamSizeConfigurationStage(plugin, player, this);
+            case MAX_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MaxBuildHeightConfigurationStage(plugin, player, this);
+            case MIN_BUILD_HEIGHT_CONFIGURATION_STAGE -> new MinBuildHeightConfigurationStage(plugin, player, this);
+            case SPECTATOR_SPAWNPOINT_CONFIGURATION_STAGE -> new SpectatorSpawnpointConfigurationStage(plugin, player, this);
+            case EMERALD_SPAWNER_CONFIGURATION_STAGE -> new EmeraldSpawnerConfigurationStage(plugin, player, this);
+            case DIAMOND_SPAWNER_CONFIGURATION_STAGE -> new DiamondSpawnerConfigurationStage(plugin, player, this);
+            case TEAM_SPAWNPOINT_CONFIGURATION_STAGE -> new TeamSpawnpointConfigurationStage(plugin, player, this);
+            case SLOW_IRON_CONFIGURATION_STAGE -> new SlowIronConfigurationStage(plugin, player, this);
+            case TEAM_LOOTSPAWNER_CONFIGURATION_STAGE -> new TeamLootspawnerConfigurationStage(plugin, player, this);
+            case TEAM_CHEST_CONFIGURATION_STAGE -> new TeamChestConfigurationStage(plugin, player, this);
+            case ITEM_SHOP_VILLAGER_CONFIGURATION_STAGE -> new ShopVillagerConfigurationStage(plugin, player, this);
+            case UPGRADE_SHOP_VILLAGER_CONFIGURATION_STAGE -> new UpgradeVillagerConfigurationStage(plugin, player, this);
+            case BED_CONFIGURATION_STAGE -> new BedConfigurationStage(plugin, player, this);
+            case CUBOID_SELECTION_CONFIGURATION_STAGE -> new CuboidConfigurationStage(plugin, player, this);
+            case FLOOD_FILL_CONFIGURATION_STAGE -> new FloodFillConfigurationStage(plugin, player, this);
+            case SPAWNER_PROTECTION_CONFIGURATION_STAGE -> new SpawnerProtectionConfigurationStage(plugin, player, this);
+            case COMPLETION_STAGE -> new CompleteSetupStage(plugin, player, this, fileName, binaryFileName, false);
+            default -> cancelStage;
+        };
+
+        if (currentStage != null) {
+            currentStage.run();
         }
     }
 
@@ -111,6 +135,8 @@ public final class GameMapSetup implements MapSetup {
 
             GameMap gameMap = new GameMap(name, teamSize, minBuildHeight, maxBuildHeight, slowIron, spectatorSpawn, teams, shopVillagerLocations, upgradeVillagerLocations, spawner);
             plugin.jsonMapper().writeValue(mapsDirectory().resolve(fileName).toFile(), gameMap);
+
+            RegionUtil.saveRegions(plugin, this, regionInformation);
 
         } catch (IOException exception) {
             plugin.getLogger().severe("Could not save file " + fileName + ": " + exception.getMessage());
@@ -131,6 +157,14 @@ public final class GameMapSetup implements MapSetup {
 
     public List<JacksonTeam> teams() {
         return teams;
+    }
+
+    public List<CuboidSelection> selections() {
+        return selections;
+    }
+
+    public List<SimpleJacksonLocation> spawner() {
+        return spawner.values().stream().flatMap(List::stream).toList();
     }
 
     public int emeraldSpawnerCount() {
@@ -197,6 +231,14 @@ public final class GameMapSetup implements MapSetup {
 
     public void configureUpgradeVillager(@NotNull List<Location> locations) {
         this.upgradeVillagerLocations.addAll(locations.stream().map(SimpleJacksonLocation::new).toList());
+    }
+
+    public void configureSelections(@NotNull List<CuboidSelection> selections) {
+        this.selections.addAll(selections);
+    }
+
+    public void configureRegionInformation(@NotNull List<RegionInformation> regionInformation) {
+        this.regionInformation.addAll(regionInformation);
     }
 }
 
