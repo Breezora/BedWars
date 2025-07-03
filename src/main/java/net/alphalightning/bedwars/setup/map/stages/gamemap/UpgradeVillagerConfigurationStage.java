@@ -64,10 +64,7 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
         }
 
         // Upgrade villagers have not all been set
-
-        System.out.println(location);
-
-        final Location withOffset = location.add(OFFSET);
+        final Location withOffset = location.clone().add(OFFSET);
         locations.add(withOffset);
 
         UnboundTeamVisuals.renderShop(plugin, gameMapSetup, player, location, withOffset, Component.translatable("entity.villager.shop.upgrade"));
