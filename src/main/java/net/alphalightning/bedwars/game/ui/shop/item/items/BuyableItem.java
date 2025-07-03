@@ -93,7 +93,7 @@ public class BuyableItem extends AbstractItem {
                 player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
             } else {
                 removeCurrency(player, currency, extractAmount(getPriceTag(player)));
-                //TODO: Add Item that was bought
+                player.getInventory().addItem(getItemProvider(player).get());
             }
         }
 
