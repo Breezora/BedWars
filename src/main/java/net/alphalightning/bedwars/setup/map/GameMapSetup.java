@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class GameMapSetup implements MapSetup {
 
@@ -58,7 +57,7 @@ public final class GameMapSetup implements MapSetup {
     private int stage;
 
     // Configuration
-    private final Map<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
+    private final HashMap<SpawnerType, List<SimpleJacksonLocation>> spawner = new HashMap<>();
     private final List<JacksonTeam> teams = new ArrayList<>();
     private final List<JacksonLocation> shopVillagerLocations = new ArrayList<>();
     private final List<JacksonLocation> upgradeVillagerLocations = new ArrayList<>();
@@ -66,7 +65,6 @@ public final class GameMapSetup implements MapSetup {
     private final List<CuboidSelection> selections = new ArrayList<>();
     private final List<RegionInformation> regionInformation = new ArrayList<>();
     private final String name;
-    private JacksonLocation spectatorSpawn;
     private boolean slowIron;
     private int emeraldSpawnerCount = 0;
     private int diamondSpawnerCount = 0;
