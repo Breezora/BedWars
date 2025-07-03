@@ -65,6 +65,8 @@ public class UpgradeVillagerConfigurationStage extends Stage implements Location
 
         // Upgrade villagers have not all been set
 
+        System.out.println(location);
+
         final Location withOffset = location.add(OFFSET);
         locations.add(withOffset);
 
