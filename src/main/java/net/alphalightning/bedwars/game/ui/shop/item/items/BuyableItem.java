@@ -4,6 +4,7 @@ import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -75,13 +76,27 @@ public class BuyableItem extends AbstractItem {
     }
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
-        System.out.println("Dieses Item kostet: " + getCurrency(getPriceTag(player)).getType().name() + " " + extractAmount(getPriceTag(player)));
+        ItemStack currency = getCurrency(getPriceTag(player));
+        int cost = extractAmount(getPriceTag(player));
 
-        if (hasEnoughCurrency(player, getCurrency(getPriceTag(player)), extractAmount(getPriceTag(player)))) {
-            System.out.println("Player has enough!");
+        if (!hasEnoughCurrency(player, currency, cost)) {
+            switch (currency.getType()) {
+                case IRON_INGOT -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron"));
+                case GOLD_INGOT -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold"));
+                case EMERALD -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald"));
+                case DIAMOND -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-diamond"));
+            }
+            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
         } else {
-            System.out.println("Player has not enough!");
+            if(hasNotEnoughSpace(player)) {
+                player.sendMessage(Component.translatable("player.inventory.full"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+            } else {
+                removeCurrency(player, currency, extractAmount(getPriceTag(player)));
+                //TODO: Add Item that was bought
+            }
         }
+
     }
 
     private boolean hasEnoughCurrency(Player player, ItemStack currency, int itemAmount) {
@@ -93,8 +108,31 @@ public class BuyableItem extends AbstractItem {
                 if (count >= itemAmount) return true;
             }
         }
-
         return false;
+    }
+
+    private void removeCurrency(Player player, ItemStack currency, int itemAmount) {
+        ItemStack[] contents = player.getInventory().getContents();
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (item == null || !item.isSimilar(currency)) continue;
+
+            int stackAmount = item.getAmount();
+
+            if (stackAmount <= itemAmount) {
+                contents[i] = null;
+                itemAmount -= stackAmount;
+            } else {
+                item.setAmount(stackAmount - itemAmount);
+                itemAmount = 0;
+            }
+
+            if (itemAmount <= 0) break;
+        }
+
+        player.getInventory().setContents(contents);
+        player.updateInventory();
     }
 
     private boolean hasNotEnoughSpace(Player player) {
