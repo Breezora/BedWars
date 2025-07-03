@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class HeightRenderer extends BaseRenderer implements VisualizationRenderer<HeightVisualization> {
 
     private final Player player;
+    private BukkitTask currentTask;
 
     public HeightRenderer(BedWarsPlugin plugin, MapSetup setup, Player player) {
         super(plugin, setup);
@@ -20,9 +21,17 @@ public class HeightRenderer extends BaseRenderer implements VisualizationRendere
 
     @Override
     public @NotNull BukkitTask render(@NotNull HeightVisualization visualisation) {
-        return super.visualizationManager.registerTask(
-                this.setup,
-                Bukkit.getScheduler().runTaskTimer(plugin, () -> visualisation.show(player.getLocation()), 0L, 5L)
+        if (currentTask != null && !currentTask.isCancelled()) {
+            currentTask.cancel();
+            super.visualizationManager.removeLastTask(this.setup);
+        }
+
+        this.currentTask = Bukkit.getScheduler().runTaskTimer(
+                this.plugin,
+                () -> visualisation.show(player.getLocation()),
+                0L,
+                10L
         );
+        return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

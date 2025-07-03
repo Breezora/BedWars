@@ -47,7 +47,7 @@ public final class LobbyMapSetup implements MapSetup, LobbyConfiguration {
             case 0 -> new WelcomeStage(plugin, player, this, true).run();
             case 1 -> new ConfigureSpawnStage(plugin, player, this).run();
             case 2 -> new ConfigureHologramStage(plugin, player, this).run();
-            case 3 -> new CompleteSetupStage(plugin, player, this, LOBBY_FILE_NAME, true).run();
+            case 3 -> new CompleteSetupStage(plugin, player, this, LOBBY_FILE_NAME, null, true).run();
             default -> cancelStage.run();
         }
     }

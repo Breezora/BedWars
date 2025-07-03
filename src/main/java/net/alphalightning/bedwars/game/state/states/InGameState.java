@@ -81,6 +81,8 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
+
         ItemStack item = event.getItemDrop().getItemStack();
         if (isArmor(item)) {
             event.setCancelled(true);
@@ -93,6 +95,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
         if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
             event.setCancelled(true);
         }
@@ -100,13 +103,15 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
         Bukkit.getScheduler().runTaskLater(plugin, () -> event.getPlayer().spigot().respawn(), 1L);
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
+        if (!(context.currentState() instanceof InGameState)) return;
 
+        Player player = event.getPlayer();
         for (Team team : teams) {
             Location spawn = team.spawnpoint();
 
@@ -123,6 +128,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
@@ -171,26 +177,22 @@ public class InGameState extends AbstractGameState implements Listener {
 
         event.setDropItems(false);
 
-        deleteBed(destroyedTeam);
+        deleteBed(destroyedTeam, value);
         sendDestruction(player, destroyerTeam, destroyedTeam);
     }
 
-    private void deleteBed(Team team) {
+    private void deleteBed(Team team, FixedMetadataValue value) {
         Location bottom = team.bedBottomHalf();
         Location top = team.bedTopHalf();
 
         Block bottomBlock = bottom.getBlock();
         Block topBlock = top.getBlock();
 
-        removeMetadata(topBlock);
-        removeMetadata(bottomBlock);
+        removeMetadata(topBlock, value);
+        removeMetadata(bottomBlock, value);
     }
 
-    private void removeMetadata(Block block) {
-        List<MetadataValue> metadataValues = block.getMetadata("team");
-        if (metadataValues.isEmpty()) return;
-
-        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
+    private void removeMetadata(Block block, FixedMetadataValue value) {
         if (value.getOwningPlugin() == null) return;
         if (!value.getOwningPlugin().equals(plugin)) return;
 

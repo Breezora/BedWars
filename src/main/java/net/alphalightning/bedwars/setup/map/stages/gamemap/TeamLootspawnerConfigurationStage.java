@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.LootspawnerVisualization;
@@ -28,7 +27,6 @@ import java.util.List;
 
 public class TeamLootspawnerConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int size;
     private int phase;
@@ -92,17 +90,11 @@ public class TeamLootspawnerConfigurationStage extends Stage implements TeamConf
 
         final int color = gameMapSetup.hasSlowIron() ? 0x00ff00 : 0xff0000;
         if (!BlockUtil.isHalfBlock(withOffset)) {
-            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Block>(plugin, gameMapSetup)
-                    .render(withOffset.getBlock(), color)
-            );
+            new BoundingBoxRenderer<Block>(plugin, gameMapSetup).render(withOffset.getBlock(), color);
         } else {
-            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<Location>(plugin, gameMapSetup)
-                    .render(withOffset.toCenterLocation(), color)
-            );
+            new BoundingBoxRenderer<Location>(plugin, gameMapSetup).render(withOffset.toCenterLocation(), color);
         }
-        this.visualizationManager.registerTask(gameMapSetup, new LootspawnerRenderer(plugin, gameMapSetup, withOffset)
-                .render(new LootspawnerVisualization(plugin, gameMapSetup, null, true))
-        );
+        new LootspawnerRenderer(plugin, gameMapSetup, withOffset).render(new LootspawnerVisualization(plugin, gameMapSetup, null, true));
 
         player.sendMessage(Component.translatable("mapsetup.stage.11.name.success", teamName));
         Feedback.success(player);

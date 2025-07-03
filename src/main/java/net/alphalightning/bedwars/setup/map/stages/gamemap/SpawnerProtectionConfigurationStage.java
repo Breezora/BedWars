@@ -1,0 +1,177 @@
+package net.alphalightning.bedwars.setup.map.stages.gamemap;
+
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.feedback.Feedback;
+import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
+import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
+import net.alphalightning.bedwars.setup.map.GameMapSetup;
+import net.alphalightning.bedwars.setup.map.MapSetup;
+import net.alphalightning.bedwars.setup.map.stages.ApprovableConfiguration;
+import net.alphalightning.bedwars.setup.map.stages.Stage;
+import net.alphalightning.bedwars.translation.NamedTranslationArgument;
+import net.alphalightning.bedwars.util.CuboidSelection;
+import net.alphalightning.bedwars.util.RegionInformation;
+import net.alphalightning.bedwars.util.RegionUtil;
+import net.alphalightning.bedwars.util.SelectionWandTool;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SpawnerProtectionConfigurationStage extends Stage implements ApprovableConfiguration {
+
+    private static final int COLOR = Color.fromRGB(0xF06562).asRGB();
+
+    private final VisualizationManager visualizationManager = VisualizationManager.instance();
+    private final List<RegionInformation> informationList = new ArrayList<>();
+    private final SelectionWandTool tool;
+    private final int count;
+    private int phase;
+    private BukkitTask tmpVisualization;
+
+    private boolean undoUsed = false;
+
+    public SpawnerProtectionConfigurationStage(@NotNull BedWarsPlugin plugin, Player player, MapSetup setup) {
+        super(plugin, player, setup);
+        if (!(setup instanceof GameMapSetup gameMapSetup)) {
+            this.tool = null;
+            this.count = 0;
+            return;
+        }
+        this.tool = new SelectionWandTool(player);
+        this.count = gameMapSetup.spawner().size();
+    }
+
+    @Override
+    public void run() {
+        if (count == 0) {
+            Feedback.warning(player);
+            player.sendMessage(Component.translatable("mapsetup.stage.18.skip"));
+            setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+            return;
+        }
+
+        player.sendMessage(Component.translatable("mapsetup.stage.18", NamedTranslationArgument.component("tool", Component.translatable("item.selection_wand"))));
+        startPhase(1);
+    }
+
+    private void startPhase(int phase) {
+        if (phase > count) return;
+
+        this.phase = phase;
+        this.undoUsed = false;
+
+        tool.reset();
+
+        Feedback.success(player);
+        player.sendMessage(Component.translatable("mapsetup.stage.18.name", NamedTranslationArgument.numeric("phase", phase)));
+        player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        if (isNotPlayerConfiguring(event.getPlayer())) return;
+        if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
+        if (!(setup instanceof GameMapSetup)) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+
+        if (informationList.size() >= phase) { // Warte auf Bestätigung/Reset der aktuell getroffenen Auswahl
+            event.setCancelled(true);
+            return;
+        }
+        tool.onToolUse(event);
+
+        if (!tool.isComplete()) {
+            if (tmpVisualization != null) {
+                visualizationManager.removeLastTask(setup);
+            }
+
+            Block block = tool.first() != null ? tool.first().getBlock() : tool.second().getBlock();
+            tmpVisualization = new BoundingBoxRenderer<Block>(plugin, setup).render(block, COLOR);
+            return;
+        }
+
+        if (!tool.first().getWorld().equals(tool.second().getWorld())) {
+            player.sendMessage(Component.translatable("mapsetup.stage.18.error.world"));
+            Feedback.error(player);
+            return;
+        }
+
+        // Remove single block rendering
+        tmpVisualization = null;
+        visualizationManager.removeLastTask(setup);
+
+        // Save selection
+        CuboidSelection selection = new CuboidSelection(tool.first(), tool.second());
+        RegionInformation information = RegionUtil.createRegionInformation(selection);
+
+        undoUsed = false;
+        informationList.add(information);
+
+        new BoundingBoxRenderer<List<Block>>(plugin, setup).render(selection.corners(), COLOR);
+    }
+
+    @EventHandler
+    public void onChat(AsyncChatEvent event) {
+        if (isNotPlayerConfiguring(event.getPlayer())) return;
+        if (isNotStage(GameMapSetup.SPAWNER_PROTECTION_CONFIGURATION_STAGE)) return;
+        if (!(setup instanceof GameMapSetup gameMapSetup)) return;
+
+        event.setCancelled(true);
+
+        String message = event.signedMessage().message();
+
+        if (!VALID_MESSAGES.contains(message.toLowerCase())) {
+            player.sendMessage(Component.translatable("mapsetup.stage.approval.tip"));
+            Feedback.error(player);
+            return;
+        }
+
+        boolean isApproved = isApproved(message);
+
+        if (informationList.size() < phase) {
+            player.sendMessage(Component.translatable("mapsetup.state.error.missing-selection"));
+            Feedback.error(player);
+            return;
+        }
+
+        if (!isApproved) {
+            if (undoUsed) {
+                player.sendMessage(Component.translatable("mapsetup.stage.error.undo"));
+                Feedback.error(player);
+                return;
+            }
+
+            player.sendMessage(Component.translatable("mapsetup.stage.18.undo", NamedTranslationArgument.numeric("phase", phase)));
+            visualizationManager.removeLastTask(setup);
+            informationList.removeLast();
+            undoUsed = true;
+            tool.reset();
+            return;
+        }
+
+        player.sendMessage(Component.translatable("mapsetup.stage.18.approve", NamedTranslationArgument.numeric("phase", phase)));
+        Feedback.success(player);
+
+        if (phase < count) {
+            startPhase(++phase);
+            return;
+        }
+
+        gameMapSetup.configureRegionInformation(informationList);
+        setupManager.finishSetup(player, GameMapSetup.COMPLETION_STAGE);
+    }
+
+    private boolean isApproved(String message) {
+        return message.equalsIgnoreCase(YES) || message.equalsIgnoreCase(YES_ALIAS);
+    }
+}

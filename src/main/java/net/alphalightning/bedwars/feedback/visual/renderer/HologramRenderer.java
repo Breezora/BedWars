@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class HologramRenderer extends BaseRenderer implements VisualizationRenderer<HologramVisualization> {
 
     private final Location location;
+    private BukkitTask currentTask;
 
     public HologramRenderer(BedWarsPlugin plugin, MapSetup setup, Location location) {
         super(plugin, setup);
@@ -20,9 +21,15 @@ public class HologramRenderer extends BaseRenderer implements VisualizationRende
 
     @Override
     public @NotNull BukkitTask render(@NotNull HologramVisualization visualisation) {
-        return super.visualizationManager.registerTask(
-                this.setup,
-                Bukkit.getScheduler().runTask(this.plugin, () -> visualisation.show(this.location))
+        if (currentTask != null && !currentTask.isCancelled()) {
+            currentTask.cancel();
+            super.visualizationManager.removeLastTask(this.setup);
+        }
+
+        this.currentTask = Bukkit.getScheduler().runTask(
+                this.plugin,
+                () -> visualisation.show(this.location)
         );
+        return super.visualizationManager.registerTask(this.setup, currentTask);
     }
 }

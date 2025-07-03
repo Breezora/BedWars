@@ -2,7 +2,6 @@ package net.alphalightning.bedwars.setup.map.stages.gamemap;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.feedback.Feedback;
-import net.alphalightning.bedwars.feedback.visual.manager.VisualizationManager;
 import net.alphalightning.bedwars.feedback.visual.renderer.BoundingBoxRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineRenderer;
 import net.alphalightning.bedwars.feedback.visual.renderer.SingleLineVisualization;
@@ -26,7 +25,6 @@ import java.util.List;
 
 public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfiguration, LocationConfiguration {
 
-    private final VisualizationManager visualizationManager = VisualizationManager.instance();
     private final List<JacksonTeam> teams;
     private final int size;
     private int phase;
@@ -91,8 +89,8 @@ public class TeamSpawnpointConfigurationStage extends Stage implements TeamConfi
 
         if (!event.isSneaking()) {
             final List<Block> blocks = List.of(withOffset.getBlock(), withOffset.add(0, 1, 0).getBlock());
-            this.visualizationManager.registerTask(gameMapSetup, new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(blocks, team.color()));
-            this.visualizationManager.registerTask(gameMapSetup, new SingleLineRenderer(plugin, gameMapSetup, player).render(new SingleLineVisualization(player)));
+            new BoundingBoxRenderer<List<Block>>(plugin, gameMapSetup).render(blocks, team.color());
+            new SingleLineRenderer(plugin, gameMapSetup, player).render(new SingleLineVisualization(player));
         }
 
         player.sendMessage(Component.translatable("mapsetup.stage.9.name.success", teamName));
