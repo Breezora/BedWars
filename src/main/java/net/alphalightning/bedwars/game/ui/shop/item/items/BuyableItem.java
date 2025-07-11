@@ -110,6 +110,7 @@ public class BuyableItem extends AbstractItem {
                 } else {
                     removeCurrency(player, currency, extractAmount(getPriceTag(player)));
                     Material type = boughtItem.getType();
+                    //TODO: add sound to confirm the buying
 
                     //Handle buying of colored items
                     if (type.name().endsWith("_WOOL")) {
@@ -117,6 +118,11 @@ public class BuyableItem extends AbstractItem {
                     }else if (type.name().equals("TERRACOTTA")) {
                         buyColoredItem(ColoredItem.TERRACOTTA, team, player);
                     }
+                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
+                            .setAmount(getItemProvider(player).get().getAmount());
+
+                    ItemStack bought = builder.build();
+                    player.getInventory().addItem(bought);
 
                 }
             }
@@ -195,7 +201,7 @@ public class BuyableItem extends AbstractItem {
                             Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
                             .setAmount(16);
                     ItemStack boughtWool = builder.build();
-                    player.getInventory().addItem(boughtWool); //TODO: add sound to confirm the buying
+                    player.getInventory().addItem(boughtWool);
                 }
 
             case TERRACOTTA -> {
@@ -203,7 +209,7 @@ public class BuyableItem extends AbstractItem {
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_TERRACOTTA")))
                         .setAmount(16);
                 ItemStack boughtTerracotta = builder.build();
-                player.getInventory().addItem(boughtTerracotta); //TODO: add sound to confirm the buying
+                player.getInventory().addItem(boughtTerracotta);
             }
         }
     }
