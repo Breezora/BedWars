@@ -34,7 +34,7 @@ public class ItemShopGui {
         armorGui = new ArmorGui(plugin).gui();
         toolsGui = new ToolsGui(plugin).gui();
         bowsGui = new BowsGui(plugin).gui();
-        potionsGui = new PotionsGui().gui();
+        potionsGui = new PotionsGui(plugin).gui();
         extrasGui = new ExtrasGui(plugin).gui();
 
         this.gui = createGui();
