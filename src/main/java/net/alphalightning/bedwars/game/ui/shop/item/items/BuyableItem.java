@@ -86,7 +86,7 @@ public class BuyableItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         ItemStack boughtItem = getItemProvider(player).get().clone();
         for (Team team : teams) {
-            if(!team.players().contains(player)) return;
+            if(!team.players().contains(player)) continue;
 
             ItemStack currency = getCurrency(getPriceTag(player));
             int cost = extractAmount(getPriceTag(player));
@@ -121,7 +121,6 @@ public class BuyableItem extends AbstractItem {
                 }
             }
         }
-
     }
 
     private boolean hasEnoughCurrency(Player player, ItemStack currency, int itemAmount) {
