@@ -32,7 +32,7 @@ public class PotionsGui {
                         "gui.shop.itemshop.buyable.potion.speed.lore",
                         "",
                         emerald))
-                .addIngredient('c', new BuyablePotionItem("gui.shop.itemshop.buyable.potion.jumpboost.name", PotionType.WATER_BREATHING, PotionEffectType.JUMP_BOOST, 45, 5,
+                .addIngredient('c', new BuyablePotionItem("gui.shop.itemshop.buyable.potion.jumpboost.name", PotionType.LEAPING, PotionEffectType.JUMP_BOOST, 45, 5,
                         "gui.shop.itemshop.buyable.potion.jumpboost.price",
                         "",
                         "gui.shop.itemshop.buyable.potion.jumpboost.lore",
