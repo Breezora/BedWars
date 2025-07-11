@@ -1,5 +1,7 @@
 package net.alphalightning.bedwars.game.ui.shop.item.items;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemEnchantments;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.team.Team;
@@ -8,6 +10,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -122,6 +125,11 @@ public class BuyableItem extends AbstractItem {
                     } else if (type.name().equals("GLASS")) {
                         buyColoredItem(ColoredItem.GLASS, team, player);
                         return;
+                    } else if (type == Material.STICK) {
+                        ItemBuilder builder = new ItemBuilder(Material.STICK)
+                                .setAmount(1).set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
+                        player.getInventory().addItem(builder.build());
+
                     }
 
                     ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
@@ -225,5 +233,4 @@ public class BuyableItem extends AbstractItem {
             }
         }
     }
-
 }
