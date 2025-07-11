@@ -1,7 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item.items;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
-import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.util.PlayerUtil;
@@ -33,7 +32,7 @@ public class BuyableItem extends AbstractItem {
     private final List<String> itemLore;
     private final int itemAmount;
 
-    private List<Team> teams;
+    private final List<Team> teams;
 
     public BuyableItem(BedWarsPlugin plugin, Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
         this.plugin = plugin;
@@ -60,6 +59,7 @@ public class BuyableItem extends AbstractItem {
         }
         return builder.setLore(lore);
     }
+
     private String getPriceTag(@NotNull Player viewer) {
         return Objects.requireNonNull(plugin.translator().getMiniMessageString(itemLore.getFirst(), viewer.locale()));
     }
@@ -81,43 +81,42 @@ public class BuyableItem extends AbstractItem {
         String amountPart = parts[2].trim().split(" ")[0];
         return Integer.parseInt(amountPart);
     }
+
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         ItemStack boughtItem = getItemProvider(player).get().clone();
         for (Team team : teams) {
-            for (Player clickedPlayer : team.players()) {
-                if(clickedPlayer != player) return;
+            ItemStack currency = getCurrency(getPriceTag(player));
+            int cost = extractAmount(getPriceTag(player));
 
-                ItemStack currency = getCurrency(getPriceTag(player));
-                int cost = extractAmount(getPriceTag(player));
-
-                if (!hasEnoughCurrency(player, currency, cost)) {
-                    switch (currency.getType()) {
-                        case IRON_INGOT -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron"));
-                        case GOLD_INGOT -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold"));
-                        case EMERALD -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald"));
-                        case DIAMOND -> player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-diamond"));
-                    }
+            if (!hasEnoughCurrency(player, currency, cost)) {
+                switch (currency.getType()) {
+                    case IRON_INGOT ->
+                            player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-iron"));
+                    case GOLD_INGOT ->
+                            player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-gold"));
+                    case EMERALD ->
+                            player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-emerald"));
+                    case DIAMOND ->
+                            player.sendMessage(Component.translatable("gui.shop.itemshop.buyable.lore.not-enough-diamond"));
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+            } else {
+                if (hasNotEnoughSpace(player)) {
+                    player.sendMessage(Component.translatable("player.inventory.full"));
                     player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
                 } else {
-                    if(hasNotEnoughSpace(player)) {
-                        player.sendMessage(Component.translatable("player.inventory.full"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                    } else {
-                        removeCurrency(player, currency, extractAmount(getPriceTag(player)));
-                        Material type = boughtItem.getType();
-                        if(type.name().endsWith("_WOOL")) {
-                            ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
-                                    Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
-                                    .setAmount(16);
-                            ItemStack boughtWool = builder.build();
-                            player.getInventory().addItem(boughtWool);
+                    removeCurrency(player, currency, extractAmount(getPriceTag(player)));
+                    Material type = boughtItem.getType();
+                    if (type.name().endsWith("_WOOL")) {
+                        ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                                Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
+                                .setAmount(16);
+                        ItemStack boughtWool = builder.build();
+                        player.getInventory().addItem(boughtWool);
 
-                        }
                     }
                 }
-
-
             }
         }
 
