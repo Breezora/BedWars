@@ -96,12 +96,33 @@ public class BuyablePotionItem extends AbstractItem {
             removeCurrency(player, currency, extractAmount(getPriceTag(player)));
             PotionType type = getPotionType(getItemProvider(player).get());
 
-            ItemStack invisible = new ItemBuilder(Material.POTION)
-                    .set(DataComponentTypes.POTION_CONTENTS, PotionContents.potionContents().potion(type)).build();
-
-            player.getInventory().addItem(invisible);
+            if (type == PotionType.INVISIBILITY) {
+                ItemStack invisibility = potion(PotionEffectType.INVISIBILITY, 30, 0);
+                player.getInventory().addItem(invisibility);
+                return;
+            }
+            if (type == PotionType.LEAPING) {
+                ItemStack jumpBoost = potion(PotionEffectType.JUMP_BOOST, 45, 4);
+                player.getInventory().addItem(jumpBoost);
+                return;
+            }
+            if (type == PotionType.SWIFTNESS) {
+                ItemStack swiftness = potion(PotionEffectType.SPEED, 45, 1);
+                player.getInventory().addItem(swiftness);
+            }
 
         }
+    }
+
+    private ItemStack potion(PotionEffectType type, int duration, int amplifier) {
+
+        PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
+
+        PotionContents contents = PotionContents.potionContents()
+                .addCustomEffect(potionEffect).build();
+
+        return new ItemBuilder(Material.POTION)
+                .set(DataComponentTypes.POTION_CONTENTS, contents).build();
     }
 
     private String getPriceTag(@NotNull Player viewer) {
