@@ -2,6 +2,7 @@ package net.alphalightning.bedwars.game.ui.shop.item.items;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemEnchantments;
+import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.team.Team;
@@ -110,35 +111,39 @@ public class BuyableItem extends AbstractItem {
                 if (hasNotEnoughSpace(player)) {
                     player.sendMessage(Component.translatable("player.inventory.full"));
                     player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                } else {
-                    removeCurrency(player, currency, extractAmount(getPriceTag(player)));
-                    Material type = boughtItem.getType();
-                    //TODO: add sound to confirm the buying
-
-                    //Handle buying of colored items
-                    if (type.name().endsWith("_WOOL")) {
-                        buyColoredItem(ColoredItem.WOOL, team, player);
-                        return;
-                    } else if (type.name().equals("TERRACOTTA")) {
-                        buyColoredItem(ColoredItem.TERRACOTTA, team, player);
-                        return;
-                    } else if (type.name().equals("GLASS")) {
-                        buyColoredItem(ColoredItem.GLASS, team, player);
-                        return;
-                    } else if (type == Material.STICK) {
-                        ItemBuilder builder = new ItemBuilder(Material.STICK)
-                                .setAmount(1).set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
-                        player.getInventory().addItem(builder.build());
-
-                    }
-
-                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
-                            .setAmount(getItemProvider(player).get().getAmount());
-
-                    ItemStack bought = builder.build();
-                    player.getInventory().addItem(bought);
-
+                    return;
                 }
+                removeCurrency(player, currency, extractAmount(getPriceTag(player)));
+                Material type = boughtItem.getType();
+                //TODO: add sound to confirm the buying
+
+                //Handle buying of colored items
+                if (type.name().endsWith("_WOOL")) {
+                    buyColoredItem(ColoredItem.WOOL, team, player);
+                    return;
+                } else if (type == Material.TERRACOTTA) {
+                    buyColoredItem(ColoredItem.TERRACOTTA, team, player);
+                    return;
+                } else if (type == Material.GLASS) {
+                    buyColoredItem(ColoredItem.GLASS, team, player);
+                    return;
+                }
+
+                else if (type == Material.STICK) {
+                    ItemBuilder builder = new ItemBuilder(Material.STICK)
+                            .setAmount(1).set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
+                    player.getInventory().addItem(builder.build());
+                    return;
+                }
+
+                ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
+                        .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
+                        .setAmount(getItemProvider(player).get().getAmount());
+
+                ItemStack bought = builder.build();
+                player.getInventory().addItem(bought);
+
+
             }
         }
     }
@@ -211,12 +216,12 @@ public class BuyableItem extends AbstractItem {
     private void buyColoredItem(ColoredItem item, Team team, Player player) {
         switch (item) {
             case WOOL -> {
-                    ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
-                            Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
-                            .setAmount(16);
-                    ItemStack boughtWool = builder.build();
-                    player.getInventory().addItem(boughtWool);
-                }
+                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                        Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
+                        .setAmount(16);
+                ItemStack boughtWool = builder.build();
+                player.getInventory().addItem(boughtWool);
+            }
             case TERRACOTTA -> {
                 ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_TERRACOTTA")))
