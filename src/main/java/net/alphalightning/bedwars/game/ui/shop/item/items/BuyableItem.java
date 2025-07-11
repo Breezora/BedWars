@@ -1,6 +1,8 @@
 package net.alphalightning.bedwars.game.ui.shop.item.items;
 
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.game.state.GameStateContext;
+import net.alphalightning.bedwars.game.state.states.InGameState;
 import net.alphalightning.bedwars.game.team.Team;
 import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
@@ -30,6 +32,7 @@ public class BuyableItem extends AbstractItem {
     private final String itemNameKey;
     private final List<String> itemLore;
     private final int itemAmount;
+
     private List<Team> teams;
 
     public BuyableItem(BedWarsPlugin plugin, Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
@@ -38,6 +41,7 @@ public class BuyableItem extends AbstractItem {
         this.itemNameKey = itemNameKey;
         this.itemLore = List.of(itemLore);
         this.itemAmount = itemAmount;
+        this.teams = InGameState.teamsList();
     }
 
     @Override

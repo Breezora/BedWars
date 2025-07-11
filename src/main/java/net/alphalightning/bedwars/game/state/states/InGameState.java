@@ -47,7 +47,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
-    private List<Team> teams;
+    private static List<Team> teams;
 
     public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
@@ -345,6 +345,10 @@ public class InGameState extends AbstractGameState implements Listener {
         if (dz == -1) return BlockFace.NORTH;
 
         throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
+    }
+
+    public static List<Team> teamsList() {
+        return teams;
     }
 
 }
