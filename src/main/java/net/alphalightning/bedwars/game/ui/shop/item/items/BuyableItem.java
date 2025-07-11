@@ -121,6 +121,7 @@ public class BuyableItem extends AbstractItem {
                         return;
                     } else if (type.name().equals("GLASS")) {
                         buyColoredItem(ColoredItem.GLASS, team, player);
+                        return;
                     }
 
                     ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
