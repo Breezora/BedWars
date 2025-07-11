@@ -114,7 +114,7 @@ public class BuyableItem extends AbstractItem {
                     //Handle buying of colored items
                     if (type.name().endsWith("_WOOL")) {
                         buyColoredItem(ColoredItem.WOOL, team, player);
-                    }else if (type.name().endsWith("_TERRACOTTA")) {
+                    }else if (type.name().equals("TERRACOTTA")) {
                         buyColoredItem(ColoredItem.TERRACOTTA, team, player);
                     }
 
