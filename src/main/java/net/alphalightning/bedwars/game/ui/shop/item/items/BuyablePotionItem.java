@@ -97,33 +97,37 @@ public class BuyablePotionItem extends AbstractItem {
             PotionType type = getPotionType(getItemProvider(player).get());
 
             if (type == PotionType.INVISIBILITY) {
-                ItemStack invisibility = potion(PotionEffectType.INVISIBILITY, 30, 0, "Potion of Invisibility");
+                ItemStack invisibility = potion(PotionType.INVISIBILITY,
+                                                PotionEffectType.INVISIBILITY, 30, 0);
                 player.getInventory().addItem(invisibility);
                 return;
             }
             if (type == PotionType.LEAPING) {
-                ItemStack jumpBoost = potion(PotionEffectType.JUMP_BOOST, 45, 4, "Potion of Jump Boost");
+                ItemStack jumpBoost = potion(PotionType.LEAPING,
+                                             PotionEffectType.JUMP_BOOST, 45, 4);
                 player.getInventory().addItem(jumpBoost);
                 return;
             }
             if (type == PotionType.SWIFTNESS) {
-                ItemStack swiftness = potion(PotionEffectType.SPEED, 45, 1, "Potion of Swiftness");
+                ItemStack swiftness = potion(PotionType.SWIFTNESS,
+                                             PotionEffectType.SPEED, 45, 1);
                 player.getInventory().addItem(swiftness);
             }
 
         }
     }
 
-    private ItemStack potion(PotionEffectType type, int duration, int amplifier, String name) {
+    private ItemStack potion(PotionType baseType, PotionEffectType type, int duration, int amplifier) {
 
         PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
 
         PotionContents contents = PotionContents.potionContents()
+                .potion(baseType)
                 .addCustomEffect(potionEffect).build();
 
         return new ItemBuilder(Material.POTION)
                 .set(DataComponentTypes.POTION_CONTENTS, contents)
-                .set(DataComponentTypes.ITEM_NAME, Component.text(name)).build();
+                .build();
     }
 
     private String getPriceTag(@NotNull Player viewer) {
