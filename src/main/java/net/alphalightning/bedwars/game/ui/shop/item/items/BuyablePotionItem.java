@@ -106,10 +106,10 @@ public class BuyablePotionItem extends AbstractItem {
                 return;
             }
             if (type == PotionType.LEAPING) {
-                ItemStack jumpBoost = potion(Color.LIME,
+                ItemStack jumpBoost = potion(Color.YELLOW,
                         PotionEffectType.JUMP_BOOST,
                         45, 4,
-                        "Potion of Jump Boost");
+                        "Potion of Leaping");
                 player.getInventory().addItem(jumpBoost);
                 return;
             }
@@ -134,7 +134,7 @@ public class BuyablePotionItem extends AbstractItem {
 
         return new ItemBuilder(Material.POTION)
                 .set(DataComponentTypes.POTION_CONTENTS, contents)
-                .set(DataComponentTypes.ITEM_NAME, Component.text(name))
+                .set(DataComponentTypes.CUSTOM_NAME, Component.text(name))
                 .build();
     }
 
