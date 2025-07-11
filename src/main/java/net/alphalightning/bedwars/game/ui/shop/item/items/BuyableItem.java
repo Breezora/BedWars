@@ -116,10 +116,13 @@ public class BuyableItem extends AbstractItem {
                     if (type.name().endsWith("_WOOL")) {
                         buyColoredItem(ColoredItem.WOOL, team, player);
                         return;
-                    }else if (type.name().equals("TERRACOTTA")) {
+                    } else if (type.name().equals("TERRACOTTA")) {
                         buyColoredItem(ColoredItem.TERRACOTTA, team, player);
                         return;
+                    } else if (type.name().equals("GLASS")) {
+                        buyColoredItem(ColoredItem.GLASS, team, player);
                     }
+
                     ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
                             .setAmount(getItemProvider(player).get().getAmount());
 
@@ -205,13 +208,19 @@ public class BuyableItem extends AbstractItem {
                     ItemStack boughtWool = builder.build();
                     player.getInventory().addItem(boughtWool);
                 }
-
             case TERRACOTTA -> {
                 ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_TERRACOTTA")))
                         .setAmount(16);
                 ItemStack boughtTerracotta = builder.build();
                 player.getInventory().addItem(boughtTerracotta);
+            }
+            case GLASS -> {
+                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                        Material.getMaterial(PlayerUtil.materialString(team.color()) + "_STAINED_GLASS")))
+                        .setAmount(4);
+                ItemStack boughtGlass = builder.build();
+                player.getInventory().addItem(boughtGlass);
             }
         }
     }
