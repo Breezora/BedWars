@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.PotionContents;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -134,7 +135,7 @@ public class BuyablePotionItem extends AbstractItem {
 
         return new ItemBuilder(Material.POTION)
                 .set(DataComponentTypes.POTION_CONTENTS, contents)
-                .set(DataComponentTypes.CUSTOM_NAME, Component.text(name))
+                .set(DataComponentTypes.CUSTOM_NAME, Component.text(name).decoration(TextDecoration.ITALIC, false))
                 .build();
     }
 
