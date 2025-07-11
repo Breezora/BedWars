@@ -101,13 +101,13 @@ public class FastBuyGui {
                         permrespawn3,
                         "",
                         iron))
-                .addIngredient('j',  new BuyablePotionItem("gui.shop.itemshop.buyable.potion.invisibility.name", PotionType.INVISIBILITY, PotionEffectType.INVISIBILITY, 30, 0,
+                .addIngredient('j',  new BuyablePotionItem(plugin, "gui.shop.itemshop.buyable.potion.invisibility.name", PotionType.INVISIBILITY, PotionEffectType.INVISIBILITY, 30, 0,
                         "gui.shop.itemshop.buyable.potion.invisibility.price",
                         "",
                         "gui.shop.itemshop.buyable.potion.invisibility.lore",
                         "",
                         emerald))
-                .addIngredient('k', new BuyablePotionItem("gui.shop.itemshop.buyable.potion.speed.name", PotionType.SWIFTNESS, PotionEffectType.SPEED, 45, 1,
+                .addIngredient('k', new BuyablePotionItem(plugin, "gui.shop.itemshop.buyable.potion.speed.name", PotionType.SWIFTNESS, PotionEffectType.SPEED, 45, 1,
                         "gui.shop.itemshop.buyable.potion.speed.price",
                         "",
                         "gui.shop.itemshop.buyable.potion.speed.lore",
