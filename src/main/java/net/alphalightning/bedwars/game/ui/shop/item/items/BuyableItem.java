@@ -110,14 +110,14 @@ public class BuyableItem extends AbstractItem {
                 } else {
                     removeCurrency(player, currency, extractAmount(getPriceTag(player)));
                     Material type = boughtItem.getType();
-                    if (type.name().endsWith("_WOOL")) {
-                        ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
-                                Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
-                                .setAmount(16);
-                        ItemStack boughtWool = builder.build();
-                        player.getInventory().addItem(boughtWool);
 
+                    //Handle buying of colored items
+                    if (type.name().endsWith("_WOOL")) {
+                        buyColoredItem(ColoredItem.WOOL, team, player);
+                    }else if (type.name().endsWith("_TERRACOTTA")) {
+                        buyColoredItem(ColoredItem.TERRACOTTA, team, player);
                     }
+
                 }
             }
         }
@@ -187,4 +187,25 @@ public class BuyableItem extends AbstractItem {
         // If we have more than one item left to add we do not have enough space for the reward in that inventory
         return remainingAmount > 0;
     }
+
+    private void buyColoredItem(ColoredItem item, Team team, Player player) {
+        switch (item) {
+            case WOOL -> {
+                    ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                            Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
+                            .setAmount(16);
+                    ItemStack boughtWool = builder.build();
+                    player.getInventory().addItem(boughtWool); //TODO: add sound to confirm the buying
+                }
+
+            case TERRACOTTA -> {
+                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                        Material.getMaterial(PlayerUtil.materialString(team.color()) + "_TERRACOTTA")))
+                        .setAmount(16);
+                ItemStack boughtTerracotta = builder.build();
+                player.getInventory().addItem(boughtTerracotta); //TODO: add sound to confirm the buying
+            }
+        }
+    }
+
 }
