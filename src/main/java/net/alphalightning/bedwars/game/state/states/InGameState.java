@@ -333,8 +333,6 @@ public class InGameState extends AbstractGameState implements Listener {
         }
     }
 
-
-
     private BlockFace getBedFacing(@NotNull Location bottom, @NotNull Location top) {
         int dx = top.getBlockX() - bottom.getBlockX();
         int dz = top.getBlockZ() - bottom.getBlockZ();
