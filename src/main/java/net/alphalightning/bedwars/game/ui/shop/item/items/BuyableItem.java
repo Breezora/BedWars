@@ -80,6 +80,18 @@ public class BuyableItem extends AbstractItem {
         return COLOR_TO_CURRENCY.get(color);
     }
 
+    private String getCurrencyString(String toCheck) {
+        Map<String, String> COLOR_TO_CURRENCY = Map.of(
+                "white", "iron",
+                "gold", "gold",
+                "dark_green", "emerald",
+                "aqua", "diamond"
+        );
+
+        String color = toCheck.split("<")[2].split(">")[0];
+        return COLOR_TO_CURRENCY.get(color);
+    }
+
     private int extractAmount(String input) {
         String[] parts = input.split(">");
         String amountPart = parts[2].trim().split(" ")[0];
@@ -129,11 +141,34 @@ public class BuyableItem extends AbstractItem {
                     return;
                 }
 
+                //Handle buying of Enchanted Items
                 else if (type == Material.STICK) {
                     ItemBuilder builder = new ItemBuilder(Material.STICK)
-                            .setAmount(1).set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
+                            .setAmount(1)
+                            .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
                     player.getInventory().addItem(builder.build());
                     return;
+                }
+                else if (type == Material.BOW) {
+                    if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
+                        Map<Enchantment, Integer> enchantmentMap = Map.of(
+                                Enchantment.POWER, 1,
+                                Enchantment.PUNCH, 1
+                        );
+                        ItemBuilder builder = new ItemBuilder(Material.STICK)
+                                .setAmount(1)
+                                .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().addAll(enchantmentMap));
+                        player.getInventory().addItem(builder.build());
+                        return;
+                    }
+
+                    if(extractAmount(getPriceTag(player)) == 20) {
+                        ItemBuilder builder = new ItemBuilder(Material.STICK)
+                                .setAmount(1)
+                                .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.POWER, 1));
+                        player.getInventory().addItem(builder.build());
+                        return;
+                    }
                 }
 
                 ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
