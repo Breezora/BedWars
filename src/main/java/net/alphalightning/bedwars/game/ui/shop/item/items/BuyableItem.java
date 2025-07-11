@@ -155,7 +155,7 @@ public class BuyableItem extends AbstractItem {
                                 Enchantment.POWER, 1,
                                 Enchantment.PUNCH, 1
                         );
-                        ItemBuilder builder = new ItemBuilder(Material.STICK)
+                        ItemBuilder builder = new ItemBuilder(Material.BOW)
                                 .setAmount(1)
                                 .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().addAll(enchantmentMap))
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
@@ -164,7 +164,7 @@ public class BuyableItem extends AbstractItem {
                     }
 
                     if(extractAmount(getPriceTag(player)) == 20) {
-                        ItemBuilder builder = new ItemBuilder(Material.STICK)
+                        ItemBuilder builder = new ItemBuilder(Material.BOW)
                                 .setAmount(1)
                                 .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.POWER, 1))
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
