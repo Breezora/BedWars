@@ -5,6 +5,7 @@ import io.papermc.paper.datacomponent.item.PotionContents;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -97,36 +98,43 @@ public class BuyablePotionItem extends AbstractItem {
             PotionType type = getPotionType(getItemProvider(player).get());
 
             if (type == PotionType.INVISIBILITY) {
-                ItemStack invisibility = potion(PotionType.INVISIBILITY,
-                                                PotionEffectType.INVISIBILITY, 30, 0);
+                ItemStack invisibility = potion(Color.WHITE,
+                        PotionEffectType.INVISIBILITY,
+                        30, 0,
+                        "Potion of Invisibility");
                 player.getInventory().addItem(invisibility);
                 return;
             }
             if (type == PotionType.LEAPING) {
-                ItemStack jumpBoost = potion(PotionType.LEAPING,
-                                             PotionEffectType.JUMP_BOOST, 45, 4);
+                ItemStack jumpBoost = potion(Color.LIME,
+                        PotionEffectType.JUMP_BOOST,
+                        45, 4,
+                        "Potion of Jump Boost");
                 player.getInventory().addItem(jumpBoost);
                 return;
             }
             if (type == PotionType.SWIFTNESS) {
-                ItemStack swiftness = potion(PotionType.SWIFTNESS,
-                                             PotionEffectType.SPEED, 45, 1);
+                ItemStack swiftness = potion(Color.AQUA,
+                        PotionEffectType.SPEED, 45, 1,
+                        "Potion of Swiftness");
                 player.getInventory().addItem(swiftness);
             }
 
         }
     }
 
-    private ItemStack potion(PotionType baseType, PotionEffectType type, int duration, int amplifier) {
+    private ItemStack potion(Color potionColor, PotionEffectType type, int duration, int amplifier, String name) {
 
         PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
 
         PotionContents contents = PotionContents.potionContents()
-                .potion(baseType)
+                .potion(PotionType.WATER)
+                .customColor(potionColor)
                 .addCustomEffect(potionEffect).build();
 
         return new ItemBuilder(Material.POTION)
                 .set(DataComponentTypes.POTION_CONTENTS, contents)
+                .set(DataComponentTypes.ITEM_NAME, Component.text(name))
                 .build();
     }
 
