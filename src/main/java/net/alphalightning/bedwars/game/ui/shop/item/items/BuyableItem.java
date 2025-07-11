@@ -115,8 +115,10 @@ public class BuyableItem extends AbstractItem {
                     //Handle buying of colored items
                     if (type.name().endsWith("_WOOL")) {
                         buyColoredItem(ColoredItem.WOOL, team, player);
+                        return;
                     }else if (type.name().equals("TERRACOTTA")) {
                         buyColoredItem(ColoredItem.TERRACOTTA, team, player);
+                        return;
                     }
                     ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
                             .setAmount(getItemProvider(player).get().getAmount());
