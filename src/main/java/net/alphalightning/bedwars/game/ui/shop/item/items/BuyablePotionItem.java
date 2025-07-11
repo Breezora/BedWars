@@ -97,24 +97,24 @@ public class BuyablePotionItem extends AbstractItem {
             PotionType type = getPotionType(getItemProvider(player).get());
 
             if (type == PotionType.INVISIBILITY) {
-                ItemStack invisibility = potion(PotionEffectType.INVISIBILITY, 30, 0);
+                ItemStack invisibility = potion(PotionEffectType.INVISIBILITY, 30, 0, "Potion of Invisibility");
                 player.getInventory().addItem(invisibility);
                 return;
             }
             if (type == PotionType.LEAPING) {
-                ItemStack jumpBoost = potion(PotionEffectType.JUMP_BOOST, 45, 4);
+                ItemStack jumpBoost = potion(PotionEffectType.JUMP_BOOST, 45, 4, "Potion of Jump Boost");
                 player.getInventory().addItem(jumpBoost);
                 return;
             }
             if (type == PotionType.SWIFTNESS) {
-                ItemStack swiftness = potion(PotionEffectType.SPEED, 45, 1);
+                ItemStack swiftness = potion(PotionEffectType.SPEED, 45, 1, "Potion of Swiftness");
                 player.getInventory().addItem(swiftness);
             }
 
         }
     }
 
-    private ItemStack potion(PotionEffectType type, int duration, int amplifier) {
+    private ItemStack potion(PotionEffectType type, int duration, int amplifier, String name) {
 
         PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
 
@@ -122,7 +122,8 @@ public class BuyablePotionItem extends AbstractItem {
                 .addCustomEffect(potionEffect).build();
 
         return new ItemBuilder(Material.POTION)
-                .set(DataComponentTypes.POTION_CONTENTS, contents).build();
+                .set(DataComponentTypes.POTION_CONTENTS, contents)
+                .set(DataComponentTypes.ITEM_NAME, Component.text(name)).build();
     }
 
     private String getPriceTag(@NotNull Player viewer) {
