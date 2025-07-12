@@ -122,9 +122,8 @@ public class BuyableItem extends AbstractItem {
                 else if (type == Material.STICK) {
                     handleEnchantmentPurchase(player, 1, type, Enchantment.KNOCKBACK, 1);
                     return;
-                }
-                else if (type == Material.BOW) {
-                    if(currencyString.equals("emerald")) {
+                } else if (type == Material.BOW) {
+                    if (currencyString.equals("emerald")) {
                         Map<Enchantment, Integer> enchantmentMap = Map.of(
                                 Enchantment.POWER, 1,
                                 Enchantment.PUNCH, 1
@@ -133,12 +132,10 @@ public class BuyableItem extends AbstractItem {
                         return;
                     }
 
-                    if(cost == 20) {
+                    if (cost == 20) {
                         handleEnchantmentPurchase(player, 1, type, Enchantment.POWER, 1);
                         return;
                     }
-
-
                 }
                 //Handle buying of Swords
                 else if (type.name().endsWith("_SWORD")) {
@@ -155,14 +152,13 @@ public class BuyableItem extends AbstractItem {
                 //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
                 else if (type.name().endsWith("_BOOTS")) {
                     handleArmorPurchase(player, type, currency, cost);
+                    return;
                 }
                 ItemBuilder builder = new ItemBuilder(type)
                         .setAmount(itemAmount);
 
                 ItemStack bought = builder.build();
                 player.getInventory().addItem(bought);
-
-
             }
         }
     }
@@ -298,7 +294,7 @@ public class BuyableItem extends AbstractItem {
                 .build());
     }
 
-    private void handleEnchantmentPurchase(Player player,int amount, Material material, Map<Enchantment, Integer> enchantments) {
+    private void handleEnchantmentPurchase(Player player, int amount, Material material, Map<Enchantment, Integer> enchantments) {
         ItemStack builder = new ItemBuilder(material)
                 .setAmount(amount)
                 .set(DataComponentTypes.ENCHANTMENTS,
@@ -306,7 +302,8 @@ public class BuyableItem extends AbstractItem {
                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
         player.getInventory().addItem(builder);
     }
-    private void handleEnchantmentPurchase(Player player,int amount, Material material, Enchantment enchantment, int strength) {
+
+    private void handleEnchantmentPurchase(Player player, int amount, Material material, Enchantment enchantment, int strength) {
         ItemStack builder = new ItemBuilder(material)
                 .setAmount(amount)
                 .set(DataComponentTypes.ENCHANTMENTS,
@@ -334,7 +331,7 @@ public class BuyableItem extends AbstractItem {
         ItemStack currentBoots = player.getInventory().getBoots();
         if (currentBoots == null) return;
 
-        if(ARMOR_RANKING.containsKey(currentBoots.getType())) {
+        if (ARMOR_RANKING.containsKey(currentBoots.getType())) {
             int currentRank = ARMOR_RANKING.get(currentBoots.getType());
             int newRank = ARMOR_RANKING.get(material);
             if (newRank < currentRank) {
@@ -346,7 +343,7 @@ public class BuyableItem extends AbstractItem {
         }
 
         //Handle player already having the bought armor.
-        if(currentBoots.getType() == material) {
+        if (currentBoots.getType() == material) {
             player.sendMessage(Component.translatable("player.inventory.armor.present"));
             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
             //Give player his spent currency back
@@ -361,7 +358,7 @@ public class BuyableItem extends AbstractItem {
             default -> null;
         };
 
-        if(leggingsType != null) {
+        if (leggingsType != null) {
             ItemStack boots = new ItemBuilder(material)
                     .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
             ItemStack leggings = new ItemBuilder(leggingsType)
