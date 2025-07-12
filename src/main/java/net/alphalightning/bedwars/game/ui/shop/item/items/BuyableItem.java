@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
 import xyz.xenondevs.invui.item.Click;
@@ -141,7 +142,7 @@ public class BuyableItem extends AbstractItem {
                     return;
                 }
 
-                //Handle buying of Enchanted Items
+                //Handle buying of Enchanted Items (Bows)
                 else if (type == Material.STICK) {
                     ItemBuilder builder = new ItemBuilder(Material.STICK)
                             .setAmount(1)
@@ -171,10 +172,28 @@ public class BuyableItem extends AbstractItem {
                         player.getInventory().addItem(builder.build());
                         return;
                     }
+
+                //Handle buying of Swords
+                } else if (type.name().endsWith("_SWORD")) {
+                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
+                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
+
+                    ItemStack bought = builder.build();
+
+                    //Find Wood Sword in the Players inventory
+                    PlayerInventory inventory = player.getInventory();
+                    for (int i = 0; i < inventory.getSize(); i++) {
+                        ItemStack item = inventory.getItem(i);
+                        if (item != null && item.getType() == Material.WOODEN_SWORD) {
+                            inventory.setItem(i, bought);
+                            return;
+                        }
+                    }
+                    player.getInventory().addItem(bought);
+                    return;
                 }
 
                 ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
-                        .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
                         .setAmount(getItemProvider(player).get().getAmount());
 
                 ItemStack bought = builder.build();
