@@ -206,9 +206,29 @@ public class BuyableItem extends AbstractItem {
                 }
                 //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
                 else if (type.name().endsWith("_BOOTS")) {
+                    final Map<Material, Integer> armorRanking = Map.of(
+                            Material.CHAINMAIL_BOOTS, 1,
+                            Material.IRON_BOOTS, 2,
+                            Material.DIAMOND_BOOTS, 3
+                    );
+
+                    ItemStack currentBoots = player.getInventory().getBoots();
+                    //Handle player downgrading his armor
+                    if(currentBoots != null && armorRanking.containsKey(currentBoots.getType())) {
+                        int currentRank = armorRanking.get(currentBoots.getType());
+                        int newRank = armorRanking.get(type);
+                        if (newRank < currentRank) {
+                            player.sendMessage(Component.translatable("player.inventory.armor.too_weak"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                            player.getInventory().addItem(new ItemBuilder(getCurrency(getPriceTag(player)).getType())
+                                    .setAmount(extractAmount(getPriceTag(player)))
+                                    .build());
+                            return;
+                        }
+                    }
 
                     //Handle player already having the bought armor.
-                    if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == type) {
+                    if(currentBoots != null && currentBoots.getType() == type) {
                         player.sendMessage(Component.translatable("player.inventory.armor.present"));
                         player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
                         //Give player his spent currency back
