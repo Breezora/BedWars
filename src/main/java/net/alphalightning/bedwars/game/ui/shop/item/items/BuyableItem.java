@@ -173,8 +173,10 @@ public class BuyableItem extends AbstractItem {
                         return;
                     }
 
+
+                }
                 //Handle buying of Swords
-                } else if (type.name().endsWith("_SWORD")) {
+                else if (type.name().endsWith("_SWORD")) {
                     ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
                             .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
 
@@ -189,6 +191,16 @@ public class BuyableItem extends AbstractItem {
                             return;
                         }
                     }
+                    player.getInventory().addItem(bought);
+                    return;
+                }
+                //Handle buying of shears
+                else if (type == Material.SHEARS) {
+                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
+                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
+                            .setAmount(getItemProvider(player).get().getAmount());
+
+                    ItemStack bought = builder.build();
                     player.getInventory().addItem(bought);
                     return;
                 }
