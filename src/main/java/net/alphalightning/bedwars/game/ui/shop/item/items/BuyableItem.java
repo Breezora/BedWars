@@ -154,10 +154,8 @@ public class BuyableItem extends AbstractItem {
                     handleArmorPurchase(player, type, currency, cost);
                     return;
                 }
-                ItemBuilder builder = new ItemBuilder(type)
-                        .setAmount(itemAmount);
-
-                ItemStack bought = builder.build();
+                ItemStack bought = new ItemBuilder(type)
+                        .setAmount(itemAmount).build();
                 player.getInventory().addItem(bought);
             }
         }
@@ -231,24 +229,21 @@ public class BuyableItem extends AbstractItem {
     private void buyColoredItem(ColoredItem item, Team team, Player player) {
         switch (item) {
             case WOOL -> {
-                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                ItemStack boughtWool = new ItemBuilder(Objects.requireNonNull(
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_WOOL")))
-                        .setAmount(16);
-                ItemStack boughtWool = builder.build();
+                        .setAmount(16).build();
                 player.getInventory().addItem(boughtWool);
             }
             case TERRACOTTA -> {
-                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                ItemStack boughtTerracotta = new ItemBuilder(Objects.requireNonNull(
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_TERRACOTTA")))
-                        .setAmount(16);
-                ItemStack boughtTerracotta = builder.build();
+                        .setAmount(16).build();
                 player.getInventory().addItem(boughtTerracotta);
             }
             case GLASS -> {
-                ItemBuilder builder = new ItemBuilder(Objects.requireNonNull(
+                ItemStack boughtGlass = new ItemBuilder(Objects.requireNonNull(
                         Material.getMaterial(PlayerUtil.materialString(team.color()) + "_STAINED_GLASS")))
-                        .setAmount(4);
-                ItemStack boughtGlass = builder.build();
+                        .setAmount(4).build();
                 player.getInventory().addItem(boughtGlass);
             }
         }
@@ -295,21 +290,21 @@ public class BuyableItem extends AbstractItem {
     }
 
     private void handleEnchantmentPurchase(Player player, int amount, Material material, Map<Enchantment, Integer> enchantments) {
-        ItemStack builder = new ItemBuilder(material)
+        ItemStack bought = new ItemBuilder(material)
                 .setAmount(amount)
                 .set(DataComponentTypes.ENCHANTMENTS,
                         ItemEnchantments.itemEnchantments().addAll(enchantments))
                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-        player.getInventory().addItem(builder);
+        player.getInventory().addItem(bought);
     }
 
     private void handleEnchantmentPurchase(Player player, int amount, Material material, Enchantment enchantment, int strength) {
-        ItemStack builder = new ItemBuilder(material)
+        ItemStack bought = new ItemBuilder(material)
                 .setAmount(amount)
                 .set(DataComponentTypes.ENCHANTMENTS,
                         ItemEnchantments.itemEnchantments().add(enchantment, strength))
                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-        player.getInventory().addItem(builder);
+        player.getInventory().addItem(bought);
     }
 
     private void handleSwordPurchase(Player player, Material material) {
