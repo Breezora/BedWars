@@ -211,7 +211,8 @@ public class BuyableItem extends AbstractItem {
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                         ItemStack leggings = new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+                        player.getInventory().setBoots(boots);
+                        player.getInventory().setLeggings(leggings);
                         return;
                     }
                     if(getCurrencyString(getPriceTag(player)).equals("gold")) {
@@ -219,7 +220,9 @@ public class BuyableItem extends AbstractItem {
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                         ItemStack leggings = new ItemBuilder(Material.IRON_LEGGINGS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+
+                        player.getInventory().setBoots(boots);
+                        player.getInventory().setLeggings(leggings);
                         return;
                     }
                     if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
@@ -227,7 +230,8 @@ public class BuyableItem extends AbstractItem {
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                         ItemStack leggings = new ItemBuilder(Material.DIAMOND_LEGGINGS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+                        player.getInventory().setBoots(boots);
+                        player.getInventory().setLeggings(leggings);
                         return;
                     }
                 }
