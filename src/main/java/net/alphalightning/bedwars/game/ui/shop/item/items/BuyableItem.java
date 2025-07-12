@@ -206,6 +206,18 @@ public class BuyableItem extends AbstractItem {
                 }
                 //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
                 else if (type.name().endsWith("_BOOTS")) {
+
+                    //Handle player already having the bought armor.
+                    if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == type) {
+                        player.sendMessage(Component.translatable("player.inventory.armor.present"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                        //Give player his spent currency back
+                        player.getInventory().addItem(new ItemBuilder(getCurrency(getPriceTag(player)).getType())
+                                .setAmount(extractAmount(getPriceTag(player)))
+                                .build());
+                        return;
+                    }
+
                     if (getCurrencyString(getPriceTag(player)).equals("iron")) {
                         ItemStack boots = new ItemBuilder(Material.CHAINMAIL_BOOTS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
@@ -216,6 +228,13 @@ public class BuyableItem extends AbstractItem {
                         return;
                     }
                     if(getCurrencyString(getPriceTag(player)).equals("gold")) {
+
+                        if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == Material.IRON_BOOTS) {
+                            player.sendMessage(Component.translatable("player.inventory.armor.present"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                            return;
+                        }
+
                         ItemStack boots = new ItemBuilder(Material.IRON_BOOTS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                         ItemStack leggings = new ItemBuilder(Material.IRON_LEGGINGS)
@@ -226,6 +245,14 @@ public class BuyableItem extends AbstractItem {
                         return;
                     }
                     if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
+
+                        //Handle player already having the bought armor.
+                        if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == Material.DIAMOND_BOOTS) {
+                            player.sendMessage(Component.translatable("player.inventory.armor.present"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                            return;
+                        }
+
                         ItemStack boots = new ItemBuilder(Material.DIAMOND_BOOTS)
                                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                         ItemStack leggings = new ItemBuilder(Material.DIAMOND_LEGGINGS)
