@@ -204,7 +204,33 @@ public class BuyableItem extends AbstractItem {
                     player.getInventory().addItem(bought);
                     return;
                 }
-
+                //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
+                else if (type.name().endsWith("_BOOTS")) {
+                    if (getCurrencyString(getPriceTag(player)).equals("iron")) {
+                        ItemStack boots = new ItemBuilder(Material.CHAINMAIL_BOOTS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        ItemStack leggings = new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+                        return;
+                    }
+                    if(getCurrencyString(getPriceTag(player)).equals("gold")) {
+                        ItemStack boots = new ItemBuilder(Material.IRON_BOOTS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        ItemStack leggings = new ItemBuilder(Material.IRON_LEGGINGS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+                        return;
+                    }
+                    if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
+                        ItemStack boots = new ItemBuilder(Material.DIAMOND_BOOTS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        ItemStack leggings = new ItemBuilder(Material.DIAMOND_LEGGINGS)
+                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+                        player.getInventory().setArmorContents(new ItemStack[]{boots, leggings});
+                        return;
+                    }
+                }
                 ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
                         .setAmount(getItemProvider(player).get().getAmount());
 
