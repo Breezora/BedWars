@@ -39,6 +39,12 @@ public class BuyableItem extends AbstractItem {
 
     private final List<Team> teams;
 
+    private static final Map<Material, Integer> ARMOR_RANKING = Map.of(
+            Material.CHAINMAIL_BOOTS, 1,
+            Material.IRON_BOOTS, 2,
+            Material.DIAMOND_BOOTS, 3
+    );
+
     public BuyableItem(BedWarsPlugin plugin, Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
         this.plugin = plugin;
         this.itemMaterial = itemMaterial;
@@ -65,48 +71,19 @@ public class BuyableItem extends AbstractItem {
         return builder.setLore(lore);
     }
 
-    private String getPriceTag(@NotNull Player viewer) {
-        return Objects.requireNonNull(plugin.translator().getMiniMessageString(itemLore.getFirst(), viewer.locale()));
-    }
-
-    private ItemStack getCurrency(String toCheck) {
-        Map<String, ItemStack> COLOR_TO_CURRENCY = Map.of(
-                "white", new ItemStack(Material.IRON_INGOT),
-                "gold", new ItemStack(Material.GOLD_INGOT),
-                "dark_green", new ItemStack(Material.EMERALD),
-                "aqua", new ItemStack(Material.DIAMOND)
-        );
-
-        String color = toCheck.split("<")[2].split(">")[0];
-        return COLOR_TO_CURRENCY.get(color);
-    }
-
-    private String getCurrencyString(String toCheck) {
-        Map<String, String> COLOR_TO_CURRENCY = Map.of(
-                "white", "iron",
-                "gold", "gold",
-                "dark_green", "emerald",
-                "aqua", "diamond"
-        );
-
-        String color = toCheck.split("<")[2].split(">")[0];
-        return COLOR_TO_CURRENCY.get(color);
-    }
-
-    private int extractAmount(String input) {
-        String[] parts = input.split(">");
-        String amountPart = parts[2].trim().split(" ")[0];
-        return Integer.parseInt(amountPart);
-    }
-
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull Click click) {
         ItemStack boughtItem = getItemProvider(player).get().clone();
+        Material type = boughtItem.getType();
+
+        String priceTag = getPriceTag(player);
+        int cost = extractAmount(priceTag);
+        int itemAmount = getItemProvider(player).get().getAmount();
+        String currencyString = getCurrencyString(priceTag);
+        ItemStack currency = getCurrency(priceTag);
+
         for (Team team : teams) {
             if (!team.players().contains(player)) continue;
-
-            ItemStack currency = getCurrency(getPriceTag(player));
-            int cost = extractAmount(getPriceTag(player));
 
             if (!hasEnoughCurrency(player, currency, cost)) {
                 switch (currency.getType()) {
@@ -126,8 +103,7 @@ public class BuyableItem extends AbstractItem {
                     player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
                     return;
                 }
-                removeCurrency(player, currency, extractAmount(getPriceTag(player)));
-                Material type = boughtItem.getType();
+                removeCurrency(player, currency, cost);
                 //TODO: add sound to confirm the buying
 
                 //Handle buying of colored items
@@ -142,34 +118,23 @@ public class BuyableItem extends AbstractItem {
                     return;
                 }
 
-                //Handle buying of Enchanted Items (Bows)
+                //Handle buying of Enchanted Items
                 else if (type == Material.STICK) {
-                    ItemBuilder builder = new ItemBuilder(Material.STICK)
-                            .setAmount(1)
-                            .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.KNOCKBACK, 1));
-                    player.getInventory().addItem(builder.build());
+                    handleEnchantmentPurchase(player, 1, type, Enchantment.KNOCKBACK, 1);
                     return;
                 }
                 else if (type == Material.BOW) {
-                    if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
+                    if(currencyString.equals("emerald")) {
                         Map<Enchantment, Integer> enchantmentMap = Map.of(
                                 Enchantment.POWER, 1,
                                 Enchantment.PUNCH, 1
                         );
-                        ItemBuilder builder = new ItemBuilder(Material.BOW)
-                                .setAmount(1)
-                                .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().addAll(enchantmentMap))
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
-                        player.getInventory().addItem(builder.build());
+                        handleEnchantmentPurchase(player, 1, type, enchantmentMap);
                         return;
                     }
 
-                    if(extractAmount(getPriceTag(player)) == 20) {
-                        ItemBuilder builder = new ItemBuilder(Material.BOW)
-                                .setAmount(1)
-                                .set(DataComponentTypes.ENCHANTMENTS, ItemEnchantments.itemEnchantments().add(Enchantment.POWER, 1))
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
-                        player.getInventory().addItem(builder.build());
+                    if(cost == 20) {
+                        handleEnchantmentPurchase(player, 1, type, Enchantment.POWER, 1);
                         return;
                     }
 
@@ -177,113 +142,22 @@ public class BuyableItem extends AbstractItem {
                 }
                 //Handle buying of Swords
                 else if (type.name().endsWith("_SWORD")) {
-                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
-                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable());
-
-                    ItemStack bought = builder.build();
-
-                    //Find Wood Sword in the Players inventory
-                    PlayerInventory inventory = player.getInventory();
-                    for (int i = 0; i < inventory.getSize(); i++) {
-                        ItemStack item = inventory.getItem(i);
-                        if (item != null && item.getType() == Material.WOODEN_SWORD) {
-                            inventory.setItem(i, bought);
-                            return;
-                        }
-                    }
-                    player.getInventory().addItem(bought);
+                    handleSwordPurchase(player, type);
                     return;
                 }
                 //Handle buying of shears
                 else if (type == Material.SHEARS) {
-                    ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
-                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
-                            .setAmount(getItemProvider(player).get().getAmount());
-
-                    ItemStack bought = builder.build();
+                    ItemStack bought = new ItemBuilder(type)
+                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
                     player.getInventory().addItem(bought);
                     return;
                 }
                 //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
                 else if (type.name().endsWith("_BOOTS")) {
-                    final Map<Material, Integer> armorRanking = Map.of(
-                            Material.CHAINMAIL_BOOTS, 1,
-                            Material.IRON_BOOTS, 2,
-                            Material.DIAMOND_BOOTS, 3
-                    );
-
-                    ItemStack currentBoots = player.getInventory().getBoots();
-                    //Handle player downgrading his armor
-                    if(currentBoots != null && armorRanking.containsKey(currentBoots.getType())) {
-                        int currentRank = armorRanking.get(currentBoots.getType());
-                        int newRank = armorRanking.get(type);
-                        if (newRank < currentRank) {
-                            player.sendMessage(Component.translatable("player.inventory.armor.too_weak"));
-                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                            player.getInventory().addItem(new ItemBuilder(getCurrency(getPriceTag(player)).getType())
-                                    .setAmount(extractAmount(getPriceTag(player)))
-                                    .build());
-                            return;
-                        }
-                    }
-
-                    //Handle player already having the bought armor.
-                    if(currentBoots != null && currentBoots.getType() == type) {
-                        player.sendMessage(Component.translatable("player.inventory.armor.present"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                        //Give player his spent currency back
-                        player.getInventory().addItem(new ItemBuilder(getCurrency(getPriceTag(player)).getType())
-                                .setAmount(extractAmount(getPriceTag(player)))
-                                .build());
-                        return;
-                    }
-
-                    if (getCurrencyString(getPriceTag(player)).equals("iron")) {
-                        ItemStack boots = new ItemBuilder(Material.CHAINMAIL_BOOTS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        ItemStack leggings = new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        player.getInventory().setBoots(boots);
-                        player.getInventory().setLeggings(leggings);
-                        return;
-                    }
-                    if(getCurrencyString(getPriceTag(player)).equals("gold")) {
-
-                        if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == Material.IRON_BOOTS) {
-                            player.sendMessage(Component.translatable("player.inventory.armor.present"));
-                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                            return;
-                        }
-
-                        ItemStack boots = new ItemBuilder(Material.IRON_BOOTS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        ItemStack leggings = new ItemBuilder(Material.IRON_LEGGINGS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-
-                        player.getInventory().setBoots(boots);
-                        player.getInventory().setLeggings(leggings);
-                        return;
-                    }
-                    if(getCurrencyString(getPriceTag(player)).equals("emerald")) {
-
-                        //Handle player already having the bought armor.
-                        if(Objects.requireNonNull(player.getInventory().getBoots()).getType() == Material.DIAMOND_BOOTS) {
-                            player.sendMessage(Component.translatable("player.inventory.armor.present"));
-                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
-                            return;
-                        }
-
-                        ItemStack boots = new ItemBuilder(Material.DIAMOND_BOOTS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        ItemStack leggings = new ItemBuilder(Material.DIAMOND_LEGGINGS)
-                                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                        player.getInventory().setBoots(boots);
-                        player.getInventory().setLeggings(leggings);
-                        return;
-                    }
+                    handleArmorPurchase(player, type, currency, cost);
                 }
-                ItemBuilder builder = new ItemBuilder(getItemProvider(player).get().getType())
-                        .setAmount(getItemProvider(player).get().getAmount());
+                ItemBuilder builder = new ItemBuilder(type)
+                        .setAmount(itemAmount);
 
                 ItemStack bought = builder.build();
                 player.getInventory().addItem(bought);
@@ -382,5 +256,119 @@ public class BuyableItem extends AbstractItem {
                 player.getInventory().addItem(boughtGlass);
             }
         }
+    }
+
+    private String getPriceTag(@NotNull Player viewer) {
+        return Objects.requireNonNull(plugin.translator().getMiniMessageString(itemLore.getFirst(), viewer.locale()));
+    }
+
+    private ItemStack getCurrency(String toCheck) {
+        Map<String, ItemStack> COLOR_TO_CURRENCY = Map.of(
+                "white", new ItemStack(Material.IRON_INGOT),
+                "gold", new ItemStack(Material.GOLD_INGOT),
+                "dark_green", new ItemStack(Material.EMERALD),
+                "aqua", new ItemStack(Material.DIAMOND)
+        );
+
+        String color = toCheck.split("<")[2].split(">")[0];
+        return COLOR_TO_CURRENCY.get(color);
+    }
+
+    private String getCurrencyString(String toCheck) {
+        Map<String, String> COLOR_TO_CURRENCY = Map.of(
+                "white", "iron",
+                "gold", "gold",
+                "dark_green", "emerald",
+                "aqua", "diamond"
+        );
+
+        String color = toCheck.split("<")[2].split(">")[0];
+        return COLOR_TO_CURRENCY.get(color);
+    }
+
+    private int extractAmount(String input) {
+        String[] parts = input.split(">");
+        String amountPart = parts[2].trim().split(" ")[0];
+        return Integer.parseInt(amountPart);
+    }
+
+    private void refundCurrency(Player player, Material currency, int amount) {
+        player.getInventory().addItem(new ItemBuilder(currency)
+                .setAmount(amount)
+                .build());
+    }
+
+    private void handleEnchantmentPurchase(Player player,int amount, Material material, Map<Enchantment, Integer> enchantments) {
+        ItemStack builder = new ItemBuilder(material)
+                .setAmount(amount)
+                .set(DataComponentTypes.ENCHANTMENTS,
+                        ItemEnchantments.itemEnchantments().addAll(enchantments))
+                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+        player.getInventory().addItem(builder);
+    }
+    private void handleEnchantmentPurchase(Player player,int amount, Material material, Enchantment enchantment, int strength) {
+        ItemStack builder = new ItemBuilder(material)
+                .setAmount(amount)
+                .set(DataComponentTypes.ENCHANTMENTS,
+                        ItemEnchantments.itemEnchantments().add(enchantment, strength))
+                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+        player.getInventory().addItem(builder);
+    }
+
+    private void handleSwordPurchase(Player player, Material material) {
+        ItemStack bought = new ItemBuilder(material)
+                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+
+        PlayerInventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (item != null && item.getType() == Material.WOODEN_SWORD) {
+                inventory.setItem(i, bought);
+                return;
+            }
+        }
+        player.getInventory().addItem(bought);
+    }
+
+    private void handleArmorPurchase(Player player, Material material, ItemStack currency, int cost) {
+        ItemStack currentBoots = player.getInventory().getBoots();
+        if (currentBoots == null) return;
+
+        if(ARMOR_RANKING.containsKey(currentBoots.getType())) {
+            int currentRank = ARMOR_RANKING.get(currentBoots.getType());
+            int newRank = ARMOR_RANKING.get(material);
+            if (newRank < currentRank) {
+                player.sendMessage(Component.translatable("player.inventory.armor.too_weak"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                refundCurrency(player, currency.getType(), cost);
+                return;
+            }
+        }
+
+        //Handle player already having the bought armor.
+        if(currentBoots.getType() == material) {
+            player.sendMessage(Component.translatable("player.inventory.armor.present"));
+            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+            //Give player his spent currency back
+            refundCurrency(player, currency.getType(), cost);
+            return;
+        }
+
+        Material leggingsType = switch (material) {
+            case CHAINMAIL_BOOTS -> Material.CHAINMAIL_LEGGINGS;
+            case IRON_BOOTS -> Material.IRON_LEGGINGS;
+            case DIAMOND_BOOTS -> Material.DIAMOND_LEGGINGS;
+            default -> null;
+        };
+
+        if(leggingsType != null) {
+            ItemStack boots = new ItemBuilder(material)
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+            ItemStack leggings = new ItemBuilder(leggingsType)
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+            player.getInventory().setBoots(boots);
+            player.getInventory().setLeggings(leggings);
+        }
+
     }
 }
