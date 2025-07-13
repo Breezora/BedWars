@@ -22,6 +22,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Fire;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,14 +41,12 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class InGameState extends AbstractGameState implements Listener {
 
@@ -138,9 +137,7 @@ public class InGameState extends AbstractGameState implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (!(context.currentState() instanceof InGameState)) return;
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
+        Player player = event.getPlayer();
 
         Block clicked = event.getClickedBlock();
         if (clicked == null) {
@@ -149,6 +146,23 @@ public class InGameState extends AbstractGameState implements Listener {
 
         if (!event.getPlayer().isSneaking()) {
             if (clicked.getType().name().endsWith("_BED")) {
+                event.setCancelled(true);
+            }
+        }
+        ItemStack item = player.getInventory().getItemInMainHand();
+        //Fireball logic
+        if (item.getType() == Material.FIRE_CHARGE) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                player.getInventory().getItemInMainHand().setAmount(item.getAmount()-1);
+                Location eye = player.getEyeLocation();
+                Vector direction = eye.getDirection().normalize().multiply(1.5);
+
+                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.2)), Fireball.class);
+                fireball.setDirection(direction);
+                fireball.setShooter(player);
+                fireball.setIsIncendiary(true);
+                fireball.setYield(2.0f);
+
                 event.setCancelled(true);
             }
         }
