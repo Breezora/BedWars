@@ -90,7 +90,7 @@ public class BuyableItem extends AbstractItem {
                 nameKey = getTranslationKeyForMaterial(next);
                 priceKey = getPriceKeyForMaterial(next);
             } else {
-                displayMaterial = Material.DIAMOND_PICKAXE;
+                displayMaterial = Material.DIAMOND_AXE;
             }
         }
 
