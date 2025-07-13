@@ -18,14 +18,14 @@ public class ItemShopGui {
 
     private final Single gui;
 
-    Gui fastBuyGui;
-    Gui blocksGui;
-    Gui weaponsGui;
-    Gui armorGui;
-    Gui toolsGui;
-    Gui bowsGui;
-    Gui potionsGui;
-    Gui extrasGui;
+    private final Gui fastBuyGui;
+    private final Gui blocksGui;
+    private final Gui weaponsGui;
+    private final Gui armorGui;
+    private final Gui toolsGui;
+    private final Gui bowsGui;
+    private final Gui potionsGui;
+    private final Gui extrasGui;
 
     public ItemShopGui(BedWarsPlugin plugin) {
         fastBuyGui = new FastBuyGui(plugin).gui();
