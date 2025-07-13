@@ -28,6 +28,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -160,14 +161,35 @@ public class InGameState extends AbstractGameState implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplode(BlockExplodeEvent event) {
-        Block block = event.getBlock();
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
 
-        if(!placedBlocks.contains(block.getLocation())) {
-            event.setCancelled(true);
-        } else {
+        List<Block> toRemove = new ArrayList<>();
+
+        for (Block block : event.blockList()) {
+            if(!placedBlocks.contains(block.getLocation())) {
+                toRemove.add(block);
+                continue;
+            }
             placedBlocks.remove(block.getLocation());
         }
+        event.blockList().removeAll(toRemove);
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
+
+        List<Block> toRemove = new ArrayList<>();
+
+        for (Block block : event.blockList()) {
+            if(!placedBlocks.contains(block.getLocation())) {
+                toRemove.add(block);
+                continue;
+            }
+            placedBlocks.remove(block.getLocation());
+        }
+        event.blockList().removeAll(toRemove);
     }
 
     @EventHandler
