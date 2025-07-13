@@ -111,10 +111,10 @@ public class BuyableItem extends AbstractItem {
         ItemStack currency = getCurrency(priceTag);
         int cost = extractAmount(priceTag);
 
-        lore.add(Component.empty());
+        lore.add(Component.text(""));
 
         if (hasEnoughCurrency(viewer, currency, cost)) {
-            lore.add(GlobalTranslator.render(Component.translatable("gui.shop.itemshop.buyable.enough"), viewer.locale()));
+            lore.add(GlobalTranslator.render(Component.translatable("gui.shop.itemshop.buyable.lore.enough"), viewer.locale()));
         } else {
             String notEnoughKey = getCurrencyLoreKey(currency.getType());
             lore.add(GlobalTranslator.render(Component.translatable(notEnoughKey), viewer.locale()));

@@ -74,7 +74,7 @@ public class BuyablePotionItem extends AbstractItem {
         lore.add(Component.text(""));
 
         if (hasEnoughCurrency(viewer, currency, cost)) {
-            lore.add(GlobalTranslator.render(Component.translatable("gui.shop.itemshop.buyable.enough"), viewer.locale()));
+            lore.add(GlobalTranslator.render(Component.translatable("gui.shop.itemshop.buyable.lore.enough"), viewer.locale()));
         } else {
             String notEnoughKey = "gui.shop.itemshop.buyable.lore.not-enough-emerald"; //as the potions can only be bought with emeralds
             lore.add(GlobalTranslator.render(Component.translatable(notEnoughKey), viewer.locale()));
