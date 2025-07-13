@@ -200,7 +200,7 @@ public class InGameState extends AbstractGameState implements Listener {
         Block block = event.getBlock();
 
         if (!(context.currentState() instanceof InGameState)) return;
-        if (block.getState() instanceof Bed) {
+        if (!(block.getBlockData() instanceof Bed)) {
             List<MetadataValue> metadataValues = block.getMetadata("team");
             if (metadataValues.isEmpty()) return;
 
@@ -350,7 +350,6 @@ public class InGameState extends AbstractGameState implements Listener {
                 case "pink" -> Material.PINK_BED;
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
-
             createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team);
             createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team);
         }
