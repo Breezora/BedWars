@@ -47,7 +47,6 @@ public class ShopVillager implements Listener {
         if (!(context.currentState() instanceof InGameState)) return;
         
         Player player = event.getPlayer();
-        
         Entity villager = event.getRightClicked();
         
         if (!(villager instanceof Villager)) return;
