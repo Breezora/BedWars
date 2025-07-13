@@ -200,7 +200,7 @@ public class InGameState extends AbstractGameState implements Listener {
         Block block = event.getBlock();
 
         if (!(context.currentState() instanceof InGameState)) return;
-        if (block instanceof Bed) {
+        if (block instanceof org.bukkit.block.Bed) {
             List<MetadataValue> metadataValues = block.getMetadata("team");
             if (metadataValues.isEmpty()) return;
 
