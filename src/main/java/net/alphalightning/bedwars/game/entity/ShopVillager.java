@@ -60,6 +60,7 @@ public class ShopVillager implements Listener {
         if (!value.getOwningPlugin().equals(plugin)) return;
         
         VillagerType type = (VillagerType) value.value();
+        if (type == null) return;
         switch (type) {
             case SHOP -> {
                 ItemShopGui itemShopGui = new ItemShopGui(plugin);
@@ -69,7 +70,6 @@ public class ShopVillager implements Listener {
                 UpgradeShopGui upgradeShopGui = new UpgradeShopGui();
                 upgradeShopGui.showGui(player);
             }
-            case null -> {}
         }
     }
 }
