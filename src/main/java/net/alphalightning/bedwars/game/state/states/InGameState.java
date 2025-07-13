@@ -147,7 +147,7 @@ public class InGameState extends AbstractGameState implements Listener {
             return;
         }
 
-        if(!event.getPlayer().isSneaking()) {
+        if (!event.getPlayer().isSneaking()) {
             if (clicked.getType().name().endsWith("_BED")) {
                 event.setCancelled(true);
             }
@@ -158,7 +158,7 @@ public class InGameState extends AbstractGameState implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
 
-        if(!(context.currentState() instanceof InGameState)) return;
+        if (!(context.currentState() instanceof InGameState)) return;
 
         placedBlocks.add(block.getLocation());
     }
@@ -170,7 +170,7 @@ public class InGameState extends AbstractGameState implements Listener {
         List<Block> toRemove = new ArrayList<>();
 
         for (Block block : event.blockList()) {
-            if(!placedBlocks.contains(block.getLocation())) {
+            if (!placedBlocks.contains(block.getLocation())) {
                 toRemove.add(block);
                 continue;
             }
@@ -186,7 +186,7 @@ public class InGameState extends AbstractGameState implements Listener {
         List<Block> toRemove = new ArrayList<>();
 
         for (Block block : event.blockList()) {
-            if(!placedBlocks.contains(block.getLocation())) {
+            if (!placedBlocks.contains(block.getLocation())) {
                 toRemove.add(block);
                 continue;
             }
@@ -233,9 +233,9 @@ public class InGameState extends AbstractGameState implements Listener {
             sendDestruction(player, destroyerTeam, destroyedTeam);
             return;
         }
-        if(block.getBlockData() instanceof Fire) return;
+        if (block.getBlockData() instanceof Fire) return;
 
-        if(!placedBlocks.contains(block.getLocation())) {
+        if (!placedBlocks.contains(block.getLocation())) {
             event.setCancelled(true);
         } else {
             placedBlocks.remove(block.getLocation());
