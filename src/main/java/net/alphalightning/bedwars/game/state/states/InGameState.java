@@ -135,6 +135,11 @@ public class InGameState extends AbstractGameState implements Listener {
     }
 
     @EventHandler
+    public void onAirInteract(PlayerInteractEvent event) {
+
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (!(context.currentState() instanceof InGameState)) return;
         Player player = event.getPlayer();
@@ -152,7 +157,10 @@ public class InGameState extends AbstractGameState implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         //Fireball logic
         if (item.getType() == Material.FIRE_CHARGE) {
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                player.sendMessage(event.getAction().name());
+            }
+            if (event.getAction() == Action.RIGHT_CLICK_AIR) {
                 player.sendMessage(event.getAction().name());
                 player.getInventory().getItemInMainHand().setAmount(item.getAmount()-1);
                 Location eye = player.getEyeLocation();
