@@ -24,7 +24,7 @@ public class VillagerManager {
         Villager shopVillager = villagerLocation.getWorld().spawn(villagerLocation.toCenterLocation().subtract(0, 0.5D, 0), Villager.class);
         shopVillager.setAI(false);
         shopVillager.setSilent(true);
-        shopVillager.setGravity(false);
+        shopVillager.setGravity(true); // Add gravity to avoid wrong spawning (floating). Temporary fix
         shopVillager.setNoPhysics(true);
         shopVillager.setInvulnerable(true);
         TextDisplay textDisplayTop = villagerLocation.getWorld().spawn(villagerLocation.toCenterLocation().add(0, 1.95D, 0), TextDisplay.class);
