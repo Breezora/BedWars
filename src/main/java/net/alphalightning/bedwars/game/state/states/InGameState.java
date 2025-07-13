@@ -21,11 +21,15 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -41,13 +45,17 @@ import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class InGameState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private static List<Team> teams;
+
+    private final Set<Location> placedBlocks = new HashSet<>();
 
     public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
@@ -76,6 +84,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void stop() {
+        placedBlocks.clear();
         context.logger().info(Component.translatable("state.ingame.stop"));
     }
 
@@ -138,9 +147,52 @@ public class InGameState extends AbstractGameState implements Listener {
             return;
         }
 
-        if (clicked.getType().name().endsWith("_BED")) {
-            event.setCancelled(true);
+        if (!event.getPlayer().isSneaking()) {
+            if (clicked.getType().name().endsWith("_BED")) {
+                event.setCancelled(true);
+            }
         }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+
+        if (!(context.currentState() instanceof InGameState)) return;
+
+        placedBlocks.add(block.getLocation());
+    }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
+
+        List<Block> toRemove = new ArrayList<>();
+
+        for (Block block : event.blockList()) {
+            if (!placedBlocks.contains(block.getLocation())) {
+                toRemove.add(block);
+                continue;
+            }
+            placedBlocks.remove(block.getLocation());
+        }
+        event.blockList().removeAll(toRemove);
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        if (!(context.currentState() instanceof InGameState)) return;
+
+        List<Block> toRemove = new ArrayList<>();
+
+        for (Block block : event.blockList()) {
+            if (!placedBlocks.contains(block.getLocation())) {
+                toRemove.add(block);
+                continue;
+            }
+            placedBlocks.remove(block.getLocation());
+        }
+        event.blockList().removeAll(toRemove);
     }
 
     @EventHandler
@@ -149,36 +201,45 @@ public class InGameState extends AbstractGameState implements Listener {
         Block block = event.getBlock();
 
         if (!(context.currentState() instanceof InGameState)) return;
+        if (block.getBlockData() instanceof Bed) {
+            List<MetadataValue> metadataValues = block.getMetadata("team");
+            if (metadataValues.isEmpty()) return;
 
-        List<MetadataValue> metadataValues = block.getMetadata("team");
-        if (metadataValues.isEmpty()) return;
+            FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
+            if (value.getOwningPlugin() == null) return;
+            if (!value.getOwningPlugin().equals(plugin)) return;
 
-        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
-        if (value.getOwningPlugin() == null) return;
-        if (!value.getOwningPlugin().equals(plugin)) return;
+            Team destroyedTeam = (Team) value.value();
+            Team destroyerTeam = findTeamByPlayer(player);
 
-        Team destroyedTeam = (Team) value.value();
-        Team destroyerTeam = findTeamByPlayer(player);
+            if (destroyedTeam == null) {
+                throw new IllegalStateException("Block " + block.getLocation() + " has no team metadata");
+            }
 
-        if (destroyedTeam == null) {
-            throw new IllegalStateException("Block " + block.getLocation() + " has no team metadata");
-        }
+            if (destroyerTeam == null) {
+                event.setCancelled(true);
+                throw new IllegalStateException("Player " + player.getName() + " is not on a team");
+            }
 
-        if (destroyerTeam == null) {
-            event.setCancelled(true);
-            throw new IllegalStateException("Player " + player.getName() + " is not on a team");
-        }
+            if (destroyerTeam.equals(destroyedTeam)) {
+                player.sendMessage(Component.translatable("state.ingame.break.own"));
+                event.setCancelled(true);
+                return;
+            }
 
-        if (destroyerTeam.equals(destroyedTeam)) {
-            player.sendMessage(Component.translatable("state.ingame.break.own"));
-            event.setCancelled(true);
+            event.setDropItems(false);
+
+            deleteBed(destroyedTeam, value);
+            sendDestruction(player, destroyerTeam, destroyedTeam);
             return;
         }
+        if (block.getBlockData() instanceof Fire) return;
 
-        event.setDropItems(false);
-
-        deleteBed(destroyedTeam, value);
-        sendDestruction(player, destroyerTeam, destroyedTeam);
+        if (!placedBlocks.contains(block.getLocation())) {
+            event.setCancelled(true);
+        } else {
+            placedBlocks.remove(block.getLocation());
+        }
     }
 
     private void deleteBed(Team team, FixedMetadataValue value) {
@@ -292,7 +353,6 @@ public class InGameState extends AbstractGameState implements Listener {
                 case "pink" -> Material.PINK_BED;
                 default -> throw new IllegalArgumentException("Unknown team name: " + team.name());
             };
-
             createBed(topHalfLocation, bedMaterial, Bed.Part.HEAD, blockFace, team);
             createBed(bottomHalfLocation, bedMaterial, Bed.Part.FOOT, blockFace, team);
         }
