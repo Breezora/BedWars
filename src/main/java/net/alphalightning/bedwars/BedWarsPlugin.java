@@ -17,7 +17,7 @@ import net.alphalightning.bedwars.game.state.GameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
 import net.alphalightning.bedwars.setup.manager.MapSetupManager;
 import net.alphalightning.bedwars.setup.ui.item.BackgroundGuiItem;
-import net.alphalightning.bedwars.translation.PluginMiniMassageTranslator;
+import net.alphalightning.bedwars.translation.PluginMiniMessageTranslator;
 import net.alphalightning.bedwars.util.WorldUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -55,6 +55,8 @@ public class BedWarsPlugin extends JavaPlugin {
     private Environment environment;
     private GameStateContext gameStateContext;
 
+    private PluginMiniMessageTranslator translator;
+
     @Override
     public void onLoad() {
         loadMessageRegistry();
@@ -84,9 +86,10 @@ public class BedWarsPlugin extends JavaPlugin {
         store.registerAll(Locale.GERMAN, ResourceBundle.getBundle("messages", Locale.GERMANY, UTF8ResourceBundleControl.get()), true);
 
         MiniMessage miniMessage = MiniMessage.builder().build(); // Use this instance to register custom tags such as prefix
+        translator = new PluginMiniMessageTranslator(miniMessage, store);
 
         GlobalTranslator.translator().addSource(store);
-        GlobalTranslator.translator().addSource(new PluginMiniMassageTranslator(miniMessage, store));
+        GlobalTranslator.translator().addSource(translator);
     }
 
     private void loadConfiguration() {
@@ -174,4 +177,9 @@ public class BedWarsPlugin extends JavaPlugin {
     public GameStateContext gameStateContext() {
         return gameStateContext;
     }
+
+    public PluginMiniMessageTranslator translator() {
+        return translator;
+    }
+
 }

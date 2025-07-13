@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
+import net.alphalightning.bedwars.game.entity.ShopVillager;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -46,28 +47,31 @@ public class InGameState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
-    private List<Team> teams;
+    private static List<Team> teams;
 
     public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
         this.plugin = plugin;
         this.mapManager = mapManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-
     }
 
 
     @Override
     public void start() {
-        TranslatableComponent component = Component.translatable("state.ingame.start");
+        ShopVillager shopVillager = new ShopVillager(plugin, mapManager, context);
 
+        TranslatableComponent component = Component.translatable("state.ingame.start");
         Bukkit.broadcast(component);
         context.logger().info(component);
 
         allocateTeams();
         placeBeds();
-        teleportPlayers();
+
+        shopVillager.createVillagers();
+
         preparePlayers();
+        teleportPlayers();
     }
 
     @Override
@@ -339,6 +343,10 @@ public class InGameState extends AbstractGameState implements Listener {
         if (dz == -1) return BlockFace.NORTH;
 
         throw new IllegalArgumentException("Invalid bed orientation: locations are not adjacent in a cardinal direction");
+    }
+
+    public static List<Team> teamsList() {
+        return teams;
     }
 
 }
