@@ -46,7 +46,10 @@ import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class InGameState extends AbstractGameState implements Listener {
 
@@ -136,7 +139,29 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @EventHandler
     public void onAirInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
+        ItemStack item = player.getInventory().getItemInMainHand();
+        //Fireball logic
+        if (item.getType() == Material.SLIME_BALL) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                player.sendMessage(event.getAction().name());
+            }
+            if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+                player.sendMessage(event.getAction().name());
+                player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
+                Location eye = player.getEyeLocation();
+                Vector direction = eye.getDirection().normalize().multiply(1.5);
+
+                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class);
+                fireball.setDirection(direction);
+                fireball.setShooter(player);
+                fireball.setIsIncendiary(false);
+                fireball.setYield(2.0f);
+
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -149,29 +174,8 @@ public class InGameState extends AbstractGameState implements Listener {
             return;
         }
 
-        if (!event.getPlayer().isSneaking()) {
-            if (clicked.getType().name().endsWith("_BED")) {
-                event.setCancelled(true);
-            }
-        }
-        ItemStack item = player.getInventory().getItemInMainHand();
-        //Fireball logic
-        if (item.getType() == Material.FIRE_CHARGE) {
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                player.sendMessage(event.getAction().name());
-            }
-            if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-                player.sendMessage(event.getAction().name());
-                player.getInventory().getItemInMainHand().setAmount(item.getAmount()-1);
-                Location eye = player.getEyeLocation();
-                Vector direction = eye.getDirection().normalize().multiply(1.5);
-
-                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class);
-                fireball.setDirection(direction);
-                fireball.setShooter(player);
-                fireball.setIsIncendiary(false);
-                fireball.setYield(2.0f);
-
+        if (clicked.getType().name().endsWith("_BED")) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && !player.isSneaking()) {
                 event.setCancelled(true);
             }
         }
