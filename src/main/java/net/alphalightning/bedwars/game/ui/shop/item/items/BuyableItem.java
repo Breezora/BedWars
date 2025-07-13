@@ -54,8 +54,8 @@ public class BuyableItem extends AbstractItem {
 
     private static final List<Material> AXE_TIERS = List.of(
             Material.WOODEN_AXE,
-            Material.GOLDEN_AXE,
             Material.IRON_AXE,
+            Material.GOLDEN_AXE,
             Material.DIAMOND_AXE
     );
 
