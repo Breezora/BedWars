@@ -519,7 +519,7 @@ public class BuyableItem extends AbstractItem {
             case GOLDEN_PICKAXE -> "gui.shop.itemshop.buyable.goldpickaxe.name";
             case DIAMOND_PICKAXE -> "gui.shop.itemshop.buyable.diamondpickaxe.name";
             case WOODEN_AXE -> "gui.shop.itemshop.buyable.woodaxe.name";
-            case STONE_AXE -> "gui.shop.itemshop.buyable.goldaxe.name";
+            case GOLDEN_AXE -> "gui.shop.itemshop.buyable.goldaxe.name";
             case IRON_AXE -> "gui.shop.itemshop.buyable.ironaxe.name";
             case DIAMOND_AXE -> "gui.shop.itemshop.buyable.diamondaxe.name";
             default -> "gui.shop.itemshop.buyable.unknown";
@@ -533,7 +533,7 @@ public class BuyableItem extends AbstractItem {
             case GOLDEN_PICKAXE -> "gui.shop.itemshop.buyable.goldpickaxe.price";
             case DIAMOND_PICKAXE -> "gui.shop.itemshop.buyable.diamondpickaxe.price";
             case WOODEN_AXE -> "gui.shop.itemshop.buyable.woodaxe.price";
-            case STONE_AXE -> "gui.shop.itemshop.buyable.goldaxe.price";
+            case GOLDEN_AXE -> "gui.shop.itemshop.buyable.goldaxe.price";
             case IRON_AXE -> "gui.shop.itemshop.buyable.ironaxe.price";
             case DIAMOND_AXE -> "gui.shop.itemshop.buyable.diamondaxe.price";
             default -> "gui.shop.itemshop.buyable.price.unknown";
