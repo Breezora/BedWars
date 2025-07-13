@@ -54,7 +54,7 @@ public class BuyableItem extends AbstractItem {
 
     private static final List<Material> AXE_TIERS = List.of(
             Material.WOODEN_AXE,
-            Material.STONE_AXE,
+            Material.GOLDEN_AXE,
             Material.IRON_AXE,
             Material.DIAMOND_AXE
     );
@@ -105,6 +105,19 @@ public class BuyableItem extends AbstractItem {
             } else {
             lore.add(GlobalTranslator.render(Component.translatable(line), viewer.locale()));
             }
+        }
+
+        String priceTag = getPriceTag(viewer);
+        ItemStack currency = getCurrency(priceTag);
+        int cost = extractAmount(priceTag);
+
+        lore.add(Component.empty());
+
+        if (hasEnoughCurrency(viewer, currency, cost)) {
+            lore.add(GlobalTranslator.render(Component.translatable("gui.shop.itemshop.buyable.enough"), viewer.locale()));
+        } else {
+            String notEnoughKey = getCurrencyLoreKey(currency.getType());
+            lore.add(GlobalTranslator.render(Component.translatable(notEnoughKey), viewer.locale()));
         }
 //        for (String s : itemLore) {
 //            if (s.isEmpty()) {
@@ -526,5 +539,13 @@ public class BuyableItem extends AbstractItem {
             default -> "gui.shop.itemshop.buyable.price.unknown";
         };
     }
-
+    private String getCurrencyLoreKey(Material currency) {
+        return switch (currency) {
+            case IRON_INGOT -> "gui.shop.itemshop.buyable.lore.not-enough-iron";
+            case GOLD_INGOT -> "gui.shop.itemshop.buyable.lore.not-enough-gold";
+            case EMERALD -> "gui.shop.itemshop.buyable.lore.not-enough-emerald";
+            case DIAMOND -> "gui.shop.itemshop.buyable.lore.not-enough-diamond";
+            default -> "gui.shop.itemshop.buyable.lore.not-enough-unknown";
+        };
+    }
 }
