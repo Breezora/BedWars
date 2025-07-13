@@ -22,8 +22,6 @@ public class FastBuyGui {
 
     private Gui createGui() {
 
-        String level = "gui.shop.itemshop.upgradable.level.1";
-
         String upgrade = "gui.shop.itemshop.buyable.lore.upgradable";
         String upgrade2 = "gui.shop.itemshop.buyable.lore.upgradable.2";
 
@@ -65,7 +63,6 @@ public class FastBuyGui {
                         "gui.shop.itemshop.buyable.ironsword.price"))
                 .addIngredient('h', new BuyableItem(plugin, Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodpickaxe.price",
-                        level,
                         "",
                         upgrade,
                         upgrade2,
@@ -75,7 +72,6 @@ public class FastBuyGui {
                         permrespawn3))
                 .addIngredient('i', new BuyableItem(plugin, Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodaxe.price",
-                        level,
                         "",
                         upgrade,
                         upgrade2,
