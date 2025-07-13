@@ -160,7 +160,7 @@ public class InGameState extends AbstractGameState implements Listener {
                 Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.2)), Fireball.class);
                 fireball.setDirection(direction);
                 fireball.setShooter(player);
-                fireball.setIsIncendiary(true);
+                fireball.setIsIncendiary(false);
                 fireball.setYield(2.0f);
 
                 event.setCancelled(true);
