@@ -137,7 +137,6 @@ public class BuyablePotionItem extends AbstractItem {
 
     private ItemStack potion(Color potionColor, PotionEffectType type, int duration, int amplifier, String name) {
         PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
-
         PotionContents contents = PotionContents.potionContents()
                 .potion(PotionType.WATER)
                 .customColor(potionColor)
