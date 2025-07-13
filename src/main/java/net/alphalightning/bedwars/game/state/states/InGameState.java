@@ -233,7 +233,7 @@ public class InGameState extends AbstractGameState implements Listener {
             sendDestruction(player, destroyerTeam, destroyedTeam);
             return;
         }
-        if(!(block.getBlockData() instanceof Fire)) return;
+        if(block.getBlockData() instanceof Fire) return;
 
         if(!placedBlocks.contains(block.getLocation())) {
             event.setCancelled(true);
