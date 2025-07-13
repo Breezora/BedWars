@@ -146,8 +146,10 @@ public class InGameState extends AbstractGameState implements Listener {
             return;
         }
 
-        if (clicked.getType().name().endsWith("_BED")) {
-            event.setCancelled(true);
+        if(!event.getPlayer().isSneaking()) {
+            if (clicked.getType().name().endsWith("_BED")) {
+                event.setCancelled(true);
+            }
         }
     }
 
