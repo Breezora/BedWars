@@ -40,9 +40,7 @@ public class ToolsGui {
                         "gui.shop.itemshop.buyable.shears.price",
                         "",
                         "gui.shop.itemshop.buyable.shears.lore",
-                        "gui.shop.itemshop.buyable.shears.lore.2",
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        "gui.shop.itemshop.buyable.shears.lore.2"))
                 .addIngredient('c', new BuyableItem(plugin, Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodpickaxe.price",
                         level,
@@ -52,9 +50,7 @@ public class ToolsGui {
                         "",
                         permrespawn,
                         permrespawn2,
-                        permrespawn3,
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        permrespawn3))
                 .addIngredient('d', new BuyableItem(plugin, Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodaxe.price",
                         level,
@@ -64,9 +60,7 @@ public class ToolsGui {
                         "",
                         permrespawn,
                         permrespawn2,
-                        permrespawn3,
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        permrespawn3))
                 .build();
     }
 

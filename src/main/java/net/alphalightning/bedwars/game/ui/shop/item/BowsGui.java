@@ -17,8 +17,6 @@ public class BowsGui {
     }
 
     private Gui createGui() {
-        String gold = "gui.shop.itemshop.buyable.lore.not-enough-gold";
-        String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
 
         return Gui.normal()
                 .setStructure(
@@ -28,21 +26,13 @@ public class BowsGui {
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new BuyableItem(plugin, Material.ARROW, "gui.shop.itemshop.buyable.arrow.name", 6,
-                        "gui.shop.itemshop.buyable.arrow.price",
-                        "",
-                        gold))
+                        "gui.shop.itemshop.buyable.arrow.price"))
                 .addIngredient('c', new BuyableItem(plugin, Material.BOW, "gui.shop.itemshop.buyable.bow.name", 1,
-                        "gui.shop.itemshop.buyable.bow.price",
-                        "",
-                        gold))
+                        "gui.shop.itemshop.buyable.bow.price"))
                 .addIngredient('d', new BuyableItem(plugin, Material.BOW, "gui.shop.itemshop.buyable.bow.2.name", 1,
-                        "gui.shop.itemshop.buyable.bow.2.price",
-                        "",
-                        gold))
+                        "gui.shop.itemshop.buyable.bow.2.price"))
                 .addIngredient('e', new BuyableItem(plugin, Material.BOW, "gui.shop.itemshop.buyable.bow.3.name", 1,
-                        "gui.shop.itemshop.buyable.bow.3.price",
-                        "",
-                        emerald))
+                        "gui.shop.itemshop.buyable.bow.3.price"))
                 .build();
     }
 

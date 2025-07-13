@@ -18,10 +18,6 @@ public class WeaponsGui {
 
     private Gui createGui() {
 
-        String iron = "gui.shop.itemshop.buyable.lore.not-enough-iron";
-        String gold = "gui.shop.itemshop.buyable.lore.not-enough-gold";
-        String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
-
         return Gui.normal()
                 .setStructure(
                         ". . a . . . . . .",
@@ -30,21 +26,13 @@ public class WeaponsGui {
                 )
                 .addIngredient('a', new CurrentItem())
                 .addIngredient('b', new BuyableItem(plugin, Material.STONE_SWORD, "gui.shop.itemshop.buyable.stonesword.name", 1,
-                        "gui.shop.itemshop.buyable.stonesword.price",
-                        "",
-                        iron))
+                        "gui.shop.itemshop.buyable.stonesword.price"))
                 .addIngredient('c', new BuyableItem(plugin, Material.IRON_SWORD, "gui.shop.itemshop.buyable.ironsword.name", 1,
-                        "gui.shop.itemshop.buyable.ironsword.price",
-                        "",
-                        gold))
+                        "gui.shop.itemshop.buyable.ironsword.price"))
                 .addIngredient('d', new BuyableItem(plugin, Material.DIAMOND_SWORD, "gui.shop.itemshop.buyable.diamondsword.name", 1,
-                        "gui.shop.itemshop.buyable.diamondsword.price",
-                        "",
-                        emerald))
+                        "gui.shop.itemshop.buyable.diamondsword.price"))
                 .addIngredient('e', new BuyableItem(plugin, Material.STICK, "gui.shop.itemshop.buyable.stick.name", 1,
-                        "gui.shop.itemshop.buyable.stick.price",
-                        "",
-                        gold))
+                        "gui.shop.itemshop.buyable.stick.price"))
                 .build();
     }
 

@@ -29,23 +29,17 @@ public class ArmorGui {
                         "gui.shop.itemshop.buyable.armor.chain.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.chain.lore",
-                        "gui.shop.itemshop.buyable.armor.chain.lore.2",
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        "gui.shop.itemshop.buyable.armor.chain.lore.2"))
                 .addIngredient('c', new BuyableItem(plugin, Material.IRON_BOOTS, "gui.shop.itemshop.buyable.armor.iron.name", 1,
                         "gui.shop.itemshop.buyable.armor.iron.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.iron.lore",
-                        "gui.shop.itemshop.buyable.armor.iron.lore.2",
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-gold"))
+                        "gui.shop.itemshop.buyable.armor.iron.lore.2"))
                 .addIngredient('d', new BuyableItem(plugin, Material.DIAMOND_BOOTS, "gui.shop.itemshop.buyable.armor.diamond.name", 1,
                         "gui.shop.itemshop.buyable.armor.diamond.price",
                         "",
                         "gui.shop.itemshop.buyable.armor.diamond.lore",
-                        "gui.shop.itemshop.buyable.armor.diamond.lore.2",
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-emerald"))
+                        "gui.shop.itemshop.buyable.armor.diamond.lore.2"))
                 .build();
     }
 
