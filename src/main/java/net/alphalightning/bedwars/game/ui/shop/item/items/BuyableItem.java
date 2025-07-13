@@ -82,6 +82,8 @@ public class BuyableItem extends AbstractItem {
                 priceKey = getPriceKeyForMaterial(next);
             } else {
                 displayMaterial = Material.DIAMOND_PICKAXE;
+                nameKey = getTranslationKeyForMaterial(displayMaterial);
+                priceKey = getPriceKeyForMaterial(displayMaterial);
             }
         } else if (itemMaterial.name().endsWith("_AXE")) {
             Material next = getNextToolTier(viewer, AXE_TIERS);
@@ -91,6 +93,8 @@ public class BuyableItem extends AbstractItem {
                 priceKey = getPriceKeyForMaterial(next);
             } else {
                 displayMaterial = Material.DIAMOND_AXE;
+                nameKey = getTranslationKeyForMaterial(displayMaterial);
+                priceKey = getPriceKeyForMaterial(displayMaterial);
             }
         }
 
