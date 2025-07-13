@@ -45,6 +45,20 @@ public class BuyableItem extends AbstractItem {
             Material.DIAMOND_BOOTS, 3
     );
 
+    private static final List<Material> PICKAXE_TIERS = List.of(
+            Material.WOODEN_PICKAXE,
+            Material.IRON_PICKAXE,
+            Material.GOLDEN_PICKAXE,
+            Material.DIAMOND_PICKAXE
+    );
+
+    private static final List<Material> AXE_TIERS = List.of(
+            Material.WOODEN_AXE,
+            Material.STONE_AXE,
+            Material.IRON_AXE,
+            Material.DIAMOND_AXE
+    );
+
     public BuyableItem(BedWarsPlugin plugin, Material itemMaterial, String itemNameKey, int itemAmount, String... itemLore) {
         this.plugin = plugin;
         this.itemMaterial = itemMaterial;
@@ -56,18 +70,49 @@ public class BuyableItem extends AbstractItem {
 
     @Override
     public @NotNull ItemProvider getItemProvider(@NotNull Player viewer) {
-        final ItemBuilder builder = new ItemBuilder(itemMaterial)
-                .setName(GlobalTranslator.render(Component.translatable(itemNameKey), viewer.locale()))
+        Material displayMaterial = itemMaterial;
+        String nameKey = itemNameKey;
+        String priceKey = itemLore.getFirst();
+
+        if(itemMaterial.name().endsWith("_PICKAXE")) {
+            Material next = getNextToolTier(viewer, PICKAXE_TIERS);
+            if (next != null) {
+                displayMaterial = next;
+                nameKey = getTranslationKeyForMaterial(next);
+                priceKey = getPriceKeyForMaterial(next);
+            } else {
+                displayMaterial = Material.DIAMOND_PICKAXE;
+            }
+        } else if (itemMaterial.name().endsWith("_AXE")) {
+            Material next = getNextToolTier(viewer, AXE_TIERS);
+            if (next != null) {
+                displayMaterial = next;
+                nameKey = getTranslationKeyForMaterial(next);
+                priceKey = getPriceKeyForMaterial(next);
+            } else {
+                displayMaterial = Material.DIAMOND_PICKAXE;
+            }
+        }
+
+        final ItemBuilder builder = new ItemBuilder(displayMaterial)
+                .setName(GlobalTranslator.render(Component.translatable(nameKey), viewer.locale()))
                 .setAmount(itemAmount);
 
         List<Component> lore = new ArrayList<>();
-        for (String s : itemLore) {
-            if (s.isEmpty()) {
-                lore.add(Component.empty());
-                continue;
+        for (String line : itemLore) {
+            if(line.equals(itemLore.getFirst())) {
+                lore.add(GlobalTranslator.render(Component.translatable(priceKey), viewer.locale()));
+            } else {
+            lore.add(GlobalTranslator.render(Component.translatable(line), viewer.locale()));
             }
-            lore.add(GlobalTranslator.render(Component.translatable(s), viewer.locale()));
         }
+//        for (String s : itemLore) {
+//            if (s.isEmpty()) {
+//                lore.add(Component.empty());
+//                continue;
+//            }
+//            lore.add(GlobalTranslator.render(Component.translatable(s), viewer.locale()));
+//        }
         return builder.setLore(lore);
     }
 
@@ -142,16 +187,15 @@ public class BuyableItem extends AbstractItem {
                     handleSwordPurchase(player, type);
                     return;
                 }
-                //Handle buying of shears
-                else if (type == Material.SHEARS) {
-                    ItemStack bought = new ItemBuilder(type)
-                            .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
-                    player.getInventory().addItem(bought);
-                    return;
-                }
                 //Handle buying of Armor. This implies, that the price can be changed, but not the currency of the armor.
                 else if (type.name().endsWith("_BOOTS")) {
                     handleArmorPurchase(player, type, currency, cost);
+                    return;
+                }
+                //Handle buying of Tools
+                else if (type.name().endsWith("_PICKAXE") || type.name().endsWith("_AXE") || type == Material.SHEARS) {
+                    handleToolPurchase(player, type, currency.getType(), cost);
+                    this.notifyWindows();
                     return;
                 }
                 ItemStack bought = new ItemBuilder(type)
@@ -311,13 +355,12 @@ public class BuyableItem extends AbstractItem {
         ItemStack bought = new ItemBuilder(material)
                 .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
 
+        int itemSlot = findItemInPlayerInventory(player, Material.WOODEN_SWORD);
+
         PlayerInventory inventory = player.getInventory();
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack item = inventory.getItem(i);
-            if (item != null && item.getType() == Material.WOODEN_SWORD) {
-                inventory.setItem(i, bought);
-                return;
-            }
+        if (itemSlot != -1) {
+            inventory.setItem(itemSlot, bought);
+            return;
         }
         player.getInventory().addItem(bought);
     }
@@ -361,6 +404,127 @@ public class BuyableItem extends AbstractItem {
             player.getInventory().setBoots(boots);
             player.getInventory().setLeggings(leggings);
         }
-
     }
+
+    private void handleToolPurchase(Player player, Material item, Material currency, int cost) {
+        int itemSlot = findItemInPlayerInventory(player, item);
+        if (item == Material.SHEARS) {
+            if (itemSlot != -1) {
+                player.sendMessage(Component.translatable("player.inventory.shears.present"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F); //TODO: Change sound to hypixel sound
+                refundCurrency(player, currency, cost);
+            }
+            ItemStack bought = new ItemBuilder(Material.SHEARS)
+                    .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable()).build();
+            player.getInventory().addItem(bought);
+        } else if (item.name().endsWith("_PICKAXE")) {
+            Material nextTier = getNextToolTier(player, PICKAXE_TIERS);
+
+            if (nextTier == null) {
+                player.sendMessage(Component.translatable("player.inventory.pickaxe.present"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F);
+                refundCurrency(player, currency, cost);
+                return;
+            }
+
+            removeLowerTool(player, PICKAXE_TIERS);
+            giveUnbreakableItem(player, nextTier);
+        } else if (item.name().endsWith("_AXE")) {
+            Material nextTier = getNextToolTier(player, AXE_TIERS);
+
+            if (nextTier == null) {
+                player.sendMessage(Component.translatable("player.inventory.axe.present"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_HURT, 0.5F, 1.0F);
+                refundCurrency(player, currency, cost);
+                return;
+            }
+
+            removeLowerTool(player, AXE_TIERS);
+            giveUnbreakableItem(player, nextTier);
+        }
+    }
+
+    private int findItemInPlayerInventory(Player player, Material toFind) {
+        PlayerInventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (item != null && item.getType() == toFind) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Material getNextToolTier(Player player, List<Material> tiers) {
+        for (int i = 0; i < tiers.size(); i++) {
+            Material material = tiers.get(i);
+            if (hasItemInInventory(player, material)) {
+                if (i + 1 < tiers.size()) {
+                    return tiers.get(i + 1);
+                } else {
+                    return null; // Maxed out
+                }
+            }
+        }
+        // No tool found, give him first tier.
+        return tiers.getFirst();
+    }
+
+    private boolean hasItemInInventory(Player player, Material material) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType() == material) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeLowerTool(Player player, List<Material> tiers) {
+        PlayerInventory inv = player.getInventory();
+        for (Material mat : tiers) {
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack item = inv.getItem(i);
+                if (item != null && item.getType() == mat) {
+                    inv.clear(i);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void giveUnbreakableItem(Player player, Material material) {
+        ItemStack tool = new ItemBuilder(material)
+                .set(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable())
+                .build();
+        player.getInventory().addItem(tool);
+    }
+
+    private String getTranslationKeyForMaterial(Material material) {
+        return switch (material) {
+            case WOODEN_PICKAXE -> "gui.shop.itemshop.buyable.woodpickaxe.name";
+            case IRON_PICKAXE -> "gui.shop.itemshop.buyable.ironpickaxe.name";
+            case GOLDEN_PICKAXE -> "gui.shop.itemshop.buyable.goldpickaxe.name";
+            case DIAMOND_PICKAXE -> "gui.shop.itemshop.buyable.diamondpickaxe.name";
+            case WOODEN_AXE -> "gui.shop.itemshop.buyable.woodaxe.name";
+            case STONE_AXE -> "gui.shop.itemshop.buyable.goldaxe.name";
+            case IRON_AXE -> "gui.shop.itemshop.buyable.ironaxe.name";
+            case DIAMOND_AXE -> "gui.shop.itemshop.buyable.diamondaxe.name";
+            default -> "gui.shop.itemshop.buyable.unknown";
+        };
+    }
+
+    private String getPriceKeyForMaterial(Material material) {
+        return switch (material) {
+            case WOODEN_PICKAXE -> "gui.shop.itemshop.buyable.woodpickaxe.price";
+            case IRON_PICKAXE -> "gui.shop.itemshop.buyable.ironpickaxe.price";
+            case GOLDEN_PICKAXE -> "gui.shop.itemshop.buyable.goldpickaxe.price";
+            case DIAMOND_PICKAXE -> "gui.shop.itemshop.buyable.diamondpickaxe.price";
+            case WOODEN_AXE -> "gui.shop.itemshop.buyable.woodaxe.price";
+            case STONE_AXE -> "gui.shop.itemshop.buyable.goldaxe.price";
+            case IRON_AXE -> "gui.shop.itemshop.buyable.ironaxe.price";
+            case DIAMOND_AXE -> "gui.shop.itemshop.buyable.diamondaxe.price";
+            default -> "gui.shop.itemshop.buyable.price.unknown";
+        };
+    }
+
 }
