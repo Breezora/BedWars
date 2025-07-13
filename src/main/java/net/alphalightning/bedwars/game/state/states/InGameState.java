@@ -26,6 +26,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -41,13 +43,17 @@ import xyz.xenondevs.invui.item.ItemBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class InGameState extends AbstractGameState implements Listener {
 
     private final BedWarsPlugin plugin;
     private final MapManager mapManager;
     private static List<Team> teams;
+
+    private final Set<Location> placedBlocks = new HashSet<>();
 
     public InGameState(@NotNull BedWarsPlugin plugin, GameStateContext context, MapManager mapManager) {
         super(context);
@@ -76,6 +82,7 @@ public class InGameState extends AbstractGameState implements Listener {
 
     @Override
     public void stop() {
+        placedBlocks.clear();
         context.logger().info(Component.translatable("state.ingame.stop"));
     }
 
@@ -144,41 +151,68 @@ public class InGameState extends AbstractGameState implements Listener {
     }
 
     @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+
+        if(!(context.currentState() instanceof InGameState)) return;
+
+        placedBlocks.add(block.getLocation());
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        Block block = event.getBlock();
+
+        if(!placedBlocks.contains(block.getLocation())) {
+            event.setCancelled(true);
+        } else {
+            placedBlocks.remove(block.getLocation());
+        }
+    }
+
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
         if (!(context.currentState() instanceof InGameState)) return;
+        if (block instanceof Bed) {
+            List<MetadataValue> metadataValues = block.getMetadata("team");
+            if (metadataValues.isEmpty()) return;
 
-        List<MetadataValue> metadataValues = block.getMetadata("team");
-        if (metadataValues.isEmpty()) return;
+            FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
+            if (value.getOwningPlugin() == null) return;
+            if (!value.getOwningPlugin().equals(plugin)) return;
 
-        FixedMetadataValue value = (FixedMetadataValue) metadataValues.getFirst();
-        if (value.getOwningPlugin() == null) return;
-        if (!value.getOwningPlugin().equals(plugin)) return;
+            Team destroyedTeam = (Team) value.value();
+            Team destroyerTeam = findTeamByPlayer(player);
 
-        Team destroyedTeam = (Team) value.value();
-        Team destroyerTeam = findTeamByPlayer(player);
+            if (destroyedTeam == null) {
+                throw new IllegalStateException("Block " + block.getLocation() + " has no team metadata");
+            }
 
-        if (destroyedTeam == null) {
-            throw new IllegalStateException("Block " + block.getLocation() + " has no team metadata");
-        }
+            if (destroyerTeam == null) {
+                event.setCancelled(true);
+                throw new IllegalStateException("Player " + player.getName() + " is not on a team");
+            }
 
-        if (destroyerTeam == null) {
-            event.setCancelled(true);
-            throw new IllegalStateException("Player " + player.getName() + " is not on a team");
-        }
+            if (destroyerTeam.equals(destroyedTeam)) {
+                player.sendMessage(Component.translatable("state.ingame.break.own"));
+                event.setCancelled(true);
+                return;
+            }
 
-        if (destroyerTeam.equals(destroyedTeam)) {
-            player.sendMessage(Component.translatable("state.ingame.break.own"));
-            event.setCancelled(true);
+            event.setDropItems(false);
+
+            deleteBed(destroyedTeam, value);
+            sendDestruction(player, destroyerTeam, destroyedTeam);
             return;
         }
-
-        event.setDropItems(false);
-
-        deleteBed(destroyedTeam, value);
-        sendDestruction(player, destroyerTeam, destroyedTeam);
+        if(!placedBlocks.contains(block.getLocation())) {
+            event.setCancelled(true);
+        } else {
+            placedBlocks.remove(block.getLocation());
+        }
     }
 
     private void deleteBed(Team team, FixedMetadataValue value) {
