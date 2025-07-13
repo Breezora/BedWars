@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.ui.shop.item.items.BuyableItem;
 import net.alphalightning.bedwars.game.ui.shop.item.items.CurrentItem;
 import org.bukkit.Material;
@@ -7,9 +8,16 @@ import xyz.xenondevs.invui.gui.Gui;
 
 public class ToolsGui {
 
-    public final Gui gui() {
+    private final BedWarsPlugin plugin;
+    private final Gui gui;
 
-        String level = "gui.shop.itemshop.upgradable.level.1";
+    public ToolsGui(BedWarsPlugin plugin) {
+        this.plugin = plugin;
+        this.gui = createGui();
+    }
+
+
+    private Gui createGui() {
 
         String upgrade = "gui.shop.itemshop.buyable.lore.upgradable";
         String upgrade2 = "gui.shop.itemshop.buyable.lore.upgradable.2";
@@ -26,38 +34,33 @@ public class ToolsGui {
                         ". . . . . . . . ."
                 )
                 .addIngredient('a', new CurrentItem())
-                .addIngredient('b', new BuyableItem(Material.SHEARS, "gui.shop.itemshop.buyable.shears.name", 1,
+                .addIngredient('b', new BuyableItem(plugin, Material.SHEARS, "gui.shop.itemshop.buyable.shears.name", 1,
                         "gui.shop.itemshop.buyable.shears.price",
                         "",
                         "gui.shop.itemshop.buyable.shears.lore",
-                        "gui.shop.itemshop.buyable.shears.lore.2",
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
-                .addIngredient('c', new BuyableItem(Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
+                        "gui.shop.itemshop.buyable.shears.lore.2"))
+                .addIngredient('c', new BuyableItem(plugin, Material.WOODEN_PICKAXE, "gui.shop.itemshop.buyable.woodpickaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodpickaxe.price",
-                        level,
                         "",
                         upgrade,
                         upgrade2,
                         "",
                         permrespawn,
                         permrespawn2,
-                        permrespawn3,
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
-                .addIngredient('d', new BuyableItem(Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
+                        permrespawn3))
+                .addIngredient('d', new BuyableItem(plugin, Material.WOODEN_AXE, "gui.shop.itemshop.buyable.woodaxe.name", 1,
                         "gui.shop.itemshop.buyable.woodaxe.price",
-                        level,
                         "",
                         upgrade,
                         upgrade2,
                         "",
                         permrespawn,
                         permrespawn2,
-                        permrespawn3,
-                        "",
-                        "gui.shop.itemshop.buyable.lore.not-enough-iron"))
+                        permrespawn3))
                 .build();
     }
 
+    public Gui gui() {
+        return this.gui;
+    }
 }

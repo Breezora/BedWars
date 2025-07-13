@@ -1,5 +1,6 @@
 package net.alphalightning.bedwars.game.ui.shop.item;
 
+import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.ui.shop.item.items.TabChangeItem;
 import net.alphalightning.bedwars.game.ui.shop.item.legacy.KitsItem;
 import net.kyori.adventure.text.Component;
@@ -17,18 +18,27 @@ public class ItemShopGui {
 
     private final Single gui;
 
-    public ItemShopGui() {
+    private final Gui fastBuyGui;
+    private final Gui blocksGui;
+    private final Gui weaponsGui;
+    private final Gui armorGui;
+    private final Gui toolsGui;
+    private final Gui bowsGui;
+    private final Gui potionsGui;
+    private final Gui extrasGui;
+
+    public ItemShopGui(BedWarsPlugin plugin) {
+        fastBuyGui = new FastBuyGui(plugin).gui();
+        blocksGui = new BlocksGui(plugin).gui();
+        weaponsGui = new WeaponsGui(plugin).gui();
+        armorGui = new ArmorGui(plugin).gui();
+        toolsGui = new ToolsGui(plugin).gui();
+        bowsGui = new BowsGui(plugin).gui();
+        potionsGui = new PotionsGui(plugin).gui();
+        extrasGui = new ExtrasGui(plugin).gui();
+
         this.gui = createGui();
     }
-
-    Gui fastBuyGui = new FastBuyGui().gui();
-    Gui blocksGui = new BlocksGui().gui();
-    Gui weaponsGui = new WeaponsGui().gui();
-    Gui armorGui = new ArmorGui().gui();
-    Gui toolsGui = new ToolsGui().gui();
-    Gui bowsGui = new BowsGui().gui();
-    Gui potionsGui = new PotionsGui().gui();
-    Gui extrasGui = new ExtrasGui().gui();
 
     private Single createGui() {
         return Window.single()
@@ -50,7 +60,7 @@ public class ItemShopGui {
                         .addIngredient('6', new TabChangeItem(Material.BREWING_STAND, "gui.shop.itemshop.potions.name", 6))
                         .addIngredient('7', new TabChangeItem(Material.TNT, "gui.shop.itemshop.extras.name", 7))
                         .addIngredient('8', new KitsItem())
-                        .setTabs(List.of(fastBuyGui, blocksGui, weaponsGui, armorGui, toolsGui, bowsGui, potionsGui, extrasGui))
+                        .setTabs(List.of(this.fastBuyGui, this.blocksGui, this.weaponsGui, this.armorGui, this.toolsGui, this.bowsGui, this.potionsGui, this.extrasGui))
                         .build()
                 )
                 .setTitle(Component.translatable("gui.shop.itemshop.fastbuy.title"));
@@ -58,7 +68,7 @@ public class ItemShopGui {
     }
 
     public void showGui(Player player) {
-        gui.open(player);
+        this.gui.open(player);
     }
 
 }

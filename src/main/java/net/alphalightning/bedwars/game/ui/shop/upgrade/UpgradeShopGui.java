@@ -11,11 +11,9 @@ import xyz.xenondevs.invui.window.Window.Builder.Normal.Single;
 
 public class UpgradeShopGui {
 
-    private final Player player;
     private final Single gui;
 
-    public UpgradeShopGui(Player player) {
-        this.player = player;
+    public UpgradeShopGui() {
         this.gui = createGui();
     }
 
@@ -145,8 +143,8 @@ public class UpgradeShopGui {
                 .setTitle(Component.translatable("gui.shop.upgrade.name"));
     }
 
-    public void showGui() {
-        this.gui.open(this.player);
+    public void showGui(Player player) {
+        this.gui.open(player);
     }
 
 }
