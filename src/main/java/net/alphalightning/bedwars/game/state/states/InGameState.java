@@ -21,6 +21,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -232,6 +233,8 @@ public class InGameState extends AbstractGameState implements Listener {
             sendDestruction(player, destroyerTeam, destroyedTeam);
             return;
         }
+        if(!(block.getBlockData() instanceof Fire)) return;
+
         if(!placedBlocks.contains(block.getLocation())) {
             event.setCancelled(true);
         } else {
