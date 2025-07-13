@@ -20,8 +20,6 @@ public class PotionsGui {
 
     private Gui createGui() {
 
-        String emerald = "gui.shop.itemshop.buyable.lore.not-enough-emerald";
-
         return Gui.normal()
                 .setStructure(
                         ". . . . . . a . .",
@@ -32,21 +30,15 @@ public class PotionsGui {
                 .addIngredient('b', new BuyablePotionItem(plugin, "gui.shop.itemshop.buyable.potion.speed.name", PotionType.SWIFTNESS, PotionEffectType.SPEED, 45, 1,
                         "gui.shop.itemshop.buyable.potion.speed.price",
                         "",
-                        "gui.shop.itemshop.buyable.potion.speed.lore",
-                        "",
-                        emerald))
+                        "gui.shop.itemshop.buyable.potion.speed.lore"))
                 .addIngredient('c', new BuyablePotionItem(plugin, "gui.shop.itemshop.buyable.potion.jumpboost.name", PotionType.LEAPING, PotionEffectType.JUMP_BOOST, 45, 5,
                         "gui.shop.itemshop.buyable.potion.jumpboost.price",
                         "",
-                        "gui.shop.itemshop.buyable.potion.jumpboost.lore",
-                        "",
-                        emerald))
+                        "gui.shop.itemshop.buyable.potion.jumpboost.lore"))
                 .addIngredient('d', new BuyablePotionItem(plugin, "gui.shop.itemshop.buyable.potion.invisibility.name", PotionType.INVISIBILITY, PotionEffectType.INVISIBILITY, 30, 0,
                         "gui.shop.itemshop.buyable.potion.invisibility.price",
                         "",
-                        "gui.shop.itemshop.buyable.potion.invisibility.lore",
-                        "",
-                        emerald))
+                        "gui.shop.itemshop.buyable.potion.invisibility.lore"))
                 .build();
     }
 
