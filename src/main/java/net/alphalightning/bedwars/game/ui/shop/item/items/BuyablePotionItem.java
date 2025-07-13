@@ -132,12 +132,10 @@ public class BuyablePotionItem extends AbstractItem {
                         "Potion of Swiftness");
                 player.getInventory().addItem(swiftness);
             }
-
         }
     }
 
     private ItemStack potion(Color potionColor, PotionEffectType type, int duration, int amplifier, String name) {
-
         PotionEffect potionEffect = new PotionEffect(type, duration * 20, amplifier);
 
         PotionContents contents = PotionContents.potionContents()
