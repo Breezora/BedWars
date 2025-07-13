@@ -153,11 +153,12 @@ public class InGameState extends AbstractGameState implements Listener {
         //Fireball logic
         if (item.getType() == Material.FIRE_CHARGE) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                player.sendMessage(event.getAction().name());
                 player.getInventory().getItemInMainHand().setAmount(item.getAmount()-1);
                 Location eye = player.getEyeLocation();
                 Vector direction = eye.getDirection().normalize().multiply(1.5);
 
-                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.2)), Fireball.class);
+                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class);
                 fireball.setDirection(direction);
                 fireball.setShooter(player);
                 fireball.setIsIncendiary(false);
