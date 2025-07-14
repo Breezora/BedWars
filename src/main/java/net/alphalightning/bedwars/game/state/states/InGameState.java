@@ -5,6 +5,7 @@ import io.papermc.paper.datacomponent.item.DyedItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.alphalightning.bedwars.BedWarsPlugin;
 import net.alphalightning.bedwars.game.entity.ShopVillager;
+import net.alphalightning.bedwars.game.item.FireballItem;
 import net.alphalightning.bedwars.game.map.MapManager;
 import net.alphalightning.bedwars.game.state.AbstractGameState;
 import net.alphalightning.bedwars.game.state.GameStateContext;
@@ -80,6 +81,8 @@ public class InGameState extends AbstractGameState implements Listener {
 
         preparePlayers();
         teleportPlayers();
+        FireballItem fireballItem = new FireballItem(plugin);
+        fireballItem.registerEvent();
     }
 
     @Override

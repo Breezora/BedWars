@@ -18,11 +18,12 @@ import org.bukkit.util.Vector;
 
 public class FireballItem implements Listener {
 
+    private final BedWarsPlugin plugin;
     private final GameStateContext context;
 
     public FireballItem(BedWarsPlugin plugin) {
+        this.plugin = plugin;
         this.context = plugin.gameStateContext();
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -45,8 +46,12 @@ public class FireballItem implements Listener {
                 fireball.setIsIncendiary(false);
                 fireball.setYield(2.0f);
             });
+
             event.setCancelled(true);
         }
+    }
 
+    public void registerEvent() {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 }
