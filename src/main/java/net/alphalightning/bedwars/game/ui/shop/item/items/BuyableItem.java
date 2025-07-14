@@ -10,6 +10,7 @@ import net.alphalightning.bedwars.util.PlayerUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -17,6 +18,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.AbstractItem;
 import xyz.xenondevs.invui.item.Click;
@@ -213,6 +216,16 @@ public class BuyableItem extends AbstractItem {
                 else if (type.name().endsWith("_PICKAXE") || type.name().endsWith("_AXE") || type == Material.SHEARS) {
                     handleToolPurchase(player, type, currency.getType(), cost);
                     this.notifyWindows();
+                    return;
+                }
+                else if (type == Material.FIRE_CHARGE) {
+                    NamespacedKey key = new NamespacedKey(plugin, "fireball");
+                    ItemStack bought = new ItemBuilder(type)
+                            .setAmount(itemAmount).build();
+                    ItemMeta meta = bought.getItemMeta();
+                    meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
+                    bought.setItemMeta(meta);
+                    player.getInventory().addItem(bought);
                     return;
                 }
                 ItemStack bought = new ItemBuilder(type)
