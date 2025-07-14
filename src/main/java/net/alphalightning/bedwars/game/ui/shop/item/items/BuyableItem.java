@@ -221,6 +221,7 @@ public class BuyableItem extends AbstractItem {
                 else if (type == Material.FIRE_CHARGE) {
                     NamespacedKey key = new NamespacedKey(plugin, "fireball");
                     ItemStack bought = new ItemBuilder(type)
+                            .setName("Fireball")
                             .setAmount(itemAmount).build();
                     ItemMeta meta = bought.getItemMeta();
                     meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
