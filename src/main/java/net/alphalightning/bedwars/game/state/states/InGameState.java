@@ -22,7 +22,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Fire;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,7 +40,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.item.ItemBuilder;
 
@@ -135,33 +133,6 @@ public class InGameState extends AbstractGameState implements Listener {
     @EventHandler
     public void onPlayerBed(PlayerBedEnterEvent event) {
         event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onAirInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-
-        ItemStack item = player.getInventory().getItemInMainHand();
-        //Fireball logic
-        if (item.getType() == Material.SLIME_BALL) {
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                player.sendMessage(event.getAction().name());
-            }
-            if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-                player.sendMessage(event.getAction().name());
-                player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
-                Location eye = player.getEyeLocation();
-                Vector direction = eye.getDirection().normalize().multiply(1.5);
-
-                Fireball fireball = player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class);
-                fireball.setDirection(direction);
-                fireball.setShooter(player);
-                fireball.setIsIncendiary(false);
-                fireball.setYield(2.0f);
-
-                event.setCancelled(true);
-            }
-        }
     }
 
     @EventHandler
