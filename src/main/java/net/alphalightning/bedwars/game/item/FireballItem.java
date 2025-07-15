@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -31,21 +32,19 @@ public class FireballItem implements Listener {
         if (!(context.currentState() instanceof InGameState)) return;
 
         Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = event.getItem();
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (item == null) return;
 
         //Fireball logic
         if (item.getType() != Material.FIRE_CHARGE) return;
         if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            Location eye = player.getEyeLocation();
-            Vector direction = eye.getDirection().normalize().multiply(1.5);
+            //Location eye = player.getEyeLocation();
+            //Vector direction = eye.getDirection().normalize().multiply(1.5);
 
-            player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
-            player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class, fireball -> {
-                fireball.setDirection(direction);
-                fireball.setShooter(player);
-                fireball.setIsIncendiary(false);
-                fireball.setYield(2.0f);
-            });
+            Fireball fireball = player.launchProjectile(Fireball.class);
+
+            fireball.setIsIncendiary(false);
 
             event.setCancelled(true);
         }
