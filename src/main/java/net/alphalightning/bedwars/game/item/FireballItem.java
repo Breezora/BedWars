@@ -30,27 +30,27 @@ public class FireballItem implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent event) {
         if (!(context.currentState() instanceof InGameState)) return;
-
         Player player = event.getPlayer();
-
-        System.out.println("DEBUG: PlayerInteractEvent wurde ausgelöst: " + event.getAction());
-        System.out.println("DEBUG: Hand = " + event.getHand());
-
         ItemStack item = player.getInventory().getItemInMainHand();
-        System.out.println("DEBUG: Item = " + item);
-        System.out.println("DEBUG: Item Type = " + (item != null ? item.getType() : "null"));
         if (event.getHand() != EquipmentSlot.HAND) return;
         event.setCancelled(true);
 
         //Fireball logic
         if (item.getType() != Material.FIRE_CHARGE) return;
         if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            //Location eye = player.getEyeLocation();
-            //Vector direction = eye.getDirection().normalize().multiply(1.5);
+            Location eye = player.getEyeLocation();
+            Vector direction = eye.getDirection().normalize().multiply(1.5);
 
-            Fireball fireball = player.launchProjectile(Fireball.class);
+            player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
+            player.getWorld().spawn(eye.add(direction.multiply(1.345)), Fireball.class, fireball -> {
+                fireball.setDirection(direction);
+                fireball.setShooter(player);
+                fireball.setIsIncendiary(false);
+                fireball.setYield(2.0f);
+            });
+            //Fireball fireball = player.launchProjectile(Fireball.class);
 
-            fireball.setIsIncendiary(false);
+            //fireball.setIsIncendiary(false);
 
         }
     }
