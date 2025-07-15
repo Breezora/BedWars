@@ -34,7 +34,6 @@ public class FireballItem implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
         if (event.getHand() != EquipmentSlot.HAND) return;
-        if (item == null) return;
 
         //Fireball logic
         if (item.getType() != Material.FIRE_CHARGE) return;
