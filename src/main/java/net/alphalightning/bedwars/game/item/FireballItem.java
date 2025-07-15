@@ -32,8 +32,15 @@ public class FireballItem implements Listener {
         if (!(context.currentState() instanceof InGameState)) return;
 
         Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+
+        System.out.println("DEBUG: PlayerInteractEvent wurde ausgelöst: " + event.getAction());
+        System.out.println("DEBUG: Hand = " + event.getHand());
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+        System.out.println("DEBUG: Item = " + item);
+        System.out.println("DEBUG: Item Type = " + (item != null ? item.getType() : "null"));
         if (event.getHand() != EquipmentSlot.HAND) return;
+        event.setCancelled(true);
 
         //Fireball logic
         if (item.getType() != Material.FIRE_CHARGE) return;
@@ -45,7 +52,6 @@ public class FireballItem implements Listener {
 
             fireball.setIsIncendiary(false);
 
-            event.setCancelled(true);
         }
     }
 
