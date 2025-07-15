@@ -26,7 +26,7 @@ public class FireballItem implements Listener {
         this.context = plugin.gameStateContext();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         if (!(context.currentState() instanceof InGameState)) return;
 
